@@ -194,7 +194,7 @@
   const input = document.getElementById('chat-input');
   const send = document.getElementById('chat-send');
 
-  const AI_AV = `<svg viewBox="0 0 122 122" xmlns="http://www.w3.org/2000/svg"><g fill="#2E3A2F"><rect x="31.3" y="0" width="28" height="28"/><rect x="62.6" y="0" width="28" height="28"/><rect x="94" y="0" width="28" height="28"/><rect x="62.6" y="62.6" width="28" height="28"/><rect x="94" y="62.6" width="28" height="28"/></g><g fill="#4C9A62"><rect x="0" y="0" width="28" height="28"/><rect x="0" y="31.3" width="28" height="28"/><rect x="0" y="62.6" width="28" height="28"/><rect x="0" y="94" width="28" height="28"/><rect x="31.3" y="94" width="28" height="28"/><rect x="62.6" y="94" width="28" height="28"/><rect x="94" y="94" width="28" height="28"/></g></svg>`;
+  const AI_AV = `<svg viewBox="0 0 122 122" xmlns="http://www.w3.org/2000/svg"><g fill="#3D3129"><rect x="31.3" y="0" width="28" height="28"/><rect x="62.6" y="0" width="28" height="28"/><rect x="94" y="0" width="28" height="28"/><rect x="62.6" y="62.6" width="28" height="28"/><rect x="94" y="62.6" width="28" height="28"/></g><g fill="#F4793B"><rect x="0" y="0" width="28" height="28"/><rect x="0" y="31.3" width="28" height="28"/><rect x="0" y="62.6" width="28" height="28"/><rect x="0" y="94" width="28" height="28"/><rect x="31.3" y="94" width="28" height="28"/><rect x="62.6" y="94" width="28" height="28"/><rect x="94" y="94" width="28" height="28"/></g></svg>`;
 
   function aiMsg(html) {
     body.insertAdjacentHTML('beforeend', `<div class="msg ai"><span class="av">${AI_AV}</span><div class="bubble">${html}</div></div>`);
