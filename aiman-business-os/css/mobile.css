@@ -1,0 +1,162 @@
+/* ============================================================
+   BUSINESS STUDIO OS — mobile experience
+   Phones get a native-app feel: bottom nav + full-width pages.
+   ============================================================ */
+
+/* ---- Bottom navigation (phones only) ---- */
+.bottom-nav { display: none; }
+
+/* ---- "More" sheet ---- */
+.sheet-overlay {
+  position: fixed; inset: 0;
+  background: rgba(8, 8, 10, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 120;
+  display: flex; align-items: flex-end;
+  animation: fade-in 160ms ease both;
+}
+:root[data-theme="light"] .sheet-overlay { background: rgba(30, 26, 16, 0.28); }
+.sheet {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-bottom: none;
+  border-radius: 22px 22px 0 0;
+  padding: 14px 16px calc(22px + env(safe-area-inset-bottom));
+  animation: sheet-up 280ms var(--ease) both;
+}
+@keyframes sheet-up { from { transform: translateY(40px); opacity: 0; } }
+.sheet-handle {
+  width: 40px; height: 4px;
+  border-radius: 99px;
+  background: var(--border-strong);
+  margin: 0 auto 14px;
+}
+.sheet-title { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); padding: 0 4px 12px; }
+.sheet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.sheet-item {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 15px 6px 13px;
+  border-radius: 14px;
+  background: var(--card-2);
+  border: 1px solid var(--border);
+  font-size: 11.5px; font-weight: 600; color: var(--text-2);
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+.sheet-item svg { width: 20px; height: 20px; color: var(--accent); }
+.sheet-item:active { background: var(--card-3); }
+.sheet-item.active { border-color: var(--accent-line); background: var(--accent-soft); color: var(--text); }
+
+/* ---- Tablet (already handled in layout.css at 1100px) ---- */
+
+/* ---- Phone ---- */
+@media (max-width: 640px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 70;
+    display: flex;
+    gap: 2px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-top: 1px solid var(--border);
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  }
+  .bottom-nav a, .bottom-nav button {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 7px 0 4px;
+    border-radius: 11px;
+    font-size: 10px; font-weight: 600;
+    color: var(--text-3);
+    transition: color var(--t-fast), background var(--t-fast);
+  }
+  .bottom-nav svg { width: 20px; height: 20px; }
+  .bottom-nav .active { color: var(--accent); background: var(--accent-soft); }
+
+  /* topbar: compact */
+  .topbar { padding: 0 12px; gap: 6px; }
+  .crumb { font-size: 13px; }
+  .crumb span { display: none; }
+  .crumb svg { display: none; }
+  .topbar-search { width: 40px; min-width: 40px; padding: 0; justify-content: center; }
+  .topbar-search span, .topbar-search .kbd { display: none; }
+
+  /* pages breathe less, scroll past bottom nav */
+  .page { padding: 18px 14px calc(96px + env(safe-area-inset-bottom)); }
+  .page-title { font-size: 24px; }
+  .page-head { margin-bottom: 18px; }
+  .page-actions { flex-wrap: wrap; max-width: 100%; }
+  .page-actions .btn { height: 32px; padding: 0 12px; font-size: 12.5px; }
+  .greeting { font-size: 25px; }
+  .greeting-block .btn { display: none; }
+
+  .stat-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-tile { padding: 14px 15px; }
+  .stat-tile .stat-value { font-size: 23px; }
+  .stat-tile .spark { margin-top: 8px; }
+
+  .dash-grid { gap: 12px; }
+  .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+
+  .card { padding: 16px; border-radius: 14px; }
+
+  /* rows: hide tags to keep titles readable */
+  .row .tag { display: none; }
+  .row-del { opacity: 1; }
+
+  /* detail heroes wrap */
+  .detail-hero { flex-wrap: wrap; gap: 12px; }
+  .detail-hero .page-title { font-size: 21px !important; }
+
+  /* kanban: slightly narrower cards, momentum scroll */
+  .kanban { -webkit-overflow-scrolling: touch; margin: 0 -14px; padding: 0 14px 18px; }
+  .kcol { width: 246px; }
+
+  /* calendar */
+  #cal-body { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .week-grid { min-width: 700px; }
+  .cal-cell { min-height: 62px; padding: 5px 5px; }
+  .cal-cell .cd { font-size: 10.5px; }
+  .cal-ev { font-size: 8.5px; padding: 2px 4px; margin-top: 3px; }
+  .cal-dow { padding: 6px 5px; font-size: 9px; }
+
+  /* content studio grid: 4-up */
+  .ig-grid { grid-template-columns: repeat(4, 1fr); gap: 7px; }
+  .ig-cell .ig-title { -webkit-line-clamp: 2; font-size: 10px; }
+
+  /* inline multi-column grids collapse to one column */
+  .page .grid { grid-template-columns: 1fr !important; }
+  .ai-search .kbd { display: none; }
+  .ai-search input { min-width: 0; }
+
+  /* hub + settings nav become horizontal chips */
+  .hub-layout, .settings-layout { grid-template-columns: 1fr; }
+  .hub-nav { flex-direction: row; overflow-x: auto; position: static; padding-bottom: 4px; scrollbar-width: none; }
+  .hub-nav::-webkit-scrollbar { display: none; }
+  .hub-nav .nav-item { white-space: nowrap; }
+  .hub-nav .nav-item.active::before { display: none; }
+
+  /* popovers + palette fit the screen */
+  .popover { max-width: calc(100vw - 16px); }
+  .overlay { padding-top: 9vh; }
+  .form-grid { grid-template-columns: 1fr; }
+  .modal { max-height: 82vh; overflow-y: auto; }
+
+  /* charts stay inside their cards */
+  .table { font-size: 12px; }
+  .table th, .table td { padding: 9px 8px; }
+
+  .theme-pick { flex-wrap: wrap; }
+  .toast-wrap { bottom: calc(78px + env(safe-area-inset-bottom)); right: 12px; left: 12px; align-items: center; }
+}
+
+/* very small phones */
+@media (max-width: 350px) {
+  .stat-row { grid-template-columns: 1fr; }
+  .ig-grid { grid-template-columns: repeat(3, 1fr); }
+}

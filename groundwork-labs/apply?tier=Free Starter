@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply — Groundwork Labs</title>
+  <meta name="description" content="Apply for your build in one spot — pick your package, tell us what you need, and we'll text you back within 24 hours.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-20 -20 162 162'><rect x='-20' y='-20' width='162' height='162' rx='34' fill='%2314120F'/><g fill='%23F2EFEA'><rect x='31.3' y='0' width='28' height='28'/><rect x='62.6' y='0' width='28' height='28'/><rect x='94' y='0' width='28' height='28'/><rect x='62.6' y='62.6' width='28' height='28'/><rect x='94' y='62.6' width='28' height='28'/></g><g fill='%23E8A33D'><rect x='0' y='0' width='28' height='28'/><rect x='0' y='31.3' width='28' height='28'/><rect x='0' y='62.6' width='28' height='28'/><rect x='0' y='94' width='28' height='28'/><rect x='31.3' y='94' width='28' height='28'/><rect x='62.6' y='94' width='28' height='28'/><rect x='94' y='94' width='28' height='28'/></g></svg>">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+  <header class="hero" style="padding-bottom:0;border-bottom:none">
+    <nav class="topnav">
+      <a class="brand" href="/">
+        <svg class="mark" viewBox="0 0 122 122" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g fill="#F2EFEA"><rect x="31.3" y="0" width="28" height="28"/><rect x="62.6" y="0" width="28" height="28"/><rect x="94" y="0" width="28" height="28"/><rect x="62.6" y="62.6" width="28" height="28"/><rect x="94" y="62.6" width="28" height="28"/></g>
+          <g fill="#E8A33D"><rect x="0" y="0" width="28" height="28"/><rect x="0" y="31.3" width="28" height="28"/><rect x="0" y="62.6" width="28" height="28"/><rect x="0" y="94" width="28" height="28"/><rect x="31.3" y="94" width="28" height="28"/><rect x="62.6" y="94" width="28" height="28"/><rect x="94" y="94" width="28" height="28"/></g>
+        </svg>
+        <span class="brand-word">GROUNDWORK<b>LABS</b></span>
+      </a>
+      <a class="ig-link mono" href="https://instagram.com/studiogroundworks" target="_blank" rel="noopener">@STUDIOGROUNDWORKS</a>
+    </nav>
+  </header>
+
+  <main class="fb-wrap" style="max-width:780px">
+    <div class="eyebrow mono">APPLY — EVERYTHING IN ONE SPOT</div>
+    <h1 class="fb-title">Apply for your build.</h1>
+    <p class="hero-sub">One page, two minutes. Pick your package, tell us what you need, and <b style="color:var(--ochre)">we'll text you back within 24 hours</b> to get it moving.</p>
+
+    <form class="fb-form" id="apply-form" style="margin-top:28px">
+      <div class="fb-grid">
+        <label class="fb-field"><span class="fb-label mono">YOUR NAME *</span>
+          <input class="fb-input" name="fullname" required placeholder="e.g. Sam" autocomplete="name"></label>
+        <label class="fb-field"><span class="fb-label mono">BUSINESS NAME *</span>
+          <input class="fb-input" name="bizname" required placeholder="e.g. Eagles Gym"></label>
+        <label class="fb-field"><span class="fb-label mono">MOBILE * <em style="font-style:normal;color:var(--faint)">(WE REPLY BY TEXT)</em></span>
+          <input class="fb-input" name="phone" required type="tel" placeholder="04xx xxx xxx" autocomplete="tel" inputmode="tel"></label>
+        <label class="fb-field"><span class="fb-label mono">EMAIL</span>
+          <input class="fb-input" name="email" type="email" placeholder="Optional" autocomplete="email"></label>
+
+        <div class="fb-field full"><span class="fb-label mono">PICK YOUR PACKAGE *</span>
+          <div class="tier-pick" id="tier-pick">
+            <button type="button" class="tier-opt" data-tier="Free Starter"><b>FREE</b><span>The Starter — one-page presence</span></button>
+            <button type="button" class="tier-opt" data-tier="Launch Site"><b>$500+</b><span>Launch Site — proper website</span></button>
+            <button type="button" class="tier-opt" data-tier="Site + System"><b>$1.5k+</b><span>Site + System — bookings / ordering</span></button>
+            <button type="button" class="tier-opt" data-tier="Custom App"><b>$4k+</b><span>Custom App — logins, dashboard, payments</span></button>
+            <button type="button" class="tier-opt" data-tier="The Works"><b>$8k+</b><span>The Works — everything + AI</span></button>
+            <button type="button" class="tier-opt" data-tier="The Partner"><b>$99/mo</b><span>The Partner — ongoing tech department</span></button>
+            <button type="button" class="tier-opt" data-tier="Not sure yet"><b>?</b><span>Not sure — recommend for me</span></button>
+          </div>
+        </div>
+
+        <label class="fb-field full"><span class="fb-label mono">WHAT DO YOU NEED? *</span>
+          <textarea class="fb-input" name="need" rows="4" required placeholder="In your own words — what should this do for your business?"></textarea></label>
+
+        <label class="fb-field"><span class="fb-label mono">WHEN DO YOU WANT IT LIVE?</span>
+          <select class="fb-input" name="timeline">
+            <option>ASAP</option><option>This month</option><option>1–3 months</option><option>Just exploring</option>
+          </select></label>
+        <label class="fb-field"><span class="fb-label mono">HOW DID YOU FIND US?</span>
+          <select class="fb-input" name="source">
+            <option>Instagram</option><option>Referral / word of mouth</option><option>Google</option><option>Other</option>
+          </select></label>
+      </div>
+
+      <button class="btn-ochre" type="submit" id="apply-submit" style="margin-top:26px;border:none;cursor:pointer">SEND MY APPLICATION <span class="arrow">→</span></button>
+      <p class="tiny mono" style="color:var(--faint);margin-top:14px;letter-spacing:.1em">NO SPAM. NO LOCK-IN. YOU'LL HEAR FROM AIMAN PERSONALLY.</p>
+    </form>
+
+    <div class="fb-thanks" id="apply-thanks" hidden>
+      <div class="groundline" style="margin:0 0 24px;width:120px"></div>
+      <h2 style="font-size:26px;letter-spacing:-.015em">Application received. 🎉</h2>
+      <p class="hero-sub" style="margin-top:12px">Congratulations — you're in the queue, and <b style="color:var(--ochre)">we'll text you within 24 hours</b>. Want to move even faster? Lock in your free 15-minute call right now:</p>
+      <a class="btn-ochre" href="https://cal.com/aiman-m-clwrda/15min" target="_blank" rel="noopener" style="margin-top:24px">📞 BOOK MY FREE 15-MIN CALL</a>
+      <p class="tiny mono" style="color:var(--faint);margin-top:18px;letter-spacing:.1em"><a href="/" style="text-decoration:underline">BACK TO GROUNDWORK LABS</a></p>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="mono">GROUNDWORK LABS — “SERVICE THE COMMUNITY WHILE WE SERVICE YOUR BUSINESS”</div>
+    <div class="foot-links">
+      <a class="mono" href="https://instagram.com/studiogroundworks" target="_blank" rel="noopener">@STUDIOGROUNDWORKS</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      let tier = '';
+      const opts = document.querySelectorAll('.tier-opt');
+      function pick(btn) {
+        opts.forEach(o => o.classList.toggle('sel', o === btn));
+        tier = btn.dataset.tier;
+      }
+      opts.forEach(o => o.addEventListener('click', () => pick(o)));
+
+      // preselect from ?tier= (pricing cards link here)
+      const want = new URLSearchParams(location.search).get('tier');
+      if (want) {
+        const match = [...opts].find(o => o.dataset.tier.toLowerCase() === want.toLowerCase());
+        if (match) pick(match);
+      }
+
+      const form = document.getElementById('apply-form');
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        if (!tier) {
+          document.getElementById('tier-pick').style.outline = '2px solid var(--ochre)';
+          document.getElementById('tier-pick').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+        const f = Object.fromEntries(new FormData(form).entries());
+        const contact = [f.phone.trim(), f.email.trim()].filter(Boolean).join(' · ');
+        const btn = document.getElementById('apply-submit');
+        btn.disabled = true; btn.textContent = 'SENDING…';
+        // one pipeline: applications flow into the same project-brief feed
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            'form-name': 'project-brief',
+            name: f.fullname, contact,
+            project: tier, business: f.bizname,
+            goal: f.need.slice(0, 140),
+            features: 'Applied via quick form', vibe: '—',
+            timeline: f.timeline, budget: tier,
+            brief: `QUICK APPLICATION — Groundwork Labs\n\nName: ${f.fullname}\nBusiness: ${f.bizname}\nMobile: ${f.phone}\nEmail: ${f.email || '—'}\nPackage: ${tier}\nTimeline: ${f.timeline}\nFound us via: ${f.source}\n\nWhat they need:\n${f.need}`,
+          }).toString(),
+        }).then(r => {
+          if (!r.ok) throw new Error(r.status);
+          form.hidden = true;
+          document.getElementById('apply-thanks').hidden = false;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }).catch(() => {
+          btn.disabled = false; btn.innerHTML = 'SEND MY APPLICATION <span class="arrow">→</span>';
+          alert("That didn't go through — check your internet and try again.");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

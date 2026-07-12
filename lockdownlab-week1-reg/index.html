@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lockdown Lab – Basketball IQ Academy</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0A0A0A; color: #fff; font-family: Arial, sans-serif; }
+    a { text-decoration: none; }
+
+    .header { background: #0A0A0A; border-bottom: 2px solid #D4AF37; padding: 16px 32px; display: flex; align-items: center; gap: 16px; }
+    .header-text .brand { font-size: 13px; letter-spacing: 4px; color: #fff; font-weight: 900; text-transform: uppercase; }
+    .header-text .handle { font-size: 11px; color: #D4AF37; margin-top: 3px; letter-spacing: 2px; font-weight: 700; }
+    .view-btn { margin-left: auto; border: 1px solid #D4AF37; color: #D4AF37; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 8px 14px; border-radius: 4px; }
+
+    .hero { background: linear-gradient(180deg, #1a1a1a 0%, #0A0A0A 100%); padding: 64px 32px 48px; text-align: center; border-bottom: 1px solid #222; }
+    .badge { display: inline-block; background: #D4AF37; color: #0A0A0A; font-size: 10px; font-weight: 800; letter-spacing: 4px; padding: 6px 16px; border-radius: 2px; margin-bottom: 24px; text-transform: uppercase; }
+    .hero h1 { font-size: clamp(28px, 6vw, 52px); font-weight: 900; letter-spacing: -1px; margin-bottom: 8px; line-height: 1.1; text-transform: uppercase; }
+    .hero .subtitle { font-size: clamp(14px, 3vw, 20px); color: #D4AF37; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px; }
+    .hero p { color: #aaa; font-size: 15px; max-width: 520px; margin: 0 auto 40px; line-height: 1.7; }
+    .stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+    .stat-number { font-size: 28px; font-weight: 900; color: #D4AF37; }
+    .stat-label { font-size: 11px; color: #666; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+
+    .section { padding: 48px 32px; max-width: 680px; margin: 0 auto; }
+    .section-label { font-size: 11px; letter-spacing: 4px; color: #D4AF37; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; }
+    .learn-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; background: #1a1a1a; border-left: 3px solid #D4AF37; border-radius: 0 4px 4px 0; margin-bottom: 12px; }
+    .learn-num { width: 22px; height: 22px; min-width: 22px; border-radius: 50%; background: #D4AF37; color: #0A0A0A; font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+    .learn-text { font-size: 14px; line-height: 1.5; color: #ddd; }
+
+    .weeks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 48px; }
+    .week-card { padding: 16px; background: #1a1a1a; border: 1px solid #333; border-radius: 4px; }
+    .week-card.active { background: rgba(212,175,55,0.1); border-color: #D4AF37; }
+    .week-num { font-size: 10px; color: #555; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+    .week-card.active .week-num { color: #D4AF37; }
+    .week-title { font-size: 13px; color: #666; font-weight: 600; margin-top: 6px; line-height: 1.4; }
+    .week-card.active .week-title { color: #fff; }
+    .week-tag { font-size: 10px; color: #D4AF37; margin-top: 8px; font-weight: 700; }
+
+    .form-section { background: #1a1a1a; border-top: 1px solid #222; border-bottom: 1px solid #222; padding: 48px 32px; }
+    .form-inner { max-width: 540px; margin: 0 auto; }
+    .form-section h2 { font-size: 26px; font-weight: 900; margin: 0 0 8px; text-transform: uppercase; }
+    .form-section p { color: #888; font-size: 13px; margin-bottom: 32px; line-height: 1.6; }
+    .sheets-badge { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #0f2010; border: 1px solid #2a5a2a; border-radius: 4px; margin-bottom: 28px; font-size: 12px; color: #5fba5f; }
+    .field { margin-bottom: 16px; }
+    .field label { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #aaa; text-transform: uppercase; display: block; margin-bottom: 8px; }
+    .field input, .field select, .field textarea { width: 100%; background: #2a2a2a; border: 1px solid #333; border-radius: 4px; padding: 12px 14px; color: #fff; font-size: 14px; font-family: Arial, sans-serif; outline: none; }
+    .field select { appearance: none; }
+    .field textarea { resize: vertical; }
+    .error-box { color: #ff6b6b; font-size: 13px; padding: 10px 14px; background: #2a0f0f; border: 1px solid #5a2a2a; border-radius: 4px; margin-bottom: 16px; display: none; }
+    .submit-btn { background: #D4AF37; color: #0A0A0A; border: none; padding: 16px 32px; font-size: 13px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; border-radius: 4px; cursor: pointer; margin-top: 8px; width: 100%; }
+    .submit-btn:disabled { background: #a08020; cursor: not-allowed; }
+
+    .success { text-align: center; padding: 32px 0; display: none; }
+    .success-emoji { font-size: 48px; margin-bottom: 16px; }
+    .success-label { font-size: 11px; letter-spacing: 4px; color: #D4AF37; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; }
+    .success h2 { font-size: 28px; font-weight: 900; text-transform: uppercase; margin-bottom: 16px; }
+    .success p { color: #aaa; font-size: 14px; line-height: 1.7; max-width: 400px; margin: 0 auto 24px; }
+    .success-sheet { padding: 12px 16px; background: #0f2010; border: 1px solid #2a5a2a; border-radius: 4px; margin-bottom: 24px; font-size: 13px; color: #5fba5f; }
+    .follow-box { padding: 16px; background: #2a2a2a; border-radius: 4px; border: 1px solid rgba(212,175,55,0.2); }
+    .follow-label { font-size: 11px; color: #D4AF37; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .follow-handle { font-size: 15px; font-weight: 700; }
+
+    footer { padding: 32px; text-align: center; color: #444; font-size: 12px; }
+    footer .brand { color: #D4AF37; font-weight: 700; font-size: 13px; margin-bottom: 6px; letter-spacing: 3px; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <svg width="56" height="62" viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 8px rgba(212,175,55,0.5))">
+    <path d="M30 10 L30 42 L8 78 Q4 86 8 92 Q12 98 20 98 L80 98 Q88 98 92 92 Q96 86 92 78 L70 42 L70 10 Z" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M26 10 Q26 4 50 4 Q74 4 74 10" fill="none" stroke="white" stroke-width="6" stroke-linecap="round"/>
+    <line x1="26" y1="18" x2="74" y2="18" stroke="white" stroke-width="5" stroke-linecap="round"/>
+    <path d="M28 50 L28 80 L44 80" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 44 L42 74 L60 74" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="header-text">
+    <div class="brand">Lockdown Lab</div>
+    <div class="handle">@lockdownlab3</div>
+  </div>
+  <a href="https://docs.google.com/spreadsheets/d/1rD7kGvu6rEJB3iDgGXfCv4mx2Fd97nf_H_FSuHqBIls/edit" target="_blank" class="view-btn">📊 View Registrations</a>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="badge">WAITLIST NOW OPEN</div>
+  <h1>Basketball IQ Academy</h1>
+  <div class="subtitle">Week 1 · See the Game Differently</div>
+  <p>A live 1-hour Zoom session for players aged 13–18. Learn how elite players read information <em>before</em> they make decisions. Limited to 15 spots.</p>
+  <div class="stats">
+    <div><div class="stat-number">1 HR</div><div class="stat-label">Live Session</div></div>
+    <div><div class="stat-number">15</div><div class="stat-label">Max Spots</div></div>
+    <div><div class="stat-number">13–18</div><div class="stat-label">Ages</div></div>
+    <div><div class="stat-number">FREE</div><div class="stat-label">To Register</div></div>
+  </div>
+</div>
+
+<!-- What You'll Learn -->
+<div class="section">
+  <div class="section-label">In This Session</div>
+  <div class="learn-item"><div class="learn-num">1</div><div class="learn-text">What Basketball IQ really means — and why it wins games</div></div>
+  <div class="learn-item"><div class="learn-num">2</div><div class="learn-text">The 4-point reading framework: Eyes · Hips · Shoulders · Tendencies</div></div>
+  <div class="learn-item"><div class="learn-num">3</div><div class="learn-text">Live NBA film breakdown with Jalen Brunson and Steph Curry</div></div>
+  <div class="learn-item"><div class="learn-num">4</div><div class="learn-text">Advantage Hunter game and live leaderboard with the group</div></div>
+  <div class="learn-item"><div class="learn-num">5</div><div class="learn-text">Printable workbook + weekly homework to apply on court</div></div>
+
+  <div class="section-label" style="margin-top:48px">The 4-Week Programme</div>
+  <div class="weeks">
+    <div class="week-card active"><div class="week-num">WEEK 01</div><div class="week-title">See the Game Differently</div><div class="week-tag">← THIS SESSION</div></div>
+    <div class="week-card"><div class="week-num">WEEK 02</div><div class="week-title">You Don't Need the Ball to Dominate</div></div>
+    <div class="week-card"><div class="week-num">WEEK 03</div><div class="week-title">Defensive IQ</div></div>
+    <div class="week-card"><div class="week-num">WEEK 04</div><div class="week-title">Build Your Personal Playbook</div></div>
+  </div>
+</div>
+
+<!-- Form -->
+<div class="form-section">
+  <div class="form-inner">
+    <div id="formView">
+      <div class="section-label">Secure Your Spot</div>
+      <h2>Join the Waitlist</h2>
+      <p>Date and time TBA — register now and you'll be the first to know. Responses save directly to Google Sheets.</p>
+      <div class="sheets-badge">📊 Connected to Google Sheets — responses save automatically</div>
+
+      <div class="field"><label>Full Name *</label><input type="text" id="name" placeholder="Your full name" /></div>
+      <div class="field"><label>Email Address *</label><input type="email" id="email" placeholder="your@email.com" /></div>
+      <div class="field"><label>Age *</label><input type="number" id="age" placeholder="e.g. 15" /></div>
+      <div class="field"><label>Instagram Handle</label><input type="text" id="instagram" placeholder="@yourhandle" /></div>
+      <div class="field"><label>Parent / Guardian Name (if under 18)</label><input type="text" id="guardian" placeholder="Guardian's name" /></div>
+      <div class="field"><label>Parent / Guardian Email (if under 18)</label><input type="email" id="guardianEmail" placeholder="guardian@email.com" /></div>
+      <div class="field">
+        <label>How Did You Hear About Us?</label>
+        <select id="source">
+          <option value="">Select an option</option>
+          <option value="instagram">Instagram (@lockdownlab3)</option>
+          <option value="friend">Friend / teammate</option>
+          <option value="coach">My coach</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="field"><label>Any Questions?</label><textarea id="questions" rows="3" placeholder="Anything you want to know before signing up..."></textarea></div>
+
+      <div class="error-box" id="errorBox"></div>
+      <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">Register My Spot →</button>
+    </div>
+
+    <div class="success" id="successView">
+      <div class="success-emoji">🏀</div>
+      <div class="success-label">You're In</div>
+      <h2 id="successName">Spot Locked In!</h2>
+      <p>You're on the waitlist. As soon as we've got enough players, we'll lock in a date and notify you at <strong id="successEmail"></strong>.</p>
+      <div class="success-sheet">✅ Your details have been saved to Google Sheets</div>
+      <div class="follow-box">
+        <div class="follow-label">Follow for Updates</div>
+        <div class="follow-handle">@lockdownlab3</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <svg width="36" height="40" viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:12px">
+    <path d="M30 10 L30 42 L8 78 Q4 86 8 92 Q12 98 20 98 L80 98 Q88 98 92 92 Q96 86 92 78 L70 42 L70 10 Z" fill="none" stroke="#444" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M26 10 Q26 4 50 4 Q74 4 74 10" fill="none" stroke="#444" stroke-width="6" stroke-linecap="round"/>
+    <line x1="26" y1="18" x2="74" y2="18" stroke="#444" stroke-width="5" stroke-linecap="round"/>
+    <path d="M28 50 L28 80 L44 80" fill="none" stroke="#444" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 44 L42 74 L60 74" fill="none" stroke="#444" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="brand">Lockdown Lab</div>
+  <div>Developing smarter basketball players · @lockdownlab3</div>
+</footer>
+
+<script>
+  async function handleSubmit() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const age = document.getElementById('age').value.trim();
+    const instagram = document.getElementById('instagram').value.trim();
+    const guardian = document.getElementById('guardian').value.trim();
+    const guardianEmail = document.getElementById('guardianEmail').value.trim();
+    const source = document.getElementById('source').value;
+    const questions = document.getElementById('questions').value.trim();
+    const errorBox = document.getElementById('errorBox');
+    const btn = document.getElementById('submitBtn');
+
+    if (!name || !email || !age) {
+      errorBox.textContent = 'Please fill in Name, Email and Age.';
+      errorBox.style.display = 'block';
+      return;
+    }
+    errorBox.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Saving to Google Sheets...';
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 1000,
+          mcp_servers: [{ type: 'url', url: 'https://drivemcp.googleapis.com/mcp/v1', name: 'google-drive-mcp' }],
+          messages: [{
+            role: 'user',
+            content: `Append a new row to Google Spreadsheet ID "1rD7kGvu6rEJB3iDgGXfCv4mx2Fd97nf_H_FSuHqBIls". Add this data as a new row after the header:
+- Timestamp: ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}
+- Full Name: ${name}
+- Email Address: ${email}
+- Age: ${age}
+- Instagram Handle: ${instagram || 'N/A'}
+- Guardian Name: ${guardian || 'N/A'}
+- Guardian Email: ${guardianEmail || 'N/A'}
+- How Did You Hear: ${source || 'N/A'}
+- Questions: ${questions || 'N/A'}`
+          }]
+        })
+      });
+
+      if (!response.ok) throw new Error('Failed');
+
+      document.getElementById('successName').textContent = 'Spot Locked In, ' + name.split(' ')[0] + '!';
+      document.getElementById('successEmail').textContent = email;
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('successView').style.display = 'block';
+    } catch (e) {
+      errorBox.textContent = 'Something went wrong. Please try again.';
+      errorBox.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Register My Spot →';
+    }
+  }
+</script>
+</body>
+</html>

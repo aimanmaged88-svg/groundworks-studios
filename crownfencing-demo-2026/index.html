@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crown Fencing | Sydney's #1 Fencing Contractors</title>
+<meta name="description" content="Crown Fencing — Sydney's number one fencing contractors. Colorbond, timber, aluminium slat, glass pool fencing, gates & retaining walls. Free measure & quote.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#d81f27; --red2:#b3141b; --redsoft:rgba(216,31,39,.1);
+  --ink:#16191d; --muted:#63707e; --line:#e6e9ef; --bg:#f5f6f9;
+  --dark:#20262d; --dark2:#161a1f; --white:#fff; --ok:#12a150; --warn:#f0932b;
+  --navy:#16223f; --logogrey:#6b7480;
+  --shadow:0 10px 30px rgba(20,25,30,.10); --shadow2:0 20px 50px rgba(20,25,30,.16);
+  --r:16px;
+  --brand:'Cinzel',Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+.btn{display:inline-flex;align-items:center;gap:9px;background:var(--red);color:#fff;border:none;padding:14px 26px;border-radius:999px;font-weight:800;font-size:15px;cursor:pointer;transition:.2s;letter-spacing:.3px}
+.btn:hover{background:var(--red2);transform:translateY(-2px);box-shadow:0 12px 24px rgba(216,31,39,.35)}
+.btn.ghost{background:transparent;border:2px solid rgba(255,255,255,.5);color:#fff}
+.btn.ghost:hover{background:rgba(255,255,255,.12);box-shadow:none}
+.btn.dark{background:var(--dark)}.btn.dark:hover{background:var(--dark2);box-shadow:0 12px 24px rgba(20,25,30,.3)}
+.btn.sm{padding:9px 16px;font-size:13px}
+.btn.block{width:100%;justify-content:center}
+.pill{display:inline-block;background:var(--redsoft);color:var(--red);font-weight:800;font-size:12px;letter-spacing:2px;padding:7px 16px;border-radius:999px;text-transform:uppercase}
+
+/* ===== LOGO ===== */
+.crown-mark{display:block}
+.logo{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+.logo .mk{display:block}
+.logo .crown-mark{width:42px;height:auto}
+.logo .wordmark{display:flex;align-items:baseline;gap:6px;line-height:1}
+.logo .wordmark .top{font-family:var(--brand);font-weight:800;font-size:16px;letter-spacing:.5px;color:var(--navy)}
+.logo .wordmark .bot{font-family:var(--brand);font-weight:500;font-size:13px;letter-spacing:2.5px;color:var(--logogrey)}
+/* larger lock-up in footer & login */
+footer .logo .crown-mark,.login-box .logo .crown-mark{width:70px}
+footer .logo .wordmark .top{font-size:22px}
+footer .logo .wordmark .bot,.login-box .logo .wordmark .bot{font-size:17px}
+.login-box .logo .wordmark .top{font-size:22px;color:var(--navy)}
+.login-box .logo{margin-bottom:4px}
+
+/* NAV */
+header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+.navlinks{display:flex;align-items:center;gap:28px}
+.navlinks a{font-weight:600;font-size:15px;color:var(--ink);cursor:pointer;transition:.15s}
+.navlinks a:hover{color:var(--red)}
+.navcta{display:flex;align-items:center;gap:14px}
+.phone{font-weight:900;color:var(--ink);font-size:17px;display:flex;align-items:center;gap:7px}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px}
+.burger span{width:26px;height:3px;background:var(--ink);border-radius:2px}
+
+/* PAGE system */
+.page{display:none}.page.active{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* HERO */
+.hero{position:relative;background:linear-gradient(135deg,var(--dark) 0%,#2a323a 55%,var(--dark2) 100%);color:#fff;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 18%,rgba(216,31,39,.28),transparent 45%),radial-gradient(circle at 8% 92%,rgba(216,31,39,.14),transparent 42%)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:70px 22px 80px}
+.hero h1{font-family:var(--brand);font-size:54px;line-height:1.05;font-weight:800;letter-spacing:-.5px;margin:18px 0}
+.hero h1 .r{color:var(--red)}
+.hero p.lead{font-size:19px;color:#cdd4dc;max-width:520px;margin-bottom:28px}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+.trust{display:flex;gap:26px;margin-top:34px;flex-wrap:wrap}
+.trust .t{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;color:#dfe5ec}
+.trust .t i{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.1);display:grid;place-items:center;color:var(--red);font-style:normal;font-weight:900}
+.hero-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:26px;backdrop-filter:blur(6px);box-shadow:var(--shadow2)}
+.hero-card h3{font-size:20px;margin-bottom:4px}
+.hero-card p.sub{color:#c2ccd6;font-size:14px;margin-bottom:18px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px;color:#d4dbe4;letter-spacing:.3px}
+.field input,.field select,.field textarea{width:100%;padding:12px 14px;border-radius:11px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:14.5px;font-family:inherit;outline:none;transition:.15s}
+.field input::placeholder,.field textarea::placeholder{color:#96a3b2}
+.field select option{color:#16191d}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--red);background:rgba(255,255,255,.13)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* SECTIONS */
+section.blk{padding:78px 0}
+.eyebrow{text-align:center;margin-bottom:12px}
+.h2{font-family:var(--brand);text-align:center;font-size:40px;font-weight:800;letter-spacing:-.5px;margin-bottom:14px}
+.sub{text-align:center;color:var(--muted);font-size:17px;max-width:640px;margin:0 auto 48px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px;transition:.25s;box-shadow:var(--shadow)}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow2);border-color:#d7dde6}
+.svc .ic{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--dark),#39424c);display:grid;place-items:center;font-size:26px;margin-bottom:16px}
+.svc h3{font-size:19px;margin-bottom:8px}
+.svc p{color:var(--muted);font-size:14.5px;margin-bottom:14px}
+.svc .from{font-weight:800;color:var(--red);font-size:14px}
+
+.why{background:var(--dark);color:#fff}
+.why .h2{color:#fff}.why .sub{color:#c2ccd6}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.why .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff}
+.why .card:hover{background:rgba(255,255,255,.08)}
+.why .card .ic{font-size:32px;margin-bottom:14px}
+.why .card p{color:#c2ccd6}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.step{text-align:center;padding:10px}
+.step .n{width:56px;height:56px;margin:0 auto 14px;border-radius:50%;background:#fff;border:2px solid var(--line);display:grid;place-items:center;font-weight:900;font-size:22px;color:var(--red);box-shadow:var(--shadow);font-family:var(--brand)}
+.step h4{margin-bottom:6px}.step p{color:var(--muted);font-size:14px}
+
+.testi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.testi .card .stars{color:#f5b301;font-size:17px;margin-bottom:10px}
+.testi .card p{font-size:15px;color:#33475f;margin-bottom:16px}
+.testi .who{display:flex;align-items:center;gap:12px}
+.testi .av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--dark),var(--red));display:grid;place-items:center;color:#fff;font-weight:800}
+.testi .who b{display:block;font-size:14.5px}.testi .who span{font-size:12.5px;color:var(--muted)}
+
+.cta-band{background:linear-gradient(120deg,var(--red),#a5121a);color:#fff;border-radius:24px;padding:50px;text-align:center;box-shadow:var(--shadow2)}
+.cta-band h2{font-family:var(--brand);font-size:34px;font-weight:800;margin-bottom:10px;letter-spacing:-.3px}
+.cta-band p{font-size:17px;margin-bottom:24px;opacity:.95}
+
+/* QUOTE PAGE */
+.quote-wrap{display:grid;grid-template-columns:1fr .85fr;gap:34px;align-items:start}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:32px;box-shadow:var(--shadow)}
+.panel h2{font-size:26px;margin-bottom:6px}
+.panel .pdesc{color:var(--muted);margin-bottom:24px}
+.lf label{color:var(--ink)}
+.lf input,.lf select,.lf textarea{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.lf input::placeholder,.lf textarea::placeholder{color:#9fb0c6}
+.lf input:focus,.lf select:focus,.lf textarea:focus{border-color:var(--red);background:#fff}
+.est{background:linear-gradient(135deg,var(--dark),#2c343d);color:#fff;border-radius:var(--r);padding:28px;position:sticky;top:96px}
+.est h3{font-size:18px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.est .big{font-size:46px;font-weight:900;letter-spacing:-1px;margin:6px 0}
+.est .big small{font-size:16px;font-weight:600;color:#c2ccd6}
+.est .note{font-size:13px;color:#c2ccd6;margin-top:6px}
+.est ul{list-style:none;margin:20px 0;border-top:1px solid rgba(255,255,255,.12);padding-top:16px}
+.est li{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;color:#dfe5ec}
+.est li span:last-child{font-weight:700;color:#fff}
+.badge-ai{display:inline-flex;align-items:center;gap:6px;background:rgba(216,31,39,.18);color:#ff9ba1;font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;margin-bottom:14px;letter-spacing:.5px}
+
+/* PORTAL */
+.portal-hero{background:var(--dark);color:#fff;padding:48px 0 40px;text-align:center}
+.portal-hero h1{font-family:var(--brand);font-size:36px;font-weight:800;letter-spacing:-.3px}
+.portal-hero p{color:#c2ccd6;margin-top:8px}
+.lookup{max-width:520px;margin:-30px auto 0;position:relative;z-index:5}
+.status-track{display:flex;justify-content:space-between;position:relative;margin:26px 0 8px}
+.status-track::before{content:"";position:absolute;top:16px;left:8%;right:8%;height:3px;background:var(--line)}
+.status-track .st{position:relative;z-index:2;text-align:center;flex:1}
+.status-track .st .dot{width:34px;height:34px;border-radius:50%;background:#fff;border:3px solid var(--line);margin:0 auto 8px;display:grid;place-items:center;font-weight:800;color:var(--muted)}
+.status-track .st.done .dot{background:var(--ok);border-color:var(--ok);color:#fff}
+.status-track .st.active .dot{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 0 0 5px rgba(216,31,39,.15)}
+.status-track .st small{font-size:12px;font-weight:700;color:var(--muted)}
+.status-track .st.done small,.status-track .st.active small{color:var(--ink)}
+.job-card{border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+.job-card .top{display:flex;justify-content:space-between;align-items:start;margin-bottom:6px;gap:12px}
+.job-card h4{font-size:17px}
+.tag{font-size:11.5px;font-weight:800;padding:5px 11px;border-radius:999px;letter-spacing:.4px;white-space:nowrap}
+.tag.new{background:#eef1f6;color:var(--dark)}
+.tag.quoted{background:#fff2df;color:#a5670a}
+.tag.scheduled{background:#e6f6ec;color:#0d7a3b}
+.tag.done{background:#e9edf3;color:#5b6b82}
+.tag.hot{background:#fde8ea;color:var(--red)}
+.tag.warm{background:#fff2df;color:#a5670a}
+.tag.cold{background:#eef1f6;color:#3d5573}
+
+/* ADMIN */
+.login-screen{min-height:70vh;display:grid;place-items:center;padding:40px 22px}
+.login-box{background:#fff;border-radius:20px;padding:40px;max-width:400px;width:100%;box-shadow:var(--shadow2);text-align:center;border:1px solid var(--line)}
+.login-box h2{font-family:var(--brand);font-size:24px;margin:14px 0 4px}
+.login-box p{color:var(--muted);margin-bottom:22px;font-size:14px}
+.hint{font-size:12px;color:#9fb0c6;margin-top:14px}
+
+.dash{display:none}.dash.active{display:block}
+.dash-top{background:var(--dark);color:#fff;padding:22px 0}
+.dash-top .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.dash-top h1{font-family:var(--brand);font-size:22px;font-weight:800}
+.dash-top .u{display:flex;align-items:center;gap:14px}
+.dash-top .u .who{text-align:right}.dash-top .u .who b{display:block;font-size:14px}.dash-top .u .who span{font-size:12px;color:#c2ccd6}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:26px 0}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+.stat .lbl{font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.stat .val{font-size:32px;font-weight:900;margin:6px 0 2px;letter-spacing:-1px}
+.stat .val.red{color:var(--red)}.stat .val.green{color:var(--ok)}.stat .val.dk{color:var(--dark)}
+.stat .delta{font-size:12.5px;font-weight:700;color:var(--ok)}
+.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:22px;flex-wrap:wrap}
+.tabs button{background:none;border:none;padding:12px 18px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs button.on{color:var(--dark);border-color:var(--red)}
+.subtab{display:none}.subtab.on{display:block;animation:fade .3s}
+.q-table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.q-table th{background:#f7f9fc;text-align:left;padding:14px 16px;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--line)}
+.q-table td{padding:14px 16px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle}
+.q-table tr:last-child td{border-bottom:none}
+.q-table tr:hover td{background:#fafcff}
+.q-table .nm{font-weight:700}
+.q-table .sub2{font-size:12.5px;color:var(--muted)}
+.sel-status{padding:6px 10px;border-radius:8px;border:1px solid var(--line);font-weight:700;font-size:12.5px;background:#fff;cursor:pointer}
+.mini{font-size:12px;color:var(--red);font-weight:700;cursor:pointer;background:none;border:none;padding:0}
+
+/* AI panel */
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.ai-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+.ai-card h3{font-size:18px;margin-bottom:4px;display:flex;align-items:center;gap:9px}
+.ai-card .ai-ic{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff5a4d);display:grid;place-items:center;color:#fff;font-size:16px}
+.ai-card>p{color:var(--muted);font-size:13.5px;margin-bottom:16px}
+.ai-out{background:#f7f9fc;border:1px dashed #cdd9ea;border-radius:12px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;color:#2a3d57}
+.ai-out.empty{color:#9fb0c6;display:grid;place-items:center;text-align:center;font-style:italic}
+.lead-list{display:flex;flex-direction:column;gap:10px}
+.lead-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--line);border-radius:11px;gap:10px}
+.lead-row .li b{display:block;font-size:14px}.lead-row .li span{font-size:12.5px;color:var(--muted)}
+.score{font-weight:900;font-size:18px}
+.score.hot{color:var(--red)}.score.warm{color:var(--warn)}.score.cold{color:#3d5573}
+.spark{display:inline-block;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.insight{display:flex;gap:12px;padding:14px;border-radius:12px;background:#f7f9fc;margin-bottom:10px;border-left:3px solid var(--red)}
+.insight .ii{font-size:20px}
+.insight b{font-size:14px}.insight p{font-size:13px;color:var(--muted);margin:0}
+
+/* FOOTER */
+footer{background:var(--dark2);color:#c2ccd6;padding:56px 0 26px;margin-top:20px}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px;margin-bottom:36px}
+.foot h4{color:#fff;font-size:15px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+.foot a,.foot p{display:block;font-size:14px;margin-bottom:9px;color:#a9b4c1}
+.foot a:hover{color:#fff}
+.foot .logo{align-items:flex-start}
+.foot .logo .wordmark .top{color:#fff}
+.foot .logo .wordmark .bot{color:#aeb8c4}
+.foot-bot{border-top:1px solid rgba(255,255,255,.12);padding-top:20px;text-align:center;font-size:13px;color:#8b98a8}
+
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--dark);color:#fff;padding:15px 26px;border-radius:12px;font-weight:700;box-shadow:var(--shadow2);z-index:500;transition:.35s;display:flex;align-items:center;gap:10px}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast .ok{color:#4ade80;font-size:18px}
+
+@media(max-width:900px){
+  .navlinks,.navcta .phone{display:none}
+  .burger{display:flex}
+  .navlinks.open{display:flex;position:absolute;top:74px;left:0;right:0;background:#fff;flex-direction:column;padding:20px;gap:16px;border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+  .hero .wrap{grid-template-columns:1fr;padding:44px 22px 56px}
+  .hero h1{font-size:38px}
+  .grid4{grid-template-columns:1fr 1fr}
+  .grid3,.steps,.testi{grid-template-columns:1fr}
+  .quote-wrap{grid-template-columns:1fr}.est{position:static}
+  .stats{grid-template-columns:1fr 1fr}
+  .ai-grid{grid-template-columns:1fr}
+  .foot{grid-template-columns:1fr 1fr}
+  .h2,.cta-band h2{font-size:30px}
+  .q-table{display:block;overflow-x:auto;white-space:nowrap}
+}
+@media(max-width:560px){.grid4,.stats,.foot{grid-template-columns:1fr}.row2{grid-template-columns:1fr}.cta-band{padding:34px 22px}}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo" onclick="go('home')">
+        <span class="mk"></span>
+        <span class="wordmark"><span class="top">CROWN</span><span class="bot">FENCING</span></span>
+      </div>
+      <div class="navlinks" id="navlinks">
+        <a onclick="go('home')">Home</a>
+        <a onclick="go('home');scrollTo2('services')">Services</a>
+        <a onclick="go('quote')">Free Quote</a>
+        <a onclick="go('portal')">Customer Portal</a>
+        <a onclick="go('admin')">Admin</a>
+      </div>
+      <div class="navcta">
+        <a href="tel:0420470196" class="phone">📞 0420 470 196</a>
+        <button class="btn sm" onclick="go('quote')">Free Quote</button>
+        <button class="burger" onclick="document.getElementById('navlinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HOME ============ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <span class="pill">Sydney's #1 Fencing Contractors</span>
+        <h1>Built to Last.<br><span class="r">Built to Impress.</span></h1>
+        <p class="lead">Colorbond, timber, aluminium slat, glass pool fencing, gates & retaining walls. Quality workmanship, honest pricing, and a free measure & quote — every job finished like it's our own home.</p>
+        <div class="cta">
+          <button class="btn" onclick="go('quote')">Get My Free Quote →</button>
+          <a href="tel:0420470196" class="btn ghost">📞 Call Now</a>
+        </div>
+        <div class="trust">
+          <div class="t"><i>📐</i> Free Measure & Quote</div>
+          <div class="t"><i>🛡️</i> Fully Insured</div>
+          <div class="t"><i>⭐</i> 5-Star Rated</div>
+        </div>
+      </div>
+      <div class="hero-card lf">
+        <span class="badge-ai">⚡ INSTANT ESTIMATE</span>
+        <h3>Get your fencing price in 20 seconds</h3>
+        <p class="sub">No obligation. No spam. Just a fast, honest estimate.</p>
+        <div class="field"><label>Type of fence</label>
+          <select id="h-svc" onchange="heroCalc()">
+            <option value="0">Select a fence type…</option>
+            <option value="95">Colorbond Fencing</option>
+            <option value="85">Timber Paling Fence</option>
+            <option value="180">Aluminium Slat Fencing</option>
+            <option value="250">Glass Pool Fencing</option>
+            <option value="120">Tubular / Pool-Safe Metal</option>
+            <option value="180">Retaining Wall (per m)</option>
+          </select>
+        </div>
+        <div class="field"><label>Approx. length (metres)</label>
+          <select id="h-size" onchange="heroCalc()">
+            <option value="10">Up to 10m</option>
+            <option value="20" selected>Around 20m</option>
+            <option value="35">Around 35m</option>
+            <option value="50">50m+</option>
+          </select>
+        </div>
+        <div id="hero-price" style="display:none;margin:14px 0;padding:14px;background:rgba(216,31,39,.16);border-radius:11px;text-align:center">
+          <div style="font-size:13px;color:#ffb3b8">Estimated from</div>
+          <div style="font-size:34px;font-weight:900" id="hero-amt">$—</div>
+        </div>
+        <button class="btn block" onclick="go('quote')">Book My Free Measure →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="blk" id="services">
+    <div class="wrap">
+      <div class="eyebrow"><span class="pill">What We Do</span></div>
+      <h2 class="h2">Our Fencing Services</h2>
+      <p class="sub">One trusted team for every fence line — supply, removal and professional installation across Greater Sydney. Fully insured, quality materials, tidy finish.</p>
+      <div class="grid4">
+        <div class="card svc"><div class="ic">🏗️</div><h3>Colorbond Fencing</h3><p>Durable steel fencing that won't rot, warp or burn. Great looks, low maintenance, huge colour range.</p><div class="from">From $95/m</div></div>
+        <div class="card svc"><div class="ic">🪵</div><h3>Timber Paling Fences</h3><p>Classic hardwood & treated pine paling fences — the affordable, natural boundary favourite.</p><div class="from">From $85/m</div></div>
+        <div class="card svc"><div class="ic">🎋</div><h3>Aluminium Slat Fencing</h3><p>Sleek modern privacy screens & slat fencing. Premium street appeal that lasts for decades.</p><div class="from">From $180/m</div></div>
+        <div class="card svc"><div class="ic">🏊</div><h3>Glass Pool Fencing</h3><p>Frameless & semi-frameless glass pool fencing — compliant, safe and beautifully clear.</p><div class="from">From $250/m</div></div>
+        <div class="card svc"><div class="ic">🚪</div><h3>Gates & Automation</h3><p>Custom pedestrian & driveway gates, sliding & swing, with optional automation and remote access.</p><div class="from">From $650</div></div>
+        <div class="card svc"><div class="ic">🧱</div><h3>Retaining Walls</h3><p>Sleeper & concrete retaining walls to level your yard and support your new fence line.</p><div class="from">From $180/m</div></div>
+        <div class="card svc"><div class="ic">🛡️</div><h3>Tubular / Pool-Safe Metal</h3><p>Powder-coated tubular fencing & pool-safe metal — strong, secure and compliant.</p><div class="from">From $120/m</div></div>
+        <div class="card svc"><div class="ic">🔧</div><h3>Repairs & Replacements</h3><p>Storm damage, leaning posts or old fences — we repair, replace and remove the old for you.</p><div class="from">Free quote</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="blk why">
+    <div class="wrap">
+      <h2 class="h2">Why Choose Crown Fencing</h2>
+      <p class="sub">Professional. Reliable. Trusted across Sydney. We treat every boundary like it's our own.</p>
+      <div class="grid3">
+        <div class="card"><div class="ic">📐</div><h3>Free Measure & Quote</h3><p>We come out, measure up and give you an honest fixed price — with no pressure and no surprises.</p></div>
+        <div class="card"><div class="ic">✅</div><h3>Quality Guaranteed</h3><p>Premium materials, proper footings and a workmanship guarantee on every fence we build.</p></div>
+        <div class="card"><div class="ic">⚡</div><h3>On Time & Fully Insured</h3><p>Reliable, fully insured installers who show up, clean up and finish the job right.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="blk">
+    <div class="wrap">
+      <h2 class="h2">How It Works</h2>
+      <p class="sub">From quote to a brand-new fence line in four easy steps.</p>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><h4>Request a Quote</h4><p>Fill in the 20-second form or give us a call.</p></div>
+        <div class="step"><div class="n">2</div><h4>Free Measure</h4><p>We measure on-site and give you a fixed price.</p></div>
+        <div class="step"><div class="n">3</div><h4>We Build It</h4><p>Old fence removed, new fence installed properly.</p></div>
+        <div class="step"><div class="n">4</div><h4>Enjoy Your Yard</h4><p>A stronger, better-looking boundary that lasts.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="blk" style="background:#eef1f6">
+    <div class="wrap">
+      <h2 class="h2">What Our Customers Say</h2>
+      <p class="sub">Rated 5 stars right across Sydney.</p>
+      <div class="testi">
+        <div class="card"><div class="stars">★★★★★</div><p>"New Colorbond fence looks fantastic. Crown turned up on time, removed the old fence and cleaned up perfectly. Price was exactly as quoted."</p><div class="who"><div class="av">SM</div><div><b>Sarah M.</b><span>Colorbond Fencing • Bankstown</span></div></div></div>
+        <div class="card"><div class="stars">★★★★★</div><p>"Had our pool area done with frameless glass fencing. Compliant, safe and looks a million bucks. Couldn't be happier with the finish."</p><div class="who"><div class="av">DT</div><div><b>David T.</b><span>Glass Pool Fencing • Yagoona</span></div></div></div>
+        <div class="card"><div class="stars">★★★★★</div><p>"Aluminium slat fence and a matching automated gate. Professional from quote to clean-up. Best fencing mob in Sydney, hands down."</p><div class="who"><div class="av">LR</div><div><b>Leila R.</b><span>Slat Fence + Gate • Bass Hill</span></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="blk">
+    <div class="wrap">
+      <div class="cta-band">
+        <h2>Ready for a Fence You'll Be Proud Of?</h2>
+        <p>Get your free, no-obligation measure & quote today. Same-week site visits available.</p>
+        <button class="btn dark" onclick="go('quote')" style="background:#fff;color:var(--red)">Get My Free Quote →</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ QUOTE ============ -->
+<div class="page" id="page-quote">
+  <div class="portal-hero" style="padding-bottom:60px">
+    <div class="wrap"><h1>Get Your Free Quote</h1><p>Fill in the details below — our AI estimator gives you an instant price range.</p></div>
+  </div>
+  <section class="blk" style="padding-top:40px">
+    <div class="wrap quote-wrap">
+      <div class="panel lf">
+        <h2>Tell us about your fence</h2>
+        <p class="pdesc">The more detail you give, the more accurate your quote. It only takes a minute.</p>
+        <div class="row2">
+          <div class="field"><label>Full name *</label><input id="q-name" placeholder="e.g. Jordan Smith"></div>
+          <div class="field"><label>Phone *</label><input id="q-phone" placeholder="0400 000 000"></div>
+        </div>
+        <div class="field"><label>Email</label><input id="q-email" placeholder="you@email.com"></div>
+        <div class="field"><label>Property address / suburb</label><input id="q-addr" placeholder="e.g. 12 Crown St, Bass Hill"></div>
+        <div class="row2">
+          <div class="field"><label>Type of fence *</label>
+            <select id="q-svc" onchange="quoteCalc()">
+              <option value="0">Select…</option>
+              <option value="95">Colorbond Fencing</option>
+              <option value="85">Timber Paling Fence</option>
+              <option value="180">Aluminium Slat Fencing</option>
+              <option value="250">Glass Pool Fencing</option>
+              <option value="120">Tubular / Pool-Safe Metal</option>
+              <option value="180">Retaining Wall</option>
+            </select>
+          </div>
+          <div class="field"><label>Length (metres) *</label><input id="q-len" type="number" min="1" placeholder="e.g. 24" oninput="quoteCalc()"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Fence height *</label>
+            <select id="q-size" onchange="quoteCalc()">
+              <option value="0.8">Low (up to 1.2m)</option>
+              <option value="1" selected>Standard (1.5–1.8m)</option>
+              <option value="1.25">High (2.1m+)</option>
+            </select>
+          </div>
+          <div class="field"><label>Remove old fence?</label>
+            <select id="q-removal" onchange="quoteCalc()">
+              <option value="0">No — new / clear line</option>
+              <option value="25">Yes — remove & dispose</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Property type</label>
+          <select id="q-type"><option>Residential</option><option>Commercial</option><option>Strata / Body Corp</option></select>
+        </div>
+        <div class="field"><label>Anything else we should know?</label><textarea id="q-notes" rows="3" placeholder="e.g. sloped block, need a double gate, access via side lane…"></textarea></div>
+        <button class="btn block" style="margin-top:8px" onclick="submitQuote()">Submit My Quote Request →</button>
+        <p class="hint" style="text-align:center">🔒 Your details are private. No spam, ever.</p>
+      </div>
+      <div>
+        <div class="est">
+          <span class="badge-ai">⚡ AI INSTANT ESTIMATE</span>
+          <h3>Your estimated price</h3>
+          <div class="big" id="q-amount">$—</div>
+          <div class="note" id="q-range">Select a fence type & length to see your price range.</div>
+          <ul id="q-breakdown" style="display:none">
+            <li><span>Rate per metre</span><span id="q-base">$0</span></li>
+            <li><span>Length</span><span id="q-lenout">0 m</span></li>
+            <li><span>Height factor</span><span id="q-sizeadd">×1.0</span></li>
+            <li><span>Old fence removal</span><span id="q-remout">—</span></li>
+            <li><span>Estimated total</span><span id="q-total">$0</span></li>
+          </ul>
+          <p class="note">This is an instant estimate. We'll confirm your exact fixed price at your free on-site measure — with no surprises.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ PORTAL ============ -->
+<div class="page" id="page-portal">
+  <div class="portal-hero">
+    <div class="wrap"><h1>Customer Portal</h1><p>Track your quotes and bookings in real time.</p></div>
+  </div>
+  <section class="blk" style="padding-top:0">
+    <div class="wrap">
+      <div class="panel lookup">
+        <h2 style="font-size:20px;margin-bottom:6px">🔎 Find my jobs</h2>
+        <p class="pdesc" style="margin-bottom:16px">Enter the phone number or email you booked with.</p>
+        <div class="field lf"><input id="portal-key" placeholder="Phone or email…"></div>
+        <button class="btn block" onclick="portalLookup()">View My Jobs</button>
+        <p class="hint">Tip: try the phone/email from a quote you submitted, or <a onclick="portalDemo()" style="color:var(--red);cursor:pointer;font-weight:700">view a demo account</a>.</p>
+      </div>
+      <div id="portal-results" style="max-width:720px;margin:30px auto 0"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ ADMIN ============ -->
+<div class="page" id="page-admin">
+  <!-- login -->
+  <div class="login-screen" id="admin-login">
+    <div class="login-box">
+      <div class="logo" style="justify-content:center;margin-bottom:6px"><span class="mk"></span><span class="wordmark"><span class="top">CROWN</span><span class="bot">FENCING</span></span></div>
+      <h2>Crown Fencing Admin</h2>
+      <p>Sign in to your business dashboard</p>
+      <div class="field lf" style="text-align:left"><label>Email</label><input id="ad-email" value="owner@crownfencing.com.au"></div>
+      <div class="field lf" style="text-align:left"><label>Password</label><input id="ad-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+      <button class="btn block" onclick="adminLogin()">Sign In →</button>
+      <p class="hint">Demo login → password: <b>crown2026</b></p>
+    </div>
+  </div>
+
+  <!-- dashboard -->
+  <div class="dash" id="admin-dash">
+    <div class="dash-top">
+      <div class="wrap">
+        <h1>👑 Crown Fencing Business Dashboard</h1>
+        <div class="u">
+          <div class="who"><b>Owner</b><span>owner@crownfencing.com.au</span></div>
+          <button class="btn sm ghost" style="border-color:rgba(255,255,255,.4)" onclick="adminLogout()">Log out</button>
+        </div>
+      </div>
+    </div>
+    <div class="wrap" style="padding-bottom:60px">
+      <div class="stats" id="admin-stats"></div>
+      <div class="tabs">
+        <button class="on" onclick="subtab(this,'t-quotes')">📋 Quotes & Leads</button>
+        <button onclick="subtab(this,'t-ai')">🤖 AI Lead Engine</button>
+        <button onclick="subtab(this,'t-insights')">📈 Insights</button>
+      </div>
+
+      <div class="subtab on" id="t-quotes">
+        <table class="q-table">
+          <thead><tr><th>Customer</th><th>Fence Type</th><th>Est. Value</th><th>Lead</th><th>Status</th><th></th></tr></thead>
+          <tbody id="admin-rows"></tbody>
+        </table>
+      </div>
+
+      <div class="subtab" id="t-ai">
+        <div class="ai-grid">
+          <div class="ai-card">
+            <h3><span class="ai-ic">🤖</span> AI Follow-Up Writer</h3>
+            <p>Pick a lead and let AI draft a personalised SMS/email to win the job — tuned to close the sale.</p>
+            <div class="field lf"><label>Choose a lead</label><select id="ai-lead"></select></div>
+            <div class="field lf"><label>Message channel & tone</label>
+              <select id="ai-tone">
+                <option value="sms">SMS — friendly & short</option>
+                <option value="email">Email — professional</option>
+                <option value="discount">SMS — win-back with 10% off</option>
+              </select>
+            </div>
+            <button class="btn block dark" onclick="aiWrite()">✨ Generate Message</button>
+            <div class="ai-out empty" id="ai-msg" style="margin-top:16px">Your AI-generated message will appear here…</div>
+          </div>
+
+          <div class="ai-card">
+            <h3><span class="ai-ic">🎯</span> AI Lead Scoring</h3>
+            <p>Every lead auto-scored by close-likelihood & value so you chase the money first.</p>
+            <div class="lead-list" id="ai-scores"></div>
+          </div>
+
+          <div class="ai-card" style="grid-column:1/-1">
+            <h3><span class="ai-ic">🚀</span> AI Growth Assistant</h3>
+            <p>One-click ideas to fill your calendar this week.</p>
+            <button class="btn dark" onclick="aiGrow()">💡 Generate Growth Plays</button>
+            <div class="ai-out empty" id="ai-grow" style="margin-top:16px">Click above for AI-generated marketing ideas tailored to your business…</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtab" id="t-insights">
+        <div id="admin-insights"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="logo"><span class="mk"></span><span class="wordmark"><span class="top">CROWN</span><span class="bot">FENCING</span></span></div>
+        <p style="margin-top:14px">Sydney's #1 fencing contractors.<br>Built to last. Built to impress.</p>
+        <p>🛡️ Fully insured • 📐 Free measure & quote</p>
+      </div>
+      <div><h4>Services</h4><a onclick="go('quote')">Colorbond Fencing</a><a onclick="go('quote')">Timber Paling</a><a onclick="go('quote')">Glass Pool Fencing</a><a onclick="go('quote')">Gates & Automation</a></div>
+      <div><h4>Company</h4><a onclick="go('home')">Home</a><a onclick="go('quote')">Free Quote</a><a onclick="go('portal')">Customer Portal</a><a onclick="go('admin')">Admin Login</a></div>
+      <div><h4>Contact</h4><a href="tel:0420470196">📞 0420 470 196</a><a href="https://www.crownfencing.com.au" target="_blank">🌐 crownfencing.com.au</a><p>📍 Servicing Greater Sydney</p><p>🕗 Mon–Sat, 7am–6pm</p></div>
+    </div>
+    <div class="foot-bot">© 2026 Crown Fencing. All rights reserved. • Demo site built for preview.</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"><span class="ok">✓</span><span id="toast-msg">Done</span></div>
+
+<script>
+/* ---------- build the crown emblem SVG (matches the real logo) ---------- */
+function buildCrownSVG(){
+  const base=94, pw=5.4, ph=6;
+  // top-Y per picket (smaller = taller). Central peak + two upswept flared wings.
+  const prof=[13,20,31,43,49,42,23,11,23,42,49,43,31,20,13];
+  // horizontal lean of each picket top (negative = leans left/outward)
+  const shear=[-16,-10,-5,-2,0,0,0,0,0,0,0,2,5,10,16];
+  const n=prof.length, x0=16, x1=184, step=(x1-x0)/(n-1);
+  let p='';
+  for(let i=0;i<n;i++){
+    const x=x0+i*step, t=prof[i], s=shear[i];
+    const tl=(x-pw/2+s), tr=(x+pw/2+s), py=t+ph;
+    p+='<polygon points="'+(x-pw/2)+','+base+' '+(x+pw/2)+','+base+' '+tr+','+py+' '+tl+','+py+'"/>'; // body
+    p+='<polygon points="'+tl+','+py+' '+tr+','+py+' '+(x+s)+','+t+'"/>'; // spear tip
+  }
+  // two horizontal rails that gently sweep up at the ends
+  p+='<path d="M6,58 Q100,66 194,58 L194,64 Q100,72 6,64 Z"/>';
+  p+='<path d="M6,72 Q100,80 194,72 L194,78 Q100,86 6,78 Z"/>';
+  // solid base band, bowed up at both ends
+  p+='<path d="M2,86 Q100,100 198,86 L198,96 Q100,110 2,96 Z"/>';
+  return '<svg class="crown-mark" viewBox="0 0 200 112" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Crown Fencing"><g fill="#d81f27">'+p+'</g></svg>';
+}
+/* inject emblem into every .mk slot */
+document.querySelectorAll('.logo .mk').forEach(slot=>{slot.innerHTML=buildCrownSVG();});
+
+/* ---------- tiny router ---------- */
+function go(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.getElementById('navlinks').classList.remove('open');
+  window.scrollTo({top:0,behavior:'instant'});
+  if(p==='admin') renderAdmin();
+}
+function scrollTo2(id){setTimeout(()=>document.getElementById(id)?.scrollIntoView({behavior:'smooth'}),60);}
+function toast(m){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+
+/* ---------- data store (localStorage) ---------- */
+const SVC_NAMES={95:'Colorbond Fencing',85:'Timber Paling Fence',180:'Aluminium Slat / Retaining',250:'Glass Pool Fencing',120:'Tubular / Pool-Safe Metal'};
+function svcName(rate){return SVC_NAMES[rate]||'Fencing';}
+function seed(){
+  if(localStorage.getItem('crown_quotes')) return;
+  const demo=[
+    {id:'CF1042',name:'Sarah Mitchell',phone:'0412 555 019',email:'sarah.m@email.com',addr:'8 Ridge Rd, Bankstown',svc:95,len:24,size:1,removal:25,value:2880,type:'Residential',notes:'Remove old timber, replace with Colorbond',status:'Scheduled',date:'2026-07-02'},
+    {id:'CF1041',name:'David Tran',phone:'0433 210 887',email:'dtran@email.com',addr:'22 Park Ave, Yagoona',svc:250,len:14,size:1,removal:0,value:3500,type:'Residential',notes:'Frameless glass pool fence, compliance cert',status:'Quoted',date:'2026-07-04'},
+    {id:'CF1040',name:'Leila Rahman',phone:'0421 778 004',email:'leila.r@email.com',addr:'5 Vista Ct, Bass Hill',svc:180,len:18,size:1.25,removal:0,value:4050,type:'Residential',notes:'Aluminium slat fence + automated gate',status:'New',date:'2026-07-06'},
+    {id:'CF1039',name:'Bass Hill Plaza',phone:'02 9644 1200',email:'admin@bhplaza.com',addr:'Bass Hill Plaza',svc:120,len:60,size:1.25,removal:25,value:10875,type:'Commercial',notes:'Tubular security fence around carpark',status:'Scheduled',date:'2026-07-01'},
+    {id:'CF1038',name:'Michael Osei',phone:'0400 121 334',email:'m.osei@email.com',addr:'14 Oak St, Chester Hill',svc:85,len:30,size:1,removal:25,value:3300,type:'Residential',notes:'Hardwood paling fence, both sides',status:'Done',date:'2026-06-28'}
+  ];
+  localStorage.setItem('crown_quotes',JSON.stringify(demo));
+}
+function getQuotes(){return JSON.parse(localStorage.getItem('crown_quotes')||'[]');}
+function saveQuotes(q){localStorage.setItem('crown_quotes',JSON.stringify(q));}
+seed();
+
+/* ---------- pricing calc (per linear metre) ---------- */
+function calc(rate,len,size,removal){
+  if(!rate||!len) return 0;
+  const total=(rate*size + (removal||0))*len;
+  return Math.round(total/10)*10; // round to nearest $10
+}
+function heroCalc(){
+  const r=+document.getElementById('h-svc').value, l=+document.getElementById('h-size').value;
+  const box=document.getElementById('hero-price');
+  if(!r){box.style.display='none';return;}
+  box.style.display='block';
+  document.getElementById('hero-amt').textContent='$'+calc(r,l,1,0).toLocaleString();
+}
+function quoteCalc(){
+  const r=+document.getElementById('q-svc').value, l=+document.getElementById('q-len').value,
+        s=+document.getElementById('q-size').value, rem=+document.getElementById('q-removal').value;
+  const amt=document.getElementById('q-amount'),rng=document.getElementById('q-range'),bd=document.getElementById('q-breakdown');
+  if(!r||!l){amt.textContent='$—';rng.textContent='Select a fence type & length to see your price range.';bd.style.display='none';return;}
+  const t=calc(r,l,s,rem);
+  amt.textContent='$'+t.toLocaleString();
+  rng.textContent='Estimated range $'+Math.round(t*0.9/10)*10+' – $'+Math.round(t*1.12/10)*10+' • fixed price confirmed on-site';
+  bd.style.display='block';
+  document.getElementById('q-base').textContent='$'+r+'/m';
+  document.getElementById('q-lenout').textContent=l+' m';
+  document.getElementById('q-sizeadd').textContent='×'+s.toFixed(2);
+  document.getElementById('q-remout').textContent=rem?('+$'+rem+'/m'):'—';
+  document.getElementById('q-total').textContent='$'+t.toLocaleString();
+}
+function submitQuote(){
+  const name=val('q-name'),phone=val('q-phone'),r=+val('q-svc'),l=+val('q-len'),
+        s=+document.getElementById('q-size').value, rem=+document.getElementById('q-removal').value;
+  if(!name||!phone||!r||!l){toast('Please add your name, phone, fence type & length');return;}
+  const q=getQuotes();
+  const id='CF'+(1043+q.filter(x=>x.id.startsWith('CF')).length);
+  q.unshift({id,name,phone,email:val('q-email'),addr:val('q-addr'),svc:r,len:l,size:s,removal:rem,value:calc(r,l,s,rem),type:val('q-type'),notes:val('q-notes'),status:'New',date:'2026-07-07'});
+  saveQuotes(q);
+  toast('Quote submitted! Ref '+id);
+  ['q-name','q-phone','q-email','q-addr','q-len','q-notes'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('q-svc').value='0';quoteCalc();
+  setTimeout(()=>{document.getElementById('portal-key').value=phone;go('portal');portalLookup();},900);
+}
+function val(id){return document.getElementById(id).value.trim();}
+
+/* ---------- portal ---------- */
+function portalDemo(){document.getElementById('portal-key').value='0412 555 019';portalLookup();}
+function portalLookup(){
+  const k=val('portal-key').toLowerCase().replace(/\s/g,'');
+  const box=document.getElementById('portal-results');
+  if(!k){box.innerHTML='';return;}
+  const jobs=getQuotes().filter(q=>(q.phone||'').toLowerCase().replace(/\s/g,'').includes(k)||(q.email||'').toLowerCase().includes(k));
+  if(!jobs.length){box.innerHTML='<div class="panel" style="text-align:center"><h3>No jobs found</h3><p class="pdesc">We couldn\'t find that phone/email. Try the <a onclick="portalDemo()" style="color:var(--red);cursor:pointer;font-weight:700">demo account</a> or <a onclick="go(\'quote\')" style="color:var(--red);cursor:pointer;font-weight:700">request a quote</a>.</p></div>';return;}
+  const steps=['New','Quoted','Scheduled','Done'];
+  box.innerHTML='<div class="panel"><h2 style="font-size:20px;margin-bottom:4px">Welcome back, '+jobs[0].name.split(' ')[0]+' 👋</h2><p class="pdesc">You have '+jobs.length+' job'+(jobs.length>1?'s':'')+' with Crown Fencing.</p>'+
+    jobs.map(j=>{
+      const idx=steps.indexOf(j.status);
+      return '<div class="job-card"><div class="top"><div><h4>'+svcName(j.svc)+' <span class="sub2">• Ref '+j.id+'</span></h4><div class="sub2">'+(j.addr||'—')+' • '+(j.len?j.len+'m • ':'')+'$'+j.value.toLocaleString()+' est.</div></div><span class="tag '+j.status.toLowerCase()+'">'+j.status+'</span></div>'+
+      '<div class="status-track">'+steps.map((st,i)=>'<div class="st '+(i<idx?'done':i===idx?'active':'')+'"><div class="dot">'+(i<idx?'✓':i+1)+'</div><small>'+st+'</small></div>').join('')+'</div>'+
+      (j.notes?'<p class="sub2" style="margin-top:8px">📝 '+j.notes+'</p>':'')+'</div>';
+    }).join('')+
+    '<button class="btn block dark" style="margin-top:6px" onclick="go(\'quote\')">+ Request Another Quote</button></div>';
+}
+
+/* ---------- admin ---------- */
+function adminLogin(){
+  if(val('ad-pass')==='crown2026'){document.getElementById('admin-login').style.display='none';document.getElementById('admin-dash').classList.add('active');renderAdmin();}
+  else toast('Incorrect password (try crown2026)');
+}
+function adminLogout(){document.getElementById('admin-dash').classList.remove('active');document.getElementById('admin-login').style.display='grid';document.getElementById('ad-pass').value='';}
+function subtab(btn,id){document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.querySelectorAll('.subtab').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');}
+
+function leadScore(q){
+  let s=40;
+  if(q.value>=8000)s+=38;else if(q.value>=3500)s+=28;else if(q.value>=2000)s+=16;
+  if(q.status==='New')s+=18;else if(q.status==='Quoted')s+=10;
+  if(q.type==='Commercial')s+=10;
+  s=Math.min(98,s+ (q.id.charCodeAt(q.id.length-1)%6));
+  return s;
+}
+function leadTemp(s){return s>=75?'hot':s>=55?'warm':'cold';}
+
+function renderAdmin(){
+  const q=getQuotes();
+  const openLeads=q.filter(x=>x.status==='New'||x.status==='Quoted').length;
+  const pipeline=q.filter(x=>x.status!=='Done').reduce((a,x)=>a+x.value,0);
+  const won=q.filter(x=>x.status==='Done'||x.status==='Scheduled').reduce((a,x)=>a+x.value,0);
+  const conv=Math.round(q.filter(x=>x.status==='Scheduled'||x.status==='Done').length/q.length*100);
+  document.getElementById('admin-stats').innerHTML=
+    stat('New / Open Leads',openLeads,'red','+'+openLeads+' to action')+
+    stat('Pipeline Value','$'+pipeline.toLocaleString(),'dk','across '+q.length+' quotes')+
+    stat('Booked Revenue','$'+won.toLocaleString(),'green','scheduled + done')+
+    stat('Conversion Rate',conv+'%','dk','quote → booked');
+  document.getElementById('admin-rows').innerHTML=q.map(j=>{
+    const sc=leadScore(j),tp=leadTemp(sc);
+    return '<tr><td><div class="nm">'+j.name+'</div><div class="sub2">'+j.phone+' • '+j.id+'</div></td>'+
+    '<td>'+svcName(j.svc)+'<div class="sub2">'+(j.len?j.len+'m • ':'')+j.type+'</div></td>'+
+    '<td><b>$'+j.value.toLocaleString()+'</b></td>'+
+    '<td><span class="tag '+tp+'">'+tp.toUpperCase()+' '+sc+'</span></td>'+
+    '<td><select class="sel-status" onchange="setStatus(\''+j.id+'\',this.value)">'+
+      ['New','Quoted','Scheduled','Done'].map(s=>'<option '+(s===j.status?'selected':'')+'>'+s+'</option>').join('')+'</select></td>'+
+    '<td><button class="mini" onclick="quickAI(\''+j.id+'\')">✨ Follow up</button></td></tr>';
+  }).join('');
+  document.getElementById('ai-lead').innerHTML=q.map(j=>'<option value="'+j.id+'">'+j.name+' — '+svcName(j.svc)+' ($'+j.value.toLocaleString()+')</option>').join('');
+  const sorted=[...q].sort((a,b)=>leadScore(b)-leadScore(a));
+  document.getElementById('ai-scores').innerHTML=sorted.map(j=>{const sc=leadScore(j),tp=leadTemp(sc);
+    return '<div class="lead-row"><div class="li"><b>'+j.name+'</b><span>'+svcName(j.svc)+' • $'+j.value.toLocaleString()+' • '+j.status+'</span></div><div style="text-align:right"><div class="score '+tp+'">'+sc+'</div><span class="tag '+tp+'" style="font-size:10px">'+tp.toUpperCase()+'</span></div></div>';
+  }).join('');
+  renderInsights(q,pipeline,openLeads,conv);
+}
+function stat(l,v,c,d){return '<div class="stat"><div class="lbl">'+l+'</div><div class="val '+c+'">'+v+'</div><div class="delta">'+d+'</div></div>';}
+function setStatus(id,s){const q=getQuotes();const j=q.find(x=>x.id===id);if(j){j.status=s;saveQuotes(q);renderAdmin();toast(id+' → '+s);}}
+function quickAI(id){document.querySelector('.tabs button:nth-child(2)').click();document.getElementById('ai-lead').value=id;aiWrite();document.getElementById('t-ai').scrollIntoView({behavior:'smooth'});}
+
+/* ---------- AI (client-side templated) ---------- */
+function aiWrite(){
+  const id=document.getElementById('ai-lead').value, tone=document.getElementById('ai-tone').value;
+  const j=getQuotes().find(x=>x.id===id); if(!j)return;
+  const out=document.getElementById('ai-msg'); out.classList.remove('empty');
+  out.innerHTML='<span class="spark">✨ Writing personalised message…</span>';
+  const first=j.name.split(' ')[0], svc=svcName(j.svc);
+  setTimeout(()=>{
+    let m;
+    if(tone==='sms') m=`Hi ${first}, it's the team at Crown Fencing 👋 Thanks for your interest in our ${svc.toLowerCase()} for ${j.addr||'your property'}. We can lock in your $${j.value.toLocaleString()} job as early as this week — want me to hold a spot for the free measure? Reply YES and we'll sort the rest. – Crown Fencing`;
+    else if(tone==='email') m=`Subject: Your Crown Fencing Quote (Ref ${j.id})\n\nHi ${first},\n\nThank you for reaching out to Crown Fencing. Based on the details for ${j.addr||'your property'}, we've prepared an estimate of $${j.value.toLocaleString()} for your ${svc.toLowerCase()}${j.len?' (~'+j.len+'m)':''}.\n\nWhat's included:\n• Free on-site measure & fixed written quote\n• Quality materials & proper concrete footings\n• Old fence removal & full site clean-up\n• Fully insured installers + workmanship guarantee\n\nWe currently have availability this week. Simply reply to confirm and we'll book a time that suits you.\n\nWarm regards,\nThe Crown Fencing Team\n📞 0420 470 196`;
+    else m=`Hi ${first}! We noticed you were interested in a new ${svc.toLowerCase()} but haven't booked yet. To say thanks for your patience, here's 10% OFF your $${j.value.toLocaleString()} quote — that's just $${(Math.round(j.value*0.9/10)*10).toLocaleString()} if you book this week 🎉 Reply CROWN to claim. – Crown Fencing`;
+    out.textContent=m;
+    const btn=document.createElement('div');btn.style.marginTop='12px';
+    btn.innerHTML='<button class="btn sm dark" onclick="copyMsg(this)">📋 Copy message</button> <button class="btn sm" onclick="toast(\'Sent to '+first+' ✓\')">📤 Send</button>';
+    out.appendChild(btn);
+  },800);
+}
+function copyMsg(b){const txt=b.parentElement.parentElement.childNodes[0].textContent;navigator.clipboard?.writeText(txt);toast('Copied to clipboard');}
+function aiGrow(){
+  const out=document.getElementById('ai-grow');out.classList.remove('empty');
+  out.innerHTML='<span class="spark">🚀 Analysing your leads & local market…</span>';
+  const q=getQuotes();const cold=q.filter(x=>leadTemp(leadScore(x))==='cold').length;
+  setTimeout(()=>{
+    out.textContent=
+`🚀 3 AI GROWTH PLAYS FOR THIS WEEK
+
+1. WIN-BACK CAMPAIGN — You have ${cold||3} colder leads. Send the "10% off, book this week" SMS. Projected recovery: 1–2 jobs (~$3,000–$6,000).
+
+2. NEIGHBOUR BUNDLE — Several recent jobs are in the Bass Hill / Bankstown area. Offer those streets a "do 2 fence lines, save 12%" referral deal to cluster your travel and double your bookings per trip.
+
+3. SEASONAL UPSELL — Spring is peak fencing season. Text past customers a "add an automated gate to your new fence for $650" upsell. Add-on take-up on completed jobs is typically 15–25%.
+
+💰 Estimated upside this week: $6,000–$12,000 in new bookings.`;
+  },1000);
+}
+function renderInsights(q,pipeline,openLeads,conv){
+  const topSvc=Object.entries(q.reduce((a,x)=>{a[svcName(x.svc)]=(a[svcName(x.svc)]||0)+1;return a;},{})).sort((a,b)=>b[1]-a[1])[0];
+  const avg=Math.round(q.reduce((a,x)=>a+x.value,0)/q.length);
+  document.getElementById('admin-insights').innerHTML=
+  '<div class="ai-card" style="margin-bottom:18px"><h3><span class="ai-ic">📈</span> AI Business Insights</h3><p>Auto-generated from your live quote data.</p>'+
+  ins('🔥',openLeads+' leads need attention','Chasing these fast could add ~$'+ (openLeads*avg).toLocaleString()+' to booked revenue. Hot fencing leads go cold after 48h.')+
+  ins('💵','Average job value is $'+avg.toLocaleString(),'Upselling gates, retaining walls & old-fence removal is your fastest path to raising this. Glass pool & slat fencing are your highest-value products.')+
+  ins('⭐','"'+topSvc[0]+'" is your top seller','It makes up '+Math.round(topSvc[1]/q.length*100)+'% of quotes. Feature it in your ads and offer a seasonal promo to ride the demand.')+
+  ins('📊',conv+'% quote-to-booking rate','Sending a follow-up within 1 hour typically lifts this by 10–15 points. Use the AI Follow-Up Writer to automate it.')+
+  '</div>';
+}
+function ins(i,t,p){return '<div class="insight"><div class="ii">'+i+'</div><div><b>'+t+'</b><p>'+p+'</p></div></div>';}
+</script>
+</body>
+</html>

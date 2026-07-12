@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0b0d" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="LOTG" />
+<title>Love of the Game — Your Journey, Your Story</title>
+<meta name="description" content="Love of the Game — showcasing local sporting talent, good vibes only. Merch, UBL, NBL, NBL1, Wednesday Night Basketball & community." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0b0b0d;
+    --ink-2:#151518;
+    --card:#161619;
+    --card-2:#1e1e22;
+    --line:rgba(255,255,255,.08);
+    --paper:#f5f5f7;
+    --muted:#a1a1a6;
+    --muted-2:#6e6e73;
+    --orange:#ff5a2b;
+    --pink:#ff5a2b;
+    --flame:linear-gradient(180deg,#ff6a3d 0%,#ff5a2b 100%);
+    --gold:#e8b64c;
+    --green:#30d158;
+    --radius:18px;
+    --shadow:0 20px 60px rgba(0,0,0,.5);
+    --maxw:520px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  /* stop double-tap zoom eating rapid taps on mobile (mystery box, GOAT logo taps) */
+  body{touch-action:manipulation}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    background:
+      radial-gradient(900px 460px at 50% -14%, rgba(255,90,43,.07), transparent 62%),
+      var(--ink);
+    color:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    letter-spacing:-.011em;
+  }
+  .app{max-width:var(--maxw);margin:0 auto;min-height:100vh;position:relative;padding-bottom:96px}
+  section{padding:28px 20px;scroll-margin-top:70px}
+  h2.sec{font-family:'Archivo Black';font-weight:400;font-size:26px;letter-spacing:.2px;margin:0 0 6px;text-transform:uppercase;line-height:1.02}
+  .sec-kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2);margin-bottom:8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .btn{cursor:pointer;border:0;border-radius:980px;font-family:inherit;font-weight:800;font-size:13.5px;padding:15px 22px;color:#fff;background:var(--flame);letter-spacing:.04em;text-transform:uppercase;transition:transform .12s ease,opacity .12s ease;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+  .btn:active{transform:scale(.98);opacity:.9}
+  .btn.ghost{background:rgba(255,255,255,.08);border:0;color:#fff}
+  .btn.dark{background:rgba(255,255,255,.08);border:0;color:var(--paper)}
+  .btn.sm{padding:10px 16px;font-size:13px;width:auto}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:7px 12px;border-radius:980px;background:rgba(255,255,255,.07);border:0;color:var(--muted)}
+
+  /* ===== PAGES (tabs) ===== */
+  .page{display:none}
+  .page.on{display:block;animation:pagein .32s cubic-bezier(.25,.8,.35,1)}
+  @keyframes pagein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ===== TOP BAR ===== */
+  .topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:rgba(11,11,13,.78);backdrop-filter:blur(22px) saturate(1.6);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+  .brand .logo-chip{width:32px;height:32px;border-radius:50%;background:#fff;object-fit:contain;padding:3px}
+  .brand b{font-family:'Archivo Black';font-weight:400;font-size:13.5px;letter-spacing:.04em;text-transform:uppercase}
+  .verified{color:#2997ff;font-size:12px}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+  /* ===== HERO ===== */
+  .hero{text-align:center;padding:34px 20px 6px}
+  .hero .ring{width:148px;height:148px;margin:4px auto 18px;border-radius:50%;padding:3px;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.04));display:grid;place-items:center;box-shadow:0 22px 50px rgba(0,0,0,.45)}
+  .hero .ring .inner{width:100%;height:100%;background:#fff;border-radius:50%;display:grid;place-items:center;cursor:pointer;position:relative;overflow:hidden}
+  .hero .ring .inner .logo-img{width:86%;height:86%;object-fit:contain;animation:spinlogo 10s linear infinite;transform-origin:50% 50%;user-select:none;-webkit-user-drag:none}
+  .hero .ring .inner:active .logo-img{animation-duration:.8s}
+  @keyframes spinlogo{to{transform:rotate(360deg)}}
+  .hero h1{font-family:'Archivo Black';font-weight:400;font-size:34px;line-height:.94;letter-spacing:.2px;margin:6px 0 8px;text-transform:uppercase}
+  .flame-text{background:var(--flame);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero .tag{color:var(--muted);font-size:13px;font-weight:500;margin:0 0 4px}
+  .rotator{display:none}
+  .egg-hint{display:none}
+
+  /* ===== DUNK BANNER (real photos, rotating) ===== */
+  .dunk{margin:18px 20px 0;border-radius:22px;overflow:hidden;border:1px solid var(--line);position:relative;background:#0d0d0f;aspect-ratio:4/5;max-height:520px;box-shadow:var(--shadow)}
+  .dunk .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;opacity:0;transition:opacity 1.4s ease;transform:scale(1.02)}
+  .dunk .slide.on{opacity:1;animation:kenburns 5.4s ease forwards}
+  @keyframes kenburns{from{transform:scale(1.05)}to{transform:scale(1.0)}}
+  .dunk .scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,7,.88) 0%,rgba(5,5,7,.3) 36%,transparent 62%)}
+  .dunk .dtxt{position:absolute;left:18px;bottom:16px;text-align:left;z-index:2}
+  .dunk .dtxt .a{font-family:'Archivo Black';font-size:23px;line-height:1.04;text-transform:uppercase;color:#fff}
+  .dunk .dtxt .b{font-family:'Archivo Black';font-size:23px;line-height:1.04;text-transform:uppercase;color:rgba(255,255,255,.55)}
+  .dunk .dtxt .c{font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(255,255,255,.6);text-transform:uppercase;margin-top:8px}
+  .dunk .dots{position:absolute;right:16px;bottom:18px;display:flex;gap:6px;z-index:2}
+  .dunk .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);transition:.3s}
+  .dunk .dots i.on{background:#fff;width:16px;border-radius:99px}
+
+  /* ===== VIBE BANNER ===== */
+  .vibe{display:none}
+  .vibe .em{display:none}
+
+  /* ===== LEAGUE PAGES ===== */
+  .league-hero{border-radius:var(--radius);padding:20px 18px;background:var(--card);border:1px solid var(--line);margin-bottom:14px}
+  .league-hero h3{font-family:'Archivo Black';font-weight:400;font-size:20px;margin:0 0 6px;text-transform:uppercase;line-height:1.05}
+  .league-hero p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
+  .subchips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  .subchips .chip{border:0;background:rgba(255,255,255,.07);color:var(--muted);border-radius:980px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+  .subchips .chip.on{background:#f5f5f7;color:#111}
+  .feed{display:grid;gap:10px}
+  .fcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;gap:13px;align-items:flex-start}
+  .fcard .fic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex:0 0 auto;background:var(--card-2)}
+  .fcard h5{margin:0 0 3px;font-size:14px;font-weight:600;letter-spacing:-.01em}
+  .fcard p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.55}
+  .fcard .ftag{margin-left:auto;font-size:10px;font-weight:600;color:var(--muted-2);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+  .hl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .hl{aspect-ratio:1;border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center;text-align:center;padding:12px;cursor:pointer;background:var(--card)}
+  .hl .hemj{font-size:30px;opacity:.9}
+  .hl .hcap{font-size:11px;font-weight:600;color:var(--muted);line-height:1.35;margin-top:8px}
+  .hl .play{position:absolute;top:10px;right:10px;font-size:12px;opacity:.5}
+  .hl:active{background:var(--card-2)}
+
+  /* ===== LADDER ===== */
+  .weekbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .weekbar .wk{font-size:13px;font-weight:600;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;color:var(--muted)}
+  .prize{background:rgba(255,255,255,.08);color:var(--paper);font-weight:600;font-size:12px;padding:7px 13px;border-radius:980px;letter-spacing:-.01em}
+  .notice{border-radius:16px;padding:15px 16px;margin-bottom:14px;background:var(--card);border:1px solid var(--line);position:relative;overflow:hidden}
+  .notice .nsw{position:absolute;right:-8px;top:-8px;font-size:60px;opacity:.06;transform:rotate(-12deg)}
+  .notice h4{margin:0 0 5px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:7px}
+  .notice p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.55}
+  .notice .date{color:var(--paper);font-weight:600}
+
+  table.ladder{width:100%;border-collapse:collapse;font-size:13px;border-radius:16px;overflow:hidden}
+  table.ladder th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);text-align:center;padding:11px 4px;background:var(--card-2);font-weight:600}
+  table.ladder th.name,table.ladder td.name{text-align:left;padding-left:14px}
+  table.ladder td{padding:12px 4px;text-align:center;border-top:1px solid var(--line);font-weight:500;background:var(--card)}
+  table.ladder tr.top1 td{background:#1b1b1f}
+  table.ladder tr.lotg td{background:rgba(255,90,43,.07)}
+  table.ladder tr.vacant td{opacity:.45}
+  .rank{font-size:12px;font-weight:600;width:34px;color:var(--muted-2)}
+  .rank.g{color:var(--paper);background:none;-webkit-text-fill-color:var(--paper)}
+  .tname{display:flex;align-items:center;gap:9px;font-weight:600;letter-spacing:-.01em}
+  .tlogo{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;flex:0 0 auto}
+  .tot{font-family:'Archivo Black';font-weight:400;font-size:15px}
+  .tlink{color:inherit;text-decoration:none;display:block}
+  .tlink .tname{padding-bottom:2px}
+  .tlink:active .tname{opacity:.6}
+  .tgo{font-size:9px;color:var(--muted-2);margin-left:5px}
+  .legend{display:flex;gap:14px;margin-top:12px;font-size:10.5px;color:var(--muted-2);flex-wrap:wrap}
+  .legend span b{color:var(--muted)}
+  .spots{margin-top:12px;text-align:center;font-size:12px;color:var(--muted);font-weight:500}
+  .honors{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .honor{border-radius:16px;padding:15px;background:var(--card);border:1px solid var(--line);text-align:center}
+  .honor .cap{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+  .honor .who{font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:14px;margin-top:6px;letter-spacing:.02em}
+  .honor .em{font-size:24px}
+
+  /* ===== REGISTER ===== */
+  .tabs{display:flex;gap:4px;background:rgba(255,255,255,.06);padding:4px;border-radius:12px;margin-bottom:16px}
+  .tabs button{flex:1;border:0;background:transparent;color:var(--muted);font-weight:600;font-size:13px;padding:10px;border-radius:9px;cursor:pointer;transition:.15s;font-family:inherit}
+  .tabs button.on{background:#2e2e33;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  form label{display:block;font-size:12px;font-weight:600;letter-spacing:0;margin:15px 0 7px;color:var(--paper)}
+  form .hint{font-weight:400;color:var(--muted-2);font-size:11px;margin-left:4px}
+  input,select,textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid transparent;color:#fff;border-radius:12px;padding:13px 14px;font-family:inherit;font-size:15px;font-weight:400;outline:none;transition:.15s}
+  input:focus,select:focus,textarea:focus{border-color:rgba(255,90,43,.6);background:rgba(255,255,255,.08)}
+  textarea{resize:vertical;min-height:70px}
+  .chipset{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:0;background:rgba(255,255,255,.07);color:var(--muted);border-radius:980px;padding:9px 15px;font-size:13px;font-weight:500;cursor:pointer;transition:.14s;font-family:inherit}
+  .chip.on{background:#f5f5f7;color:#111;font-weight:600}
+  .selfie{display:flex;align-items:center;gap:14px;margin-top:8px}
+  .selfie .prev{width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);display:grid;place-items:center;font-size:22px;overflow:hidden;flex:0 0 auto}
+  .selfie .prev img{width:100%;height:100%;object-fit:cover}
+  .players5{display:grid;gap:8px}
+  .confirm{display:none;text-align:center;padding:22px 8px}
+  .confirm.show{display:block;animation:pop .4s}
+  @keyframes pop{0%{transform:scale(.94);opacity:0}100%{transform:scale(1);opacity:1}}
+  .confirm .big{font-size:46px}
+  .confirm h3{font-family:'Archivo Black';font-weight:400;font-size:21px;margin:10px 0 6px;text-transform:uppercase}
+  .confirm p{color:var(--muted);font-size:13.5px;margin:0 auto 4px;max-width:340px;line-height:1.55}
+
+  /* ===== TEAM BUILDER ===== */
+  .builder-note{font-size:12.5px;color:var(--muted);line-height:1.55;margin:0 0 14px}
+  .squad{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;background:var(--card)}
+  .squad .shead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .squad .sname{font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:14px;letter-spacing:.02em;display:flex;align-items:center;gap:9px}
+  .bal{font-size:10px;font-weight:600;letter-spacing:.02em;padding:5px 10px;border-radius:980px;background:rgba(48,209,88,.12);color:var(--green)}
+  .roster{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+  .plr{display:flex;align-items:center;gap:11px}
+  .plr .av{width:38px;height:38px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;font-weight:900;color:#fff;font-size:13px;overflow:hidden}
+  .plr .av img{width:100%;height:100%;object-fit:cover}
+  .plr .pn{font-weight:800;font-size:13.5px;line-height:1.1}
+  .plr .pmeta{font-size:11px;color:var(--muted-2);font-weight:600}
+  .plr .ptag{margin-left:auto;font-size:10px;font-weight:600;color:var(--muted-2);text-transform:uppercase;letter-spacing:.06em}
+  .approve-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .approve-row .btn{padding:11px;font-size:13px}
+  .approved-stamp{display:none;text-align:center;font-size:13px;font-weight:600;color:var(--green);padding:10px;background:rgba(48,209,88,.1);border-radius:12px;letter-spacing:0}
+  .squad.done .approve-row{display:none}
+  .squad.done .approved-stamp{display:block}
+  .pendbadge{background:rgba(255,90,43,.15);color:var(--orange);font-size:10px;font-weight:600;padding:5px 10px;border-radius:980px}
+
+  /* ===== MERCH ===== */
+  .merch-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .prod{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .12s ease,border-color .12s ease}
+  .prod:active{transform:scale(.98)}
+  .prod .img{aspect-ratio:1;background:#f3f3f3;display:grid;place-items:center;position:relative}
+  .prod .img img{width:100%;height:100%;object-fit:cover;display:block}
+  .prod .img .kind{position:absolute;bottom:8px;left:8px;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.6);padding:4px 8px;border-radius:999px}
+  .prod .body{padding:11px 12px 13px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .prod .pname{font-size:12.5px;font-weight:600;line-height:1.3;letter-spacing:-.01em}
+  .prod .price{font-family:'Archivo Black';font-weight:400;font-size:15px}
+  .prod .btn{padding:9px;font-size:12px;margin-top:auto;background:rgba(255,255,255,.08);color:var(--paper)}
+  .merch-foot{text-align:center;font-size:11.5px;color:var(--muted-2);margin-top:14px;line-height:1.5}
+
+  /* ===== COMMUNITY CHAT ===== */
+  .quote{font-family:'Archivo Black';font-weight:400;font-size:19px;line-height:1.15;text-transform:uppercase;text-align:center;margin:4px 0 14px;color:var(--paper);background:none;-webkit-text-fill-color:var(--paper)}
+  .chatbox{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+  .chathead{display:flex;align-items:center;gap:10px;padding:13px 15px;border-bottom:1px solid var(--line);background:var(--card-2)}
+  .chathead .cav{width:36px;height:36px;border-radius:50%;background:#fff;padding:3px;object-fit:contain}
+  .chathead b{font-size:13.5px;display:block}
+  .chathead span{font-size:11px;color:var(--green);font-weight:700}
+  .pinrule{margin:10px 12px 0;font-size:11px;font-weight:500;color:var(--muted);background:rgba(255,255,255,.05);border:0;border-radius:10px;padding:8px 11px;text-align:center}
+  .msgs{padding:12px;display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto}
+  .msg{display:flex;gap:9px;align-items:flex-end}
+  .msg .mav{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:900;color:#fff;flex:0 0 auto}
+  .msg .bub{background:var(--card-2);border:1px solid var(--line);border-radius:14px 14px 14px 4px;padding:9px 12px;max-width:75%}
+  .msg .who{font-size:10.5px;font-weight:600;color:var(--muted-2);margin-bottom:2px}
+  .msg .txt{font-size:13.5px;line-height:1.45;letter-spacing:-.01em}
+  .msg.me{flex-direction:row-reverse}
+  .msg.me .bub{background:var(--flame);border:0;border-radius:16px 16px 4px 16px}
+  .msg.me .who{color:rgba(255,255,255,.75)}
+  .msg.me .txt{color:#fff}
+  .chatin{display:flex;gap:8px;padding:11px;border-top:1px solid var(--line);background:var(--card-2)}
+  .chatin input{flex:1;border-radius:980px;padding:11px 16px}
+  .chatin button{border:0;border-radius:50%;width:42px;height:42px;flex:0 0 auto;background:var(--flame);color:#fff;font-size:16px;cursor:pointer}
+  .mind{border-radius:16px;padding:17px;background:var(--card);border:1px solid var(--line);margin-top:14px}
+  .mind h4{margin:0 0 6px;font-size:14px;font-weight:600;display:flex;gap:8px;align-items:center;letter-spacing:-.01em}
+  .mind p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.6}
+  .socials{display:flex;gap:8px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+  .socials a{font-size:12px;font-weight:600;color:var(--muted);text-decoration:none;background:rgba(255,255,255,.06);padding:9px 15px;border-radius:980px}
+  .footer{text-align:center;padding:24px 18px 10px;color:var(--muted-2);font-size:11px;line-height:1.7}
+
+  /* ===== BOTTOM NAV ===== */
+  .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:var(--maxw);z-index:50;display:flex;justify-content:space-around;background:rgba(13,13,15,.82);backdrop-filter:blur(24px) saturate(1.6);border-top:1px solid var(--line);padding:8px 4px calc(8px + env(safe-area-inset-bottom))}
+  .nav a{flex:1;text-align:center;color:var(--muted-2);text-decoration:none;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;transition:.15s;cursor:pointer}
+  .nav a .ic{font-size:18px;display:grid;place-items:center;height:22px}
+  .nav a .ic svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .nav a.on{color:var(--orange)}
+  .nav a.on .ic{transform:none}
+  .navbadge{position:absolute;top:-4px;right:-10px;background:var(--orange);color:#fff;font-size:9px;font-weight:700;min-width:15px;height:15px;border-radius:99px;display:grid;place-items:center;padding:0 4px;letter-spacing:0}
+
+  /* ===== TOAST / CONFETTI / REWARD ===== */
+  #toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:rgba(38,38,42,.92);backdrop-filter:blur(16px);color:#f5f5f7;font-weight:500;font-size:13px;padding:12px 20px;border-radius:980px;box-shadow:0 14px 40px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);opacity:0;pointer-events:none;transition:.35s;z-index:100;max-width:90%;text-align:center;letter-spacing:-.01em}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:99}
+  #reward{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.66);backdrop-filter:blur(6px);padding:24px}
+  #reward.show{display:flex;animation:pop .35s}
+  #reward .rcard{background:linear-gradient(160deg,#1d1d1d,#0d0d0d);border:1px solid var(--line);border-radius:24px;padding:26px 22px;text-align:center;max-width:340px;width:100%;box-shadow:var(--shadow)}
+  #reward .goat{font-size:56px;line-height:1;animation:bounce 1.2s ease infinite}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  #reward h3{font-size:13px;letter-spacing:.1em;margin:8px 0 2px;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+  #reward .off{color:var(--paper);font-family:'Archivo Black';font-size:40px;line-height:1;margin:2px 0 6px;background:none;-webkit-text-fill-color:var(--paper)}
+  #reward p{color:var(--muted);font-size:13px;margin:0 0 16px}
+  #reward .code{display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+  #reward .code b{font-family:'Archivo Black';font-size:22px;letter-spacing:.14em}
+  #reward .rbtns{display:grid;gap:8px}
+
+  /* ===== ADMIN / UPLOADS ===== */
+  body:not(.admin) .adminonly{display:none!important}
+  body.admin #sjBtn{background:var(--flame);color:#fff}
+  .sj-strip{display:flex;flex-direction:column;gap:10px}
+  .sj-strip:not(:empty){margin-bottom:14px}
+  .upbtn{border:1px solid rgba(255,90,43,.35);background:rgba(255,90,43,.08);color:var(--orange);border-radius:13px;padding:12px;font-weight:600;font-size:13px;cursor:pointer;width:100%;font-family:inherit;letter-spacing:-.01em}
+  .upcard{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .upcard .um{width:100%;max-height:300px;object-fit:cover;display:block;background:#000}
+  .upcard .ub{padding:12px 14px}
+  .upcard .uwho{font-size:11px;font-weight:600;color:var(--muted-2);margin-bottom:3px}
+  .upcard .ucap{font-size:13px;line-height:1.5;letter-spacing:-.01em}
+  .upcard .uact{display:flex;gap:10px;align-items:center;margin-top:8px}
+  .upcard .fire{border:0;background:rgba(255,255,255,.07);color:#fff;border-radius:980px;padding:6px 14px;font-weight:600;font-size:12.5px;cursor:pointer;font-family:inherit}
+  .upcard .udel{margin-left:auto;font-size:11px;color:var(--muted-2);cursor:pointer;background:none;border:0;font-family:inherit}
+  .fanzone{margin:4px 0 18px;padding:17px;border-radius:var(--radius);background:var(--card);border:1px solid var(--line)}
+  .fangrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .fangrid .upcard .um{max-height:180px;aspect-ratio:1}
+  .newsissue{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:12px}
+  .newsissue .nb{padding:14px 15px}
+  .newsissue .ndate{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted-2);font-weight:800;margin-bottom:4px}
+  .newsissue h4{font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:15px;margin:0 0 6px;line-height:1.2;letter-spacing:.02em}
+  .newsissue p{margin:0;font-size:13px;color:var(--muted);line-height:1.6;white-space:pre-wrap}
+  .news-empty{text-align:center;color:var(--muted-2);font-size:12.5px;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+  #upm{position:fixed;inset:0;z-index:130;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);padding:20px}
+  #upm.show{display:flex;animation:pop .3s}
+  #upm .ucard{background:linear-gradient(160deg,#1d1d1d,#0d0d0d);border:1px solid var(--line);border-radius:24px;padding:22px;max-width:380px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow)}
+  #upm h3{font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:16px;margin:0 0 14px;letter-spacing:.02em}
+  .upik{border:1px solid var(--line);border-radius:16px;min-height:110px;display:grid;place-items:center;cursor:pointer;color:var(--muted-2);font-size:13px;font-weight:500;overflow:hidden;background:rgba(255,255,255,.04)}
+  .upik img,.upik video{width:100%;max-height:220px;object-fit:contain;background:#000}
+
+  /* ===== PLAYER PROFILES / BALLER CLUB ===== */
+  #pf{position:fixed;inset:0;z-index:130;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);padding:20px}
+  #pf.show{display:flex;animation:pop .3s}
+  #pf .ucard{background:linear-gradient(160deg,#1d1d1d,#0d0d0d);border:1px solid var(--line);border-radius:24px;padding:22px;max-width:380px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow)}
+  #pf h3{font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:16px;margin:0 0 8px;letter-spacing:.02em}
+  .pfav{width:64px;height:64px;border-radius:50%;background:var(--card-2);border:1px solid var(--line);display:grid;place-items:center;font-size:26px;overflow:hidden;flex:0 0 auto}
+  .pfav img{width:100%;height:100%;object-fit:cover}
+  .pfav.gold{border-color:var(--gold);box-shadow:0 0 0 2px rgba(232,182,76,.3)}
+  .club{border-radius:18px;padding:17px;background:rgba(232,182,76,.07);border:1px solid rgba(232,182,76,.25)}
+  .supbadge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;letter-spacing:.04em;color:#231500;background:linear-gradient(180deg,#f0c46a,#e0a83e);padding:4px 10px;border-radius:980px;text-transform:uppercase}
+  .fangrid .upcard.sup{border-color:rgba(232,182,76,.4)}
+  .wall{display:flex;gap:8px;overflow-x:auto;padding:4px 0 6px;scrollbar-width:none}
+  .wall::-webkit-scrollbar{display:none}
+  .wall .wcard{flex:0 0 auto;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid rgba(232,182,76,.3);border-radius:980px;padding:6px 13px 6px 6px}
+  .wall .wav{width:28px;height:28px;border-radius:50%;background:var(--card-2);display:grid;place-items:center;font-size:12px;overflow:hidden}
+  .wall .wav img{width:100%;height:100%;object-fit:cover}
+  .wall .wname{font-size:12px;font-weight:800;white-space:nowrap}
+
+  /* ===== MEMBERSHIP CARD (view-only) ===== */
+  .mcard{position:relative;border-radius:20px;padding:20px;background:linear-gradient(150deg,#e9bd63 0%,#d9a340 45%,#c8912e 100%);color:#241703;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.4)}
+  .mshine{position:absolute;inset:0;background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.34) 47%,transparent 60%);transform:translateX(-110%);animation:shine 4.6s ease-in-out infinite}
+  @keyframes shine{0%,60%{transform:translateX(-110%)}90%,100%{transform:translateX(110%)}}
+  .mtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .mlogo{width:36px;height:36px;border-radius:50%;background:#fff;padding:2px;object-fit:contain}
+  .mclub{font-family:'Archivo Black';font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+  .mavrow{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+  .mavrow .pfav{border-color:#7a4a00;background:#fff}
+  .mname{font-family:'Archivo Black';font-size:20px;text-transform:uppercase;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mmeta{font-size:11px;font-weight:800;margin-top:4px;opacity:.75}
+  .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;background:rgba(255,255,255,.42);border-radius:14px;padding:12px 14px}
+  .mgrid span{display:block;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;opacity:.65}
+  .mgrid b{font-size:14px;font-family:'Archivo Black';font-weight:400}
+  .mfoot{margin-top:12px;text-align:center;font-size:9.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;opacity:.7}
+
+  /* ===== SJ'S MYSTERY BOX ===== */
+  .mystery{margin:0 0 14px;border:1px solid rgba(232,182,76,.35);border-radius:16px;padding:14px;text-align:center;cursor:pointer;background:rgba(232,182,76,.07);font-size:14px;user-select:none;font-weight:600;letter-spacing:-.01em}
+  .mystery .mgift{display:inline-block;font-size:22px;margin-right:6px;animation:mwob 2.2s ease-in-out infinite;transform-origin:50% 90%}
+  @keyframes mwob{0%,100%{transform:rotate(0)}8%{transform:rotate(-14deg)}16%{transform:rotate(12deg)}24%{transform:rotate(-8deg)}32%{transform:rotate(0)}}
+  .mystery.shake{animation:mshake .3s}
+  @keyframes mshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px) rotate(-2deg)}75%{transform:translateX(6px) rotate(2deg)}}
+  #jack{position:fixed;inset:0;z-index:140;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.78);backdrop-filter:blur(7px);padding:24px}
+  #jack.show{display:flex;animation:pop .25s}
+  #jack .jcard{background:linear-gradient(160deg,#1d1d1d,#0d0d0d);border:1px solid var(--line);border-radius:24px;padding:28px 22px 22px;text-align:center;max-width:340px;width:100%;box-shadow:var(--shadow)}
+  .jstage{position:relative;height:170px;overflow:hidden;margin-bottom:6px}
+  .jbox{position:absolute;left:50%;bottom:0;transform:translateX(-50%);font-size:74px;line-height:1;z-index:2}
+  #jack.show .jbox{animation:jrumble .45s ease-in-out}
+  @keyframes jrumble{0%,100%{transform:translateX(-50%)}20%{transform:translateX(-54%) rotate(-4deg)}40%{transform:translateX(-46%) rotate(4deg)}60%{transform:translateX(-53%) rotate(-3deg)}80%{transform:translateX(-47%) rotate(3deg)}}
+  .jfinger{position:absolute;left:50%;bottom:42px;font-size:92px;line-height:1;z-index:1;transform:translateX(-50%) translateY(160px) scale(.3);opacity:0}
+  #jack.show .jfinger{animation:jspring .8s cubic-bezier(.2,1.9,.35,1) .4s forwards}
+  @keyframes jspring{0%{transform:translateX(-50%) translateY(160px) scale(.3);opacity:0}55%{transform:translateX(-50%) translateY(-26px) scale(1.18);opacity:1}75%{transform:translateX(-50%) translateY(10px) scale(.96)}100%{transform:translateX(-50%) translateY(0) scale(1);opacity:1}}
+  .jmsg{font-family:'Archivo Black';font-size:24px;line-height:1.12;text-transform:uppercase;background:var(--flame);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:scale(.7) rotate(-4deg)}
+  #jack.show .jmsg{animation:jstamp .35s ease 1.05s forwards}
+  @keyframes jstamp{to{opacity:1;transform:scale(1) rotate(-2deg)}}
+
+  /* ===== BIRTHDAY WEEK ===== */
+  .bday{display:flex;gap:12px;align-items:center;margin:0 0 14px;border-radius:16px;padding:15px 16px;background:rgba(232,182,76,.09);border:1px solid rgba(232,182,76,.3);font-size:13px;line-height:1.45}
+  .bday .bcake{font-size:26px}
+  .bday b{font-weight:700;letter-spacing:-.01em}
+  .bday .bsub{color:var(--muted);font-size:12px;margin-top:2px}
+
+  /* ===== COURTS ===== */
+  .court{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+  .court .chead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+  .court h4{font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:15px;margin:0;line-height:1.15;letter-spacing:.02em}
+  .court .carea{font-size:11px;color:var(--muted-2);font-weight:500;margin-top:3px}
+  .court .cnote{font-size:12.5px;color:var(--muted);line-height:1.55;margin:6px 0 10px}
+  .court .crate{font-size:11px;color:var(--gold);font-weight:600;margin-bottom:12px}
+  .court .cbtns{display:flex;gap:8px;margin-bottom:12px}
+  .court .cbtns .btn{padding:9px;font-size:11.5px}
+  .slot{border-top:1px solid var(--line);padding:11px 0 5px}
+  .slot .srow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .slot .sname{font-size:12.5px;font-weight:600;letter-spacing:-.01em}
+  .slot .scount{font-size:10.5px;color:var(--muted-2);font-weight:500}
+  .slot .sjoin{border:0;background:rgba(255,255,255,.08);color:#fff;border-radius:980px;padding:8px 15px;font-weight:600;font-size:11.5px;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .slot .sjoin.in{background:var(--flame)}
+  .slot .splayers{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .pchip{display:inline-flex;align-items:center;gap:6px;background:var(--card-2);border:0;border-radius:980px;padding:4px 11px 4px 4px;font-size:11px;font-weight:500;cursor:pointer}
+  .pchip .pav{width:22px;height:22px;border-radius:50%;background:var(--ink-2);display:grid;place-items:center;font-size:10px;overflow:hidden}
+  .pchip .pav img{width:100%;height:100%;object-fit:cover}
+  .pchip .pstars{color:var(--gold);font-size:10px}
+
+  /* ===== QUOTE COMMENTS ===== */
+  .qc{background:var(--card-2);border:0;border-radius:12px;padding:10px 13px;font-size:12.5px;line-height:1.5}
+  .qc .qwho{font-size:10.5px;font-weight:600;color:var(--muted-2);margin-bottom:2px}
+  .qpend{border:1px solid rgba(232,182,76,.3);background:rgba(232,182,76,.05);border-radius:12px;padding:10px 12px;margin-top:8px}
+  .qpend .qact{display:flex;gap:8px;margin-top:8px}
+  .qpend .qact button{flex:1;border:0;border-radius:980px;padding:8px;font-weight:600;font-size:12px;cursor:pointer;font-family:inherit}
+
+  /* ===== RATING MODAL ===== */
+  #rateM{position:fixed;inset:0;z-index:135;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);padding:20px}
+  #rateM.show{display:flex;animation:pop .3s}
+  #rateM .ucard{background:linear-gradient(160deg,#1d1d1d,#0d0d0d);border:1px solid var(--line);border-radius:24px;padding:22px;max-width:360px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow)}
+  .rcat{margin-bottom:12px}
+  .rcat .rlab{font-size:12px;font-weight:800;margin-bottom:6px}
+  .rcat .rstars{display:flex;gap:6px}
+  .rcat .rstars span{font-size:24px;cursor:pointer;filter:grayscale(1);opacity:.45;transition:.12s}
+  .rcat .rstars span.on{filter:none;opacity:1;transform:scale(1.08)}
+
+  /* ===== MEMBERS DIRECTORY + DMs ===== */
+  #dirM,#dmM{position:fixed;inset:0;z-index:132;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);padding:20px}
+  #dirM.show,#dmM.show{display:flex;animation:pop .3s}
+  #dirM .ucard,#dmM .ucard{background:linear-gradient(160deg,#1d1d1d,#0d0d0d);border:1px solid var(--line);border-radius:24px;padding:20px;max-width:380px;width:100%;max-height:84vh;overflow-y:auto;box-shadow:var(--shadow)}
+  #dmCard{display:flex;flex-direction:column;overflow:hidden}
+  #dmThread{display:none;overflow-y:auto;min-height:160px;max-height:46vh;padding:4px 2px}
+  .dmb{background:var(--card-2);border-radius:14px 14px 14px 4px;padding:9px 13px;font-size:13.5px;line-height:1.45;max-width:82%;margin:0 auto 7px 0;width:fit-content;letter-spacing:-.01em}
+  .dmb.mine{background:var(--flame);color:#fff;border-radius:14px 14px 4px 14px;margin:0 0 7px auto}
+  .dmb span{display:block;font-size:9px;opacity:.55;margin-top:3px}
+  .dirrow{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 13px;cursor:pointer}
+  .dirrow:active{background:var(--card-2)}
+  .dirrow h5{margin:0 0 2px;font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+  .dirrow p{margin:0;font-size:11px;color:var(--muted-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div id="toast"></div>
+
+<!-- GOAT reward popup -->
+<div id="reward" onclick="if(event.target.id==='reward')closeReward()">
+  <div class="rcard">
+    <div class="goat">🐐</div>
+    <h3>Code unlocked!</h3>
+    <div class="off" id="rOff">8% OFF</div>
+    <p id="rMsg"></p>
+    <div class="code"><b id="rCode">GOAT8</b></div>
+    <div class="rbtns">
+      <button class="btn" id="rCopy">Copy code</button>
+      <button class="btn ghost" onclick="closeReward()">Keep tapping 🐐</button>
+    </div>
+  </div>
+</div>
+
+<!-- UPLOAD MODAL (SJ + fans) -->
+<div id="upm" onclick="if(event.target.id==='upm')closeUp()">
+  <div class="ucard">
+    <h3 id="upTitle">Upload content</h3>
+    <div class="upik" id="upPick" onclick="document.getElementById('upFile').click()">
+      <span id="upPickTxt">Tap to choose a photo or video</span>
+      <img id="upPrevImg" style="display:none" alt=""/>
+      <video id="upPrevVid" style="display:none" controls muted playsinline></video>
+    </div>
+    <input type="file" id="upFile" accept="image/*,video/*" style="display:none" onchange="upFileChosen(event)"/>
+    <div id="upFanFields" style="display:none">
+      <label style="display:block;font-size:12px;font-weight:800;margin:12px 0 6px">Your name</label>
+      <input id="upName" placeholder="First name + last initial" maxlength="30"/>
+      <div id="upCatsWrap">
+        <label style="display:block;font-size:12px;font-weight:800;margin:12px 0 6px">Category</label>
+        <div class="chipset" id="upCats">
+          <div class="chip on" onclick="pickCat(this)">🎯 Best Shot</div>
+          <div class="chip" onclick="pickCat(this)">🎪 Trick Shot</div>
+          <div class="chip" onclick="pickCat(this)">📸 Best In-Game</div>
+        </div>
+      </div>
+    </div>
+    <div id="upNewsFields" style="display:none">
+      <label style="display:block;font-size:12px;font-weight:800;margin:12px 0 6px">Newsletter title</label>
+      <input id="upNTitle" placeholder="e.g. LOTG Weekly #4 — Origin edition" maxlength="70"/>
+    </div>
+    <label style="display:block;font-size:12px;font-weight:800;margin:12px 0 6px" id="upCapLabel">Caption</label>
+    <textarea id="upCap" placeholder="Say something good…" maxlength="400"></textarea>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+      <button class="btn dark" onclick="closeUp()">Cancel</button>
+      <button class="btn" onclick="postUp()">Post</button>
+    </div>
+    <p style="font-size:10.5px;color:var(--muted-2);text-align:center;margin:10px 0 0">Posts go live for the whole fam. Photos auto-compress; videos up to ~4MB.</p>
+  </div>
+</div>
+
+<!-- SJ'S MYSTERY BOX (jack-in-the-box) -->
+<div id="jack" onclick="if(event.target.id==='jack')closeJack()">
+  <div class="jcard">
+    <div class="jstage">
+      <div class="jfinger">🖕</div>
+      <div class="jbox">📦</div>
+    </div>
+    <div class="jmsg">TELL ME WHAT<br/>YOU THINK<br/>BITCH 😂</div>
+    <button class="btn" style="margin-top:18px" onclick="closeJack()">😂 Noted.</button>
+  </div>
+</div>
+
+<!-- ANONYMOUS PLAYER RATING -->
+<div id="rateM" onclick="if(event.target.id==='rateM')closeRate()">
+  <div class="ucard">
+    <h3 style="font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:16px;margin:0 0 4px;letter-spacing:.02em">Rate <span id="rateName">player</span></h3>
+    <p style="font-size:11.5px;color:var(--muted);margin:0 0 14px">100% anonymous — nobody ever sees who rated who. Keep it honest, keep it fair. 🤝</p>
+    <div id="rateCats"></div>
+    <button class="btn" style="margin-top:14px" onclick="submitRate()">Submit anonymously</button>
+    <button class="btn ghost" style="margin-top:8px" onclick="closeRate()">Cancel</button>
+  </div>
+</div>
+
+<!-- MEMBERS DIRECTORY (admin) -->
+<div id="dirM" onclick="if(event.target.id==='dirM')closeDir()">
+  <div class="ucard">
+    <h3 style="font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:16px;margin:0 0 12px;letter-spacing:.02em">Members</h3>
+    <div id="dirList" style="display:grid;gap:8px"></div>
+    <button class="btn ghost" style="margin-top:14px" onclick="closeDir()">Close</button>
+  </div>
+</div>
+
+<!-- DIRECT MESSAGES -->
+<div id="dmM" onclick="if(event.target.id==='dmM')closeDM()">
+  <div class="ucard" id="dmCard">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <button id="dmBack" class="udel" style="display:none;font-size:13px" onclick="dmInboxView()">‹ Back</button>
+      <h3 id="dmTitle" style="font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:16px;margin:0;letter-spacing:.02em;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Messages</h3>
+      <button class="udel" style="font-size:13px" onclick="closeDM()">Close</button>
+    </div>
+    <div id="dmInbox" style="display:grid;gap:8px;overflow-y:auto"></div>
+    <div id="dmThread"></div>
+    <div id="dmInputRow" style="display:none;gap:8px;margin-top:10px">
+      <input id="dmText" placeholder="Message…" maxlength="400" style="flex:1;border-radius:980px;padding:11px 16px" onkeydown="if(event.key==='Enter')dmSend()"/>
+      <button onclick="dmSend()" style="border:0;border-radius:50%;width:42px;height:42px;flex:0 0 auto;background:var(--flame);color:#fff;font-size:16px;cursor:pointer">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- PLAYER PROFILE / BALLER CLUB -->
+<div id="pf" onclick="if(event.target.id==='pf')closePf()">
+  <div class="ucard">
+
+    <!-- SIGN UP VIEW -->
+    <div id="pfSignup">
+      <h3>Join the fam</h3>
+      <p style="font-size:12.5px;color:var(--muted);margin:0 0 14px;line-height:1.5">Make your player profile. Your posts get your name & face, and you're one tap from the Baller Club. 💚</p>
+      <div class="selfie" style="margin-bottom:4px">
+        <div class="prev" id="pfAvPrev">😊</div>
+        <div style="flex:1">
+          <input type="file" accept="image/*" id="pfAvInput" style="display:none" onchange="pfAvChosen(event)"/>
+          <button type="button" class="btn ghost sm" style="width:100%" onclick="document.getElementById('pfAvInput').click()">Upload selfie</button>
+        </div>
+      </div>
+      <label style="display:block;font-size:12px;font-weight:800;margin:12px 0 6px">Your name</label>
+      <input id="pfName" placeholder="First name + last initial" maxlength="30"/>
+      <label style="display:block;font-size:12px;font-weight:800;margin:12px 0 6px">Email <span style="font-weight:500;color:var(--muted-2);font-size:11px">— so you can log in on any device</span></label>
+      <input id="pfEmail" type="email" placeholder="you@email.com" maxlength="60"/>
+      <label style="display:block;font-size:12px;font-weight:800;margin:12px 0 6px">Position</label>
+      <div class="chipset" id="pfPos">
+        <div class="chip" onclick="pfPick(this,'pos')">Guard</div>
+        <div class="chip" onclick="pfPick(this,'pos')">Forward</div>
+        <div class="chip" onclick="pfPick(this,'pos')">Center</div>
+        <div class="chip" onclick="pfPick(this,'pos')">Any gap</div>
+      </div>
+      <label style="display:block;font-size:12px;font-weight:800;margin:12px 0 6px">Your superpower</label>
+      <div class="chipset" id="pfRole">
+        <div class="chip" onclick="pfPick(this,'role')">🎯 Sharpshooter</div>
+        <div class="chip" onclick="pfPick(this,'role')">🧠 Playmaker</div>
+        <div class="chip" onclick="pfPick(this,'role')">🔒 Lockdown D</div>
+        <div class="chip" onclick="pfPick(this,'role')">⚡ Energy</div>
+      </div>
+      <label style="display:block;font-size:12px;font-weight:800;margin:12px 0 6px">Birthday 🎂 <span style="font-weight:500;color:var(--muted-2);font-size:11px">— so the fam can shout you on your week</span></label>
+      <select id="pfBMonth">
+        <option value="">Birth month…</option>
+        <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+        <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+        <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+        <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+      </select>
+      <div class="chipset" id="pfBWeek" style="margin-top:8px">
+        <div class="chip" onclick="pfPickWeek(this,1)">1st–7th</div>
+        <div class="chip" onclick="pfPickWeek(this,2)">8th–14th</div>
+        <div class="chip" onclick="pfPickWeek(this,3)">15th–21st</div>
+        <div class="chip" onclick="pfPickWeek(this,4)">22nd–31st</div>
+      </div>
+      <button class="btn" style="margin-top:16px" onclick="pfSignup()">Create profile</button>
+      <p style="font-size:10.5px;color:var(--muted-2);text-align:center;margin:10px 0 0">Free forever. No spam — just hoops.</p>
+      <p style="text-align:center;margin:12px 0 0;font-size:12.5px;color:var(--muted)">Already a member? <a href="#" onclick="pfLogin();return false" style="color:var(--orange);font-weight:800;text-decoration:none">Log in with your email →</a></p>
+    </div>
+
+    <!-- PROFILE VIEW -->
+    <div id="pfCard" style="display:none">
+      <div id="pfHead" style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+        <div class="pfav" id="pfCardAv">🏀</div>
+        <div style="flex:1;min-width:0">
+          <div id="pfCardName" style="font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:17px;letter-spacing:.02em;line-height:1.15">Player</div>
+          <div id="pfCardMeta" style="font-size:11.5px;color:var(--muted);font-weight:700;margin-top:3px"></div>
+          <div id="pfCardBadge" style="margin-top:6px"></div>
+        </div>
+      </div>
+
+      <!-- BALLER CLUB upsell (free users) -->
+      <div id="pfUpsell" class="club">
+        <div style="font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:15px;letter-spacing:.03em">Baller Club</div>
+        <div style="font-size:22px;font-weight:700;margin:2px 0 8px;letter-spacing:-.02em">$5<span style="font-size:13px;color:var(--muted);font-weight:500">/month — every cent backs the cause</span></div>
+        <ul style="margin:0 0 12px;padding:0;list-style:none;font-size:12.5px;line-height:2;color:#e8e8e8">
+          <li>👑 Gold supporter badge on all your posts</li>
+          <li>🏷️ <b>CLUB10</b> — 10% off all merch, always</li>
+          <li>⭐ Your name on the Supporter Wall</li>
+          <li>🏀 Priority spot in Wednesday comp queues</li>
+          <li>💚 Fund community nights & mental health work</li>
+        </ul>
+        <button class="btn" onclick="pfUpgrade()">Join Baller Club — $5/month</button>
+        <p style="font-size:10px;color:var(--muted-2);text-align:center;margin:8px 0 0">Demo: card payments switch on when SJ connects Stripe.</p>
+      </div>
+
+      <!-- MEMBER CARD — view only, no buttons -->
+      <div id="pfSupBox" style="display:none">
+        <div class="mcard">
+          <div class="mshine"></div>
+          <div class="mtop">
+            <img src="lotg-logo.jpeg" alt="LOTG" class="mlogo"/>
+            <div class="mclub">Baller Club</div>
+          </div>
+          <div class="mavrow">
+            <div class="pfav gold" id="mAv" style="width:56px;height:56px">🏀</div>
+            <div style="min-width:0">
+              <div id="mName" class="mname">Member</div>
+              <div id="mMeta" class="mmeta"></div>
+            </div>
+          </div>
+          <div class="mgrid">
+            <div><span>Member</span><b id="mNum">#1</b></div>
+            <div><span>Since</span><b id="mSince">Jul 2026</b></div>
+            <div><span>Merch code</span><b style="color:#7a4a00">CLUB10</b></div>
+            <div><span>Status</span><b style="color:#1b7a3d">● Active</b></div>
+          </div>
+          <div class="mfoot">Your Journey, Your Story • Est. 2024 🏀</div>
+        </div>
+        <p style="font-size:11px;color:var(--muted);margin:12px 0 0;text-align:center">Show this card at Wednesday runs & merch pickups 💚</p>
+      </div>
+
+      <button class="btn ghost" id="pfMsgBtn" style="margin-top:14px" onclick="openDMInbox('me')">Messages</button>
+      <div id="pfBtns" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+        <button class="btn dark" onclick="pfSignout()">Sign out</button>
+        <button class="btn ghost" onclick="closePf()">Close</button>
+      </div>
+      <p id="pfLinks" style="display:none;text-align:center;margin:14px 0 0;font-size:11px;color:var(--muted-2)">
+        <a href="#" onclick="closePf();return false" style="color:var(--muted-2)">close</a>
+        &nbsp;•&nbsp;
+        <a href="#" onclick="pfSignout();return false" style="color:var(--muted-2)">sign out</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="brand" onclick="showPage('shop')">
+      <img class="logo-chip" src="lotg-logo.jpeg" alt="Love of the Game"/>
+      <b>Love of the Game <span class="verified">✔</span></b>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="pill" onclick="openPf()" style="cursor:pointer;font-family:inherit" id="pfBtn">Sign up</button>
+      <button class="pill" onclick="toggleAdmin()" style="cursor:pointer;font-family:inherit" id="sjBtn">SJ</button>
+      <div class="pill"><span class="live-dot"></span> LIVE</div>
+    </div>
+  </div>
+
+  <!-- ============ PAGE: SHOP (landing) ============ -->
+  <div class="page on" id="pg-shop">
+
+    <section class="hero" style="padding-bottom:0">
+      <div class="ring"><div class="inner" id="logoTap" title="tap me">
+        <img class="logo-img" src="lotg-logo.jpeg" alt="Love of the Game logo" draggable="false"/>
+      </div></div>
+      <h1>Love of<br/>the Game</h1>
+      <p class="tag" style="letter-spacing:2px;font-size:12px;font-weight:800;text-transform:uppercase;color:#dcdcdc">Est. 2024 • <span class="flame-text">Your Journey, Your Story</span></p>
+      <div class="rotator" id="rotator">You belong on this court.</div>
+      <div class="egg-hint">psst — keep tapping the spinning logo for secret 🐐 GOAT codes 👆</div>
+    </section>
+
+    <!-- DUNK BANNER — real LOTG dunk photos, rotating every 5s -->
+    <div class="dunk" id="dunkBanner">
+      <img class="slide on" src="hero1.jpg" alt="LOTG dunk contest — one-hand slam" loading="eager"/>
+      <img class="slide" src="hero2.jpg" alt="LOTG dunk contest — windmill at Auburn" loading="eager"/>
+      <div class="scrim"></div>
+      <div class="dtxt">
+        <div class="a">Your Journey.</div>
+        <div class="b">Your Story.</div>
+        <div class="c">Est. 2024 • Good vibes only</div>
+      </div>
+      <div class="dots"><i class="on"></i><i></i></div>
+    </div>
+
+    <div class="vibe"><span class="em">✨</span><span id="vibeLine">Every legend started as a beginner. Lace up.</span></div>
+
+    <div style="padding:14px 18px 0">
+      <div class="bday" id="bdayBanner" style="display:none">
+        <div class="bcake">🎂</div>
+        <div>
+          <b>HAPPY BIRTHDAY <span id="bdayName">CHAMP</span>! 🎉</b>
+          <div class="bsub">It's your birthday week — <span id="bdayReward">you get a little something at the next Wednesday run</span> 💚</div>
+        </div>
+      </div>
+      <div class="mystery adminonly" id="mysteryBox" onclick="mysteryTap()">
+        <span class="mgift">🎁</span>
+        <b>SJ — tap here 3 times</b>
+        <span style="font-size:10px;color:var(--muted-2);display:block;margin-top:3px">mystery box • no peeking</span>
+      </div>
+      <div class="sj-strip" id="strip-shop"></div>
+    </div>
+
+    <!-- SHOP -->
+    <section id="shop">
+      <div class="sec-kicker">Official Throwback drop</div>
+      <h2 class="sec">The Merch</h2>
+      <p class="builder-note">Straight from the <b>Throwback Store</b> LOTG drop. Wear it loud — you're the culture. 🖤</p>
+      <div class="merch-grid" id="merchGrid"></div>
+      <div class="merch-foot">Prices in AUD. Secure checkout on the official Throwback Store.<br/>💌 A slice of every sale backs the community & Men's Mental Health.</div>
+      <button class="btn" style="margin-top:14px" onclick="shopAll()">View full collection →</button>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section id="news" style="padding-top:6px">
+      <div class="sec-kicker">From SJ's desk</div>
+      <h2 class="sec">The Newsletter</h2>
+      <p class="builder-note">The official LOTG word — recaps, drops, comp news, photos & clips. Posted by SJ, delivered to the fam.</p>
+      <button class="btn adminonly" onclick="openUp('news')" style="margin-bottom:12px">Post a newsletter</button>
+      <div id="newsList"></div>
+      <div class="card" style="margin-top:12px;display:flex;gap:8px;align-items:center">
+        <input id="subEmail" placeholder="you@email.com" style="flex:1" />
+        <button class="btn sm" onclick="subscribe()">Subscribe</button>
+      </div>
+      <div class="socials">
+        <a href="https://instagram.com/loveofthegameaus" target="_blank" rel="noopener">📸 @loveofthegameaus</a>
+        <a href="https://linktr.ee/loveofthegameaus" target="_blank" rel="noopener">🔗 Linktree</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ PAGE: UBL ============ -->
+  <div class="page" id="pg-ubl">
+    <section>
+      <div class="sec-kicker">The home league</div>
+      <h2 class="sec">UBL</h2>
+      <div class="league-hero">
+        <h3 class="flame-text">Ultimate Basketball League</h3>
+        <p>Where LOTG lives courtside. Recaps, mic moments and the best of <b>@ublofficial</b> — all the local talent, all the love. 🏀</p>
+      </div>
+      <div class="sj-strip" id="strip-ubl"></div>
+      <div class="feed">
+        <div class="fcard"><div class="fic">🎙️</div><div><h5>SJ on the mic</h5><p>Courtside commentary & post-game voiceovers from every UBL round.</p></div><div class="ftag">Voiceovers</div></div>
+        <div class="fcard"><div class="fic">📊</div><div><h5>Round recaps</h5><p>Scores, standouts and the plays everyone's talking about on Monday.</p></div><div class="ftag">Weekly</div></div>
+        <div class="fcard"><div class="fic">🌟</div><div><h5>Player spotlights</h5><p>Local hoopers doing big things — your journey, your story, told proper.</p></div><div class="ftag">Spotlight</div></div>
+        <div class="fcard"><div class="fic">🏆</div><div><h5>MVP race</h5><p>Who's cooking this season? The people's rankings, updated every round.</p></div><div class="ftag">Live</div></div>
+      </div>
+      <div class="hl-grid">
+        <div class="hl" onclick="toast('Highlight reels drop here 🎬')"><span class="play">▶️</span><div><div class="hemj">🔥</div><div class="hcap">Top 5 plays — this week</div></div></div>
+        <div class="hl" onclick="toast('Highlight reels drop here 🎬')"><span class="play">▶️</span><div><div class="hemj">😤</div><div class="hcap">Poster of the round</div></div></div>
+        <div class="hl" onclick="toast('Highlight reels drop here 🎬')"><span class="play">▶️</span><div><div class="hemj">🎯</div><div class="hcap">Buzzer beaters</div></div></div>
+        <div class="hl" onclick="toast('Highlight reels drop here 🎬')"><span class="play">▶️</span><div><div class="hemj">🤝</div><div class="hcap">Handshakes & good vibes</div></div></div>
+      </div>
+      <button class="btn ghost" style="margin-top:14px" onclick="window.open('https://instagram.com/ublofficial','_blank')">Follow @ublofficial</button>
+    </section>
+  </div>
+
+  <!-- ============ PAGE: NBL ============ -->
+  <div class="page" id="pg-nbl">
+    <section>
+      <div class="sec-kicker">The national league</div>
+      <h2 class="sec">NBL</h2>
+      <div class="league-hero">
+        <h3 class="flame-text">National Basketball League</h3>
+        <p>The pros. Hot takes, game breakdowns and who's balling out — LOTG's lens on Australia's biggest stage.</p>
+      </div>
+      <div class="sj-strip" id="strip-nbl"></div>
+      <div class="feed">
+        <div class="fcard"><div class="fic">🗣️</div><div><h5>SJ's hot takes</h5><p>No fence-sitting. The takes you came for after every big NBL night.</p></div><div class="ftag">Takes</div></div>
+        <div class="fcard"><div class="fic">📈</div><div><h5>Power rankings</h5><p>Who's rising, who's sliding — the people's rankings, every week.</p></div><div class="ftag">Weekly</div></div>
+        <div class="fcard"><div class="fic">🇦🇺</div><div><h5>Aussies to watch</h5><p>Next-gen talent repping the local scene on the national stage.</p></div><div class="ftag">Watch</div></div>
+        <div class="fcard"><div class="fic">🎬</div><div><h5>Game breakdowns</h5><p>The why behind the win — actions, matchups and clutch execution.</p></div><div class="ftag">Film</div></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ PAGE: NBL1 EAST ============ -->
+  <div class="page" id="pg-nbl1">
+    <section>
+      <div class="sec-kicker">SJ's commentary home</div>
+      <h2 class="sec">NBL1 East</h2>
+      <div class="league-hero">
+        <h3 class="flame-text">NBL1 East — Season 2026</h3>
+        <p>The conference SJ calls live. Real ladder, real form, every story from the East. 🎧</p>
+      </div>
+      <div class="sj-strip" id="strip-nbl1"></div>
+      <div class="tabs" style="margin-bottom:12px">
+        <button id="lMen" class="on" onclick="renderEast('men')">Men</button>
+        <button id="lWomen" onclick="renderEast('women')">Women</button>
+      </div>
+      <table class="ladder">
+        <thead><tr><th>#</th><th class="name">Team</th><th>W</th><th>L</th><th>W%</th><th>Form</th></tr></thead>
+        <tbody id="eastBody"></tbody>
+      </table>
+      <div class="legend"><span><b>Form</b> last 5 games, latest on the right</span><span>🎙️ SJ courtside</span><span><b>↗</b> tap a team → their official site</span></div>
+      <div class="spots" id="ladderStamp">📡 Real ladder from nbl1.com.au • updated 9 July 2026</div>
+      <div class="feed" style="margin-top:16px">
+        <div class="fcard"><div class="fic">🎙️</div><div><h5>SJ on the mic</h5><p>Live calls from NBL1 East games — if SJ's courtside, you'll hear it here first.</p></div><div class="ftag">Live</div></div>
+        <div class="fcard"><div class="fic">🌟</div><div><h5>East players of the week</h5><p>Stat lines and stories from the conference's best, every round.</p></div><div class="ftag">Spotlight</div></div>
+      </div>
+      <button class="btn ghost" style="margin-top:14px" onclick="window.open('https://nbl1.com.au/east','_blank')">Fixtures & stats — nbl1.com.au</button>
+    </section>
+  </div>
+
+  <!-- ============ PAGE: WNB ============ -->
+  <div class="page" id="pg-wnb">
+    <section id="comp" style="padding-bottom:10px">
+      <div class="sec-kicker">Wednesday Night Basketball</div>
+      <h2 class="sec">The Live Ladder</h2>
+      <div class="weekbar">
+        <div class="wk"><span class="live-dot"></span> <span id="wkLabel">Week 3 · Wed 9 July</span></div>
+        <div class="prize">$500 prize pool</div>
+      </div>
+
+      <div class="sj-strip" id="strip-wnb"></div>
+
+      <div class="notice">
+        <div class="nsw">🔵</div>
+        <h4>Origin week — no games Wed 9 July</h4>
+        <p id="wnbNoticeTxt">Because it's State of Origin Game III this Wednesday (go the Blues), there are no games on Wed 9 July. Week 3 recommences Wed 16 July. Rest the legs, back the Blues, then bring the buckets.</p>
+      </div>
+
+      <table class="ladder">
+        <thead>
+          <tr><th>#</th><th class="name">Team</th><th>GF W</th><th>Top 4</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          <tr class="top1">
+            <td class="rank g">01</td>
+            <td class="name"><div class="tname"><span class="tlogo" style="background:#7a4a12">🏀</span> Kopino Basketball</div></td>
+            <td>1</td><td>0</td><td class="tot">10</td>
+          </tr>
+          <tr class="lotg">
+            <td class="rank">02</td>
+            <td class="name"><a class="tlink" href="https://instagram.com/loveofthegameaus" target="_blank" rel="noopener"><div class="tname"><span class="tlogo" style="background:#fff;overflow:hidden"><img src="lotg-logo.jpeg" style="width:100%;height:100%;object-fit:contain" alt="LOTG"/></span> Love of the Game<span class="tgo">↗</span></div></a></td>
+            <td>0</td><td>1</td><td class="tot">7</td>
+          </tr>
+          <tr>
+            <td class="rank">03</td>
+            <td class="name"><div class="tname"><span class="tlogo" style="background:#b6742a">SYL</span> Surpass Your Limitz</div></td>
+            <td>0</td><td>1</td><td class="tot">4</td>
+          </tr>
+          <tr>
+            <td class="rank">04</td>
+            <td class="name"><div class="tname"><span class="tlogo" style="background:#1f6fb2">JJC</span> JJC Cleaning</div></td>
+            <td>0</td><td>1</td><td class="tot">4</td>
+          </tr>
+          <tr>
+            <td class="rank">05</td>
+            <td class="name"><div class="tname"><span class="tlogo" style="background:#2e8b57">H</span> Herbalife</div></td>
+            <td>0</td><td>0</td><td class="tot">2</td>
+          </tr>
+          <tr class="vacant" onclick="scrollToId('register')" style="cursor:pointer">
+            <td class="rank">06</td><td class="name"><div class="tname"><span class="tlogo" style="background:#2a2a2a">+</span> Your team here?</div></td><td>0</td><td>0</td><td class="tot">0</td>
+          </tr>
+          <tr class="vacant" onclick="scrollToId('register')" style="cursor:pointer">
+            <td class="rank">07</td><td class="name"><div class="tname"><span class="tlogo" style="background:#2a2a2a">+</span> Vacant</div></td><td>0</td><td>0</td><td class="tot">0</td>
+          </tr>
+          <tr class="vacant" onclick="scrollToId('register')" style="cursor:pointer">
+            <td class="rank">08</td><td class="name"><div class="tname"><span class="tlogo" style="background:#2a2a2a">+</span> Vacant</div></td><td>0</td><td>0</td><td class="tot">0</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="legend">
+        <span><b>GF W</b> Grand Final wins</span>
+        <span><b>Top 4</b> Semi finishes</span>
+        <span><b>Total</b> Tournament points</span>
+      </div>
+      <div class="spots">🔥 New tournament every 4 weeks • <b style="color:#fff">3 spots remain</b> — lock yours in 👇</div>
+
+      <div class="honors">
+        <div class="honor"><div class="em">🏆</div><div class="cap">Week 1 GF Winners</div><div class="who">Kopino</div></div>
+        <div class="honor"><div class="em">🌟</div><div class="cap">Week 1 MVP</div><div class="who">Willo #21</div></div>
+      </div>
+
+      <div class="hl-grid">
+        <div class="hl" onclick="toast('Wed night clips drop here 🎬')"><span class="play">▶️</span><div><div class="hemj">🏆</div><div class="hcap">Kopino's GF run</div></div></div>
+        <div class="hl" onclick="toast('Wed night clips drop here 🎬')"><span class="play">▶️</span><div><div class="hemj">🌟</div><div class="hcap">Willo's MVP night</div></div></div>
+        <div class="hl" onclick="toast('Wed night clips drop here 🎬')"><span class="play">▶️</span><div><div class="hemj">🚨</div><div class="hcap">Semi-final upset — 25-24</div></div></div>
+        <div class="hl" onclick="toast('Wed night clips drop here 🎬')"><span class="play">▶️</span><div><div class="hemj">📸</div><div class="hcap">Week 1 photo dump</div></div></div>
+      </div>
+    </section>
+
+    <!-- REGISTER -->
+    <section id="register" style="padding-top:16px">
+      <div class="sec-kicker">Get on the court</div>
+      <h2 class="sec">Register to Play</h2>
+      <div class="tabs">
+        <button id="tabTeam" class="on" onclick="switchTab('team')">🏀 Got a squad</button>
+        <button id="tabSolo" onclick="switchTab('solo')">🙋 Flying solo</button>
+      </div>
+
+      <form id="teamForm" onsubmit="return submitTeam(event)">
+        <div class="card">
+          <label>Team name <span class="hint">make it iconic</span></label>
+          <input required name="tname" placeholder="e.g. Court Kings" maxlength="40"/>
+
+          <label>Captain's name</label>
+          <input required name="captain" placeholder="Who's leading the charge?"/>
+
+          <label>Best contact <span class="hint">so SJ can lock you in</span></label>
+          <input required name="contact" placeholder="Mobile or @insta"/>
+
+          <label>Your starting 5 <span class="hint">first names are fine</span></label>
+          <div class="players5">
+            <input required placeholder="Player 1"/>
+            <input required placeholder="Player 2"/>
+            <input required placeholder="Player 3"/>
+            <input required placeholder="Player 4"/>
+            <input required placeholder="Player 5"/>
+          </div>
+
+          <label>Team vibe / motto <span class="hint">optional, but fun</span></label>
+          <input name="motto" placeholder="e.g. Defence wins & good energy 🔥"/>
+
+          <button class="btn" style="margin-top:18px" type="submit">Register squad</button>
+        </div>
+      </form>
+
+      <form id="soloForm" style="display:none" onsubmit="return submitSolo(event)">
+        <div class="card">
+          <p class="builder-note">No squad? No worries. 🙌 Answer 5 quick ones, drop a selfie, and SJ + the team will build a balanced squad around you. Everyone plays. Good vibes guaranteed.</p>
+
+          <label>1. Your name</label>
+          <input required id="soloName" placeholder="First name + last initial"/>
+
+          <label>2. Flash us a smile 📸 <span class="hint">selfie so your squad knows you</span></label>
+          <div class="selfie">
+            <div class="prev" id="selfiePrev">😊</div>
+            <div style="flex:1">
+              <input type="file" accept="image/*" id="selfieInput" style="display:none" onchange="previewSelfie(event)"/>
+              <button type="button" class="btn ghost sm" style="width:100%" onclick="document.getElementById('selfieInput').click()">Upload selfie</button>
+            </div>
+          </div>
+
+          <label>3. What's your position?</label>
+          <div class="chipset" id="posChips">
+            <div class="chip" onclick="pick(this,'pos')">Guard</div>
+            <div class="chip" onclick="pick(this,'pos')">Forward</div>
+            <div class="chip" onclick="pick(this,'pos')">Center</div>
+            <div class="chip" onclick="pick(this,'pos')">I fill any gap</div>
+          </div>
+
+          <label>4. Highest level you've played? <span class="hint">no wrong answer 💚</span></label>
+          <select required id="soloLevel">
+            <option value="">Pick one…</option>
+            <option>Just for fun / social</option>
+            <option>Domestic / local comp</option>
+            <option>Rep / representative</option>
+            <option>State league / Waratah</option>
+            <option>NBL1 / semi-pro or higher</option>
+          </select>
+
+          <label>5. Your role on court? <span class="hint">pick your superpower</span></label>
+          <div class="chipset" id="roleChips">
+            <div class="chip" onclick="pick(this,'role')">🎯 Sharpshooter</div>
+            <div class="chip" onclick="pick(this,'role')">🧠 Playmaker</div>
+            <div class="chip" onclick="pick(this,'role')">🔒 Lockdown D</div>
+            <div class="chip" onclick="pick(this,'role')">💪 Rebounder</div>
+            <div class="chip" onclick="pick(this,'role')">⚡ Energy & hustle</div>
+            <div class="chip" onclick="pick(this,'role')">🌈 All-rounder</div>
+          </div>
+
+          <button class="btn" style="margin-top:20px" type="submit">Put me in a squad</button>
+        </div>
+      </form>
+
+      <div class="confirm" id="confirmBox">
+        <div class="big">🎉</div>
+        <h3 id="confirmTitle">You're in!</h3>
+        <p id="confirmMsg"></p>
+        <p style="color:var(--muted-2);font-size:12px;margin-top:10px">SJ reviews every profile before locking teams — keeping it fair & fun. 💯</p>
+        <button class="btn ghost" style="margin-top:16px" onclick="resetForms()">Register another</button>
+      </div>
+    </section>
+
+    <!-- TEAM BUILDER (Admin preview) -->
+    <section id="builder" style="padding-top:0">
+      <div class="sec-kicker">SJ's control room</div>
+      <h2 class="sec">AI Team Builder</h2>
+      <p class="builder-note">Solo players get auto-matched into <b>balanced squads</b> — mixing positions, levels & roles so every team's got a shot. Nothing goes live until <b>SJ approves it</b>.</p>
+
+      <div id="pendingWrap"></div>
+
+      <div class="squad">
+        <div class="shead">
+          <div class="sname"><span class="tlogo" style="background:#ff5a2b">A</span> Squad Alpha</div>
+          <div class="bal">⚖️ Balanced</div>
+        </div>
+        <div class="roster">
+          <div class="plr"><div class="av" style="background:#ff2d8f">TM</div><div><div class="pn">Tyrese M.</div><div class="pmeta">Guard • Rep level</div></div><div class="ptag">🧠 Playmaker</div></div>
+          <div class="plr"><div class="av" style="background:#ff7a1a">JK</div><div><div class="pn">Josh K.</div><div class="pmeta">Forward • State league</div></div><div class="ptag">🎯 Sharp</div></div>
+          <div class="plr"><div class="av" style="background:#2e8b57">DA</div><div><div class="pn">Deng A.</div><div class="pmeta">Center • Domestic</div></div><div class="ptag">💪 Boards</div></div>
+          <div class="plr"><div class="av" style="background:#1f6fb2">SR</div><div><div class="pn">Sam R.</div><div class="pmeta">Any gap • Social</div></div><div class="ptag">⚡ Hustle</div></div>
+          <div class="plr"><div class="av" style="background:#7a4a12">LC</div><div><div class="pn">Leo C.</div><div class="pmeta">Guard • Domestic</div></div><div class="ptag">🔒 Defence</div></div>
+        </div>
+        <div class="approve-row">
+          <button class="btn dark" onclick="reject(this)">↺ Reshuffle</button>
+          <button class="btn" onclick="approveSquad(this)">✔ Approve squad</button>
+        </div>
+        <div class="approved-stamp">✔ Approved — locked in 🔒</div>
+      </div>
+
+      <div class="squad">
+        <div class="shead">
+          <div class="sname"><span class="tlogo" style="background:#3897f0">B</span> Squad Bravo</div>
+          <div class="bal">⚖️ Balanced</div>
+        </div>
+        <div class="roster">
+          <div class="plr"><div class="av" style="background:#ff5a2b">MA</div><div><div class="pn">Mo A.</div><div class="pmeta">Guard • NBL1</div></div><div class="ptag">🎯 Sharp</div></div>
+          <div class="plr"><div class="av" style="background:#8850ff">BT</div><div><div class="pn">Ben T.</div><div class="pmeta">Forward • Rep</div></div><div class="ptag">🌈 All-round</div></div>
+          <div class="plr"><div class="av" style="background:#2e8b57">KO</div><div><div class="pn">Kofi O.</div><div class="pmeta">Center • State</div></div><div class="ptag">🔒 Defence</div></div>
+          <div class="plr"><div class="av" style="background:#ff2d8f">NP</div><div><div class="pn">Nick P.</div><div class="pmeta">Any gap • Domestic</div></div><div class="ptag">⚡ Hustle</div></div>
+          <div class="plr"><div class="av" style="background:#b6742a">RS</div><div><div class="pn">Rai S.</div><div class="pmeta">Guard • Social</div></div><div class="ptag">🧠 Playmaker</div></div>
+        </div>
+        <div class="approve-row">
+          <button class="btn dark" onclick="reject(this)">↺ Reshuffle</button>
+          <button class="btn" onclick="approveSquad(this)">✔ Approve squad</button>
+        </div>
+        <div class="approved-stamp">✔ Approved — locked in 🔒</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ PAGE: COMMUNITY / FAM ============ -->
+  <div class="page" id="pg-fam">
+    <section>
+      <div class="sec-kicker">Community</div>
+      <h2 class="sec">The Fam</h2>
+      <div class="quote flame-text" id="bigQuote">“It's not just a game. It's a family.”</div>
+
+      <div class="sj-strip" id="strip-fam"></div>
+
+      <!-- SUPPORTER WALL -->
+      <div id="wallWrap" style="display:none;margin-bottom:16px">
+        <div class="sec-kicker" style="margin-bottom:8px">Baller Club 👑 — backing the cause</div>
+        <div class="wall" id="wall"></div>
+      </div>
+
+      <!-- FAN ZONE -->
+      <div class="fanzone">
+        <div class="sec-kicker" style="margin-bottom:6px">Glory League Fan Zone</div>
+        <h3 style="font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:17px;margin:0 0 6px;letter-spacing:.02em">Show Us Your Best</h3>
+        <p class="builder-note">Got a clip from Glory League? Best shot, trick shot, or in-game moment — drop it here and let the fam rate it. 🔥</p>
+        <div class="chipset" style="margin-bottom:12px">
+          <span class="pill">🎯 Best Shot</span>
+          <span class="pill">🎪 Trick Shot</span>
+          <span class="pill">📸 Best In-Game</span>
+        </div>
+        <button class="btn" onclick="openUp('fan')">Upload your clip</button>
+        <div class="fangrid" id="fanGrid"></div>
+      </div>
+
+      <!-- COURT HOPPING -->
+      <div style="margin:18px 0">
+        <div class="sec-kicker" style="margin-bottom:6px">Court Hopping</div>
+        <h3 style="font-family:'Archivo Black';font-weight:400;text-transform:uppercase;font-size:17px;margin:0 0 6px;letter-spacing:.02em">SJ Rates the Courts</h3>
+        <p class="builder-note">The vibes, the people, the comp, the best days to pull up — SJ's going court hopping and rating every run. Interviews with the locals + footage dropping as we go. 🎬</p>
+        <div class="notice" style="background:linear-gradient(135deg,#2a2010,#1a1408);border-color:#4a3a15;margin-bottom:12px">
+          <p style="color:#e8d9b0">⚠️ <b>Not an official booking.</b> These are outdoor courts — first come, first serve. Adding yourself just tells the fam you're pulling up. 🤝</p>
+        </div>
+        <div id="courtList"></div>
+      </div>
+
+      <!-- QUOTE CHECK-IN -->
+      <div style="margin:18px 0">
+        <div class="sec-kicker" style="margin-bottom:6px">Quote check-in</div>
+        <div class="card" style="padding:16px">
+          <div class="quote flame-text" id="quoteText" style="margin:2px 0 10px">“It's not just a game. It's a family.”</div>
+          <div style="display:grid;gap:8px;margin-bottom:10px" id="qComments"></div>
+          <div style="display:flex;gap:8px">
+            <input id="qIn" placeholder="What's this one mean to you?" maxlength="200" onkeydown="if(event.key==='Enter')sendComment()"/>
+            <button onclick="sendComment()" style="border:0;border-radius:50%;width:44px;height:44px;flex:0 0 auto;background:var(--flame);color:#fff;font-size:17px;cursor:pointer">➤</button>
+          </div>
+          <p style="font-size:10.5px;color:var(--muted-2);margin:8px 0 0;text-align:center">Every comment is checked by SJ before it shows — good vibes only, no bad language 💚</p>
+        </div>
+      </div>
+
+      <div class="chatbox">
+        <div class="chathead">
+          <img class="cav" src="lotg-logo.jpeg" alt="LOTG"/>
+          <div><b>LOTG Community Chat</b><span>● 214 fam online</span></div>
+        </div>
+        <div class="pinrule">📌 Group rules: good vibes only • lift each other • check on your mates 💚</div>
+        <div class="msgs" id="msgs"></div>
+        <div class="chatin">
+          <input id="chatText" placeholder="Say something good…" maxlength="140" onkeydown="if(event.key==='Enter')sendMsg()"/>
+          <button onclick="sendMsg()" aria-label="send">➤</button>
+        </div>
+      </div>
+
+      <div class="mind">
+        <h4>👑 Check on your mates</h4>
+        <p>Behind every jersey is a person. We back Men's Mental Health — on the court and off it. If you're not ok, that's ok. Reach out, speak up, and know this crew's got you. You're never playing this one alone. 💚</p>
+      </div>
+
+      <div class="socials">
+        <a href="https://instagram.com/loveofthegameaus" target="_blank" rel="noopener">📸 @loveofthegameaus</a>
+        <a href="https://linktr.ee/loveofthegameaus" target="_blank" rel="noopener">🔗 Linktree</a>
+      </div>
+      <div class="footer">
+        Love of the Game 🏀🏉 — Your Journey, Your Story.<br/>
+        Mock-up built with good vibes. Tap the logo for a surprise. ✨
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ PAGE: ADMIN HQ (SJ + Aiman only) ============ -->
+  <div class="page" id="pg-admin">
+    <section>
+      <div class="sec-kicker">SJ &amp; Aiman only</div>
+      <h2 class="sec">Admin HQ</h2>
+      <p class="builder-note">Everything the fam sends lands here first — nothing goes public until one of you approves it. Edits below go live for everyone instantly.</p>
+
+      <div class="honors" id="adStats" style="margin:0 0 4px"></div>
+      <button class="btn ghost" style="margin-top:12px" onclick="openDMInbox('admin')">Messages</button>
+
+      <div class="sec-kicker" style="margin:22px 0 8px">Approvals queue</div>
+      <div id="adQueue" style="display:grid;gap:10px"></div>
+
+      <div class="sec-kicker" style="margin:24px 0 8px">Registrations inbox</div>
+      <div id="adRegs" style="display:grid;gap:10px"></div>
+
+      <div class="sec-kicker" style="margin:24px 0 8px">Live content editor</div>
+      <div class="card" style="display:grid;gap:6px">
+        <div style="font-size:12px;font-weight:600;margin-top:4px">Quote of the week</div>
+        <textarea id="adQuote" maxlength="200" style="min-height:56px"></textarea>
+        <button class="btn ghost sm" onclick="adSave('quote','adQuote')">Save quote</button>
+
+        <div style="font-size:12px;font-weight:600;margin-top:12px">Birthday-week reward</div>
+        <input id="adReward" maxlength="200"/>
+        <button class="btn ghost sm" onclick="adSave('bdayReward','adReward')">Save reward</button>
+
+        <div style="font-size:12px;font-weight:600;margin-top:12px">Wednesday comp — week label</div>
+        <input id="adWeek" maxlength="60"/>
+        <button class="btn ghost sm" onclick="adSave('weekLabel','adWeek')">Save label</button>
+
+        <div style="font-size:12px;font-weight:600;margin-top:12px">Wednesday comp — notice banner</div>
+        <textarea id="adNotice" maxlength="400" style="min-height:80px"></textarea>
+        <button class="btn ghost sm" onclick="adSave('wnbNotice','adNotice')">Save notice</button>
+      </div>
+      <p style="font-size:10.5px;color:var(--muted-2);text-align:center;margin:14px 0 0">Media storage: all photos &amp; videos live in your own Netlify account.</p>
+    </section>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV (tabs) -->
+<div class="nav" id="nav">
+  <a class="on" data-p="shop"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5.5 8.5h13l-1.1 11a1.5 1.5 0 0 1-1.5 1.3H8.1a1.5 1.5 0 0 1-1.5-1.3l-1.1-11z"/><path d="M9 8.5V6.8a3 3 0 0 1 6 0v1.7"/></svg></span>Shop</a>
+  <a data-p="ubl"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c1.2 3.8-3.6 5.2-2.8 8.8a4.6 4.6 0 0 0 9.1-.4c.4-3.8-3.5-4.6-3.3-8.4"/><path d="M9.2 11.8c-2 1.4-3.2 3-3.2 4.7A6 6 0 0 0 12 22a6 6 0 0 0 6-5.5"/></svg></span>UBL</a>
+  <a data-p="nbl"><span class="ic"><svg viewBox="0 0 24 24"><path d="M8 4h8v4.5a4 4 0 0 1-8 0V4z"/><path d="M8 5H5.5a2.5 2.5 0 0 0 2.6 3.6M16 5h2.5a2.5 2.5 0 0 1-2.6 3.6"/><path d="M12 12.5v3.5M8.5 20h7M12 16v4"/></svg></span>NBL</a>
+  <a data-p="nbl1"><span class="ic"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg></span>NBL1 E</a>
+  <a data-p="wnb"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.4 2.6 14.6 0 17M5.8 6c3.4 2.6 9 2.6 12.4 0M5.8 18c3.4-2.6 9-2.6 12.4 0"/></svg></span>WNB</a>
+  <a data-p="fam"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4.5 7A2.5 2.5 0 0 1 7 4.5h10A2.5 2.5 0 0 1 19.5 7v6.5A2.5 2.5 0 0 1 17 16H9.5l-5 4.5V7z"/></svg></span>Fam</a>
+  <a data-p="admin" class="adminonly" style="position:relative"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1"/></svg><span id="adBadge" class="navbadge" style="display:none">0</span></span>HQ</a>
+</div>
+
+<script>
+/* ---------- helpers ---------- */
+function scrollToId(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2600);}
+
+/* ---------- PAGE TABS ---------- */
+const pages=['shop','ubl','nbl','nbl1','wnb','fam','admin'];
+const pageHellos={
+  ubl:'The home league 🔥',
+  nbl:'Big league energy 🏆',
+  nbl1:'SJ\'s on the call 🎙️',
+  wnb:'Wednesday runs 🏀 lock in',
+  fam:'Welcome to the fam 💬💚'
+};
+let curPage='shop';
+function showPage(p){
+  if(!pages.includes(p))return;
+  if(p==='admin'&&!admin){toast('That one\'s for SJ');return;}
+  if(p==='admin')loadPending();
+  curPage=p;
+  pages.forEach(x=>document.getElementById('pg-'+x).classList.toggle('on',x===p));
+  document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('on',a.dataset.p===p));
+  window.scrollTo({top:0,behavior:'instant' in window?'instant':'auto'});
+  if(pageHellos[p]&&!showPage._seen[p]){showPage._seen[p]=1;toast(pageHellos[p]);}
+}
+showPage._seen={};
+document.querySelectorAll('.nav a').forEach(a=>a.addEventListener('click',()=>showPage(a.dataset.p)));
+
+/* ---------- rotating good-vibes ---------- */
+const rots=[
+  "You belong on this court.",
+  "Buckets get buckets. 🏀",
+  "Ball is life — but life is bigger. 💚",
+  "Show 'em what the local scene's got.",
+  "Hustle beats talent when talent won't hustle.",
+  "Every game is a highlight for someone.",
+  "Play hard. Stay humble. Have fun.",
+  "For the love of the game. Always."
+];
+let ri=0;const rEl=document.getElementById('rotator');
+setInterval(()=>{rEl.style.opacity=0;setTimeout(()=>{ri=(ri+1)%rots.length;rEl.textContent=rots[ri];rEl.style.opacity=1;},400);},3200);
+
+const vibes=[
+  "Every legend started as a beginner. Lace up.",
+  "Missed shots are just the ones you'll make next time.",
+  "The best pass you make might be checking on a mate.",
+  "Confidence is quiet. Doubt is loud. Play quiet.",
+  "You don't have to be the best — just be here."
+];
+document.getElementById('vibeLine').textContent=vibes[Math.floor(Math.random()*vibes.length)];
+
+/* ---------- dunk banner: rotate the real photos every 5s ---------- */
+(function(){
+  const slides=[...document.querySelectorAll('#dunkBanner .slide')];
+  const dots=[...document.querySelectorAll('#dunkBanner .dots i')];
+  if(!slides.length)return;let si=0;
+  setInterval(()=>{
+    si=(si+1)%slides.length;
+    slides.forEach((s,i)=>s.classList.toggle('on',i===si));
+    dots.forEach((d,i)=>d.classList.toggle('on',i===si));
+  },5000);
+})();
+
+const quotes=[
+  "“It's not just a game. It's a family.”",
+  "“Good energy is a skill. Bring it every night.”",
+  "“We rise by lifting others.”",
+  "“Community over clout.”"
+];
+let qi=0;const qEl=document.getElementById('bigQuote');
+setInterval(()=>{qi=(qi+1)%quotes.length;qEl.style.opacity=0;setTimeout(()=>{qEl.textContent=quotes[qi];qEl.style.opacity=1;},350);},5000);
+
+/* ---------- NBL1 EAST — real 2026 ladder (source: nbl1.com.au API) ---------- */
+let EAST={
+  men:[
+    [1,"Illawarra Hawks",14,3,"82.4","LWLWW"],
+    [2,"Norths Bears",14,3,"82.4","WWWLW"],
+    [3,"Manly Warringah Sea Eagles",13,5,"72.2","WWLWL"],
+    [4,"Centre of Excellence",13,7,"65.0","LLLLL"],
+    [5,"Sutherland Sharks",11,6,"64.7","WWWWW"],
+    [6,"Maitland Mustangs",10,7,"58.8","WWWWL"],
+    [7,"Canberra Gunners",10,8,"55.6","LLLLL"],
+    [8,"Central Coast Crusaders",9,9,"50.0","WWWLL"],
+    [9,"Inner West Bulls",8,10,"44.4","WWLLL"],
+    [10,"Sydney Comets",7,10,"41.2","LLLWL"],
+    [11,"Newcastle Falcons",7,10,"41.2","WWWWW"],
+    [12,"Bankstown Bruins",7,10,"41.2","WLWLW"],
+    [13,"Hills Hornets",7,10,"41.2","LWLWW"],
+    [14,"Hornsby Ku-ring-gai Spiders",6,11,"35.3","WLLWW"],
+    [15,"Penrith Panthers",2,15,"11.8","LLLLW"],
+    [16,"Albury-Wodonga Bandits",2,16,"11.1","WLLLL"]
+  ],
+  women:[
+    [1,"Norths Bears",17,0,"100","WWWWW"],
+    [2,"Manly Warringah Sea Eagles",17,1,"94.4","WWWWW"],
+    [3,"Bankstown Bruins",13,4,"76.5","WWLLW"],
+    [4,"Centre of Excellence",15,5,"75.0","WWLWW"],
+    [5,"Newcastle Falcons",11,6,"64.7","WLLWW"],
+    [6,"Albury-Wodonga Bandits",11,7,"61.1","WWWWW"],
+    [7,"Hornsby Ku-ring-gai Spiders",10,7,"58.8","WLLLW"],
+    [8,"Hills Hornets",9,8,"52.9","LWWWW"],
+    [9,"Maitland Mustangs",8,9,"47.1","WWWWL"],
+    [10,"Canberra Nationals",8,10,"44.4","WWWWL"],
+    [11,"Sutherland Sharks",7,10,"41.2","LLLLW"],
+    [12,"Sydney Comets",5,12,"29.4","LLLWW"],
+    [13,"Illawarra Hawks",5,12,"29.4","LLLLL"],
+    [14,"Penrith Panthers",2,15,"11.8","LWLLL"],
+    [15,"Central Coast Crusaders",2,16,"11.1","LLLLL"],
+    [16,"Inner West Bulls",0,18,"0","LLLLL"]
+  ]
+};
+let eastDiv='men';
+/* official club sites — every team on the ladder is tappable */
+const TEAM_SITES={
+  "Illawarra Hawks":"illawarrahawks",
+  "Norths Bears":"northsbears",
+  "Manly Warringah Sea Eagles":"manlywarringahseaeagles",
+  "Centre of Excellence":"centreofexcellence",
+  "Sutherland Sharks":"sutherlandsharks",
+  "Maitland Mustangs":"maitlandmustangs",
+  "Canberra Gunners":"canberragunnersnationals",
+  "Canberra Nationals":"canberragunnersnationals",
+  "Central Coast Crusaders":"centralcoastcrusaders",
+  "Inner West Bulls":"innerwestbulls",
+  "Sydney Comets":"sydneycomets",
+  "Newcastle Falcons":"newcastlebasketball",
+  "Bankstown Bruins":"bankstownbruins",
+  "Hills Hornets":"hillshornets",
+  "Hornsby Ku-ring-gai Spiders":"hornsbykuringgaispiders",
+  "Penrith Panthers":"penrithpanthers",
+  "Albury-Wodonga Bandits":"alburywodongabandits"
+};
+function teamUrl(name){
+  const sub=TEAM_SITES[name];
+  if(sub)return 'https://'+sub+'.nbl1.com.au';
+  // unknown team (e.g. future live data) → their NBL1 club page
+  return 'https://www.nbl1.com.au/club/'+String(name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+}
+function formHtml(f){return f.split('').map(c=>'<b style="color:'+(c==='W'?'var(--green)':'#ff5a5a')+'">'+c+'</b>').join('');}
+function renderEast(div){
+  eastDiv=div;
+  document.getElementById('lMen').classList.toggle('on',div==='men');
+  document.getElementById('lWomen').classList.toggle('on',div==='women');
+  document.getElementById('eastBody').innerHTML=EAST[div].map(r=>{
+    const sj=r[1]==='Bankstown Bruins';
+    return '<tr'+(r[0]===1?' class="top1"':(sj?' class="lotg"':''))+'>'+
+      '<td class="rank'+(r[0]===1?' g':'')+'">'+String(r[0]).padStart(2,'0')+'</td>'+
+      '<td class="name"><a class="tlink" href="'+teamUrl(r[1])+'" target="_blank" rel="noopener"><div class="tname" style="font-size:12px">'+r[1]+(sj?' 🎙️':'')+'<span class="tgo">↗</span></div></a></td>'+
+      '<td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td>'+
+      '<td style="letter-spacing:1px;font-size:11px">'+formHtml(r[5])+'</td></tr>';
+  }).join('');
+}
+renderEast('men');
+/* try live refresh straight from the NBL1 API (falls back to the baked-in snapshot) */
+fetch('https://prod.rosetta.nbl.com.au/get/nbl1/standings/2026/regular?limit=200')
+  .then(r=>r.json())
+  .then(j=>{
+    const rows=j&&j.data?j.data:[];
+    const grab=name=>rows
+      .filter(x=>x&&x.season&&x.season.competition&&x.season.competition.division&&x.season.competition.division[0]&&x.season.competition.division[0].name===name)
+      .sort((a,b)=>a.position-b.position)
+      .map(x=>[x.position,x.team.name,x.won,x.lost,(x.win_percentage*100).toFixed(1).replace(/\.0$/,''),(x.last_5||'').slice(-5)]);
+    const m=grab('East Men'),w=grab('East Women');
+    if(m.length&&w.length){EAST={men:m,women:w};renderEast(eastDiv);
+      document.getElementById('ladderStamp').innerHTML='🟢 LIVE ladder — straight from nbl1.com.au';}
+  }).catch(()=>{});
+
+/* ---------- ADMIN MODE (SJ) ---------- */
+let admin=localStorage.getItem('lotg_admin')==='1';
+function applyAdmin(){document.body.classList.toggle('admin',admin);const b=document.getElementById('sjBtn');if(b)b.textContent='SJ';if(typeof syncMysteryBox==='function')syncMysteryBox();if(admin&&typeof loadPending==='function')setTimeout(loadPending,300);if(!admin&&typeof curPage!=='undefined'&&curPage==='admin')showPage('shop');}
+function toggleAdmin(){
+  if(admin){
+    if(confirm('Sign out of SJ mode?')){admin=false;localStorage.removeItem('lotg_admin');localStorage.removeItem('lotg_jack_done');applyAdmin();toast('Signed out — see you soon SJ 👋');}
+    return;
+  }
+  const p=prompt('SJ passcode 🔒');
+  if(p==='2004'){admin=true;localStorage.setItem('lotg_admin','1');applyAdmin();fireConfetti(true);toast('Welcome back SJ 🐐 Upload buttons unlocked on every tab');}
+  else if(p!==null){toast('Not quite 😅 that button\'s for SJ');}
+}
+
+/* ---------- CONTENT STORE (demo: this device) ---------- */
+function sGet(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+function sSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch(e){return false;}}
+let uploads=sGet('lotg_uploads',{});   // {tab:[{m,vid,c,t}]}
+let fanposts=sGet('lotg_fanzone',[]);  // [{m,vid,c,name,cat,likes,t}]
+let news=sGet('lotg_news',[]);         // [{m,vid,title,c,t}]
+
+/* ---------- REAL BACKEND (Netlify Functions + Blobs) ---------- */
+const API='/api';
+let apiOn=false;
+async function apiCall(path,body){
+  const r=await fetch(API+path,body?{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}:undefined);
+  if(!r.ok)throw new Error('api '+r.status);
+  return r.json();
+}
+async function loadAll(){
+  try{
+    const j=await apiCall('/all');
+    apiOn=true;
+    uploads=j.posts||{};fanposts=j.fan||[];news=j.news||[];supporters=j.supporters||[];
+    courts=j.courts||[];runs=j.runs||{};qComments=j.comments||[];courtMedia=j.courtMedia||[];
+    quoteOfWeek=j.quote||quoteOfWeek;bdayReward=j.bdayReward||bdayReward;
+    weekLabel=j.weekLabel||weekLabel;wnbNotice=j.wnbNotice||wnbNotice;
+    STRIPS.forEach(renderFeed);renderFan();renderNews();renderWall();
+    renderCourts();renderQuote();applySettings();
+  }catch(e){/* offline or local preview — localStorage mode */}
+}
+
+/* ---------- COURTS + RUNS + RATINGS + QUOTE + BIRTHDAY ---------- */
+let courts=[],runs={},qComments=[],courtMedia=[],quoteOfWeek="It's not just a game. It's a family.",bdayReward="a free Gatorade + first sub at the Wednesday run 🥤🏀",weekLabel="",wnbNotice="";
+function applySettings(){
+  if(weekLabel){const el=document.getElementById('wkLabel');if(el)el.textContent=weekLabel;}
+  if(wnbNotice){const el=document.getElementById('wnbNoticeTxt');if(el)el.textContent=wnbNotice;}
+}
+const RUN_SLOTS=[["arvo","Weekday arvo · 4–6pm"],["night","Weeknight · 6–8pm"],["wknd","Weekend morning · 9–11am"]];
+function starTxt(n){return n?('⭐'.repeat(Math.round(n))+' '+n):'';}
+function renderCourts(){
+  const el=document.getElementById('courtList');if(!el)return;
+  el.innerHTML=courts.map(c=>{
+    const maps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(c.name+' '+c.area+' basketball court');
+    const slots=RUN_SLOTS.map(([sid,slab])=>{
+      const key=c.id+'|'+sid;
+      const list=runs[key]||[];
+      const inIt=me&&list.some(x=>x.pid===me.id);
+      return '<div class="slot"><div class="srow"><div><div class="sname">'+slab+'</div>'+
+        '<div class="scount">'+(list.length?list.length+' pulling up':'nobody yet — start the run')+'</div></div>'+
+        '<button class="sjoin'+(inIt?' in':'')+'" onclick="toggleRun(\''+c.id+'\',\''+sid+'\','+(!inIt)+')">'+(inIt?'In ✓':'I\'m in')+'</button></div>'+
+        (list.length?'<div class="splayers">'+list.map(x=>
+          '<span class="pchip" onclick="openRate(\''+x.pid+'\',\''+esc(x.name).replace(/'/g,'')+'\')">'+
+          '<span class="pav">'+(x.av?'<img src="'+x.av+'"/>':'🏀')+'</span>'+(x.sup?'👑 ':'')+esc(x.name)+
+          '</span>').join('')+'</div>':'')+
+        '</div>';
+    }).join('');
+    const gal=courtMedia.filter(x=>x.courtId===c.id);
+    const galHtml=gal.length?'<div class="fangrid" style="margin:0 0 12px">'+gal.slice(0,8).map(x=>
+      '<div class="upcard'+(x.sup?' sup':'')+'">'+mediaTag(x)+
+      '<div class="ub"><div class="uwho">'+(x.sup?'👑 ':'')+esc(x.name)+'</div>'+
+      (x.c?'<div class="ucap" style="font-size:11.5px">'+esc(x.c)+'</div>':'')+'</div></div>').join('')+'</div>':'';
+    return '<div class="court"><div class="chead"><div><h4>'+esc(c.name)+'</h4><div class="carea">📍 '+esc(c.area)+'</div></div></div>'+
+      '<div class="cnote">'+esc(c.note)+'</div>'+
+      '<div class="crate">SJ\'s rating — dropping soon</div>'+
+      '<div class="cbtns"><button class="btn dark" style="flex:1" onclick="window.open(\''+maps+'\',\'_blank\')">Open in Maps</button>'+
+      '<button class="btn dark" style="flex:1" onclick="toast(\'SJ\\\'s review of this court drops here soon\')">Review</button></div>'+
+      galHtml+
+      '<button class="upbtn" style="border-color:var(--line);background:rgba(255,255,255,.05);color:var(--muted);margin-bottom:10px" onclick="openCourtUp(\''+c.id+'\',\''+esc(c.name).replace(/'/g,'')+'\')">Add a photo or video from this court</button>'+
+      slots+'</div>';
+  }).join('');
+}
+async function toggleRun(courtId,slot,on){
+  if(!me){toast('Sign up first so the fam knows who\'s coming 👤');openPf();return;}
+  if(!apiOn){toast('Needs a connection 📶');return;}
+  try{
+    const r=await apiCall('/run',{token:pfToken,courtId,slot,on});
+    runs=r.runs||{};renderCourts();
+    toast(on?'Locked in — see you there 🏀':'No worries, next time 👋');
+    if(on)fireConfetti();
+  }catch(e){toast('Couldn\'t update — try again 🙏');}
+}
+/* --- anonymous ratings --- */
+const RATE_CATS=[["respect","🤝 Respect"],["passing","🎯 Passing the rock"],["iq","🧠 Game IQ"],["teamwork","💚 Teamwork"],["effort","⚡ Effort & hustle"]];
+let ratePid=null,rateScores={};
+function openRate(pid,name){
+  if(!me){toast('Sign up to rate players 👤');openPf();return;}
+  if(me&&me.id===pid){toast('Can\'t rate yourself champ 😅');return;}
+  ratePid=pid;rateScores={};
+  document.getElementById('rateName').textContent=name;
+  document.getElementById('rateCats').innerHTML=RATE_CATS.map(([k,lab])=>
+    '<div class="rcat"><div class="rlab">'+lab+'</div><div class="rstars" data-cat="'+k+'">'+
+    [1,2,3,4,5].map(v=>'<span onclick="pickStar(\''+k+'\','+v+',this)">⭐</span>').join('')+'</div></div>'
+  ).join('');
+  document.getElementById('rateM').classList.add('show');
+}
+function pickStar(cat,v,el){
+  rateScores[cat]=v;
+  const stars=[...el.parentNode.children];
+  stars.forEach((s,i)=>s.classList.toggle('on',i<v));
+}
+function closeRate(){document.getElementById('rateM').classList.remove('show');}
+async function submitRate(){
+  if(!Object.keys(rateScores).length){toast('Tap some stars first ⭐');return;}
+  try{
+    await apiCall('/rate',{token:pfToken,pid:ratePid,scores:rateScores});
+    closeRate();fireConfetti();toast('Rated — 100% anonymous 🕵️');
+  }catch(e){toast('Couldn\'t send that one 🙏');}
+}
+/* --- quote check-in + SJ approval --- */
+const BAD_WORDS=["fuck","shit","bitch","cunt","asshole","arsehole","dick","pussy","slut","whore","faggot","fag","nigger","nigga","bastard","motherfucker","wanker","retard","cock","bullshit","fck","sht","btch","cnt","pssy","fuk","fuq","phuck"];
+function hasProfanity(t){
+  let s=String(t||'').toLowerCase();
+  // undo common letter-swaps: f*ck, b!tch, sh1t, @ss…
+  s=s.replace(/[@]/g,'a').replace(/[!¡1|]/g,'i').replace(/[$5]/g,'s').replace(/[0]/g,'o').replace(/[3]/g,'e').replace(/[7]/g,'t');
+  const spaced=s.replace(/[^a-z]/g,' ');           // "sh it" style splits
+  const squashed=s.replace(/[^a-z]/g,'');          // "f*ck" → "fck"
+  return BAD_WORDS.some(w=>new RegExp('\\b'+w+'\\b').test(spaced))||BAD_WORDS.some(w=>squashed.includes(w)&&w.length>=3&&!spaced.includes(w));
+}
+function renderQuote(){
+  const q=document.getElementById('quoteText');if(!q)return;
+  q.textContent='“'+quoteOfWeek+'”';
+  document.getElementById('qComments').innerHTML=qComments.length?qComments.slice(0,12).map(c=>
+    '<div class="qc"><div class="qwho">'+(c.sup?'👑 ':'')+esc(c.name)+'</div>'+esc(c.text)+'</div>'
+  ).join(''):'<div style="font-size:11.5px;color:var(--muted-2);text-align:center;padding:6px">Be the first to check in on this one 👇</div>';
+  const bd=document.getElementById('bdayReward');if(bd)bd.textContent=bdayReward;
+}
+async function sendComment(){
+  const i=document.getElementById('qIn');const v=i.value.trim();
+  if(!v)return;
+  if(hasProfanity(v)){toast('Keep it family friendly fam 💚 no bad language');return;}
+  if(!apiOn){toast('Needs a connection 📶');return;}
+  try{
+    await apiCall('/comment',{text:v,token:pfToken,name:me?me.name:'Anon'});
+    i.value='';fireConfetti();
+    toast('Sent to SJ for approval — it\'ll show once he ticks it ✔');
+  }catch(e){toast(e.message.includes('422')?'Keep it family friendly fam 💚':'Couldn\'t send — try again 🙏');}
+}
+/* ---------- ADMIN HQ: one dashboard for everything ---------- */
+function adCard(inner,kind,id,okLabel){
+  return '<div class="qpend" style="padding:0;overflow:hidden;border-color:var(--line);background:var(--card)">'+inner+
+    '<div class="qact" style="padding:0 12px 12px">'+
+    '<button style="background:#173423;color:#30d158" onclick="adAct(\''+kind+'\',\''+id+'\',true)">'+(okLabel||'Approve')+'</button>'+
+    '<button style="background:#3a1717;color:#ff5a5a" onclick="adAct(\''+kind+'\',\''+id+'\',false)">Bin</button></div></div>';
+}
+async function loadPending(){
+  if(!admin||!apiOn)return;
+  try{
+    const r=await apiCall('/pending',{pass:'2004'});
+    const cname=id=>{const c=courts.find(x=>x.id===id);return c?c.name:'a court';};
+    /* badge */
+    const total=(r.fan.length+r.media.length+r.comments.length);
+    const bd=document.getElementById('adBadge');
+    if(bd){bd.style.display=total?'grid':'none';bd.textContent=total;}
+    /* stats */
+    const st=document.getElementById('adStats');
+    if(st)st.innerHTML=
+      '<div class="honor" style="cursor:pointer" onclick="openDir()"><div class="cap">Members ›</div><div class="who">'+r.stats.members+'</div></div>'+
+      '<div class="honor"><div class="cap">Baller Club</div><div class="who">'+r.stats.supporters+'</div></div>'+
+      '<div class="honor"><div class="cap">Live fan clips</div><div class="who">'+r.stats.fanLive+'</div></div>'+
+      '<div class="honor"><div class="cap">Waiting on you</div><div class="who">'+total+'</div></div>';
+    /* unified approvals queue */
+    const q=document.getElementById('adQueue');
+    if(q){
+      const items=[
+        ...r.fan.map(x=>adCard(mediaTag(x)+'<div style="padding:10px 12px"><div class="qwho" style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.08em">Fan zone · '+esc(x.cat||'')+'</div>'+
+          '<div style="font-size:12.5px;margin-top:2px"><b>'+esc(x.name)+'</b>'+(x.c?' — '+esc(x.c):'')+'</div>'+
+          '<div style="font-size:10px;color:var(--muted-2);margin-top:2px">'+ago(x.t)+'</div></div>','fan',x.id)),
+        ...r.media.map(x=>adCard(mediaTag(x)+'<div style="padding:10px 12px"><div class="qwho" style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.08em">Court · '+esc(cname(x.courtId))+'</div>'+
+          '<div style="font-size:12.5px;margin-top:2px"><b>'+esc(x.name)+'</b>'+(x.c?' — '+esc(x.c):'')+'</div>'+
+          '<div style="font-size:10px;color:var(--muted-2);margin-top:2px">'+ago(x.t)+'</div></div>','media',x.id)),
+        ...r.comments.map(x=>adCard('<div style="padding:12px"><div class="qwho" style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.08em">Quote comment</div>'+
+          '<div style="font-size:12.5px;margin-top:3px"><b>'+esc(x.name)+'</b> — '+esc(x.text)+'</div>'+
+          '<div style="font-size:10px;color:var(--muted-2);margin-top:2px">'+ago(x.t)+'</div></div>','comment',x.id))
+      ];
+      q.innerHTML=items.length?items.join(''):'<div class="news-empty">All clear — nothing waiting on you.</div>';
+    }
+    /* registrations */
+    const w3=document.getElementById('adRegs');
+    if(w3){
+      const rows=(r.regs||[]).map(x=>{
+        let body='';
+        if(x.type==='team'&&Array.isArray(x.data)){
+          const d=x.data;
+          body='<b>'+esc(d[0]||'Team')+'</b> — captain '+esc(d[1]||'?')+' · '+esc(d[2]||'no contact')+
+            '<div style="font-size:11.5px;color:var(--muted);margin-top:3px">Five: '+d.slice(3,8).map(esc).join(', ')+(d[8]?' · “'+esc(d[8])+'”':'')+'</div>';
+        }else if(x.data){
+          body='<b>'+esc(x.data.name||'Player')+'</b> — solo · '+esc(x.data.pos||'?')+' · '+esc(x.data.level||'')+' · '+esc(x.data.role||'');
+        }else{body='Registration';}
+        return '<div class="qpend" style="border-color:var(--line);background:var(--card)"><div style="font-size:12.5px;line-height:1.5">'+body+'</div>'+
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">'+
+          '<span style="font-size:10px;color:var(--muted-2)">'+ago(x.t)+'</span>'+
+          '<button class="udel" style="margin:0" onclick="adAct(\'reg\',\''+x.id+'\',false)">Clear</button></div></div>';
+      }).join('');
+      w3.innerHTML=rows||'<div class="news-empty">No registrations yet — they land here the second someone signs up.</div>';
+    }
+    /* content editor (don't clobber a field mid-edit) */
+    const fill=(id,val)=>{const el=document.getElementById(id);if(el&&document.activeElement!==el)el.value=val||'';};
+    fill('adQuote',r.settings.quote);fill('adReward',r.settings.bdayReward);
+    fill('adWeek',r.settings.weekLabel);fill('adNotice',r.settings.wnbNotice);
+  }catch(e){}
+}
+async function adAct(kind,id,ok){
+  try{
+    await apiCall('/approve',{pass:'2004',kind,id,ok});
+    toast(ok?'Approved — it\'s live':'Binned');
+    loadPending();if(ok)loadAll();
+  }catch(e){toast('Try again');}
+}
+async function adSave(key,elId){
+  const v=(document.getElementById(elId).value||'').trim();
+  if(!v){toast('Type something first');return;}
+  try{
+    await apiCall('/setting',{pass:'2004',key,value:v});
+    if(key==='quote')quoteOfWeek=v;
+    if(key==='bdayReward')bdayReward=v;
+    if(key==='weekLabel')weekLabel=v;
+    if(key==='wnbNotice')wnbNotice=v;
+    renderQuote();applySettings();
+    toast('Saved — live for everyone');
+  }catch(e){toast('Couldn\'t save');}
+}
+/* ---------- MEMBERS DIRECTORY + DIRECT MESSAGES ---------- */
+let dmMode=null,dmWith=null,dmPoll=null;
+async function openDir(){
+  if(!admin||!apiOn)return;
+  try{
+    const r=await apiCall('/members',{pass:'2004'});
+    const el=document.getElementById('dirList');
+    el.innerHTML=(r.members||[]).map(m=>
+      '<div class="dirrow" onclick="dmFromDir(\''+m.id+'\',\''+esc(m.name).replace(/'/g,'')+'\')">'+
+      '<div class="pfav" style="width:42px;height:42px;font-size:17px">'+(m.av?'<img src="'+m.av+'"/>':'🏀')+'</div>'+
+      '<div style="flex:1;min-width:0"><h5>'+(m.sup?'👑 ':'')+esc(m.name)+'</h5>'+
+      '<p>'+esc([m.pos,m.role].filter(Boolean).join(' · ')||'Member')+(m.email?' · '+esc(m.email):'')+'</p></div>'+
+      '<span class="ftag">Message</span></div>'
+    ).join('')||'<div class="news-empty">No members yet.</div>';
+    document.getElementById('dirM').classList.add('show');
+  }catch(e){toast('Couldn\'t load members');}
+}
+function closeDir(){document.getElementById('dirM').classList.remove('show');}
+function dmFromDir(pid,name){dmMode='admin';closeDir();document.getElementById('dmM').classList.add('show');openDMThread(pid,name);}
+function dmAuth(){return dmMode==='admin'?{pass:'2004'}:{token:pfToken};}
+function openDMInbox(mode){
+  if(mode==='me'&&!me){toast('Sign in first');return;}
+  if(mode==='admin'&&!admin)return;
+  dmMode=mode;
+  document.getElementById('dmM').classList.add('show');
+  dmInboxView();
+}
+async function dmInboxView(){
+  dmWith=null;clearInterval(dmPoll);
+  document.getElementById('dmTitle').textContent='Messages';
+  document.getElementById('dmBack').style.display='none';
+  document.getElementById('dmThread').style.display='none';
+  document.getElementById('dmInputRow').style.display='none';
+  const ib=document.getElementById('dmInbox');ib.style.display='grid';
+  ib.innerHTML='<div class="news-empty">Loading…</div>';
+  try{
+    const r=await apiCall('/dm-threads',dmAuth());
+    ib.innerHTML=(r.threads||[]).map(t=>
+      '<div class="dirrow" onclick="openDMThread(\''+t.with+'\',\''+esc(t.name).replace(/'/g,'')+'\')">'+
+      '<div class="pfav" style="width:42px;height:42px;font-size:17px;'+(t.with==='lotg'?'background:#fff':'')+'">'+
+      (t.av?'<img src="'+t.av+'"/>':(t.with==='lotg'?'<img src="lotg-logo.jpeg"/>':'🏀'))+'</div>'+
+      '<div style="flex:1;min-width:0"><h5>'+(t.sup?'👑 ':'')+esc(t.name)+'</h5><p>'+esc(t.last)+'</p></div>'+
+      '<span class="ftag">'+ago(t.t)+'</span></div>'
+    ).join('')||'<div class="news-empty">No messages yet.</div>';
+  }catch(e){ib.innerHTML='<div class="news-empty">Couldn\'t load messages.</div>';}
+}
+async function openDMThread(pid,name){
+  dmWith=pid;
+  document.getElementById('dmTitle').textContent=name;
+  document.getElementById('dmBack').style.display='inline';
+  document.getElementById('dmInbox').style.display='none';
+  document.getElementById('dmThread').style.display='block';
+  document.getElementById('dmInputRow').style.display='flex';
+  await dmRefresh();
+  clearInterval(dmPoll);dmPoll=setInterval(dmRefresh,8000);
+}
+async function dmRefresh(){
+  if(!dmWith)return;
+  try{
+    const r=await apiCall('/dm-thread',{...dmAuth(),with:dmWith});
+    const myId=dmMode==='admin'?'lotg':(me&&me.id);
+    const th=document.getElementById('dmThread');
+    th.innerHTML=(r.msgs||[]).map(m=>
+      '<div class="dmb'+(m.f===myId?' mine':'')+'">'+esc(m.x)+'<span>'+ago(m.t)+'</span></div>'
+    ).join('')||'<div class="news-empty" style="border:0;background:none">Say g\'day 👋</div>';
+    th.scrollTop=99999;
+  }catch(e){}
+}
+async function dmSend(){
+  const i=document.getElementById('dmText');const v=i.value.trim();
+  if(!v||!dmWith)return;
+  if(hasProfanity(v)){toast('Keep it friendly');return;}
+  i.value='';
+  try{await apiCall('/dm-send',{...dmAuth(),to:dmWith,text:v});dmRefresh();}
+  catch(e){toast('Couldn\'t send — try again');}
+}
+function closeDM(){document.getElementById('dmM').classList.remove('show');clearInterval(dmPoll);dmWith=null;}
+
+/* --- birthday week --- */
+function bdayCheck(){
+  if(!me||!me.bmonth||!me.bweek)return;
+  const now=new Date();
+  if(now.getMonth()+1!==me.bmonth)return;
+  const d=now.getDate();
+  const ranges={1:[1,7],2:[8,14],3:[15,21],4:[22,31]};
+  const[lo,hi]=ranges[me.bweek]||[0,0];
+  if(d<lo||d>hi)return;
+  const b=document.getElementById('bdayBanner');
+  document.getElementById('bdayName').textContent=me.name.split(' ')[0].toUpperCase();
+  document.getElementById('bdayReward').textContent=bdayReward;
+  b.style.display='flex';
+  if(!sessionStorage.getItem('lotg_bday_seen')){
+    sessionStorage.setItem('lotg_bday_seen','1');
+    setTimeout(()=>{fireConfetti(true);toast('🎂 It\'s your birthday week, '+me.name.split(' ')[0]+'!');},1200);
+  }
+}
+
+/* ---------- PLAYER PROFILES / BALLER CLUB ---------- */
+let me=null;
+let pfToken=localStorage.getItem('lotg_token')||null;
+let pfPicks={pos:null,role:null};
+let pfAv=null;
+let supporters=[];
+function pfPick(el,g){el.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');pfPicks[g]=el.textContent.trim();}
+function pfPickWeek(el,w){el.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');pfPicks.bweek=w;}
+function pfAvChosen(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=async ev=>{pfAv=await compressImg(ev.target.result,420,0.8);document.getElementById('pfAvPrev').innerHTML='<img src="'+pfAv+'"/>';toast('Looking sharp 😎');};
+  r.readAsDataURL(f);
+}
+function openPf(){document.getElementById('pf').classList.add('show');renderPfView();}
+function closePf(){document.getElementById('pf').classList.remove('show');}
+function renderPfView(){
+  const su=document.getElementById('pfSignup'),card=document.getElementById('pfCard');
+  if(!me){su.style.display='block';card.style.display='none';return;}
+  su.style.display='none';card.style.display='block';
+  const sup=!!me.sup;
+  /* free member: normal profile header + upsell + buttons */
+  document.getElementById('pfHead').style.display=sup?'none':'flex';
+  document.getElementById('pfUpsell').style.display=sup?'none':'block';
+  document.getElementById('pfSupBox').style.display=sup?'block':'none';
+  document.getElementById('pfBtns').style.display=sup?'none':'grid';
+  document.getElementById('pfLinks').style.display=sup?'block':'none';
+  if(!sup){
+    document.getElementById('pfCardName').textContent=me.name;
+    document.getElementById('pfCardMeta').textContent=[me.pos,me.role].filter(Boolean).join(' • ')||'Baller';
+    const av=document.getElementById('pfCardAv');
+    av.innerHTML=me.av?'<img src="'+me.av+'"/>':'🏀';
+    av.classList.remove('gold');
+    document.getElementById('pfCardBadge').innerHTML='<span class="pill" style="font-size:9px">Free member</span>';
+    return;
+  }
+  /* member: view-only card, no buttons */
+  document.getElementById('mName').textContent=me.name;
+  document.getElementById('mMeta').textContent=me.email||[me.pos,me.role].filter(Boolean).join(' • ')||'Baller Club member';
+  document.getElementById('mAv').innerHTML=me.av?'<img src="'+me.av+'"/>':'🏀';
+  document.getElementById('mNum').textContent='#'+String(me.num||1).padStart(3,'0');
+  document.getElementById('mSince').textContent=new Date(me.t||Date.now()).toLocaleDateString('en-AU',{month:'short',year:'numeric'});
+}
+function updatePfBtn(){
+  const b=document.getElementById('pfBtn');
+  b.textContent=me?((me.sup?'👑 ':'')+me.name.split(' ')[0]):'Sign up';
+}
+async function pfSignup(){
+  const name=document.getElementById('pfName').value.trim();
+  const email=document.getElementById('pfEmail').value.trim();
+  if(!name){toast('What do we call you? 🏀');return;}
+  if(email&&!email.includes('@')){toast('That email doesn\'t look right 👀');return;}
+  if(!apiOn){toast('Profiles need a connection — try on the live site 📶');return;}
+  toast('Creating your profile… ⏳');
+  try{
+    const r=await apiCall('/signup',{name,email,av:pfAv,pos:pfPicks.pos,role:pfPicks.role,bmonth:document.getElementById('pfBMonth').value,bweek:pfPicks.bweek});
+    pfToken=r.token;localStorage.setItem('lotg_token',pfToken);
+    me=r.profile;updatePfBtn();renderPfView();fireConfetti(true);bdayCheck();renderCourts();
+    toast(r.existing?('Welcome back, '+me.name.split(' ')[0]+'! Logged you in 💚'):('Welcome to the fam, '+name.split(' ')[0]+'! 💚'));
+  }catch(e){toast('Hmm, that didn\'t work — give it another go 🙏');}
+}
+async function pfLogin(){
+  if(!apiOn){toast('Log in works on the live site 📶');return;}
+  const email=prompt('Your email 📧');
+  if(!email)return;
+  try{
+    const r=await apiCall('/login',{email:email.trim()});
+    pfToken=r.token;localStorage.setItem('lotg_token',pfToken);
+    me=r.profile;updatePfBtn();renderPfView();fireConfetti(true);
+    toast('Welcome back, '+me.name.split(' ')[0]+'! 💚');
+  }catch(e){toast('No profile with that email yet — sign up takes 20 seconds ✨');}
+}
+async function pfUpgrade(){
+  if(!me||!apiOn)return;
+  toast('Processing… ⏳');
+  try{
+    const r=await apiCall('/supporter',{token:pfToken,on:true});
+    me=r.profile;updatePfBtn();renderPfView();loadAll();
+    fireConfetti(true);
+    toast('👑 Welcome to the Baller Club — absolute legend!');
+  }catch(e){toast('Couldn\'t process that — try again 🙏');}
+}
+/* ---------- SJ's mystery box (jack-in-the-box, one-shot) ---------- */
+let mtaps=0,mtapT=null;
+function jackDone(){return localStorage.getItem('lotg_jack_done')==='1';}
+function syncMysteryBox(){
+  const b=document.getElementById('mysteryBox');
+  if(b)b.style.display=(admin&&!jackDone())?'':'none';
+}
+function mysteryTap(){
+  if(!admin||jackDone())return;
+  mtaps++;
+  clearTimeout(mtapT);mtapT=setTimeout(()=>{mtaps=0;},4000);
+  const b=document.getElementById('mysteryBox');
+  b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');
+  if(mtaps===1){toast('👀 two more taps…');}
+  else if(mtaps===2){toast('😏 one more…');}
+  else if(mtaps>=3){mtaps=0;clearTimeout(mtapT);openJack();}
+}
+function openJack(){
+  localStorage.setItem('lotg_jack_done','1'); // one-shot: box retires after it fires
+  const j=document.getElementById('jack');
+  j.classList.remove('show');void j.offsetWidth;
+  j.classList.add('show');
+  setTimeout(()=>fireConfetti(true),900);
+}
+function closeJack(){
+  document.getElementById('jack').classList.remove('show');
+  mtaps=0;
+  syncMysteryBox(); // box is gone once the prank has landed
+}
+
+function pfSignout(){
+  if(!confirm('Sign out of your profile?'))return;
+  me=null;pfToken=null;localStorage.removeItem('lotg_token');
+  updatePfBtn();renderPfView();closePf();toast('Signed out — come back soon 👋');
+}
+async function pfBoot(){
+  if(!pfToken||!apiOn)return;
+  try{const r=await apiCall('/me',{token:pfToken});me=r.profile;updatePfBtn();bdayCheck();renderCourts();}catch(e){/* stale token */}
+}
+function renderWall(){
+  const w=document.getElementById('wallWrap');if(!w)return;
+  if(!supporters.length){w.style.display='none';return;}
+  w.style.display='block';
+  document.getElementById('wall').innerHTML=supporters.map(s=>
+    '<div class="wcard"><div class="wav">'+(s.av?'<img src="'+s.av+'"/>':'👑')+'</div><div class="wname">'+esc(s.name)+'</div></div>'
+  ).join('');
+}
+function ago(t){const s=(Date.now()-t)/1000;if(s<90)return 'just now';if(s<3600)return Math.round(s/60)+' min ago';if(s<86400)return Math.round(s/3600)+'h ago';return new Date(t).toLocaleDateString('en-AU',{day:'numeric',month:'short'});}
+function esc(x){return String(x||'').replace(/</g,'&lt;');}
+function mediaTag(p){return p.m?(p.vid?'<video class="um" src="'+p.m+'" controls muted playsinline></video>':'<img class="um" src="'+p.m+'" alt=""/>'):'';}
+
+/* ---------- SJ strips on every tab ---------- */
+const STRIPS=['shop','ubl','nbl','nbl1','wnb','fam'];
+const stripNames={shop:'the home page',ubl:'UBL',nbl:'NBL',nbl1:'NBL1 East',wnb:'Wednesday Night',fam:'the Fam'};
+function buildStrips(){
+  STRIPS.forEach(t=>{
+    const s=document.getElementById('strip-'+t);if(!s)return;
+    s.innerHTML='<button class="upbtn adminonly" onclick="openUp(\''+t+'\')">Post a photo or video to '+stripNames[t]+'</button><div id="feed-'+t+'" style="display:flex;flex-direction:column;gap:10px"></div>';
+    renderFeed(t);
+  });
+}
+function renderFeed(t){
+  const el=document.getElementById('feed-'+t);if(!el)return;
+  const list=uploads[t]||[];
+  el.innerHTML=list.map((p,i)=>
+    '<div class="upcard">'+mediaTag(p)+
+    '<div class="ub"><div class="uwho">SJ 🐐 • '+ago(p.t)+'</div>'+
+    (p.c?'<div class="ucap">'+esc(p.c)+'</div>':'')+
+    '<div class="uact"><button class="udel adminonly" onclick="delUpload(\''+t+'\','+i+')">🗑 remove</button></div></div></div>'
+  ).join('');
+}
+function delUpload(t,i){
+  const it=uploads[t][i];
+  uploads[t].splice(i,1);
+  if(apiOn&&it&&it.id){apiCall('/delete',{kind:'tab',id:it.id,pass:'2004'}).catch(()=>{});}
+  else{sSet('lotg_uploads',uploads);}
+  renderFeed(t);toast('Removed 🗑');
+}
+
+/* ---------- FAN ZONE ---------- */
+function renderFan(){
+  const g=document.getElementById('fanGrid');if(!g)return;
+  g.innerHTML=fanposts.map((p,i)=>
+    '<div class="upcard'+(p.sup?' sup':'')+'">'+mediaTag(p)+
+    '<div class="ub"><div class="uwho">'+(p.sup?'👑 ':'')+esc(p.name||'Anon baller')+' • '+esc(p.cat)+'</div>'+
+    (p.c?'<div class="ucap" style="font-size:12px">'+esc(p.c)+'</div>':'')+
+    '<div class="uact"><button class="fire" onclick="fanVote('+i+')">🔥 '+(p.likes||0)+'</button>'+
+    '<button class="udel adminonly" onclick="fanDel('+i+')">🗑</button></div></div></div>'
+  ).join('');
+}
+function fanVote(i){
+  fanposts[i].likes=(fanposts[i].likes||0)+1;
+  if(apiOn&&fanposts[i].id){apiCall('/vote',{id:fanposts[i].id}).catch(()=>{});}
+  else{sSet('lotg_fanzone',fanposts);}
+  renderFan();if(fanposts[i].likes%5===0)fireConfetti();
+}
+function fanDel(i){
+  const it=fanposts[i];fanposts.splice(i,1);
+  if(apiOn&&it&&it.id){apiCall('/delete',{kind:'fan',id:it.id,pass:'2004'}).catch(()=>{});}
+  else{sSet('lotg_fanzone',fanposts);}
+  renderFan();toast('Removed 🗑');
+}
+
+/* ---------- NEWSLETTER ---------- */
+function renderNews(){
+  const el=document.getElementById('newsList');if(!el)return;
+  if(!news.length){el.innerHTML='<div class="news-empty">📰 Issue #1 landing soon — subscribe below so you don\'t miss it 👇</div>';return;}
+  el.innerHTML=news.map((p,i)=>
+    '<div class="newsissue">'+mediaTag(p)+
+    '<div class="nb"><div class="ndate">Issue #'+(news.length-i)+' • '+ago(p.t)+'</div>'+
+    '<h4>'+esc(p.title||'LOTG Newsletter')+'</h4>'+
+    (p.c?'<p>'+esc(p.c)+'</p>':'')+
+    '<div class="uact"><button class="udel adminonly" onclick="newsDel('+i+')">🗑 remove issue</button></div></div></div>'
+  ).join('');
+}
+function newsDel(i){
+  const it=news[i];news.splice(i,1);
+  if(apiOn&&it&&it.id){apiCall('/delete',{kind:'news',id:it.id,pass:'2004'}).catch(()=>{});}
+  else{sSet('lotg_news',news);}
+  renderNews();toast('Issue removed 🗑');
+}
+function subscribe(){
+  const e=document.getElementById('subEmail');
+  if(!e.value.includes('@')){toast('Pop your email in first 💌');return;}
+  e.value='';fireConfetti();toast('You\'re on the list — welcome to the fam 💌');
+}
+
+/* ---------- UPLOAD MODAL ---------- */
+let upMode='shop',upMedia=null,upIsVid=false,upCat='🎯 Best Shot',upCourtId=null,upCourtName='';
+function openCourtUp(courtId,courtName){upCourtId=courtId;upCourtName=courtName;openUp('court');}
+function openUp(mode){
+  if(mode!=='fan'&&mode!=='court'&&!admin){toast('That button\'s for SJ 🔒');return;}
+  upMode=mode;upMedia=null;upIsVid=false;
+  document.getElementById('upFile').value='';
+  document.getElementById('upPrevImg').style.display='none';
+  document.getElementById('upPrevVid').style.display='none';
+  document.getElementById('upPickTxt').style.display='block';
+  document.getElementById('upCap').value='';
+  document.getElementById('upFanFields').style.display=(mode==='fan'||mode==='court')?'block':'none';
+  document.getElementById('upCatsWrap').style.display=mode==='fan'?'block':'none';
+  document.getElementById('upNewsFields').style.display=mode==='news'?'block':'none';
+  document.getElementById('upTitle').textContent=
+    mode==='fan'?'🔥 Drop your Glory League clip':
+    mode==='court'?'📸 From '+upCourtName:
+    mode==='news'?'📰 Post a newsletter':
+    '➕ Post to '+stripNames[mode];
+  document.getElementById('upCapLabel').textContent=mode==='news'?'What\'s in this issue?':'Caption';
+  if((mode==='fan'||mode==='court')&&me){document.getElementById('upName').value=me.name;}
+  document.getElementById('upm').classList.add('show');
+}
+function closeUp(){document.getElementById('upm').classList.remove('show');}
+function pickCat(el){document.querySelectorAll('#upCats .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');upCat=el.textContent.trim();}
+function upFileChosen(e){
+  const f=e.target.files[0];if(!f)return;
+  upIsVid=f.type.startsWith('video');
+  const r=new FileReader();
+  r.onload=ev=>{
+    upMedia=ev.target.result;
+    document.getElementById('upPickTxt').style.display='none';
+    const img=document.getElementById('upPrevImg'),vid=document.getElementById('upPrevVid');
+    if(upIsVid){vid.src=upMedia;vid.style.display='block';img.style.display='none';}
+    else{img.src=upMedia;img.style.display='block';vid.style.display='none';}
+  };
+  r.readAsDataURL(f);
+}
+function compressImg(dataURL,M,q){
+  M=M||1400;q=q||0.82;
+  return new Promise(res=>{
+    const im=new Image();
+    im.onload=()=>{
+      let w=im.width,h=im.height;
+      if(w>M||h>M){const k=Math.min(M/w,M/h);w=Math.round(w*k);h=Math.round(h*k);}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(im,0,0,w,h);
+      res(c.toDataURL('image/jpeg',q));
+    };
+    im.onerror=()=>res(dataURL);
+    im.src=dataURL;
+  });
+}
+function localSave(post){
+  let ok=true;
+  if(upMode==='fan'){fanposts.unshift(post);ok=sSet('lotg_fanzone',fanposts);renderFan();}
+  else if(upMode==='news'){news.unshift(post);ok=sSet('lotg_news',news);renderNews();}
+  else{if(!uploads[upMode])uploads[upMode]=[];uploads[upMode].unshift(post);ok=sSet('lotg_uploads',uploads);renderFeed(upMode);}
+  return ok;
+}
+async function postUp(){
+  const cap=document.getElementById('upCap').value.trim();
+  if(!upMedia&&!cap){toast('Add a photo, video or caption first 📷');return;}
+  let media=upMedia;
+  if(media&&!upIsVid){media=await compressImg(media);}
+  if(media&&upIsVid&&media.length>5800000){
+    toast('That video\'s a bit big (4MB max for now) — try a shorter clip ✂️');return;
+  }
+  /* court uploads: media required, straight to SJ's approval queue */
+  if(upMode==='court'){
+    if(!media){toast('Add a photo or video from the court 📸');return;}
+    if(!apiOn){toast('Needs a connection 📶');return;}
+    if(hasProfanity(cap)){toast('Keep the caption family friendly 💚');return;}
+    closeUp();toast('Sending… ⏳');
+    try{
+      await apiCall('/court-media',{courtId:upCourtId,m:media,vid:upIsVid,c:cap,token:pfToken,name:document.getElementById('upName').value.trim()});
+      fireConfetti();
+      toast('Sent to SJ for approval — it\'ll show on the court page once he ticks it ✔');
+    }catch(e){toast('Couldn\'t send — try again 🙏');}
+    return;
+  }
+  const kind=upMode==='fan'?'fan':(upMode==='news'?'news':'tab');
+  const body={kind,tab:upMode,m:media,vid:upIsVid,c:cap,pass:'2004',token:pfToken,
+    name:document.getElementById('upName').value.trim(),
+    cat:upCat,
+    title:document.getElementById('upNTitle').value.trim()};
+  closeUp();
+  if(apiOn){
+    toast('Posting… ⏳');
+    try{
+      const r=await apiCall('/post',body);
+      if(kind==='fan'){/* member content waits in Admin HQ — nothing shows until approved */}
+      else if(kind==='news'){news.unshift(r.item);renderNews();}
+      else{if(!uploads[upMode])uploads[upMode]=[];uploads[upMode].unshift(r.item);renderFeed(upMode);}
+      fireConfetti(true);
+      toast(kind==='fan'?'Sent — it\'ll hit the Fan Zone once SJ approves it':'Posted for everyone! Looking good SJ 🐐');
+      return;
+    }catch(e){/* fall through to local save */}
+  }
+  const post={m:media,vid:upIsVid,c:cap,t:Date.now()};
+  if(kind==='fan'){post.name=body.name||'Anon baller';post.cat=upCat;post.likes=0;}
+  if(kind==='news'){post.title=body.title||'LOTG Newsletter';}
+  const ok=localSave(post);
+  fireConfetti(true);
+  toast(ok?'Saved on this device 📱 (no connection to the fam server right now)':'Posted for this session (file too big) 📱');
+}
+
+applyAdmin();buildStrips();renderFan();renderNews();loadAll().then(pfBoot);
+
+/* ---------- register tabs ---------- */
+function switchTab(which){
+  const t=which==='team';
+  document.getElementById('tabTeam').classList.toggle('on',t);
+  document.getElementById('tabSolo').classList.toggle('on',!t);
+  document.getElementById('teamForm').style.display=t?'block':'none';
+  document.getElementById('soloForm').style.display=t?'none':'block';
+  document.getElementById('confirmBox').classList.remove('show');
+}
+function soloTab(){showPage('wnb');switchTab('solo');setTimeout(()=>scrollToId('register'),150);}
+
+/* ---------- chips ---------- */
+const picks={pos:null,role:null};
+function pick(el,group){
+  el.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');picks[group]=el.textContent.trim();
+}
+
+/* ---------- selfie ---------- */
+let selfieData=null;
+function previewSelfie(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{selfieData=ev.target.result;document.getElementById('selfiePrev').innerHTML='<img src="'+selfieData+'"/>';toast('Looking good 😎');};
+  r.readAsDataURL(f);
+}
+
+/* ---------- submit ---------- */
+function showConfirm(title,msg){
+  document.getElementById('teamForm').style.display='none';
+  document.getElementById('soloForm').style.display='none';
+  document.getElementById('confirmTitle').textContent=title;
+  document.getElementById('confirmMsg').textContent=msg;
+  document.getElementById('confirmBox').classList.add('show');
+  fireConfetti();scrollToId('register');
+}
+function submitTeam(e){
+  e.preventDefault();
+  const n=e.target.tname.value||'Your squad';
+  const vals=[...e.target.querySelectorAll('input')].map(i=>i.value);
+  if(apiOn){apiCall('/register',{type:'team',data:vals}).catch(()=>{});}
+  showConfirm("Squad registered! 🏀","“"+n+"” is in the mix. SJ will confirm your spot on the ladder and send comp details. 3 spots were left — nice work locking one in!");
+  return false;
+}
+function submitSolo(e){
+  e.preventDefault();
+  if(!picks.pos){toast('Pick your position 👀');return false;}
+  if(!picks.role){toast('Pick your superpower ⚡');return false;}
+  const name=document.getElementById('soloName').value||'Baller';
+  if(apiOn){apiCall('/register',{type:'solo',data:{name,pos:picks.pos,role:picks.role,level:document.getElementById('soloLevel').value}}).catch(()=>{});}
+  addPending(name);
+  showConfirm("You're in the pool! ✨",name.split(' ')[0]+", you're locked into the matching pool as a "+picks.pos+" ("+picks.role+"). SJ builds balanced squads and you'll get your team + first game night soon.");
+  return false;
+}
+function resetForms(){
+  document.getElementById('teamForm').reset();
+  document.getElementById('soloForm').reset();
+  picks.pos=null;picks.role=null;selfieData=null;
+  document.querySelectorAll('#posChips .chip,#roleChips .chip').forEach(c=>c.classList.remove('on'));
+  document.getElementById('selfiePrev').innerHTML='😊';
+  document.getElementById('confirmBox').classList.remove('show');
+  switchTab('team');
+}
+
+/* ---------- pending profile into builder ---------- */
+function initials(n){return n.trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase()||'??';}
+function addPending(name){
+  const wrap=document.getElementById('pendingWrap');
+  const level=document.getElementById('soloLevel').value||'Social';
+  const av=selfieData?'<img src="'+selfieData+'"/>':initials(name);
+  const card=document.createElement('div');
+  card.className='squad';
+  card.innerHTML=
+    '<div class="shead"><div class="sname"><span class="tlogo" style="background:#ff2d8f">★</span> New registrant</div><div class="pendbadge">⏳ Awaiting SJ</div></div>'+
+    '<div class="roster"><div class="plr"><div class="av" style="background:#ff5a2b">'+av+'</div>'+
+    '<div><div class="pn">'+name+'</div><div class="pmeta">'+picks.pos+' • '+level+'</div></div>'+
+    '<div class="ptag">'+picks.role+'</div></div></div>'+
+    '<div class="approve-row"><button class="btn dark" onclick="this.closest(\'.squad\').remove()">✕ Skip</button>'+
+    '<button class="btn" onclick="approveSquad(this)">✔ Add to a squad</button></div>'+
+    '<div class="approved-stamp">✔ Approved 🔒</div>';
+  wrap.prepend(card);
+}
+
+/* ---------- approve / reject ---------- */
+function approveSquad(btn){
+  const sq=btn.closest('.squad');sq.classList.add('done');
+  toast('Locked in — good vibes only 🔒');fireConfetti();
+}
+function reject(btn){toast('Reshuffling for balance… ♻️');}
+
+/* ---------- merch ---------- */
+const SHOP="https://throwbackstore.com.au/pages/love-of-the-game-aus";
+const CDN="https://cdn.shopify.com/s/files/1/0745/3955/files/TEAMWEAR_ECOMM_TEMP";
+const PROD="https://throwbackstore.com.au/products/";
+const products=[
+  {n:"Practice Reversible — Black/White",p:"$60",k:"Reversible",img:CDN+"OutsideReversibleJersey.jpg?v=1765861456",h:"loveofthegame-practice-reversible-black-white"},
+  {n:"Short Sleeve Shooter Shirt",p:"$55",k:"Shooter",img:CDN+"ShortSleeveShootingShirt.jpg?v=1765854062",h:"loveofthegame-short-sleeve-shooter-shirt-black"},
+  {n:"Long Sleeve Shooter Shirt",p:"$60",k:"Shooter",img:CDN+"PulloverCrewneck.jpg?v=1765861090",h:"loveofthegame-long-sleeve-shooter-shirt-black"},
+  {n:"Muscle Tee",p:"$60",k:"Tee",img:CDN+"SleevelessShootingShirt.jpg?v=1765857522",h:"loveofthegame-muscle-tee-black"},
+  {n:"Training Shorts",p:"$40",k:"Shorts",img:CDN+"PracticeShorts.jpg?v=1765858101",h:"loveofthegame-training-shorts-black"},
+  {n:"Gameday Polo",p:"$60",k:"Polo",img:CDN+"Gameday_Polo.jpg?v=1768453890",h:"loveofthegame-polo-shirt-black"},
+  {n:"Backpack",p:"$70",k:"Bag",img:CDN+"Backpacks.jpg?v=1765860513",h:"loveofthegame-backpack-black"},
+  {n:"Sports Bag",p:"$85",k:"Bag",img:CDN+"SportsBag.jpg?v=1765861493",h:"loveofthegame-sports-bag-black"}
+];
+const grid=document.getElementById('merchGrid');
+grid.innerHTML=products.map(pr=>
+  '<a class="prod" href="'+PROD+pr.h+'" target="_blank" rel="noopener">'+
+  '<div class="img"><img loading="lazy" src="'+pr.img+'" alt="'+pr.n+'"/><span class="kind">'+pr.k+'</span></div>'+
+  '<div class="body"><div class="pname">'+pr.n+'</div><div class="price">'+pr.p+'</div>'+
+  '<span class="btn">Shop now →</span></div></a>'
+).join('');
+function shopAll(){window.open(SHOP,'_blank');}
+
+/* ---------- community chat (demo) ---------- */
+const seedMsgs=[
+  {w:'SJ 🐐',c:'#ff5a2b',t:'Origin week fam — no runs this Wed. Back bigger on the 16th 🏀💙'},
+  {w:'Willo',c:'#2e8b57',t:'MVP chain still warm 😤 who wants it week 2??'},
+  {w:'Moussa',c:'#1f6fb2',t:'3 team spots left for the new tourney — get your 5 in 🙏'},
+  {w:'Jess',c:'#8850ff',t:'first time coming down Wednesday, anyone need a guard? 🙋‍♀️'},
+  {w:'SJ 🐐',c:'#ff5a2b',t:'@Jess register solo in the WNB tab — we\'ll find you a squad 💚'}
+];
+const replies=[
+  'love that energy 🔥','see you Wednesday 🏀','good vibes only 💚','this is what it\'s about 🙌','say less 😤','the fam grows 📈'
+];
+function renderMsg(m,me){
+  const d=document.createElement('div');d.className='msg'+(me?' me':'');
+  d.innerHTML='<div class="mav" style="background:'+m.c+'">'+m.w.replace(/[^A-Z]/g,'').slice(0,2)+'</div>'+
+    '<div class="bub"><div class="who">'+m.w+'</div><div class="txt">'+m.t+'</div></div>';
+  document.getElementById('msgs').appendChild(d);
+  document.getElementById('msgs').scrollTop=99999;
+}
+seedMsgs.forEach(m=>renderMsg(m,false));
+function sendMsg(){
+  const i=document.getElementById('chatText');const v=i.value.trim();if(!v)return;
+  renderMsg({w:me?((me.sup?'👑 ':'')+me.name):'You',c:'#ff2d8f',t:v.replace(/</g,'&lt;')},true);
+  i.value='';
+  setTimeout(()=>{renderMsg({w:'SJ 🐐',c:'#ff5a2b',t:replies[Math.floor(Math.random()*replies.length)]},false);},900);
+}
+
+/* ---------- Easter egg: tap logo for GOAT discount codes ---------- */
+let taps=0,resetT=null,got8=false,got23=false;
+const logoEl=document.getElementById('logoTap');
+function armReset(){clearTimeout(resetT);resetT=setTimeout(()=>{taps=0;},2200);}
+logoEl.addEventListener('click',()=>{
+  taps++;
+  if(!got8 && taps===8){got8=true;clearTimeout(resetT);showReward('GOAT8','8%','You tapped 8 — certified GOAT! 🐐');return;}
+  if(!got23 && taps===23){got23=true;clearTimeout(resetT);showReward('GOAT23','23%','23 in a row?! Absolute GOAT. 🐐🔥');return;}
+  if(!got8 && taps>=4 && taps<8){toast('🐐 '+(8-taps)+' more tap'+((8-taps)===1?'':'s')+'…');}
+  else if(got8 && !got23 && taps>8 && taps<23 && taps%3===0){toast('🔥 keep going — '+(23-taps)+' to GOAT23');}
+  armReset();
+});
+
+/* reward popup + copy */
+function showReward(code,off,msg){
+  const m=document.getElementById('reward');
+  m.querySelector('#rOff').textContent=off+' OFF';
+  m.querySelector('#rMsg').textContent=msg;
+  m.querySelector('#rCode').textContent=code;
+  m.querySelector('#rCopy').onclick=()=>copyCode(code);
+  m.classList.add('show');
+  fireConfetti(true);
+}
+function closeReward(){document.getElementById('reward').classList.remove('show');armReset();}
+function copyCode(code){
+  const done=()=>toast('Copied '+code+' — paste at checkout 🛒');
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(code).then(done).catch(()=>fallbackCopy(code,done));}
+  else fallbackCopy(code,done);
+}
+function fallbackCopy(code,done){const t=document.createElement('textarea');t.value=code;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.focus();t.select();try{document.execCommand('copy')}catch(e){}t.remove();done();}
+
+/* ---------- confetti ---------- */
+const cv=document.getElementById('confetti');const cx=cv.getContext('2d');
+function sizeCanvas(){cv.width=innerWidth;cv.height=innerHeight;}sizeCanvas();addEventListener('resize',sizeCanvas);
+let parts=[];
+function fireConfetti(big){
+  const n=big?140:60;const cols=['#ff2d8f','#ff5a2b','#ff9d1a','#ffc44d','#ffffff','#28c76f'];
+  for(let i=0;i<n;i++){parts.push({x:innerWidth/2,y:innerHeight*0.34,vx:(Math.random()-.5)*11,vy:Math.random()*-13-4,g:.32,s:Math.random()*7+4,c:cols[i%cols.length],r:Math.random()*6,vr:(Math.random()-.5)*.4,life:80});}
+  if(!raf)loop();
+}
+let raf=null;
+function loop(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  parts.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.6);cx.restore();});
+  parts=parts.filter(p=>p.life>0&&p.y<cv.height+40);
+  if(parts.length){raf=requestAnimationFrame(loop);}else{cx.clearRect(0,0,cv.width,cv.height);raf=null;}
+}
+
+/* ---------- welcome ---------- */
+setTimeout(()=>toast('Welcome to the fam 🏀 Good vibes only'),900);
+console.log('%c🏀 For the Love of the Game','font-size:20px;font-weight:bold;color:#ff5a2b');
+console.log('%cYou found the console — you\'re one of us. Keep hooping. 💚','color:#ff2d8f;font-weight:bold');
+</script>
+</body>
+</html>

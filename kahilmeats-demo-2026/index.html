@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kahil Meats — Bass Hill Plaza | Award-Winning Halal Butcher</title>
+<meta name="description" content="Kahil Meats, Bass Hill Plaza. Award-winning halal butcher. Order fresh quality meat online — see what's in stock live and get it delivered daily. $50 min delivery." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#0e0e0e;
+  --charcoal:#151515;
+  --charcoal-2:#1e1e1e;
+  --red:#c1121f;
+  --red-dark:#8d0d17;
+  --cream:#f6f1e7;
+  --cream-2:#efe7d6;
+  --gold:#c9a44c;
+  --paper:#ffffff;
+  --muted:#6b6b6b;
+  --line:#e7e1d3;
+  --green:#2e7d32;
+  --amber:#c77700;
+  --shadow:0 10px 40px rgba(0,0,0,.12);
+  --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  color:var(--ink);
+  background:var(--cream);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.display{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.5px;line-height:1}
+.oswald{font-family:'Oswald',sans-serif}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 22px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1px;
+  font-size:14px;padding:14px 26px;border-radius:999px;border:none;cursor:pointer;
+  transition:.18s transform,.18s background,.18s box-shadow;
+}
+.btn:active{transform:translateY(1px)}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:var(--red-dark)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-dark:hover{background:#000}
+.btn-ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.55)}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.btn-gold{background:var(--gold);color:#151515}
+.btn-sm{padding:9px 16px;font-size:12px}
+
+/* ---------- Top announcement ---------- */
+.ticker{background:var(--red);color:#fff;font-family:'Oswald',sans-serif;font-weight:500;
+  text-transform:uppercase;letter-spacing:1.5px;font-size:12.5px;overflow:hidden;white-space:nowrap}
+.ticker__track{display:inline-block;padding:8px 0;animation:scroll 26s linear infinite}
+.ticker span{margin:0 26px}
+.ticker span b{color:var(--gold)}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- Header ---------- */
+header.nav{position:sticky;top:0;z-index:60;background:rgba(14,14,14,.96);
+  backdrop-filter:blur(8px);border-bottom:1px solid #262626}
+.nav__in{display:flex;align-items:center;justify-content:space-between;height:74px}
+.logo{display:flex;align-items:center;gap:12px;color:#fff}
+.logo .cleavers{width:38px;height:38px;flex:none}
+.logo .txt{line-height:1}
+.logo .txt b{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:1px;display:block}
+.logo .txt small{font-family:'Oswald',sans-serif;font-size:9.5px;letter-spacing:4px;color:var(--gold)}
+.nav__links{display:flex;gap:28px;align-items:center}
+.nav__links a{color:#e8e8e8;font-family:'Oswald',sans-serif;font-weight:500;text-transform:uppercase;
+  letter-spacing:1px;font-size:13.5px;transition:.15s color}
+.nav__links a:hover{color:var(--gold)}
+.nav__right{display:flex;align-items:center;gap:14px}
+.cartbtn{position:relative;background:var(--red);color:#fff;border:none;cursor:pointer;
+  width:46px;height:46px;border-radius:12px;display:grid;place-items:center;transition:.15s background}
+.cartbtn:hover{background:var(--red-dark)}
+.cartbtn .count{position:absolute;top:-7px;right:-7px;background:var(--gold);color:#151515;
+  font-family:'Oswald',sans-serif;font-weight:700;font-size:12px;min-width:22px;height:22px;
+  border-radius:999px;display:grid;place-items:center;padding:0 5px;border:2px solid var(--ink)}
+.burger{display:none;background:none;border:none;color:#fff;cursor:pointer}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:var(--charcoal);color:#fff;overflow:hidden}
+.hero__bg{position:absolute;inset:0;background:
+  radial-gradient(1000px 500px at 78% 15%,rgba(193,18,31,.32),transparent 60%),
+  linear-gradient(180deg,#181818,#0d0d0d);}
+.hero__tiles{position:absolute;inset:0;opacity:.14;background-image:
+  linear-gradient(135deg,#2a2a2a 25%,transparent 25%),
+  linear-gradient(225deg,#2a2a2a 25%,transparent 25%),
+  linear-gradient(45deg,#2a2a2a 25%,transparent 25%),
+  linear-gradient(315deg,#2a2a2a 25%,#0d0d0d 25%);
+  background-size:34px 34px;background-position:17px 0,17px 0,0 0,0 0}
+.hero__in{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;
+  align-items:center;padding:64px 0 76px}
+.badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.pill{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);color:#fff;font-family:'Oswald',sans-serif;
+  text-transform:uppercase;letter-spacing:1px;font-size:11.5px;padding:7px 13px;border-radius:999px}
+.pill.gold{background:rgba(201,164,76,.14);border-color:rgba(201,164,76,.5);color:var(--gold)}
+.hero h1{font-size:clamp(46px,7vw,84px);text-transform:uppercase}
+.hero h1 .red{color:var(--red);-webkit-text-stroke:1px rgba(255,255,255,.15)}
+.hero__sub{font-size:19px;color:#d8d3c8;max-width:520px;margin:20px 0 30px}
+.hero__cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero__stats{display:flex;gap:30px;margin-top:38px;flex-wrap:wrap}
+.hero__stats .s b{font-family:'Anton',sans-serif;font-size:30px;color:var(--gold);display:block}
+.hero__stats .s span{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1px;
+  font-size:11.5px;color:#b9b4a8}
+.hero__card{background:linear-gradient(160deg,#242424,#141414);border:1px solid #333;
+  border-radius:20px;padding:26px;box-shadow:var(--shadow)}
+.hero__card h4{font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;
+  letter-spacing:1.5px;font-size:13px;color:var(--gold);margin-bottom:6px}
+.hero__card .live{display:inline-flex;align-items:center;gap:8px;font-family:'Oswald',sans-serif;
+  font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#cfcabf;margin-bottom:18px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(46,125,50,.7);
+  animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,125,50,.6)}70%{box-shadow:0 0 0 8px rgba(46,125,50,0)}100%{box-shadow:0 0 0 0 rgba(46,125,50,0)}}
+.mini{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #2b2b2b}
+.mini:last-child{border-bottom:none}
+.mini .n{font-weight:600;font-size:14.5px}
+.mini .p{font-family:'Oswald',sans-serif;color:var(--gold);font-size:14px}
+.tag{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.8px;font-size:10px;
+  padding:3px 8px;border-radius:6px;font-weight:600}
+.tag.in{background:rgba(46,125,50,.18);color:#7bd17f}
+.tag.low{background:rgba(199,119,0,.2);color:#f0b464}
+.tag.out{background:rgba(193,18,31,.2);color:#f08a92}
+
+/* ---------- Trust bar ---------- */
+.trust{background:var(--ink);color:#cfcabf;border-top:1px solid #262626}
+.trust__in{display:flex;gap:38px;justify-content:center;flex-wrap:wrap;padding:18px 0;
+  font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12.5px}
+.trust__in .t{display:flex;align-items:center;gap:9px}
+.trust__in svg{color:var(--gold)}
+
+/* ---------- Section base ---------- */
+section{padding:72px 0}
+.sec-head{text-align:center;max-width:640px;margin:0 auto 40px}
+.eyebrow{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;
+  font-size:12.5px;color:var(--red);font-weight:600;margin-bottom:10px}
+.sec-head h2{font-size:clamp(34px,5vw,52px);text-transform:uppercase}
+.sec-head p{color:var(--muted);margin-top:12px;font-size:16.5px}
+
+/* ---------- Shop / live menu ---------- */
+#shop{background:var(--cream)}
+.shop-bar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:26px}
+.search{flex:1;min-width:220px;position:relative}
+.search input{width:100%;padding:14px 16px 14px 44px;border:1px solid var(--line);border-radius:12px;
+  font-size:15px;font-family:'Inter';background:#fff}
+.search input:focus{outline:2px solid var(--red);border-color:var(--red)}
+.search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.stock-toggle{display:flex;align-items:center;gap:9px;font-family:'Oswald',sans-serif;
+  text-transform:uppercase;letter-spacing:1px;font-size:12.5px;color:#444;user-select:none;cursor:pointer}
+.switch{width:44px;height:24px;background:#ccc4b2;border-radius:999px;position:relative;transition:.2s background}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;
+  border-radius:50%;transition:.2s transform;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.stock-toggle.on .switch{background:var(--green)}
+.stock-toggle.on .switch::after{transform:translateX(20px)}
+.cats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.cat{font-family:'Oswald',sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:1px;
+  font-size:13px;padding:10px 18px;border-radius:999px;border:1px solid var(--line);
+  background:#fff;cursor:pointer;transition:.15s all;white-space:nowrap}
+.cat:hover{border-color:var(--ink)}
+.cat.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  display:flex;flex-direction:column;transition:.18s transform,.18s box-shadow}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.card.sold{opacity:.72}
+.card__img{position:relative;aspect-ratio:4/3;overflow:hidden;background:#e9e2d4}
+.card__img .emoji{width:100%;height:100%;display:grid;place-items:center;font-size:74px;
+  background:radial-gradient(circle at 50% 40%,#fff,#ede5d5)}
+.card__badges{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap}
+.card__fav{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.55);color:#fff;border:none;
+  width:34px;height:34px;border-radius:50%;cursor:pointer;display:grid;place-items:center}
+.rib{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.8px;font-size:10px;
+  font-weight:600;padding:4px 9px;border-radius:6px;color:#fff}
+.rib.red{background:var(--red)}
+.rib.gold{background:var(--gold);color:#151515}
+.card__body{padding:16px 16px 18px;display:flex;flex-direction:column;flex:1}
+.card__body h3{font-family:'Oswald',sans-serif;font-weight:600;font-size:18px;letter-spacing:.3px;
+  text-transform:none}
+.card__cut{color:var(--muted);font-size:13px;margin:3px 0 12px;flex:1}
+.stockline{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:12.5px}
+.bar{flex:1;height:6px;background:#eee;border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px}
+.card__foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.price{font-family:'Oswald',sans-serif;font-weight:700;font-size:20px}
+.price small{font-weight:400;font-size:12.5px;color:var(--muted)}
+.add{background:var(--ink);color:#fff;border:none;border-radius:10px;padding:10px 16px;cursor:pointer;
+  font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12.5px;
+  display:inline-flex;align-items:center;gap:7px;transition:.15s background}
+.add:hover{background:var(--red)}
+.add:disabled{background:#c9c2b3;cursor:not-allowed}
+.stepper{display:flex;align-items:center;gap:0;border:1px solid var(--ink);border-radius:10px;overflow:hidden}
+.stepper button{background:var(--ink);color:#fff;border:none;width:34px;height:38px;font-size:18px;cursor:pointer}
+.stepper button:hover{background:var(--red)}
+.stepper span{min-width:52px;text-align:center;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px}
+.empty{grid-column:1/-1;text-align:center;padding:50px;color:var(--muted)}
+
+/* ---------- Value packs ---------- */
+#packs{background:var(--charcoal);color:#fff}
+#packs .sec-head h2,#packs .eyebrow{color:#fff}
+#packs .eyebrow{color:var(--gold)}
+#packs .sec-head p{color:#b9b4a8}
+.packgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.pack{background:linear-gradient(160deg,#232323,#161616);border:1px solid #333;border-radius:18px;
+  padding:26px;display:flex;flex-direction:column}
+.pack.feat{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.pack h3{font-family:'Oswald',sans-serif;font-weight:700;font-size:22px;text-transform:uppercase}
+.pack .kg{color:var(--gold);font-family:'Oswald';letter-spacing:1px;font-size:13px;text-transform:uppercase;margin-top:2px}
+.pack ul{list-style:none;margin:16px 0;padding:0;flex:1}
+.pack ul li{padding:6px 0;border-bottom:1px dashed #333;color:#d0cbc0;font-size:14px;display:flex;gap:8px}
+.pack ul li::before{content:"✓";color:var(--green);font-weight:700}
+.pack .pp{display:flex;align-items:baseline;gap:8px;margin:6px 0 16px}
+.pack .pp b{font-family:'Anton';font-size:34px}
+.pack .pp s{color:#8a8479;font-size:16px}
+
+/* ---------- How it works ---------- */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+.step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;text-align:center}
+.step .num{width:52px;height:52px;margin:0 auto 14px;border-radius:50%;background:var(--red);color:#fff;
+  display:grid;place-items:center;font-family:'Anton';font-size:22px}
+.step h3{font-family:'Oswald';font-weight:600;font-size:19px;text-transform:none;margin-bottom:6px}
+.step p{color:var(--muted);font-size:14.5px}
+
+/* ---------- Location ---------- */
+#visit{background:var(--cream-2)}
+.visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.hours{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.hours .hh{background:var(--ink);color:#fff;padding:16px 22px;font-family:'Oswald';
+  text-transform:uppercase;letter-spacing:1.5px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.hours .open-now{font-size:11px;color:#7bd17f;display:flex;align-items:center;gap:7px}
+.hours ul{list-style:none;padding:8px 22px 16px}
+.hours li{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.hours li:last-child{border:none}
+.hours li.today{font-weight:700}
+.hours li .t{color:var(--muted);font-family:'Oswald';letter-spacing:.5px}
+.mapcard{background:var(--ink);color:#fff;border-radius:var(--radius);padding:32px;height:100%}
+.mapcard h3{font-family:'Anton';font-size:30px;text-transform:uppercase;margin-bottom:6px}
+.mapcard .addr{color:#c9c4b9;font-size:16px;margin-bottom:20px}
+.mapcard .row{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid #2b2b2b;font-size:15px}
+.mapcard .row svg{color:var(--gold);flex:none}
+
+/* ---------- Reviews ---------- */
+.revgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.rev{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.stars{color:var(--gold);font-size:16px;letter-spacing:2px;margin-bottom:10px}
+.rev p{font-size:15px;margin-bottom:14px}
+.rev .who{display:flex;align-items:center;gap:11px}
+.rev .av{width:40px;height:40px;border-radius:50%;background:var(--red);color:#fff;display:grid;
+  place-items:center;font-family:'Oswald';font-weight:700}
+.rev .who b{display:block;font-size:14px}
+.rev .who span{font-size:12.5px;color:var(--muted)}
+
+/* ---------- CTA band ---------- */
+.band{background:var(--red);color:#fff;text-align:center;padding:64px 0}
+.band h2{font-size:clamp(32px,5vw,54px);text-transform:uppercase;margin-bottom:14px}
+.band p{font-size:18px;max-width:560px;margin:0 auto 26px;color:#ffe3e5}
+
+/* ---------- Footer ---------- */
+footer{background:var(--ink);color:#c9c4b9;padding:56px 0 30px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:34px;margin-bottom:36px}
+footer h4{font-family:'Oswald';text-transform:uppercase;letter-spacing:1.5px;color:#fff;font-size:14px;margin-bottom:14px}
+footer a{display:block;padding:5px 0;font-size:14.5px;color:#b0aa9e}
+footer a:hover{color:var(--gold)}
+.socials{display:flex;gap:12px;margin-top:14px}
+.socials a{width:42px;height:42px;border-radius:10px;background:#222;display:grid;place-items:center;color:#fff}
+.socials a:hover{background:var(--red)}
+.foot-bot{border-top:1px solid #262626;padding-top:22px;display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;font-size:13px;color:#8a8479}
+
+/* ---------- Cart drawer ---------- */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;visibility:hidden;
+  transition:.25s;z-index:90}
+.overlay.show{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;height:100%;width:420px;max-width:92vw;background:var(--cream);
+  z-index:100;transform:translateX(100%);transition:.3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.3)}
+.drawer.show{transform:translateX(0)}
+.drawer__head{background:var(--ink);color:#fff;padding:20px 22px;display:flex;justify-content:space-between;align-items:center}
+.drawer__head h3{font-family:'Oswald';font-weight:600;text-transform:uppercase;letter-spacing:1px;font-size:19px}
+.drawer__head button{background:none;border:none;color:#fff;cursor:pointer}
+.drawer__body{flex:1;overflow-y:auto;padding:18px 22px}
+.citem{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.citem .ic{width:56px;height:56px;border-radius:10px;background:#fff;border:1px solid var(--line);
+  display:grid;place-items:center;font-size:30px;flex:none}
+.citem .info{flex:1}
+.citem .info b{font-family:'Oswald';font-weight:600;font-size:15px}
+.citem .info .u{color:var(--muted);font-size:12.5px}
+.citem .info .cs{display:flex;align-items:center;gap:0;margin-top:8px;border:1px solid var(--line);
+  border-radius:8px;width:max-content;overflow:hidden;background:#fff}
+.citem .info .cs button{background:#fff;border:none;width:28px;height:30px;cursor:pointer;font-size:16px}
+.citem .info .cs button:hover{background:var(--cream-2)}
+.citem .info .cs span{min-width:44px;text-align:center;font-family:'Oswald';font-weight:600;font-size:12.5px}
+.citem .lp{text-align:right;font-family:'Oswald';font-weight:700}
+.citem .rm{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;margin-top:6px;text-decoration:underline}
+.cart-empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.cart-empty div{font-size:56px;margin-bottom:12px;opacity:.5}
+.drawer__foot{border-top:1px solid var(--line);padding:18px 22px;background:#fff}
+.ftype{display:flex;gap:10px;margin-bottom:16px}
+.ftype label{flex:1;border:1.5px solid var(--line);border-radius:10px;padding:10px;text-align:center;cursor:pointer;
+  font-family:'Oswald';text-transform:uppercase;letter-spacing:.8px;font-size:12.5px;transition:.15s}
+.ftype input{display:none}
+.ftype input:checked+span{}
+.ftype label:has(input:checked){border-color:var(--red);background:rgba(193,18,31,.06);color:var(--red)}
+.ftype label small{display:block;font-family:'Inter';text-transform:none;letter-spacing:0;color:var(--muted);font-size:11px;margin-top:2px}
+.sumrow{display:flex;justify-content:space-between;padding:5px 0;font-size:14.5px;color:#444}
+.sumrow.tot{border-top:1px solid var(--line);margin-top:8px;padding-top:12px;font-family:'Oswald';
+  font-weight:700;font-size:20px;color:var(--ink)}
+.warn{background:rgba(199,119,0,.12);color:#8a5300;border:1px solid rgba(199,119,0,.3);border-radius:10px;
+  padding:10px 12px;font-size:13px;margin-bottom:12px;display:none}
+.warn.show{display:block}
+.checkout{width:100%;margin-top:14px}
+.checkout:disabled{background:#c9c2b3;cursor:not-allowed}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);
+  background:var(--ink);color:#fff;padding:14px 22px;border-radius:12px;z-index:120;
+  font-family:'Oswald';letter-spacing:.5px;box-shadow:var(--shadow);transition:.3s;display:flex;gap:10px;align-items:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast .ok{color:#7bd17f}
+
+/* ---------- Order confirm modal ---------- */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:130;display:none;place-items:center;padding:20px}
+.modal.show{display:grid}
+.modal__box{background:#fff;border-radius:20px;max-width:440px;width:100%;padding:38px 32px;text-align:center;box-shadow:var(--shadow)}
+.modal__box .check{width:76px;height:76px;margin:0 auto 18px;border-radius:50%;background:rgba(46,125,50,.14);
+  display:grid;place-items:center;color:var(--green)}
+.modal__box h3{font-family:'Anton';font-size:30px;text-transform:uppercase;margin-bottom:8px}
+.modal__box p{color:var(--muted);margin-bottom:8px}
+.modal__box .oid{font-family:'Oswald';font-weight:700;font-size:22px;color:var(--red);margin:10px 0 22px}
+
+@media(max-width:900px){
+  .hero__in{grid-template-columns:1fr;padding:44px 0 56px}
+  .hero__card{max-width:440px}
+  .visit-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:720px){
+  .nav__links{display:none}
+  .burger{display:block}
+  .hero__stats{gap:22px}
+}
+@media(max-width:520px){
+  .foot-grid{grid-template-columns:1fr}
+  .trust__in{gap:16px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- Ticker -->
+<div class="ticker">
+  <div class="ticker__track">
+    <span>🏆 <b>Best Butcher 2020–2026</b> — Bass Hill Plaza</span>
+    <span>🚚 Fresh meat <b>delivered daily</b> — $50 min order</span>
+    <span>🥩 100% <b>Halal certified</b></span>
+    <span>🌾 From the farm to your plate</span>
+    <span>🏆 <b>Best Butcher 2020–2026</b> — Bass Hill Plaza</span>
+    <span>🚚 Fresh meat <b>delivered daily</b> — $50 min order</span>
+    <span>🥩 100% <b>Halal certified</b></span>
+    <span>🌾 From the farm to your plate</span>
+  </div>
+</div>
+
+<!-- Nav -->
+<header class="nav">
+  <div class="wrap nav__in">
+    <a href="#top" class="logo">
+      <svg class="cleavers" viewBox="0 0 48 48" fill="none">
+        <g stroke="#c9a44c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 8 L28 30 M28 30 L33 25 L20 12 C17 9 12 8 10 8Z" fill="#c9a44c" fill-opacity=".15"/>
+          <path d="M38 8 L20 30 M20 30 L15 25 L28 12 C31 9 36 8 38 8Z" fill="#c9a44c" fill-opacity=".15"/>
+          <path d="M26 32 L30 40 M22 32 L18 40"/>
+        </g>
+      </svg>
+      <span class="txt"><b>KAHIL</b><small>MEATS · BASS HILL</small></span>
+    </a>
+    <nav class="nav__links">
+      <a href="#shop">Shop</a>
+      <a href="#packs">Value Packs</a>
+      <a href="#how">How It Works</a>
+      <a href="#visit">Visit Us</a>
+      <a href="#reviews">Reviews</a>
+    </nav>
+    <div class="nav__right">
+      <a href="#shop" class="btn btn-red btn-sm" style="display:none" id="orderNav">Order Now</a>
+      <button class="cartbtn" onclick="openCart()" aria-label="Open cart">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="top" style="padding:0">
+  <div class="hero__bg"></div>
+  <div class="hero__tiles"></div>
+  <div class="wrap hero__in">
+    <div>
+      <div class="badge-row">
+        <span class="pill gold">🏆 2026 Business of the Year</span>
+        <span class="pill">🥩 100% Halal Certified</span>
+        <span class="pill">📍 Bass Hill Plaza</span>
+      </div>
+      <h1>Cut Fresh.<br>Delivered <span class="red">Daily.</span></h1>
+      <p class="hero__sub">Sydney's award-winning halal butcher. See exactly what's in the cabinet <b>live</b>, build your order, and we'll cut it fresh and bring it to your door.</p>
+      <div class="hero__cta">
+        <a href="#shop" class="btn btn-red">🛒 Order What's In Stock</a>
+        <a href="#visit" class="btn btn-ghost">Visit The Shop</a>
+      </div>
+      <div class="hero__stats">
+        <div class="s"><b>6</b><span>Years Best Butcher</span></div>
+        <div class="s"><b>9.9k</b><span>Happy Regulars</span></div>
+        <div class="s"><b>Daily</b><span>Fresh Deliveries</span></div>
+      </div>
+    </div>
+    <div class="hero__card">
+      <h4>Live From The Cabinet</h4>
+      <div class="live"><span class="dot"></span> Stock updating in real time</div>
+      <div class="mini"><span class="n">Chuck Steak <span class="tag in">In stock</span></span><span class="p">$16.99<small>/kg</small></span></div>
+      <div class="mini"><span class="n">Lamb Cutlets <span class="tag low">Low</span></span><span class="p">$44.99<small>/kg</small></span></div>
+      <div class="mini"><span class="n">Peri Peri Chicken <span class="tag in">In stock</span></span><span class="p">$15.99<small>/kg</small></span></div>
+      <div class="mini"><span class="n">Beef Short Ribs <span class="tag out">Sold out</span></span><span class="p">$24.99<small>/kg</small></span></div>
+      <a href="#shop" class="btn btn-gold" style="width:100%;margin-top:18px">See Full Live Menu →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Trust -->
+<div class="trust"><div class="wrap trust__in">
+  <div class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6L5.7 21.4 8 14 2 9.4h7.6z"/></svg> Award-Winning Since 2020</div>
+  <div class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 100% Halal Certified</div>
+  <div class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Same-Day Delivery</div>
+  <div class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg> Farm To Plate Traceable</div>
+</div></div>
+
+<!-- Shop / live menu -->
+<section id="shop">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">The Live Menu</div>
+      <h2>What's In Stock Right Now</h2>
+      <p>Everything below is in the cabinet today. Stock counts update as orders come in — when it's gone, it's gone.</p>
+    </div>
+
+    <div class="shop-bar">
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="search" placeholder="Search cuts… (e.g. lamb, mince, ribs)" />
+      </div>
+      <div class="stock-toggle" id="stockToggle" onclick="toggleInStock()">
+        <span class="switch"></span> In stock only
+      </div>
+    </div>
+
+    <div class="cats" id="cats"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- Value packs -->
+<section id="packs">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Save More</div>
+      <h2>Family Value Packs</h2>
+      <p>Pre-built boxes cut fresh to order. Feed the whole family for less — halal, sorted, delivered.</p>
+    </div>
+    <div class="packgrid" id="packgrid"></div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Easy As 1-2-3</div>
+      <h2>How Ordering Works</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3>Browse Live Stock</h3><p>See exactly what's in the cabinet today with real-time availability.</p></div>
+      <div class="step"><div class="num">2</div><h3>Build Your Order</h3><p>Add cuts by the kilo. We cut, trim & pack everything fresh to order.</p></div>
+      <div class="step"><div class="num">3</div><h3>Pickup Or Delivery</h3><p>Collect from Bass Hill Plaza or get it delivered — same day, $50 min.</p></div>
+      <div class="step"><div class="num">4</div><h3>Cook It Perfect</h3><p>Free cooking tips from our butchers with every order. From our farm to your plate.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Visit -->
+<section id="visit">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Come Say Salam</div>
+      <h2>Visit The Shop</h2>
+    </div>
+    <div class="visit-grid">
+      <div class="mapcard">
+        <h3>Kahil Meats</h3>
+        <div class="addr">Bass Hill Plaza, 753 Hume Hwy,<br>Bass Hill NSW 2197</div>
+        <div class="row"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> (02) 9793 1000</div>
+        <div class="row"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg> orders@kahilmeats.au</div>
+        <div class="row"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg> @kahilmeatsbasshill</div>
+        <a href="#shop" class="btn btn-red" style="margin-top:22px;width:100%">Start An Order</a>
+      </div>
+      <div class="hours">
+        <div class="hh">Trading Hours <span class="open-now"><span class="dot"></span> Open Now</span></div>
+        <ul id="hoursList"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section id="reviews" style="background:var(--cream)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">★★★★★ 4.9 / 5 · 1,200+ Reviews</div>
+      <h2>The Neighbourhood Loves Us</h2>
+    </div>
+    <div class="revgrid">
+      <div class="rev"><div class="stars">★★★★★</div><p>"Best butcher in Sydney hands down. The live stock menu is genius — I order the lamb shoulder every Friday and it's always cut perfect."</p><div class="who"><div class="av">MA</div><div><b>Mariam A.</b><span>Bankstown</span></div></div></div>
+      <div class="rev"><div class="stars">★★★★★</div><p>"Delivery is unreal. Ordered a family BBQ pack at 10am, delivered by 2pm. Quality you can't get at the supermarket."</p><div class="who"><div class="av">JK</div><div><b>Joe K.</b><span>Yagoona</span></div></div></div>
+      <div class="rev"><div class="stars">★★★★★</div><p>"Halal, fresh, and the boys actually know their meat. The peri peri chicken is a weekly staple in our house now."</p><div class="who"><div class="av">ST</div><div><b>Sara T.</b><span>Greenacre</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Band -->
+<div class="band">
+  <div class="wrap">
+    <h2>If You Aren't Shopping At Kahil<br>You Ain't Saving Money</h2>
+    <p>Award-winning halal quality, fresh every day, delivered to your door. Build your order in under two minutes.</p>
+    <a href="#shop" class="btn btn-gold">🥩 Order Fresh Meat Now</a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#top" class="logo" style="margin-bottom:14px">
+          <svg class="cleavers" viewBox="0 0 48 48" fill="none"><g stroke="#c9a44c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 8 L28 30 M28 30 L33 25 L20 12 C17 9 12 8 10 8Z" fill="#c9a44c" fill-opacity=".15"/><path d="M38 8 L20 30 M20 30 L15 25 L28 12 C31 9 36 8 38 8Z" fill="#c9a44c" fill-opacity=".15"/><path d="M26 32 L30 40 M22 32 L18 40"/></g></svg>
+          <span class="txt"><b>KAHIL</b><small>MEATS · BASS HILL</small></span>
+        </a>
+        <p style="max-width:280px;font-size:14px">Award-winning halal butcher at Bass Hill Plaza. From the farm to your plate, cut fresh and delivered daily.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8.2a6.5 6.5 0 0 0 4 1.4V6.3a3.5 3.5 0 0 1-2-3.3h-3.3v13a2.4 2.4 0 1 1-2.4-2.4c.2 0 .5 0 .7.1V10a5.7 5.7 0 1 0 4.9 5.6z"/></svg></a>
+        </div>
+      </div>
+      <div><h4>Shop</h4><a href="#shop">Beef</a><a href="#shop">Lamb</a><a href="#shop">Chicken</a><a href="#shop">Marinated & BBQ</a><a href="#packs">Value Packs</a></div>
+      <div><h4>Info</h4><a href="#how">How It Works</a><a href="#visit">Trading Hours</a><a href="#visit">Delivery Areas</a><a href="#">Halal Certification</a><a href="#">Catering</a></div>
+      <div><h4>Get In Touch</h4><a href="tel:+61297931000">(02) 9793 1000</a><a href="mailto:orders@kahilmeats.au">orders@kahilmeats.au</a><a href="#visit">Bass Hill Plaza</a><a href="#">@kahilmeatsbasshill</a></div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 Kahil Meats · Bass Hill Plaza. All rights reserved.</span>
+      <span>Halal Certified · ABN 00 000 000 000 · Built for the neighbourhood 🥩</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Cart drawer -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer__head">
+    <h3>Your Order</h3>
+    <button onclick="closeCart()" aria-label="Close"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="drawer__body" id="cartBody"></div>
+  <div class="drawer__foot" id="cartFoot"></div>
+</aside>
+
+<!-- Toast -->
+<div class="toast" id="toast"><span class="ok">✓</span> <span id="toastMsg">Added to order</span></div>
+
+<!-- Confirm modal -->
+<div class="modal" id="modal">
+  <div class="modal__box">
+    <div class="check"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg></div>
+    <h3>Order Placed!</h3>
+    <p>Thanks for shopping with Kahil Meats. We're cutting your order fresh now.</p>
+    <div class="oid" id="orderId">#KM-0000</div>
+    <p style="font-size:14px">You'll get an SMS confirmation shortly. <b>From the farm to your plate.</b></p>
+    <button class="btn btn-dark" style="margin-top:22px;width:100%" onclick="closeModal()">Done</button>
+  </div>
+</div>
+
+<script>
+/* ---------------- Data ---------------- */
+const CATS = ["All","Beef","Lamb","Chicken","Marinated & BBQ","Deli"];
+const PRODUCTS = [
+  // Beef
+  {id:'b1',cat:'Beef',name:'Chuck Steak',cut:'Casserole & slow cook — butcher favourite',price:16.99,emoji:'🥩',stock:38,cap:40,tag:{t:"Butcher's Pick",c:'red'}},
+  {id:'b2',cat:'Beef',name:'Scotch Fillet',cut:'Ribeye — marbled, restaurant grade',price:42.99,emoji:'🥩',stock:6,cap:30},
+  {id:'b3',cat:'Beef',name:'Premium Beef Mince',cut:'Lean 5-star mince, cut daily',price:13.99,emoji:'🍖',stock:52,cap:60,tag:{t:'Best Seller',c:'gold'}},
+  {id:'b4',cat:'Beef',name:'Diced Chuck',cut:'Perfect for stews & curries',price:17.99,emoji:'🥩',stock:24,cap:40},
+  {id:'b5',cat:'Beef',name:'Rump Steak',cut:'BBQ & pan — great value cut',price:27.99,emoji:'🥩',stock:19,cap:35},
+  {id:'b6',cat:'Beef',name:'Beef Short Ribs',cut:'Low & slow — falls off the bone',price:24.99,emoji:'🍖',stock:0,cap:25},
+  {id:'b7',cat:'Beef',name:'T-Bone Steak',cut:'Two cuts in one, thick cut',price:32.99,emoji:'🥩',stock:14,cap:30},
+  // Lamb
+  {id:'l1',cat:'Lamb',name:'Lamb Shoulder',cut:'Bone-in — roast or slow cook',price:17.99,emoji:'🍖',stock:31,cap:40,tag:{t:'Make Dinner',c:'red'}},
+  {id:'l2',cat:'Lamb',name:'Lamb Cutlets',cut:'French-trimmed, premium',price:44.99,emoji:'🍖',stock:5,cap:30},
+  {id:'l3',cat:'Lamb',name:'BBQ Lamb Chops',cut:'Forequarter — the BBQ classic',price:21.99,emoji:'🍖',stock:27,cap:40},
+  {id:'l4',cat:'Lamb',name:'Whole Lamb Leg',cut:'Bone-in roast, feeds a crowd',price:19.99,emoji:'🍖',stock:12,cap:20},
+  {id:'l5',cat:'Lamb',name:'Diced Lamb',cut:'Curries, kebabs & tagine',price:23.99,emoji:'🍖',stock:22,cap:35},
+  {id:'l6',cat:'Lamb',name:'Lamb Mince',cut:'For kofta, sang chow & pies',price:18.99,emoji:'🍖',stock:29,cap:40},
+  // Chicken
+  {id:'c1',cat:'Chicken',name:'Whole Chicken',cut:'Free range, size 16',price:8.99,emoji:'🍗',stock:44,cap:50},
+  {id:'c2',cat:'Chicken',name:'Chicken Breast Fillet',cut:'Skinless, trimmed lean',price:13.99,emoji:'🍗',stock:36,cap:50,tag:{t:'Best Seller',c:'gold'}},
+  {id:'c3',cat:'Chicken',name:'Chicken Thigh Fillet',cut:'Boneless — juicy & versatile',price:12.99,emoji:'🍗',stock:41,cap:50},
+  {id:'c4',cat:'Chicken',name:'Chicken Wings',cut:'Whole wings, party ready',price:7.99,emoji:'🍗',stock:8,cap:40},
+  {id:'c5',cat:'Chicken',name:'Chicken Drumsticks',cut:'Family pack, great value',price:6.99,emoji:'🍗',stock:33,cap:45},
+  // Marinated & BBQ
+  {id:'m1',cat:'Marinated & BBQ',name:'Peri Peri Chicken',cut:'House marinade — mild or hot',price:15.99,emoji:'🌶️',stock:26,cap:35,tag:{t:'Fan Favourite',c:'red'}},
+  {id:'m2',cat:'Marinated & BBQ',name:'Lamb Kofta Skewers',cut:'Hand-rolled daily, ready to grill',price:19.99,emoji:'🍢',stock:21,cap:30},
+  {id:'m3',cat:'Marinated & BBQ',name:'BBQ Beef Ribs',cut:'Sticky house BBQ marinade',price:22.99,emoji:'🍖',stock:15,cap:25},
+  {id:'m4',cat:'Marinated & BBQ',name:'Marinated Wingettes',cut:'Garlic & herb, oven ready',price:12.99,emoji:'🍗',stock:18,cap:30},
+  {id:'m5',cat:'Marinated & BBQ',name:'Stuffed Chicken',cut:'Rice & mince stuffed, whole',price:17.99,emoji:'🍗',stock:4,cap:15},
+  // Deli
+  {id:'d1',cat:'Deli',name:'Sujuk Sausage',cut:'Spiced halal beef sausage',price:14.99,emoji:'🌭',stock:23,cap:30},
+  {id:'d2',cat:'Deli',name:'Merguez Sausages',cut:'North African lamb & spice',price:16.99,emoji:'🌭',stock:17,cap:25},
+  {id:'d3',cat:'Deli',name:'Beef Kabana',cut:'Ready to slice, snack size',price:15.99,emoji:'🌭',stock:20,cap:25},
+];
+const PACKS = [
+  {id:'p1',name:'Weeknight Pack',kg:'3kg',price:69,was:82,items:['1kg Premium Beef Mince','1kg Chicken Thigh Fillet','1kg BBQ Lamb Chops']},
+  {id:'p2',name:'Family BBQ Pack',kg:'5kg',price:99,was:124,feat:true,items:['1.5kg Peri Peri Chicken','1kg Lamb Kofta Skewers','1kg BBQ Beef Ribs','1kg Beef Sausages','500g Marinated Wingettes']},
+  {id:'p3',name:'Weekly Essentials',kg:'8kg',price:139,was:172,items:['2kg Beef Mince','2kg Chicken Breast','2kg Diced Chuck','1kg Lamb Shoulder','1kg Whole Chicken']},
+];
+const HOURS = [
+  ['Monday','7:00am – 6:00pm'],['Tuesday','7:00am – 6:00pm'],['Wednesday','7:00am – 6:00pm'],
+  ['Thursday','7:00am – 8:00pm'],['Friday','7:00am – 8:00pm'],['Saturday','7:00am – 6:00pm'],['Sunday','8:00am – 4:00pm']
+];
+const DELIVERY_FEE = 9.90, DELIVERY_MIN = 50, FREE_DELIVERY = 120;
+
+/* ---------------- State ---------------- */
+let activeCat = 'All', searchTerm = '', inStockOnly = false, fulfil = 'delivery';
+let cart = {}; // id -> qty (kg, in 0.5 steps) / for packs qty count
+try{ cart = JSON.parse(localStorage.getItem('kahil_cart')||'{}'); }catch(e){cart={}}
+
+const $ = s => document.querySelector(s);
+const money = n => '$'+n.toFixed(2);
+const findP = id => PRODUCTS.find(p=>p.id===id) || PACKS.find(p=>p.id===id);
+
+/* ---------------- Render categories ---------------- */
+function renderCats(){
+  $('#cats').innerHTML = CATS.map(c=>{
+    const n = c==='All'?'':` (${PRODUCTS.filter(p=>p.cat===c).length})`;
+    return `<button class="cat ${c===activeCat?'active':''}" onclick="setCat('${c.replace(/'/g,"\\'")}')">${c}${n}</button>`;
+  }).join('');
+}
+function setCat(c){activeCat=c;renderCats();renderGrid();}
+function toggleInStock(){inStockOnly=!inStockOnly;$('#stockToggle').classList.toggle('on',inStockOnly);renderGrid();}
+
+/* ---------------- Render grid ---------------- */
+function stockMeta(p){
+  if(p.stock<=0) return {label:'Sold out',cls:'out',color:'var(--red)',pct:0};
+  const pct = Math.max(6,Math.round(p.stock/p.cap*100));
+  if(p.stock<=8) return {label:`Only ${p.stock}kg left`,cls:'low',color:'var(--amber)',pct};
+  return {label:'In stock',cls:'in',color:'var(--green)',pct};
+}
+function renderGrid(){
+  let list = PRODUCTS.filter(p=>activeCat==='All'||p.cat===activeCat);
+  if(inStockOnly) list = list.filter(p=>p.stock>0);
+  if(searchTerm){const t=searchTerm.toLowerCase();list=list.filter(p=>(p.name+' '+p.cut+' '+p.cat).toLowerCase().includes(t));}
+  if(!list.length){$('#grid').innerHTML=`<div class="empty">🔍 No cuts match that. Try another search or category.</div>`;return;}
+  $('#grid').innerHTML = list.map(p=>{
+    const s = stockMeta(p), q = cart[p.id]||0, sold = p.stock<=0;
+    const badges = p.tag?`<span class="rib ${p.tag.c}">${p.tag.t}</span>`:'';
+    const ctrl = sold
+      ? `<button class="add" disabled>Sold Out</button>`
+      : (q>0
+        ? `<div class="stepper"><button onclick="step('${p.id}',-0.5)">−</button><span>${q}kg</span><button onclick="step('${p.id}',0.5)">+</button></div>`
+        : `<button class="add" onclick="step('${p.id}',0.5)">+ Add</button>`);
+    return `<div class="card ${sold?'sold':''}">
+      <div class="card__img">
+        <div class="emoji">${p.emoji}</div>
+        <div class="card__badges">${badges}</div>
+      </div>
+      <div class="card__body">
+        <h3>${p.name}</h3>
+        <div class="card__cut">${p.cut}</div>
+        <div class="stockline"><span class="tag ${s.cls}">${s.label}</span>
+          <div class="bar"><i style="width:${s.pct}%;background:${s.color}"></i></div></div>
+        <div class="card__foot">
+          <div class="price">${money(p.price)}<small>/kg</small></div>
+          ${ctrl}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- Packs ---------------- */
+function renderPacks(){
+  $('#packgrid').innerHTML = PACKS.map(p=>{
+    const q=cart[p.id]||0;
+    const ctrl = q>0
+      ? `<div class="stepper" style="width:100%"><button onclick="stepPack('${p.id}',-1)">−</button><span style="flex:1">${q} in cart</span><button onclick="stepPack('${p.id}',1)">+</button></div>`
+      : `<button class="btn btn-gold" style="width:100%" onclick="stepPack('${p.id}',1)">Add Pack — ${money(p.price)}</button>`;
+    return `<div class="pack ${p.feat?'feat':''}">
+      ${p.feat?'<span class="rib gold" style="align-self:flex-start;margin-bottom:10px">Most Popular</span>':''}
+      <h3>${p.name}</h3><div class="kg">${p.kg} · cut fresh to order</div>
+      <ul>${p.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+      <div class="pp"><b>${money(p.price)}</b><s>${money(p.was)}</s></div>
+      ${ctrl}
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- Cart ops ---------------- */
+function step(id,d){
+  const p=findP(id); const cur=cart[id]||0; let next=Math.round((cur+d)*10)/10;
+  if(next<0)next=0;
+  const maxKg=Math.min(p.stock, 20);
+  if(next>maxKg){toast(`Only ${p.stock}kg left of ${p.name}`);next=maxKg;}
+  if(next<=0) delete cart[id]; else cart[id]=next;
+  if(d>0) toast(`${p.name} added`);
+  save();renderGrid();renderCart();
+}
+function stepPack(id,d){
+  const p=findP(id);const cur=cart[id]||0;let next=cur+d;
+  if(next<=0)delete cart[id];else cart[id]=next;
+  if(d>0)toast(`${p.name} added`);
+  save();renderPacks();renderCart();
+}
+function removeItem(id){delete cart[id];save();renderGrid();renderPacks();renderCart();}
+function save(){localStorage.setItem('kahil_cart',JSON.stringify(cart));updateCount();}
+function isPack(id){return id.startsWith('p');}
+function lineTotal(id){const p=findP(id);return p.price*(cart[id]||0);}
+function subtotal(){return Object.keys(cart).reduce((s,id)=>s+lineTotal(id),0);}
+function itemCount(){return Object.keys(cart).length;}
+function updateCount(){$('#cartCount').textContent=itemCount();}
+
+/* ---------------- Cart drawer ---------------- */
+function openCart(){renderCart();$('#drawer').classList.add('show');$('#overlay').classList.add('show');document.body.style.overflow='hidden';}
+function closeCart(){$('#drawer').classList.remove('show');$('#overlay').classList.remove('show');document.body.style.overflow='';}
+function setFulfil(f){fulfil=f;renderCartFoot();}
+
+function renderCart(){
+  const ids=Object.keys(cart);
+  if(!ids.length){
+    $('#cartBody').innerHTML=`<div class="cart-empty"><div>🛒</div><p><b>Your order is empty</b></p><p style="font-size:14px">Add some fresh cuts from the live menu to get started.</p><button class="btn btn-red" style="margin-top:18px" onclick="closeCart();location.hash='#shop'">Browse The Menu</button></div>`;
+    $('#cartFoot').innerHTML='';updateCount();return;
+  }
+  $('#cartBody').innerHTML = ids.map(id=>{
+    const p=findP(id),pack=isPack(id);
+    const qtyLabel = pack?`${cart[id]} × pack`:`${cart[id]}kg × ${money(p.price)}/kg`;
+    const ctrl = pack
+      ? `<div class="cs"><button onclick="stepPack('${id}',-1)">−</button><span>${cart[id]}</span><button onclick="stepPack('${id}',1)">+</button></div>`
+      : `<div class="cs"><button onclick="step('${id}',-0.5)">−</button><span>${cart[id]}kg</span><button onclick="step('${id}',0.5)">+</button></div>`;
+    return `<div class="citem">
+      <div class="ic">${p.emoji||'📦'}</div>
+      <div class="info"><b>${p.name}</b><div class="u">${qtyLabel}</div>${ctrl}
+        <button class="rm" onclick="removeItem('${id}')">Remove</button></div>
+      <div class="lp">${money(lineTotal(id))}</div>
+    </div>`;
+  }).join('');
+  renderCartFoot();updateCount();
+}
+function renderCartFoot(){
+  if(!itemCount()){$('#cartFoot').innerHTML='';return;}
+  const sub=subtotal();
+  const isDel=fulfil==='delivery';
+  let fee=0, feeLabel='—';
+  if(isDel){ fee = sub>=FREE_DELIVERY?0:DELIVERY_FEE; feeLabel = fee===0?'FREE':money(fee);}
+  else feeLabel='Free pickup';
+  const tot=sub+fee;
+  const belowMin = isDel && sub<DELIVERY_MIN;
+  $('#cartFoot').innerHTML=`
+    <div class="ftype">
+      <label><input type="radio" name="f" ${isDel?'checked':''} onchange="setFulfil('delivery')"><span>🚚 Delivery<small>$50 min · same day</small></span></label>
+      <label><input type="radio" name="f" ${!isDel?'checked':''} onchange="setFulfil('pickup')"><span>🏬 Pickup<small>Bass Hill Plaza</small></span></label>
+    </div>
+    <div class="warn ${belowMin?'show':''}">Add ${money(DELIVERY_MIN-sub)} more for delivery (min ${money(DELIVERY_MIN)}), or switch to free pickup.</div>
+    <div class="sumrow"><span>Subtotal</span><span>${money(sub)}</span></div>
+    <div class="sumrow"><span>${isDel?'Delivery':'Pickup'}</span><span>${feeLabel}</span></div>
+    ${isDel&&fee>0?`<div class="sumrow" style="color:var(--red);font-size:13px"><span>Spend ${money(FREE_DELIVERY-sub)} more for FREE delivery</span><span></span></div>`:''}
+    <div class="sumrow tot"><span>Total</span><span>${money(tot)}</span></div>
+    <button class="btn btn-red checkout" ${belowMin?'disabled':''} onclick="checkout()">${belowMin?`Min order ${money(DELIVERY_MIN)}`:`Place Order · ${money(tot)}`}</button>
+  `;
+}
+
+function checkout(){
+  const id='#KM-'+Math.floor(1000+Math.random()*9000);
+  $('#orderId').textContent=id;
+  cart={};save();renderGrid();renderPacks();renderCart();closeCart();
+  $('#modal').classList.add('show');
+}
+function closeModal(){$('#modal').classList.remove('show');}
+
+/* ---------------- Toast ---------------- */
+let toastT;
+function toast(msg){$('#toastMsg').textContent=msg;$('#toast').classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>$('#toast').classList.remove('show'),1900);}
+
+/* ---------------- Hours ---------------- */
+function renderHours(){
+  const today=new Date().getDay(); // 0 Sun..6 Sat
+  const map=[6,0,1,2,3,4,5]; // convert getDay to our HOURS index (Mon=0)
+  const idx = today===0?6:today-1;
+  $('#hoursList').innerHTML=HOURS.map((h,i)=>`<li class="${i===idx?'today':''}"><span>${h[0]}${i===idx?' · Today':''}</span><span class="t">${h[1]}</span></li>`).join('');
+}
+
+/* ---------------- Live stock simulation ---------------- */
+function simulateStock(){
+  const avail=PRODUCTS.filter(p=>p.stock>0 && !cart[p.id]);
+  if(!avail.length)return;
+  const p=avail[Math.floor(Math.random()*avail.length)];
+  const dec=Math.round((Math.random()*1.5+0.5)*10)/10;
+  p.stock=Math.max(0,Math.round((p.stock-dec)*10)/10);
+  renderGrid();
+}
+
+/* ---------------- Init ---------------- */
+$('#search').addEventListener('input',e=>{searchTerm=e.target.value;renderGrid();});
+window.addEventListener('scroll',()=>{$('#orderNav').style.display=window.scrollY>600?'inline-flex':'none';});
+renderCats();renderGrid();renderPacks();renderHours();updateCount();
+setInterval(simulateStock, 9000);
+</script>
+</body>
+</html>

@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trained by Zee — App Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#e01a1a;
+    --red-dark:#b31313;
+    --red-deep:#7a0d0d;
+    --ink:#141416;
+    --ink-2:#1e1e22;
+    --card:#ffffff;
+    --bg:#f4f5f7;
+    --line:#e7e8ec;
+    --muted:#8b8d96;
+    --text:#1a1a1f;
+    --green:#1faa5b;
+    --amber:#f0a020;
+    --gold:#e8b23a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'DM Sans',system-ui,sans-serif;
+    background:var(--ink);
+    height:100vh;color:var(--text);
+    display:flex;flex-direction:column;
+    overflow:hidden;
+  }
+  /* top concept-switcher strip */
+  .topstrip{flex:0 0 auto;background:#0c0708;color:#fff;display:flex;align-items:center;justify-content:space-between;
+    padding:9px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .topstrip .tt{font-family:'Bebas Neue';font-size:17px;letter-spacing:1.5px;display:flex;align-items:center;gap:10px}
+  .topstrip .tt .zee{color:var(--red)}
+  .topstrip .tt small{font-family:'DM Sans';font-size:10px;letter-spacing:1.5px;color:#7d7073;font-weight:600}
+  .modeswitch{display:inline-flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+    border-radius:999px;padding:4px;gap:3px}
+  .modeswitch button{font-family:'Bebas Neue';letter-spacing:1px;font-size:14px;color:#d6c9ca;
+    background:transparent;border:none;padding:6px 18px;border-radius:999px;cursor:pointer;transition:.2s}
+  .modeswitch button.active{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(224,26,26,.4)}
+
+  /* full-screen app shell (centered column) */
+  .app{flex:1;display:flex;flex-direction:column;min-height:0;
+    width:100%;max-width:600px;margin:0 auto;background:var(--bg);
+    box-shadow:0 0 70px rgba(0,0,0,.45)}
+  .view{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+  .view::-webkit-scrollbar{width:0}
+
+  /* top app bar */
+  .appbar{background:var(--ink);color:#fff;padding:14px 18px 16px;position:relative;flex:0 0 auto}
+  .appbar.red{background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%)}
+  .appbar .row{display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand .logo{width:38px;height:38px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';color:var(--red);font-size:15px;letter-spacing:.5px;line-height:.8;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.25)}
+  .brand h2{font-family:'Bebas Neue';font-size:22px;letter-spacing:1px;line-height:.9}
+  .brand small{display:block;font-family:'DM Sans';font-size:9.5px;letter-spacing:2px;color:rgba(255,255,255,.6);font-weight:600}
+  .icon-btn{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.14);border:none;color:#fff;font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+  .badge-dot{position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;padding:0 4px;background:var(--gold);color:#3a2a00;border-radius:9px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--ink)}
+
+  /* bottom nav */
+  .tabbar{flex:0 0 auto;background:#fff;border-top:1px solid var(--line);display:flex;padding:8px 6px 10px}
+  .tabbar button{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);cursor:pointer;font-size:10.5px;font-weight:600;padding:4px 0}
+  .tabbar button .ic{font-size:20px;line-height:1}
+  .tabbar button.active{color:var(--red)}
+
+  /* generic */
+  .pad{padding:16px 16px 26px}
+  .section-t{font-family:'Bebas Neue';font-size:19px;letter-spacing:.8px;color:var(--ink);margin:4px 2px 12px;display:flex;align-items:center;justify-content:space-between}
+  .section-t a{font-family:'DM Sans';font-size:12px;color:var(--red);font-weight:600;letter-spacing:0;cursor:pointer}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px}
+  .muted{color:var(--muted)}
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px}
+  .pill.red{background:#fdecec;color:var(--red-dark)}
+  .pill.green{background:#e5f6ec;color:#127a41}
+  .pill.amber{background:#fdf1dd;color:#a9720c}
+  .pill.grey{background:#eef0f3;color:#6a6d78}
+  .pill.gold{background:#fbf1d6;color:#8a6410}
+
+  .avatar{border-radius:50%;background:var(--red);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-family:'DM Sans'}
+  .av-tone-0{background:#e01a1a}.av-tone-1{background:#3a3f4a}.av-tone-2{background:#c8781e}
+  .av-tone-3{background:#1f7a5a}.av-tone-4{background:#5a3fb0}.av-tone-5{background:#b02f6a}
+  .av-tone-6{background:#2a6fb0}.av-tone-7{background:#8a1e3a}
+
+  /* dashboard stats */
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 14px}
+  .stat .n{font-family:'Bebas Neue';font-size:30px;line-height:.9;color:var(--ink)}
+  .stat .n.red{color:var(--red)}
+  .stat .l{font-size:11px;color:var(--muted);font-weight:600;margin-top:3px}
+  .hero-strip{background:linear-gradient(135deg,var(--red) 0%,var(--red-deep) 100%);border-radius:18px;padding:16px 16px;color:#fff;position:relative;overflow:hidden}
+  .hero-strip::after{content:"🥊";position:absolute;right:-8px;bottom:-14px;font-size:78px;opacity:.16}
+  .hero-strip .lbl{font-size:11px;letter-spacing:2px;font-weight:700;opacity:.85}
+  .hero-strip .big{font-family:'Bebas Neue';font-size:34px;letter-spacing:.5px;line-height:1;margin-top:4px}
+
+  /* alert cards */
+  .alert{border-radius:16px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;border:1px solid;margin-bottom:10px}
+  .alert.streak{background:#fff7e9;border-color:#f4dfae}
+  .alert.milestone{background:#eef7ff;border-color:#cfe6fb}
+  .alert.risk{background:#fdeeee;border-color:#f4c9c9}
+  .alert .a-ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex:0 0 auto}
+  .alert.streak .a-ic{background:#ffe6b8}
+  .alert.milestone .a-ic{background:#d3ebff}
+  .alert.risk .a-ic{background:#fbd2d2}
+  .alert .a-body{flex:1;min-width:0}
+  .alert .a-title{font-weight:700;font-size:13.5px;color:var(--ink)}
+  .alert .a-sub{font-size:12px;color:#6a6d78;margin-top:2px;line-height:1.35}
+  .a-actions{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
+  .mini-btn{font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+  .mini-btn.solid{background:var(--red);border-color:var(--red);color:#fff}
+  .mini-btn.gold{background:var(--gold);border-color:var(--gold);color:#3a2a00}
+
+  /* list rows */
+  .rowlist{display:flex;flex-direction:column;gap:0}
+  .clirow{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+  .clirow:last-child{border-bottom:none}
+  .clirow .avatar{width:44px;height:44px;font-size:15px}
+  .clirow .nm{font-weight:600;font-size:14px;color:var(--ink)}
+  .clirow .sub{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .clirow .rt{margin-left:auto;text-align:right;flex:0 0 auto}
+  .streak-chip{font-family:'Bebas Neue';font-size:15px;letter-spacing:.5px;color:var(--red)}
+
+  /* search */
+  .search{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:10px 13px;margin-bottom:6px}
+  .search input{border:none;outline:none;font-family:'DM Sans';font-size:14px;width:100%;background:none;color:var(--ink)}
+  .chips{display:flex;gap:7px;overflow-x:auto;padding:10px 0 4px}
+  .chips::-webkit-scrollbar{height:0}
+  .chip{white-space:nowrap;font-size:12px;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:#fff;color:#6a6d78;cursor:pointer}
+  .chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  /* profile */
+  .profhead{background:linear-gradient(160deg,var(--ink) 0%,#2a2124 100%);padding:18px 16px 20px;color:#fff}
+  .back{background:none;border:none;color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:12px;opacity:.9}
+  .prof-top{display:flex;gap:14px;align-items:center}
+  .prof-top .avatar{width:62px;height:62px;font-size:22px;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+  .prof-top h3{font-family:'Bebas Neue';font-size:26px;letter-spacing:.5px;line-height:.95}
+  .prof-meta{font-size:12px;color:rgba(255,255,255,.7);margin-top:3px}
+  .prof-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+  .prof-stats .ps{background:rgba(255,255,255,.09);border-radius:13px;padding:10px 8px;text-align:center}
+  .prof-stats .ps .n{font-family:'Bebas Neue';font-size:24px;line-height:.9}
+  .prof-stats .ps .l{font-size:9.5px;letter-spacing:.5px;opacity:.7;font-weight:600;margin-top:3px}
+
+  /* progress bars */
+  .prog{margin-bottom:13px}
+  .prog .pl{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
+  .prog .pl span:last-child{color:var(--red)}
+  .track{height:9px;background:#eef0f3;border-radius:999px;overflow:hidden}
+  .track > i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--red),var(--red-dark))}
+
+  /* attendance dots */
+  .att-grid{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+  .att-grid i{width:15px;height:15px;border-radius:4px;background:#e8eaee}
+  .att-grid i.on{background:var(--green)}
+  .att-grid i.miss{background:#f3d0d0}
+
+  /* timeline */
+  .tl{position:relative;padding-left:22px;margin-top:4px}
+  .tl::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:2px;background:var(--line)}
+  .tl-item{position:relative;padding-bottom:15px}
+  .tl-item::before{content:"";position:absolute;left:-19px;top:3px;width:11px;height:11px;border-radius:50%;background:var(--red);border:2px solid #fff;box-shadow:0 0 0 2px #f2d3d3}
+  .tl-item .d{font-size:11px;color:var(--muted);font-weight:600}
+  .tl-item .t{font-size:13px;color:var(--ink);margin-top:1px}
+
+  /* messages */
+  .conv{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+  .conv .avatar{width:46px;height:46px;font-size:15px}
+  .conv .nm{font-weight:600;font-size:14px;color:var(--ink)}
+  .conv .pv{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+  .conv .rt{margin-left:auto;text-align:right;flex:0 0 auto;font-size:10.5px;color:var(--muted)}
+  .unread{width:9px;height:9px;border-radius:50%;background:var(--red);display:inline-block;margin-top:6px}
+
+  .chat-wrap{display:flex;flex-direction:column;height:100%}
+  .chat-head{background:var(--ink);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:11px;flex:0 0 auto}
+  .chat-head .avatar{width:38px;height:38px;font-size:14px}
+  .chat-body{flex:1;overflow-y:auto;padding:16px 14px;background:var(--bg);display:flex;flex-direction:column;gap:9px}
+  .chat-body::-webkit-scrollbar{width:0}
+  .bubble{max-width:78%;padding:10px 13px;border-radius:16px;font-size:13.5px;line-height:1.4}
+  .bubble.them{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:5px;color:var(--ink)}
+  .bubble.me{background:var(--red);color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
+  .bubble .tm{font-size:9.5px;opacity:.6;margin-top:4px;display:block}
+  .daychip{align-self:center;background:rgba(0,0,0,.06);color:#6a6d78;font-size:10.5px;font-weight:600;padding:4px 12px;border-radius:999px;margin:4px 0}
+  .chat-input{flex:0 0 auto;display:flex;gap:8px;padding:10px 12px 14px;background:#fff;border-top:1px solid var(--line)}
+  .chat-input input{flex:1;border:1px solid var(--line);border-radius:999px;padding:11px 15px;font-family:'DM Sans';font-size:13.5px;outline:none}
+  .chat-input .send{width:44px;height:44px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:17px;cursor:pointer;flex:0 0 auto}
+  .quickreplies{display:flex;gap:6px;padding:8px 12px 0;background:#fff;overflow-x:auto}
+  .quickreplies::-webkit-scrollbar{height:0}
+  .qr{white-space:nowrap;font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--red);cursor:pointer}
+
+  /* timetable */
+  .daytabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px}
+  .daytabs::-webkit-scrollbar{height:0}
+  .daytab{flex:0 0 auto;width:48px;text-align:center;padding:9px 0;border-radius:13px;border:1px solid var(--line);background:#fff;cursor:pointer}
+  .daytab .dw{font-size:10.5px;font-weight:600;color:var(--muted)}
+  .daytab .dn{font-family:'Bebas Neue';font-size:20px;color:var(--ink);line-height:.9;margin-top:2px}
+  .daytab.active{background:var(--red);border-color:var(--red)}
+  .daytab.active .dw,.daytab.active .dn{color:#fff}
+
+  .slot{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px}
+  .slot .tm{font-family:'Bebas Neue';font-size:18px;color:var(--ink);width:58px;flex:0 0 auto;line-height:.95}
+  .slot .tm small{display:block;font-family:'DM Sans';font-size:9.5px;color:var(--muted);font-weight:600}
+  .slot .barcol{width:4px;align-self:stretch;border-radius:4px;background:var(--red)}
+  .slot .info{flex:1;min-width:0}
+  .slot .info .nm{font-weight:700;font-size:14px;color:var(--ink)}
+  .slot .info .mt{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .slot .cap{text-align:right;flex:0 0 auto}
+  .slot .cap .cn{font-weight:700;font-size:13px;color:var(--ink)}
+  .slot .cap .cl{font-size:10px;color:var(--muted)}
+  .slot.kids .barcol{background:#2a6fb0}
+  .slot.private .barcol{background:var(--gold)}
+
+  /* client home */
+  .c-hero{background:linear-gradient(160deg,var(--red) 0%,var(--red-deep) 100%);padding:20px 18px 22px;color:#fff;position:relative;overflow:hidden}
+  .c-hero::after{content:"";position:absolute;inset:0;background:radial-gradient(300px 160px at 90% 0%, rgba(255,255,255,.18), transparent)}
+  .c-hero .hi{font-size:13px;opacity:.85;position:relative}
+  .c-hero h3{font-family:'Bebas Neue';font-size:32px;letter-spacing:.5px;line-height:1;margin-top:2px;position:relative}
+  .c-streak{display:flex;align-items:center;gap:14px;margin-top:16px;position:relative}
+  .c-streak .flame{width:58px;height:58px;border-radius:16px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:28px}
+  .c-streak .n{font-family:'Bebas Neue';font-size:38px;line-height:.9}
+  .c-streak .l{font-size:11.5px;opacity:.85}
+
+  .next-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:0;overflow:hidden;margin-top:-30px;position:relative;z-index:5;box-shadow:0 12px 30px rgba(0,0,0,.12)}
+  .next-card .nh{background:var(--ink);color:#fff;padding:9px 15px;font-size:11px;font-weight:700;letter-spacing:1.5px}
+  .next-card .nb{padding:15px}
+  .next-card .nt{font-family:'Bebas Neue';font-size:24px;color:var(--ink);line-height:.95}
+  .next-card .nm{font-size:12.5px;color:var(--muted);margin-top:4px}
+
+  .coachmsg{display:flex;gap:11px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:14px;padding:13px 14px}
+  .coachmsg .avatar{width:40px;height:40px;font-size:14px}
+  .coachmsg .cm-nm{font-weight:700;font-size:13px;color:var(--ink)}
+  .coachmsg .cm-tx{font-size:12.5px;color:#55575f;margin-top:3px;line-height:1.4}
+
+  .reward{background:linear-gradient(135deg,#2a2124,#141416);border-radius:16px;padding:15px;color:#fff;display:flex;gap:13px;align-items:center;position:relative;overflow:hidden}
+  .reward::after{content:"🎁";position:absolute;right:-6px;bottom:-12px;font-size:64px;opacity:.14}
+  .reward .rc{font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;color:var(--gold);border:2px dashed var(--gold);padding:6px 12px;border-radius:10px}
+
+  /* booking */
+  .book-class{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px}
+  .book-class .barcol{width:4px;align-self:stretch;border-radius:4px;background:var(--red)}
+  .book-class .bc-tm{font-family:'Bebas Neue';font-size:17px;color:var(--ink);width:54px;flex:0 0 auto}
+  .book-class .bc-tm small{display:block;font-family:'DM Sans';font-size:9px;color:var(--muted);font-weight:600}
+  .book-class .bc-i{flex:1;min-width:0}
+  .book-class .bc-i .nm{font-weight:700;font-size:13.5px;color:var(--ink)}
+  .book-class .bc-i .mt{font-size:11px;color:var(--muted);margin-top:2px}
+  .book-btn{font-size:12px;font-weight:700;padding:8px 14px;border-radius:10px;border:none;background:var(--red);color:#fff;cursor:pointer;flex:0 0 auto}
+  .book-btn.booked{background:#e5f6ec;color:#127a41}
+  .book-btn.full{background:#eef0f3;color:#9a9da6}
+
+  /* toast */
+  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.3s;z-index:200;box-shadow:0 12px 30px rgba(0,0,0,.4);max-width:80%;text-align:center;display:flex;gap:9px;align-items:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast .tk{color:var(--green);font-size:16px}
+
+  /* login */
+  .login{flex:1;display:flex;flex-direction:column;justify-content:center;padding:30px 26px;background:radial-gradient(700px 400px at 50% 0%, #2a1113, #120709 60%);color:#fff;text-align:center}
+  .login .logo-big{width:88px;height:88px;border-radius:24px;background:#fff;margin:0 auto 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Bebas Neue';color:var(--red);line-height:.8;box-shadow:0 12px 30px rgba(224,26,26,.4)}
+  .login .logo-big span:first-child{font-size:13px;letter-spacing:2px;color:var(--ink)}
+  .login .logo-big span:last-child{font-size:34px;letter-spacing:1px}
+  .login h2{font-family:'Bebas Neue';font-size:30px;letter-spacing:1px}
+  .login p{color:#c9b9ba;font-size:13px;margin:6px 0 26px}
+  .field{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:13px 15px;margin-bottom:12px;text-align:left;color:#fff;font-size:14px}
+  .field .fl{font-size:10px;letter-spacing:1px;color:rgba(255,255,255,.5);font-weight:600}
+  .field .fv{margin-top:3px}
+  .login .go{width:100%;background:var(--red);border:none;color:#fff;font-family:'Bebas Neue';font-size:20px;letter-spacing:1.5px;padding:15px;border-radius:13px;cursor:pointer;margin-top:8px;box-shadow:0 10px 24px rgba(224,26,26,.45)}
+  .login .sw{margin-top:18px;font-size:12px;color:#c9b9ba}
+  .login .sw b{color:#fff;cursor:pointer;text-decoration:underline}
+
+  .note{text-align:center;color:#a99b9c;font-size:12px;margin-top:26px;max-width:760px;line-height:1.6}
+  .note b{color:#e8d9da}
+  @media(max-width:840px){.stage{gap:24px}}
+</style>
+</head>
+<body>
+
+<div class="topstrip">
+  <div class="tt">TRAINED BY <span class="zee">ZEE</span> <small>APP CONCEPT</small></div>
+  <div class="modeswitch">
+    <button id="mbCoach" class="active" onclick="setMode('coach')">COACH</button>
+    <button id="mbClient" onclick="setMode('client')">CLIENT</button>
+  </div>
+</div>
+
+<div class="app" id="app"></div>
+<div class="toast" id="toast"><span class="tk">✔</span><span id="toastmsg"></span></div>
+
+<script>
+/* ---------------- MOCK DATA ---------------- */
+const TODAY = new Date(2026,6,7); // 7 Jul 2026
+function monthsAgo(m){const d=new Date(TODAY);d.setMonth(d.getMonth()-m);return d;}
+function fmtDate(d){return d.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});}
+function tenure(d){const m=(TODAY.getFullYear()-d.getFullYear())*12+(TODAY.getMonth()-d.getMonth());
+  if(m>=12){const y=(m/12);return (Math.round(y*10)/10)+' yr';} return m+' mo';}
+function initials(n){return n.split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase();}
+
+const FIRST_MSG = {
+  streak:"You've been on fire lately 🔥 Loved your work on the pads. Keep that same energy Thursday!",
+  discount:"Proud of your consistency! Here's 20% off your next block as a thank-you. Code inside 👊",
+  milestone:"Massive milestone hit today — you should be really proud of how far you've come 🥊",
+  checkin:"Haven't seen you on the mats in a bit — everything ok? Let's get you back in this week 💪"
+};
+
+// 30 clients
+const NAMES = [
+ "Aaliyah Hassan","Mohammed Cetin","Layla Ahmed","Jayden Nguyen","Fatima Osman","Ethan Tran",
+ "Sara Khalil","Yusuf Demir","Mia Karam","Omar Farah","Zainab Ali","Lucas Pham","Amira Saleh",
+ "Bilal Yildiz","Hana Rahman","Noah Le","Salma Ibrahim","Adam Kaya","Leila Mansour","Kai Wong",
+ "Nadia Haddad","Ibrahim Sowe","Chloe Vo","Musa Diallo","Yasmin Rashid","Daniel Ho","Aisha Bello",
+ "Tariq Nasser","Ella Bui","Zara Khan"
+];
+const TYPES = ["1:1 Private","Group","Kids","Kids (Special Needs)"];
+const GOALS = ["Fitness & weight loss","Confidence & discipline","Compete amateur","Self-defence","Stress relief","Technique & footwork","Fun & fitness"];
+
+function mkClient(i){
+  const name=NAMES[i];
+  const tenureBuckets=[24,24,22,20,18,18,16,14,13,12,12,12,11,10,9,8,8,7,6,6,6,5,4,4,3,3,2,2,1,1];
+  const startM=tenureBuckets[i];
+  const start=monthsAgo(startM);
+  // sessions ~ roughly weekly-ish
+  const total=Math.max(4, Math.round(startM*3.4 + (i%5)));
+  // streak: a handful are hot
+  const streaks=[12,3,7,0,9,2,5,1,8,4, 6,0,3,11,2, 7,1,0,5,3, 9,2,4,0,6, 1,7,0,3,2];
+  const streak=streaks[i];
+  const typeIdx = i<3?0 : (i%7===0?3 : (i%3===0?2 : 1));
+  const type=TYPES[typeIdx];
+  const goal=GOALS[i%GOALS.length];
+  // last attended (days ago)
+  const lastAgo=[1,2,0,9,1,3,2,14,0,4, 5,1,2,0,3, 1,6,11,2,4, 0,3,5,18,1, 2,0,7,1,3][i];
+  const last=new Date(TODAY);last.setDate(last.getDate()-lastAgo);
+  const progress={
+    "Technique":Math.min(96,42+startM*2+(i%9)),
+    "Fitness":Math.min(95,38+startM*2.3+(i%7)),
+    "Confidence":Math.min(98,50+startM*1.8+(i%11))
+  };
+  // 20-session attendance grid (most recent last)
+  const att=[];for(let k=0;k<20;k++){att.push(Math.random()>(0.16+ (lastAgo>7?0.25:0)) );}
+  // ensure streak reflected at the end
+  for(let k=0;k<Math.min(streak,20);k++){att[19-k]=true;}
+  if(streak<20 && streak>0) att[19-streak]=false;
+  const risk = lastAgo>=10;
+  const milestone = (total>=50 && total<54)|| (total>=100&&total<104)|| (total>=25&&total<28);
+  return {id:i,name,start,startM,total,streak,type,goal,last,lastAgo,progress,att,risk,milestone,tone:i%8,
+    balance:(i%4===0?'Owing $60':'Paid up'), plan:(typeIdx===0?'1:1 · $60/session':(typeIdx===1?'Group · $20/session':'Kids · $15/session'))};
+}
+const CLIENTS=NAMES.map((_,i)=>mkClient(i));
+
+// milestones timeline generator
+function timeline(c){
+  const items=[];
+  items.push({d:fmtDate(c.start),t:"Joined Trained by Zee · first session 🥊"});
+  if(c.total>=10) items.push({d:fmtDate(monthsAgo(Math.round(c.startM*0.7))),t:"Completed first 10 sessions"});
+  if(c.total>=25) items.push({d:fmtDate(monthsAgo(Math.round(c.startM*0.45))),t:"25-session milestone — earned free pad session"});
+  if(c.progress.Technique>70) items.push({d:fmtDate(monthsAgo(Math.round(c.startM*0.3))),t:"Landed clean teep + roundhouse combo"});
+  if(c.total>=50) items.push({d:fmtDate(monthsAgo(Math.round(c.startM*0.2))),t:"50 sessions! 20% loyalty discount unlocked"});
+  items.push({d:fmtDate(c.last),t:"Last session — "+(c.streak>4?"on a "+c.streak+"-session streak 🔥":"good work on the bag")});
+  return items.reverse();
+}
+
+// timetable (editable in state)
+let TIMETABLE={
+ "Mon":[{t:"6:00",ap:"AM",n:"1:1 Private",m:"Mobile · client's home",cap:"1/1",kind:"private"},
+        {t:"5:30",ap:"PM",n:"Group Muay Thai",m:"Peakhurst Park",cap:"6/8",kind:"group"},
+        {t:"6:45",ap:"PM",n:"Beginners Class",m:"Peakhurst Park",cap:"5/10",kind:"group"}],
+ "Tue":[{t:"9:30",ap:"AM",n:"Ladies Only Group",m:"Yagoona Centre",cap:"7/8",kind:"group"},
+        {t:"4:30",ap:"PM",n:"Kids Muay Thai",m:"Al Ansar, Yagoona",cap:"9/12",kind:"kids"},
+        {t:"6:00",ap:"PM",n:"Group Muay Thai",m:"Yagoona Centre",cap:"8/8",kind:"group"}],
+ "Wed":[{t:"6:00",ap:"AM",n:"1:1 Private",m:"Mobile · client's home",cap:"1/1",kind:"private"},
+        {t:"5:30",ap:"PM",n:"Beginners Class",m:"Peakhurst Park",cap:"4/10",kind:"group"}],
+ "Thu":[{t:"4:30",ap:"PM",n:"Kids (Special Needs)",m:"Mobile · in-home",cap:"1/1",kind:"kids"},
+        {t:"6:00",ap:"PM",n:"Group Muay Thai",m:"Yagoona Centre",cap:"6/8",kind:"group"}],
+ "Fri":[{t:"9:30",ap:"AM",n:"Ladies Only Group",m:"Yagoona Centre",cap:"5/8",kind:"group"},
+        {t:"5:00",ap:"PM",n:"Sparring / Pads",m:"Peakhurst Park",cap:"6/8",kind:"group"}],
+ "Sat":[{t:"8:00",ap:"AM",n:"Group Muay Thai",m:"Peakhurst Park",cap:"10/12",kind:"group"},
+        {t:"9:30",ap:"AM",n:"Kids Muay Thai",m:"Peakhurst Park",cap:"8/12",kind:"kids"}],
+ "Sun":[{t:"9:00",ap:"AM",n:"Open Mat / Fitness",m:"Peakhurst Park",cap:"4/10",kind:"group"}]
+};
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const DAYNUM={Mon:6,Tue:7,Wed:8,Thu:9,Fri:10,Sat:11,Sun:12};
+
+/* ---------------- APP STATE ---------------- */
+let mode='coach';
+let coachTab='home';
+let clientTab='home';
+let coachSel=null;       // selected client id (profile)
+let chatWith=null;       // conversation client id
+let ttDay='Mon';
+let bookDay='Mon';
+let loggedIn=false;
+let clientUser=CLIENTS[0]; // the logged in client (Aaliyah — a hot streak)
+let clientChat=[]; // messages in client chat
+
+const app=document.getElementById('app');
+
+function toast(msg){const t=document.getElementById('toast');document.getElementById('toastmsg').textContent=msg;t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2200);}
+
+function setMode(m){mode=m;
+  document.getElementById('mbCoach').classList.toggle('active',m==='coach');
+  document.getElementById('mbClient').classList.toggle('active',m==='client');
+  coachSel=null;chatWith=null;
+  render();
+}
+
+/* ---------------- RENDER ---------------- */
+function render(){
+  if(mode==='coach'){renderCoach();}
+  else{renderClient();}
+}
+
+/* ============ COACH ============ */
+function renderCoach(){
+  if(coachSel!==null){return renderCoachProfile();}
+  if(chatWith!==null){return renderChat('coach');}
+  let body='';
+  if(coachTab==='home') body=coachHome();
+  else if(coachTab==='clients') body=coachClients();
+  else if(coachTab==='schedule') body=coachSchedule();
+  else if(coachTab==='messages') body=coachMessages();
+
+  app.innerHTML=`
+    <div class="appbar red">
+      <div class="row">
+        <div class="brand">
+          <div class="logo">TBZ</div>
+          <div><h2>COACH ZEE</h2><small>TRAINED BY ZEE</small></div>
+        </div>
+        <button class="icon-btn" onclick="goCoach('messages')">🔔<span class="badge-dot">3</span></button>
+      </div>
+    </div>
+    <div class="view">${body}</div>
+    ${coachTabbar()}`;
+}
+function coachTabbar(){
+  const t=[['home','🏠','Home'],['clients','👥','Clients'],['schedule','🗓️','Timetable'],['messages','💬','Messages']];
+  return `<div class="tabbar">${t.map(x=>`<button class="${coachTab===x[0]?'active':''}" onclick="goCoach('${x[0]}')"><span class="ic">${x[1]}</span>${x[2]}</button>`).join('')}</div>`;
+}
+function goCoach(t){coachTab=t;coachSel=null;chatWith=null;render();}
+
+function coachHome(){
+  const active=CLIENTS.length;
+  const weekSessions=38;
+  const hotStreaks=CLIENTS.filter(c=>c.streak>=7);
+  const atRisk=CLIENTS.filter(c=>c.risk);
+  const milestones=CLIENTS.filter(c=>c.milestone);
+
+  // build alerts
+  let alerts='';
+  hotStreaks.slice(0,2).forEach(c=>{
+    alerts+=`<div class="alert streak">
+      <div class="a-ic">🔥</div>
+      <div class="a-body">
+        <div class="a-title">${c.name} is on a ${c.streak}-session streak!</div>
+        <div class="a-sub">${c.streak} sessions in a row — a great moment to reward them and lock in the habit.</div>
+        <div class="a-actions">
+          <button class="mini-btn gold" onclick="sendReward(${c.id})">🎁 Send 20% code</button>
+          <button class="mini-btn solid" onclick="openChat(${c.id},'coach')">Message</button>
+          <button class="mini-btn" onclick="viewClient(${c.id})">View</button>
+        </div>
+      </div></div>`;
+  });
+  milestones.slice(0,1).forEach(c=>{
+    alerts+=`<div class="alert milestone">
+      <div class="a-ic">🏆</div>
+      <div class="a-body">
+        <div class="a-title">${c.name} just hit ${c.total} total sessions</div>
+        <div class="a-sub">Milestone reached — send a shout-out to celebrate the progress.</div>
+        <div class="a-actions">
+          <button class="mini-btn solid" onclick="openChat(${c.id},'coach')">Send message</button>
+          <button class="mini-btn" onclick="viewClient(${c.id})">View</button>
+        </div>
+      </div></div>`;
+  });
+  atRisk.slice(0,1).forEach(c=>{
+    alerts+=`<div class="alert risk">
+      <div class="a-ic">⚠️</div>
+      <div class="a-body">
+        <div class="a-title">${c.name} hasn't trained in ${c.lastAgo} days</div>
+        <div class="a-sub">Was training regularly. A quick check-in could bring them back.</div>
+        <div class="a-actions">
+          <button class="mini-btn solid" onclick="openChat(${c.id},'coach')">Check in 💪</button>
+          <button class="mini-btn" onclick="viewClient(${c.id})">View</button>
+        </div>
+      </div></div>`;
+  });
+
+  // today's sessions from timetable (Tue = today)
+  const today=TIMETABLE["Tue"];
+  const todayHtml=today.map(s=>`
+    <div class="slot ${s.kind}">
+      <div class="barcol"></div>
+      <div class="tm">${s.t}<small>${s.ap}</small></div>
+      <div class="info"><div class="nm">${s.n}</div><div class="mt">📍 ${s.m}</div></div>
+      <div class="cap"><div class="cn">${s.cap}</div><div class="cl">booked</div></div>
+    </div>`).join('');
+
+  return `<div class="pad">
+    <div class="hero-strip">
+      <div class="lbl">GOOD MORNING, ZEE 👋</div>
+      <div class="big">You've got 3 sessions today</div>
+    </div>
+    <div class="stat-grid" style="margin-top:12px">
+      <div class="stat"><div class="n red">${active}</div><div class="l">Active clients</div></div>
+      <div class="stat"><div class="n">${weekSessions}</div><div class="l">Sessions this week</div></div>
+      <div class="stat"><div class="n">${hotStreaks.length}</div><div class="l">On hot streaks 🔥</div></div>
+      <div class="stat"><div class="n">$2,140</div><div class="l">Revenue this week</div></div>
+    </div>
+
+    <div class="section-t" style="margin-top:22px">Smart Alerts <a onclick="toast('In the real app these are push notifications')">how it works</a></div>
+    ${alerts}
+
+    <div class="section-t" style="margin-top:20px">Today · Tue 7 Jul <a onclick="goCoach('schedule')">Full timetable</a></div>
+    ${todayHtml}
+  </div>`;
+}
+
+let cliFilter='All';let cliSearch='';
+function coachClients(){
+  let list=CLIENTS.slice();
+  if(cliFilter==='Hot streak')list=list.filter(c=>c.streak>=7);
+  else if(cliFilter==='At risk')list=list.filter(c=>c.risk);
+  else if(cliFilter==='Kids')list=list.filter(c=>c.type.startsWith('Kids'));
+  else if(cliFilter==='1:1')list=list.filter(c=>c.type.startsWith('1:1'));
+  else if(cliFilter==='Owing')list=list.filter(c=>c.balance!=='Paid up');
+  if(cliSearch)list=list.filter(c=>c.name.toLowerCase().includes(cliSearch.toLowerCase()));
+  // sort by streak desc for the interest
+  list.sort((a,b)=>b.streak-a.streak);
+
+  const rows=list.map(c=>`
+    <div class="clirow" onclick="viewClient(${c.id})">
+      <div class="avatar av-tone-${c.tone}">${initials(c.name)}</div>
+      <div style="min-width:0">
+        <div class="nm">${c.name}</div>
+        <div class="sub">${c.type} · with Zee ${tenure(c.start)} · ${c.total} sessions</div>
+      </div>
+      <div class="rt">
+        ${c.streak>=7?`<div class="streak-chip">🔥 ${c.streak}</div>`:c.risk?`<span class="pill red">${c.lastAgo}d away</span>`:`<span class="pill grey">${c.streak} streak</span>`}
+      </div>
+    </div>`).join('');
+
+  const chips=['All','Hot streak','At risk','Kids','1:1','Owing'];
+  return `<div class="pad">
+    <div class="search">🔍<input placeholder="Search ${CLIENTS.length} clients…" oninput="cliSearch=this.value;refreshClients()" value="${cliSearch}"></div>
+    <div class="chips">${chips.map(c=>`<div class="chip ${cliFilter===c?'active':''}" onclick="cliFilter='${c}';refreshClients()">${c}</div>`).join('')}</div>
+    <div class="section-t" style="margin-top:6px">${list.length} clients <a onclick="toast('Add client form opens here')">+ Add</a></div>
+    <div class="card" style="padding:4px 12px"><div class="rowlist">${rows||'<div style="padding:20px;text-align:center" class="muted">No clients match</div>'}</div></div>
+  </div>`;
+}
+function refreshClients(){document.querySelector('.view').innerHTML=coachClients();}
+
+function renderCoachProfile(){
+  const c=CLIENTS[coachSel];
+  const tl=timeline(c);
+  const attHtml=c.att.map(a=>`<i class="${a?'on':'miss'}"></i>`).join('');
+  const progHtml=Object.entries(c.progress).map(([k,v])=>`
+    <div class="prog"><div class="pl"><span>${k}</span><span>${Math.round(v)}%</span></div><div class="track"><i style="width:${v}%"></i></div></div>`).join('');
+  const tlHtml=tl.map(x=>`<div class="tl-item"><div class="d">${x.d}</div><div class="t">${x.t}</div></div>`).join('');
+
+  app.innerHTML=`
+   <div class="view" style="flex:1">
+    <div class="profhead">
+      <button class="back" onclick="goCoach('clients')">‹ Clients</button>
+      <div class="prof-top">
+        <div class="avatar av-tone-${c.tone}">${initials(c.name)}</div>
+        <div>
+          <h3>${c.name}</h3>
+          <div class="prof-meta">${c.type} · ${c.goal}</div>
+          <div style="margin-top:7px;display:flex;gap:6px;flex-wrap:wrap">
+            ${c.streak>=7?`<span class="pill gold">🔥 ${c.streak} streak</span>`:''}
+            <span class="pill ${c.balance==='Paid up'?'green':'red'}">${c.balance}</span>
+            ${c.risk?'<span class="pill red">Been away '+c.lastAgo+'d</span>':''}
+          </div>
+        </div>
+      </div>
+      <div class="prof-stats">
+        <div class="ps"><div class="n">${tenure(c.start)}</div><div class="l">WITH ZEE</div></div>
+        <div class="ps"><div class="n">${c.total}</div><div class="l">SESSIONS</div></div>
+        <div class="ps"><div class="n">${c.streak}</div><div class="l">CURRENT STREAK</div></div>
+      </div>
+    </div>
+    <div class="pad">
+      <div class="card" style="display:flex;gap:8px;margin-bottom:14px">
+        <button class="mini-btn solid" style="flex:1;padding:11px" onclick="openChat(${c.id},'coach')">💬 Message</button>
+        <button class="mini-btn gold" style="flex:1;padding:11px" onclick="sendReward(${c.id})">🎁 Send discount</button>
+        <button class="mini-btn" style="flex:1;padding:11px" onclick="toast('Book session for ${c.name.split(' ')[0]}')">📅 Book</button>
+      </div>
+
+      <div class="section-t">Progress since ${fmtDate(c.start)}</div>
+      <div class="card">${progHtml}</div>
+
+      <div class="section-t" style="margin-top:20px">Attendance · last 20 sessions</div>
+      <div class="card">
+        <div class="att-grid">${attHtml}</div>
+        <div style="display:flex;gap:16px;margin-top:12px;font-size:11px" class="muted">
+          <span><i style="display:inline-block;width:11px;height:11px;background:var(--green);border-radius:3px;vertical-align:-1px"></i> attended</span>
+          <span><i style="display:inline-block;width:11px;height:11px;background:#f3d0d0;border-radius:3px;vertical-align:-1px"></i> missed</span>
+          <span style="margin-left:auto">Last: ${c.lastAgo===0?'today':c.lastAgo+' days ago'}</span>
+        </div>
+      </div>
+
+      <div class="section-t" style="margin-top:20px">Journey & milestones</div>
+      <div class="card"><div class="tl">${tlHtml}</div></div>
+
+      <div class="section-t" style="margin-top:20px">Details</div>
+      <div class="card" style="font-size:13px;line-height:2.1">
+        <div style="display:flex;justify-content:space-between"><span class="muted">Plan</span><span style="font-weight:600">${c.plan}</span></div>
+        <div style="display:flex;justify-content:space-between"><span class="muted">Started</span><span style="font-weight:600">${fmtDate(c.start)}</span></div>
+        <div style="display:flex;justify-content:space-between"><span class="muted">Goal</span><span style="font-weight:600">${c.goal}</span></div>
+        <div style="display:flex;justify-content:space-between"><span class="muted">Payment</span><span style="font-weight:600">${c.balance}</span></div>
+      </div>
+    </div>
+   </div>`;
+}
+function viewClient(id){coachSel=id;chatWith=null;render();}
+
+function coachMessages(){
+  const list=CLIENTS.slice().sort((a,b)=>a.lastAgo-b.lastAgo);
+  const previews={
+    streak:"You: You've been on fire lately 🔥",
+    default:"Tap to open conversation",
+    reply:"Thanks coach! See you Thursday 🙏",
+  };
+  const rows=list.slice(0,14).map((c,i)=>{
+    const unread=i<3;
+    const pv=i%3===0?"Thanks coach! See you next session 🙏":(i%3===1?"You: Great work today 👊":"You: Here's your discount code 🎁");
+    return `<div class="conv" onclick="openChat(${c.id},'coach')">
+      <div class="avatar av-tone-${c.tone}">${initials(c.name)}</div>
+      <div style="min-width:0">
+        <div class="nm">${c.name}</div>
+        <div class="pv">${pv}</div>
+      </div>
+      <div class="rt">${['now','12m','1h','3h','yest','yest','2d','2d','3d','4d','5d','1w','1w','2w'][i]}${unread?'<br><span class="unread"></span>':''}</div>
+    </div>`;
+  }).join('');
+  return `<div class="pad">
+    <div class="section-t">Messages <a onclick="toast('Broadcast to all clients')">📣 Broadcast</a></div>
+    <div class="card" style="padding:4px 12px">${rows}</div>
+  </div>`;
+}
+
+function coachSchedule(){
+  const dayTabs=DAYS.map(d=>`<div class="daytab ${ttDay===d?'active':''}" onclick="ttDay='${d}';refreshSchedule()"><div class="dw">${d}</div><div class="dn">${DAYNUM[d]}</div></div>`).join('');
+  const slots=TIMETABLE[ttDay];
+  const slotHtml=slots.length?slots.map((s,i)=>`
+    <div class="slot ${s.kind}">
+      <div class="barcol"></div>
+      <div class="tm">${s.t}<small>${s.ap}</small></div>
+      <div class="info"><div class="nm">${s.n}</div><div class="mt">📍 ${s.m} · ${s.cap} booked</div></div>
+      <button class="icon-btn" style="background:#f2f3f5;color:var(--ink);width:34px;height:34px;font-size:14px" onclick="toast('Edit ${s.n} — change time, place or cap')">✏️</button>
+    </div>`).join(''):'<div class="card" style="text-align:center" class="muted">No classes — rest day</div>';
+  return `<div class="pad">
+    <div class="section-t">Live Timetable <a onclick="toast('Add class to '+ttDay)">+ Add class</a></div>
+    <div class="daytabs">${dayTabs}</div>
+    <div style="font-size:12px;color:var(--muted);margin:2px 2px 12px">Tap ✏️ to edit any class. Changes go live to clients instantly.</div>
+    ${slotHtml}
+    <div class="card" style="margin-top:8px;background:#fff7e9;border-color:#f4dfae;display:flex;gap:10px;align-items:center">
+      <span style="font-size:20px">💡</span>
+      <span style="font-size:12.5px;color:#8a6410">Editing here updates the schedule clients see in their app in real time.</span>
+    </div>
+  </div>`;
+}
+function refreshSchedule(){document.querySelector('.view').innerHTML=coachSchedule();}
+
+/* ============ CHAT (shared) ============ */
+function openChat(id,side){chatWith=id;coachSel=null;
+  if(side==='coach'){render();}else{render();}
+}
+function renderChat(side){
+  const c=CLIENTS[chatWith];
+  const first=side==='coach';
+  const msgs=[
+    {who:'them',t:"Hey Zee! Just wanted to say thanks for today's session 🙏",tm:"Tue 5:42pm"},
+    {who:'me',t:"Anytime! Your footwork is looking so much sharper 🔥",tm:"Tue 6:10pm"},
+    {who:'them',t:"Means a lot 😊 same time Thursday?",tm:"Tue 6:11pm"},
+    {who:'me',t:`Locked in. You're on a ${c.streak}-session streak now — keep it going 👊`,tm:"Tue 6:12pm"},
+  ];
+  const bubbles=msgs.map(m=>`<div class="bubble ${m.who}">${m.t}<span class="tm">${m.tm}</span></div>`).join('');
+  const qr = first
+    ? ["🔥 Great work today!","🎁 Here's 20% off","See you next session 👊","How are you feeling?"]
+    : ["Thanks coach! 🙏","See you Thursday","Can I reschedule?","Loved today's session"];
+  const backAction = side==='coach' ? "chatWith=null;coachTab='messages';render()" : "chatWith=null;clientTab='messages';render()";
+  app.innerHTML=`
+    <div class="chat-wrap">
+      <div class="chat-head">
+        <button class="back" style="margin:0" onclick="${backAction}">‹</button>
+        <div class="avatar av-tone-${c.tone}">${initials(side==='coach'?c.name:'Zee')}</div>
+        <div><div style="font-weight:700;font-size:14px">${side==='coach'?c.name:'Coach Zee'}</div>
+        <div style="font-size:11px;opacity:.7">${side==='coach'?c.type+' · '+tenure(c.start):'Trained by Zee'}</div></div>
+      </div>
+      <div class="chat-body" id="chatbody">
+        <div class="daychip">Today</div>
+        ${bubbles}
+      </div>
+      <div class="quickreplies">${qr.map(q=>`<button class="qr" onclick="quickSend('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')}</div>
+      <div class="chat-input">
+        <input id="chatinput" placeholder="Message…" onkeydown="if(event.key==='Enter')doSend()">
+        <button class="send" onclick="doSend()">➤</button>
+      </div>
+    </div>`;
+}
+function quickSend(t){pushBubble(t);}
+function doSend(){const i=document.getElementById('chatinput');if(!i.value.trim())return;pushBubble(i.value.trim());i.value='';}
+function pushBubble(t){const b=document.getElementById('chatbody');
+  const el=document.createElement('div');el.className='bubble me';el.innerHTML=t+'<span class="tm">now</span>';
+  b.appendChild(el);b.scrollTop=b.scrollHeight;toast('Message sent');}
+
+function sendReward(id){toast('🎁 20% code SENT to '+CLIENTS[id].name.split(' ')[0]);}
+
+/* ============ CLIENT ============ */
+function renderClient(){
+  if(!loggedIn){return renderLogin();}
+  if(chatWith!==null){return renderChat('client');}
+  let body='';
+  if(clientTab==='home')body=clientHome();
+  else if(clientTab==='book')body=clientBook();
+  else if(clientTab==='progress')body=clientProgress();
+  else if(clientTab==='messages')body=clientMessages();
+  app.innerHTML=`
+    <div class="appbar">
+      <div class="row">
+        <div class="brand">
+          <div class="logo">TBZ</div>
+          <div><h2>TRAINED BY ZEE</h2><small>MUAY THAI · SYDNEY</small></div>
+        </div>
+        <button class="icon-btn" onclick="clientTab='messages';render()">💬<span class="badge-dot">1</span></button>
+      </div>
+    </div>
+    <div class="view">${body}</div>
+    ${clientTabbar()}`;
+}
+function renderLogin(){
+  app.innerHTML=`<div class="login">
+    <div class="logo-big"><span>TRAINED BY</span><span>ZEE</span></div>
+    <h2>WELCOME BACK</h2>
+    <p>Log in to book classes & track your progress</p>
+    <div class="field"><div class="fl">EMAIL</div><div class="fv">aaliyah.h@email.com</div></div>
+    <div class="field"><div class="fl">PASSWORD</div><div class="fv">••••••••</div></div>
+    <button class="go" onclick="loggedIn=true;render()">LOG IN</button>
+    <div class="sw">New here? <b onclick="loggedIn=true;render()">Create an account</b></div>
+  </div>`;
+}
+function clientTabbar(){
+  const t=[['home','🏠','Home'],['book','📅','Book'],['progress','📈','Progress'],['messages','💬','Messages']];
+  return `<div class="tabbar">${t.map(x=>`<button class="${clientTab===x[0]?'active':''}" onclick="clientTab='${x[0]}';render()"><span class="ic">${x[1]}</span>${x[2]}</button>`).join('')}</div>`;
+}
+function clientHome(){
+  const c=clientUser;
+  return `
+    <div class="c-hero">
+      <div class="hi">Welcome back,</div>
+      <h3>${c.name.split(' ')[0].toUpperCase()} 🥊</h3>
+      <div class="c-streak">
+        <div class="flame">🔥</div>
+        <div>
+          <div class="n">${c.streak} sessions</div>
+          <div class="l">in a row — you're crushing it!</div>
+        </div>
+      </div>
+    </div>
+    <div class="pad" style="padding-top:0">
+      <div class="next-card">
+        <div class="nh">YOUR NEXT SESSION</div>
+        <div class="nb" style="display:flex;align-items:center;gap:14px">
+          <div style="text-align:center;flex:0 0 auto">
+            <div style="font-family:'Bebas Neue';font-size:30px;color:var(--red);line-height:.8">THU</div>
+            <div style="font-size:11px;color:var(--muted);font-weight:600">9 JUL</div>
+          </div>
+          <div style="flex:1">
+            <div class="nt">6:00 PM · Group Muay Thai</div>
+            <div class="nm">📍 Yagoona Centre · with Coach Zee</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-t" style="margin-top:20px">Message from Zee</div>
+      <div class="coachmsg" onclick="openChat(${c.id},'client')">
+        <div class="avatar av-tone-0">Z</div>
+        <div style="flex:1">
+          <div class="cm-nm">Coach Zee</div>
+          <div class="cm-tx">${FIRST_MSG.streak}</div>
+        </div>
+      </div>
+
+      <div class="section-t" style="margin-top:20px">🎉 You've earned a reward</div>
+      <div class="reward">
+        <div class="rc">ZEE20</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:14px">20% off your next block</div>
+          <div style="font-size:12px;opacity:.75;margin-top:2px">For hitting a ${c.streak}-session streak 🔥 Show this code to Zee.</div>
+        </div>
+      </div>
+
+      <div class="section-t" style="margin-top:22px">Your journey</div>
+      <div class="stat-grid">
+        <div class="stat"><div class="n red">${tenure(c.start)}</div><div class="l">Training with Zee</div></div>
+        <div class="stat"><div class="n">${c.total}</div><div class="l">Total sessions</div></div>
+      </div>
+    </div>`;
+}
+function clientProgress(){
+  const c=clientUser;
+  const progHtml=Object.entries(c.progress).map(([k,v])=>`
+    <div class="prog"><div class="pl"><span>${k}</span><span>${Math.round(v)}%</span></div><div class="track"><i style="width:${v}%"></i></div></div>`).join('');
+  const attHtml=c.att.map(a=>`<i class="${a?'on':'miss'}"></i>`).join('');
+  const tl=timeline(c).map(x=>`<div class="tl-item"><div class="d">${x.d}</div><div class="t">${x.t}</div></div>`).join('');
+  return `<div class="pad">
+    <div class="hero-strip">
+      <div class="lbl">SINCE ${fmtDate(c.start).toUpperCase()}</div>
+      <div class="big">Look how far you've come 🥊</div>
+    </div>
+    <div class="section-t" style="margin-top:18px">Your skills</div>
+    <div class="card">${progHtml}</div>
+    <div class="section-t" style="margin-top:20px">Attendance · last 20</div>
+    <div class="card"><div class="att-grid">${attHtml}</div>
+      <div style="margin-top:12px;font-size:12px;font-weight:600;color:var(--green)">🔥 ${c.streak}-session streak — your best yet!</div>
+    </div>
+    <div class="section-t" style="margin-top:20px">Milestones</div>
+    <div class="card"><div class="tl">${tl}</div></div>
+  </div>`;
+}
+let bookedSlots={};
+function clientBook(){
+  const dayTabs=DAYS.map(d=>`<div class="daytab ${bookDay===d?'active':''}" onclick="bookDay='${d}';refreshBook()"><div class="dw">${d}</div><div class="dn">${DAYNUM[d]}</div></div>`).join('');
+  const slots=TIMETABLE[bookDay];
+  const html=slots.map((s,i)=>{
+    const key=bookDay+i;
+    const cap=s.cap.split('/');const full=cap[0]===cap[1];
+    const booked=bookedSlots[key];
+    let btn;
+    if(booked)btn=`<button class="book-btn booked">✓ Booked</button>`;
+    else if(full)btn=`<button class="book-btn full">Full</button>`;
+    else btn=`<button class="book-btn" onclick="bookedSlots['${key}']=1;refreshBook();toast('Booked — see you there! 🥊')">Book</button>`;
+    return `<div class="book-class">
+      <div class="barcol" style="background:${s.kind==='kids'?'#2a6fb0':s.kind==='private'?'var(--gold)':'var(--red)'}"></div>
+      <div class="bc-tm">${s.t}<small>${s.ap}</small></div>
+      <div class="bc-i"><div class="nm">${s.n}</div><div class="mt">📍 ${s.m} · ${s.cap} spots</div></div>
+      ${btn}
+    </div>`;
+  }).join('');
+  return `<div class="pad">
+    <div class="section-t">Book a class</div>
+    <div class="daytabs">${dayTabs}</div>
+    <div style="font-size:12px;color:var(--muted);margin:0 2px 12px">Live availability · updated by Zee in real time</div>
+    ${html||'<div class="card muted" style="text-align:center">Rest day — no classes</div>'}
+  </div>`;
+}
+function refreshBook(){document.querySelector('.view').innerHTML=clientBook();}
+function clientMessages(){
+  const c=clientUser;
+  return `<div class="pad">
+    <div class="section-t">Messages</div>
+    <div class="card" style="padding:4px 12px">
+      <div class="conv" onclick="openChat(${c.id},'client')">
+        <div class="avatar av-tone-0">Z</div>
+        <div style="min-width:0"><div class="nm">Coach Zee</div><div class="pv">${FIRST_MSG.streak}</div></div>
+        <div class="rt">now<br><span class="unread"></span></div>
+      </div>
+      <div class="conv" onclick="openChat(${c.id},'client')">
+        <div class="avatar av-tone-1">TZ</div>
+        <div style="min-width:0"><div class="nm">Trained by Zee 📣</div><div class="pv">New Ladies Only class added Fridays 9:30am!</div></div>
+        <div class="rt">2d</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+render();
+</script>
+</body>
+</html>

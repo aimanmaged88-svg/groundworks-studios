@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback — Groundwork Labs</title>
+  <meta name="description" content="Help shape Groundwork Labs. Your feedback builds the studio — and the best improvement idea each month gets $50 off.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-20 -20 162 162'><rect x='-20' y='-20' width='162' height='162' rx='34' fill='%2314120F'/><g fill='%23F2EFEA'><rect x='31.3' y='0' width='28' height='28'/><rect x='62.6' y='0' width='28' height='28'/><rect x='94' y='0' width='28' height='28'/><rect x='62.6' y='62.6' width='28' height='28'/><rect x='94' y='62.6' width='28' height='28'/></g><g fill='%23E8A33D'><rect x='0' y='0' width='28' height='28'/><rect x='0' y='31.3' width='28' height='28'/><rect x='0' y='62.6' width='28' height='28'/><rect x='0' y='94' width='28' height='28'/><rect x='31.3' y='94' width='28' height='28'/><rect x='62.6' y='94' width='28' height='28'/><rect x='94' y='94' width='28' height='28'/></g></svg>">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+  <header class="hero" style="padding-bottom:0;border-bottom:none">
+    <nav class="topnav">
+      <a class="brand" href="/">
+        <svg class="mark" viewBox="0 0 122 122" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g fill="#F2EFEA"><rect x="31.3" y="0" width="28" height="28"/><rect x="62.6" y="0" width="28" height="28"/><rect x="94" y="0" width="28" height="28"/><rect x="62.6" y="62.6" width="28" height="28"/><rect x="94" y="62.6" width="28" height="28"/></g>
+          <g fill="#E8A33D"><rect x="0" y="0" width="28" height="28"/><rect x="0" y="31.3" width="28" height="28"/><rect x="0" y="62.6" width="28" height="28"/><rect x="0" y="94" width="28" height="28"/><rect x="31.3" y="94" width="28" height="28"/><rect x="62.6" y="94" width="28" height="28"/><rect x="94" y="94" width="28" height="28"/></g>
+        </svg>
+        <span class="brand-word">GROUNDWORK<b>LABS</b></span>
+      </a>
+      <a class="ig-link mono" href="https://instagram.com/studiogroundworks" target="_blank" rel="noopener">@STUDIOGROUNDWORKS</a>
+    </nav>
+  </header>
+
+  <main class="fb-wrap">
+    <div class="eyebrow mono">BUILD IT WITH US</div>
+    <h1 class="fb-title">Your feedback builds this studio.</h1>
+    <p class="hero-sub">Two minutes, straight talk. Tell us what's working and what we should improve — you're part of the journey, not just a client.</p>
+    <div class="fb-incentive">
+      <span class="mono" style="color:var(--ochre);font-size:11px;letter-spacing:.16em">MONTHLY REWARD</span>
+      <p>The best improvement idea each month gets <b>$50 off</b> your build or membership. Real ideas, real reward.</p>
+    </div>
+
+    <form class='fb-form' id='fb-form' method='POST' name='feedback'>
+      <input type="hidden" name="form-name" value="feedback">
+      <p style="display:none"><input name="bot-field"></p>
+
+      <div class="fb-grid">
+        <label class="fb-field"><span class="fb-label mono">YOUR NAME *</span>
+          <input class="fb-input" name="name" required placeholder="e.g. Sam"></label>
+        <label class="fb-field"><span class="fb-label mono">BUSINESS</span>
+          <input class="fb-input" name="business" placeholder="e.g. Eagles Gym"></label>
+        <label class="fb-field"><span class="fb-label mono">WHERE ARE YOU IN THE JOURNEY?</span>
+          <select class="fb-input" name="stage">
+            <option>Just signed up</option>
+            <option>Week one</option>
+            <option>Mid-project</option>
+            <option>Project delivered</option>
+            <option>Ongoing client</option>
+          </select></label>
+        <div class="fb-field"><span class="fb-label mono">HOW ARE WE DOING?</span>
+          <div class="fb-stars" id="fb-stars">
+            <button type="button" data-star="1">★</button><button type="button" data-star="2">★</button><button type="button" data-star="3">★</button><button type="button" data-star="4">★</button><button type="button" data-star="5">★</button>
+          </div>
+          <input type="hidden" name="rating" id="rating-input" value="">
+        </div>
+        <label class="fb-field full"><span class="fb-label mono">WHAT'S WORKING?</span>
+          <textarea class="fb-input" name="working" rows="3" placeholder="The stuff we should keep doing…"></textarea></label>
+        <label class="fb-field full"><span class="fb-label mono">WHAT SHOULD WE IMPROVE? <em style="color:var(--ochre);font-style:normal">($50 territory)</em></span>
+          <textarea class="fb-input" name="improve" rows="3" placeholder="Be honest — the best idea wins the reward…"></textarea></label>
+        <label class="fb-field full fb-check">
+          <input type="checkbox" name="publish_ok" value="yes">
+          <span>You can publish my words as a testimonial on the Groundwork Labs website</span></label>
+        <label class="fb-field full"><span class="fb-label mono">CONTACT (SO WE CAN GIVE YOU THE $50)</span>
+          <input class="fb-input" name="contact" placeholder="Email, phone or @handle — optional"></label>
+      </div>
+
+      <button class="btn-ochre" type="submit" id="fb-submit" style="margin-top:26px;border:none;cursor:pointer">SEND FEEDBACK <span class="arrow">→</span></button>
+    </form>
+
+    <div class="fb-thanks" id="fb-thanks" hidden>
+      <div class="groundline" style="margin:0 0 24px;width:120px"></div>
+      <h2 style="font-size:26px;letter-spacing:-.015em">Received. Thank you. 🤝</h2>
+      <p class="hero-sub" style="margin-top:12px">Every piece of feedback gets read by Aiman personally. If your improvement idea wins the month, we'll be in touch about your $50.</p>
+      <a class="btn-ochre" href="/" style="margin-top:26px">BACK TO GROUNDWORK LABS</a>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="mono">GROUNDWORK LABS — “SERVICE THE COMMUNITY WHILE WE SERVICE YOUR BUSINESS”</div>
+    <div class="foot-links">
+      <a class="mono" href="https://instagram.com/studiogroundworks" target="_blank" rel="noopener">@STUDIOGROUNDWORKS</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // star rating
+      let rating = 0;
+      const stars = document.querySelectorAll('#fb-stars button');
+      const paint = n => stars.forEach(s => s.classList.toggle('lit', +s.dataset.star <= n));
+      stars.forEach(s => {
+        s.addEventListener('mouseenter', () => paint(+s.dataset.star));
+        s.addEventListener('mouseleave', () => paint(rating));
+        s.addEventListener('click', () => { rating = +s.dataset.star; document.getElementById('rating-input').value = rating + '/5'; paint(rating); });
+      });
+
+      // submit without leaving the page
+      const form = document.getElementById('fb-form');
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = document.getElementById('fb-submit');
+        btn.disabled = true; btn.textContent = 'SENDING…';
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form)).toString(),
+        }).then(r => {
+          if (!r.ok) throw new Error(r.status);
+          form.hidden = true;
+          document.querySelector('.fb-incentive').hidden = true;
+          document.getElementById('fb-thanks').hidden = false;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }).catch(() => {
+          btn.disabled = false; btn.innerHTML = 'SEND FEEDBACK <span class="arrow">→</span>';
+          alert('Hmm, that didn\'t go through — check your internet and try again.');
+        });
+      });
+    })();
+  </script>
+  <script src="js/polish.js"></script>
+</body>
+</html>

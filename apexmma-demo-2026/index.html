@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0E14">
+<title>Apex MMA — Member OS</title>
+<link rel="icon" href="https://www.apexmma.com.au/wp-content/uploads/cropped-apex_mma_favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F5F8;
+  --card:#FFFFFF;
+  --card2:#F7FAFC;
+  --line:rgba(13,30,45,.09);
+  --line2:rgba(13,30,45,.16);
+  --ink:#0D1520;
+  --muted:#5D6B79;
+  --dim:#93A0AD;
+  --blue:#279DD7;
+  --blue-deep:#1479AD;
+  --blue-ink:#0B3B5E;
+  --navy:#0B0E14;
+  --navy2:#11161F;
+  --green:#1FA262;
+  --red:#D64545;
+  --mt:#1479AD;
+  --ng:#279DD7;
+  --mma:#0B3B5E;
+  --kids:#54B6E8;
+  --disp:'Rajdhani',system-ui,sans-serif;
+  --sans:'Inter Tight',system-ui,sans-serif;
+  --mono:'Rajdhani',sans-serif;
+  --rad:16px;
+  --shadow:0 1px 2px rgba(13,30,45,.05),0 8px 24px -12px rgba(13,30,45,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--ink);
+  display:flex;flex-direction:column;overflow:hidden;
+  font-size:15px;line-height:1.45;
+}
+button{font-family:var(--sans)}
+img{max-width:100%}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:#C4CFD9;border-radius:6px;border:3px solid var(--bg)}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ---------- entrance animations ---------- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes growW{from{width:0}}
+@keyframes kenburns{from{transform:scale(1.02) translateX(0)}to{transform:scale(1.13) translateX(-2%)}}
+@keyframes chevFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.wrap>*{animation:fadeUp .5s cubic-bezier(.2,.7,.3,1) both}
+.meter i{animation:growW .9s cubic-bezier(.2,.7,.3,1) both;animation-delay:.15s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- demo strip ---------- */
+.demostrip{
+  flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:7px 16px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08);z-index:40;position:relative;
+}
+.demostrip .dt{font-family:var(--disp);font-size:12px;letter-spacing:2.5px;color:#7E8A96;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.demostrip .dt b{color:#fff;font-weight:700}
+.demostrip .dt b i{color:var(--blue);font-style:normal}
+.modeswitch{display:inline-flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:3px;gap:2px;flex:0 0 auto}
+.modeswitch button{
+  font-family:var(--disp);font-size:11px;letter-spacing:1.5px;font-weight:700;color:#96A2AE;
+  background:transparent;border:none;padding:5px 14px;border-radius:999px;cursor:pointer;transition:.18s;
+}
+.modeswitch button.active{background:var(--blue);color:#fff;box-shadow:0 3px 10px rgba(39,157,215,.45)}
+
+/* ---------- shell ---------- */
+.shell{flex:1;display:flex;min-height:0;position:relative;z-index:1}
+.sidebar{
+  flex:0 0 256px;display:flex;flex-direction:column;min-height:0;
+  background:var(--navy);border-right:1px solid rgba(255,255,255,.06);
+  padding:26px 18px 18px;color:#E8EDF2;
+}
+.side-brand{display:flex;align-items:center;gap:12px;padding:0 6px 24px}
+.mark{
+  width:44px;height:44px;flex:0 0 auto;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.35);
+}
+.mark svg{animation:chevFloat 4s ease-in-out infinite}
+.side-brand .bt h1{font-family:var(--disp);font-size:22px;font-weight:700;letter-spacing:1.5px;line-height:1;text-transform:uppercase}
+.side-brand .bt h1 span{color:var(--blue)}
+.side-brand .bt small{display:block;font-family:var(--disp);font-size:9.5px;letter-spacing:3px;color:#5F6C79;margin-top:3px;font-weight:600}
+.snav{display:flex;flex-direction:column;gap:3px;flex:1;overflow-y:auto}
+.snav .lbl{font-family:var(--disp);font-size:10px;letter-spacing:3px;color:#4E5A66;font-weight:700;padding:16px 10px 8px}
+.snav button{
+  display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:11px;border:1px solid transparent;
+  background:transparent;color:#96A2AE;font-size:13.5px;font-weight:500;cursor:pointer;text-align:left;transition:.15s;
+}
+.snav button svg{width:17px;height:17px;flex:0 0 auto;opacity:.8}
+.snav button:hover{color:#fff;background:rgba(255,255,255,.05)}
+.snav button.active{
+  background:linear-gradient(135deg,rgba(39,157,215,.25),rgba(39,157,215,.1));
+  border-color:rgba(39,157,215,.45);color:#fff;font-weight:600;
+}
+.snav button.active svg{opacity:1;color:var(--blue)}
+.side-foot{border-top:1px solid rgba(255,255,255,.08);padding-top:14px;margin-top:14px}
+.side-me{display:flex;align-items:center;gap:11px;padding:6px;border-radius:12px;cursor:pointer}
+.side-me:hover{background:rgba(255,255,255,.05)}
+.avatar{
+  width:36px;height:36px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--blue-deep));
+}
+.side-me .nm{font-size:13px;font-weight:600;line-height:1.15;color:#fff}
+.side-me .pl{font-family:var(--disp);font-size:10px;letter-spacing:2px;color:#7E8A96;font-weight:600}
+
+/* ---------- main ---------- */
+.main{flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.wrap{max-width:1060px;margin:0 auto;padding:34px 38px 70px}
+
+.mobilebar{display:none}
+
+/* ---------- tabbar (mobile) ---------- */
+.tabbar{
+  display:none;flex:0 0 auto;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);padding:8px 4px calc(10px + env(safe-area-inset-bottom));z-index:40;
+}
+.tabbar button{
+  flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:4px;
+  color:var(--dim);cursor:pointer;font-size:9.5px;font-weight:600;letter-spacing:.4px;padding:3px 0;
+}
+.tabbar button svg{width:21px;height:21px}
+.tabbar button.active{color:var(--blue-deep)}
+
+/* ---------- typography / generic ---------- */
+.eyebrow{font-family:var(--disp);font-size:12px;letter-spacing:3.5px;color:var(--blue-deep);font-weight:700;text-transform:uppercase}
+.h-page{font-family:var(--disp);font-weight:700;font-size:40px;line-height:1;margin:6px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+.h-page em{color:var(--blue);font-style:normal}
+.sub{color:var(--muted);font-size:14px;max-width:560px}
+.sect{display:flex;align-items:baseline;justify-content:space-between;margin:34px 0 14px}
+.sect h3{font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:1px;text-transform:uppercase}
+.sect a{font-family:var(--disp);font-size:12px;letter-spacing:1.5px;color:var(--blue-deep);cursor:pointer;text-decoration:none;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:18px;box-shadow:var(--shadow)}
+.muted{color:var(--muted)}
+.mono{font-family:var(--disp);font-weight:600}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--disp);font-size:10.5px;font-weight:700;letter-spacing:1.2px;padding:4px 10px;border-radius:999px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.pill.gold{background:rgba(39,157,215,.1);border-color:rgba(39,157,215,.4);color:var(--blue-deep)}
+.pill.green{background:rgba(31,162,98,.08);border-color:rgba(31,162,98,.35);color:var(--green)}
+.pill.red{background:rgba(214,69,69,.07);border-color:rgba(214,69,69,.3);color:var(--red)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;cursor:pointer;
+  font-size:13px;font-weight:600;padding:11px 20px;border:1px solid var(--line2);
+  background:#fff;color:var(--ink);transition:.16s;white-space:nowrap;
+}
+.btn:hover{border-color:var(--blue);color:var(--blue-deep);transform:translateY(-1px)}
+.btn.primary{
+  background:linear-gradient(135deg,#3FB1E8,var(--blue) 55%,var(--blue-deep));
+  color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(39,157,215,.35);
+}
+.btn.primary:hover{filter:brightness(1.06);color:#fff;transform:translateY(-1px)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:7px 14px;font-size:12px;border-radius:10px}
+.btn.danger{color:var(--red);border-color:rgba(214,69,69,.35)}
+.btn.danger:hover{color:var(--red);border-color:var(--red)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.hair{height:1px;background:var(--line);margin:16px 0}
+
+/* ---------- home hero (website-style) ---------- */
+.hero{
+  position:relative;border-radius:22px;overflow:hidden;margin-top:22px;
+  background:var(--navy);box-shadow:0 24px 50px -20px rgba(11,25,40,.55);
+  min-height:340px;display:flex;align-items:flex-end;
+}
+.hero .hero-img{
+  position:absolute;inset:0;background-size:cover;background-position:center 30%;
+  animation:kenburns 22s ease-in-out infinite alternate;will-change:transform;
+}
+.hero .hero-shade{position:absolute;inset:0;background:linear-gradient(75deg,rgba(6,14,24,.92) 20%,rgba(6,14,24,.55) 55%,rgba(6,14,24,.18));}
+.hero .hin{position:relative;padding:34px 36px;color:#fff;max-width:600px}
+.hero .tag{font-family:var(--disp);font-size:12px;letter-spacing:4px;color:var(--blue);font-weight:700}
+.hero h2{font-family:var(--disp);font-weight:700;font-size:46px;line-height:.98;margin:12px 0 10px;text-transform:uppercase;letter-spacing:1px}
+.hero h2 em{color:var(--blue);font-style:normal}
+.hero p{color:rgba(255,255,255,.75);font-size:14px;max-width:460px;margin-bottom:22px}
+.hero .hrow{display:flex;gap:10px;flex-wrap:wrap}
+.hero .btn:not(.primary){background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:#fff;backdrop-filter:blur(4px)}
+.hero .btn:not(.primary):hover{background:rgba(255,255,255,.2);color:#fff}
+
+.next-card{
+  display:flex;align-items:center;gap:18px;border-radius:var(--rad);padding:18px;
+  background:linear-gradient(135deg,rgba(39,157,215,.1),rgba(39,157,215,.02)),#fff;
+  border:1px solid rgba(39,157,215,.35);box-shadow:var(--shadow);
+}
+.next-card .tblock{flex:0 0 auto;text-align:center;border-right:1px solid rgba(39,157,215,.3);padding-right:18px}
+.next-card .tblock .d{font-family:var(--disp);font-size:11px;letter-spacing:2px;color:var(--blue-deep);font-weight:700}
+.next-card .tblock .t{font-family:var(--disp);font-weight:700;font-size:26px;line-height:1.1;margin-top:2px}
+.next-card .info{flex:1;min-width:0}
+.next-card .info .n{font-weight:700;font-size:15.5px}
+.next-card .info .c{color:var(--muted);font-size:12.5px;margin-top:2px}
+.statgrid .card{padding:16px}
+.stat .k{font-family:var(--disp);font-size:11px;letter-spacing:2px;color:var(--dim);font-weight:700;text-transform:uppercase}
+.stat .v{font-family:var(--disp);font-weight:700;font-size:32px;line-height:1.05;margin-top:6px;color:var(--blue-ink)}
+.stat .v small{font-size:15px;color:var(--muted);font-family:var(--sans);font-weight:600}
+.stat .d{font-size:11.5px;color:var(--muted);margin-top:3px}
+.qa{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:16px;border-radius:var(--rad);cursor:pointer;background:var(--card);border:1px solid var(--line);transition:.16s;color:var(--ink);text-align:left;box-shadow:var(--shadow)}
+.qa:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 12px 28px -12px rgba(39,157,215,.35)}
+.qa .ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(39,157,215,.12);color:var(--blue-deep)}
+.qa .ic svg{width:17px;height:17px}
+.qa b{font-size:13px}
+.qa span{font-size:11px;color:var(--muted)}
+.ann{display:flex;gap:13px;padding:14px 4px;border-bottom:1px solid var(--line)}
+.ann:last-child{border-bottom:none}
+.ann .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);margin-top:7px;flex:0 0 auto}
+.ann .at{font-weight:600;font-size:13.5px}
+.ann .ab{color:var(--muted);font-size:12.5px;margin-top:2px}
+.ann .ad{font-family:var(--disp);font-weight:600;font-size:10px;color:var(--dim);letter-spacing:1.5px;margin-top:5px}
+
+/* pathway */
+.path{display:flex;align-items:center;gap:0;margin-top:16px}
+.pstep{flex:1;text-align:center;position:relative}
+.pstep .pdot{width:30px;height:30px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;border:1px solid var(--line2);background:#fff;color:var(--dim);font-family:var(--disp);font-size:12px;font-weight:700;position:relative;z-index:2}
+.pstep.done .pdot{background:linear-gradient(135deg,var(--blue),var(--blue-deep));border-color:transparent;color:#fff}
+.pstep.now .pdot{border-color:var(--blue);color:var(--blue-deep);box-shadow:0 0 0 4px rgba(39,157,215,.18)}
+.pstep .pl2{font-size:10.5px;font-weight:600;margin-top:8px;color:var(--muted)}
+.pstep.now .pl2{color:var(--blue-deep)}
+.pstep::after{content:'';position:absolute;top:15px;left:50%;width:100%;height:1px;background:var(--line2);z-index:1}
+.pstep:last-child::after{display:none}
+.pstep.done::after{background:var(--blue)}
+.meter{height:6px;border-radius:99px;background:rgba(13,30,45,.07);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue-deep),var(--blue))}
+
+/* ---------- timetable ---------- */
+.daytabs{display:flex;gap:6px;overflow-x:auto;padding:2px;margin:18px 0 4px}
+.daytabs::-webkit-scrollbar{display:none}
+.daytabs button{
+  flex:1;min-width:76px;border-radius:13px;border:1px solid var(--line);background:#fff;
+  color:var(--muted);cursor:pointer;padding:10px 6px;text-align:center;transition:.15s;box-shadow:var(--shadow);
+}
+.daytabs button:hover{border-color:var(--blue)}
+.daytabs button .dw{font-family:var(--disp);font-size:10.5px;letter-spacing:2px;font-weight:700}
+.daytabs button .dn{font-family:var(--disp);font-weight:700;font-size:20px;margin-top:2px;color:var(--ink)}
+.daytabs button.active{background:var(--navy);border-color:var(--navy)}
+.daytabs button.active .dw{color:var(--blue)}
+.daytabs button.active .dn{color:#fff}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 18px}
+.fchip{
+  font-family:var(--disp);font-size:11px;letter-spacing:1.2px;font-weight:700;padding:7px 14px;border-radius:999px;
+  border:1px solid var(--line2);background:#fff;color:var(--muted);cursor:pointer;transition:.15s;
+}
+.fchip:hover{border-color:var(--blue);color:var(--blue-deep)}
+.fchip.active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 3px 10px rgba(39,157,215,.35)}
+.cls{
+  display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:var(--rad);
+  background:var(--card);border:1px solid var(--line);margin-bottom:10px;position:relative;overflow:hidden;
+  box-shadow:var(--shadow);transition:.16s;animation:fadeUp .4s cubic-bezier(.2,.7,.3,1) both;
+}
+.cls:hover{border-color:rgba(39,157,215,.5);transform:translateX(2px)}
+.cls::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--dc,var(--blue))}
+.cls .when{flex:0 0 78px;text-align:left}
+.cls .when .st{font-family:var(--disp);font-weight:700;font-size:17px}
+.cls .when .en{font-family:var(--disp);font-weight:600;font-size:11px;color:var(--dim);margin-top:1px}
+.cls .cinfo{flex:1;min-width:0}
+.cls .cinfo .cn{font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cls .cinfo .cc{color:var(--muted);font-size:12px;margin-top:3px}
+.cls .cap{flex:0 0 auto;text-align:right;margin-right:4px}
+.cls .cap .cn2{font-family:var(--disp);font-weight:600;font-size:11px;color:var(--dim);letter-spacing:.5px}
+.cls .cap .meter{width:64px;margin-top:5px}
+.lvl{font-family:var(--disp);font-size:9.5px;letter-spacing:1.2px;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(13,30,45,.06);color:var(--muted)}
+.restday{padding:60px 20px;text-align:center;border:1px dashed var(--line2);border-radius:var(--rad);background:rgba(255,255,255,.5)}
+.restday h4{font-family:var(--disp);font-size:26px;font-weight:700;color:var(--blue-deep);text-transform:uppercase;letter-spacing:1px}
+.restday p{color:var(--muted);font-size:13px;margin-top:6px}
+
+/* ---------- training ---------- */
+.disc-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.disc-row .dn2{flex:0 0 110px;font-size:12.5px;font-weight:700}
+.disc-row .meter{flex:1}
+.disc-row .dv{flex:0 0 44px;text-align:right;font-family:var(--disp);font-weight:700;font-size:13px;color:var(--muted)}
+.hist{display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--line)}
+.hist:last-child{border-bottom:none}
+.hist .hd2{flex:0 0 46px;text-align:center;border:1px solid var(--line2);border-radius:10px;padding:6px 0;background:var(--card2)}
+.hist .hd2 .m{font-family:var(--disp);font-size:9px;letter-spacing:1.5px;color:var(--blue-deep);font-weight:700}
+.hist .hd2 .d{font-family:var(--disp);font-weight:700;font-size:17px;line-height:1}
+.hist .hn{flex:1;min-width:0}
+.hist .hn b{font-size:13.5px}
+.hist .hn span{display:block;font-size:11.5px;color:var(--muted);margin-top:1px}
+
+/* ---------- membership ---------- */
+.membercard{
+  position:relative;border-radius:20px;padding:26px;overflow:hidden;color:#fff;
+  background:url('https://www.apexmma.com.au/wp-content/uploads/apex_footer_bg-1.jpg') center/cover,var(--blue-deep);
+  box-shadow:0 24px 50px -18px rgba(20,121,173,.6);
+}
+.membercard::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(120deg,rgba(6,25,40,.55),rgba(6,25,40,.15) 60%,rgba(6,25,40,.35));
+}
+.membercard>*{position:relative}
+.membercard .mc-top{display:flex;justify-content:space-between;align-items:flex-start}
+.membercard .mc-top .mark{width:40px;height:40px;border-radius:11px}
+.membercard .mc-top .pill{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4);color:#fff;backdrop-filter:blur(4px)}
+.membercard .mc-name{font-family:var(--disp);font-weight:700;font-size:27px;margin-top:26px;text-transform:uppercase;letter-spacing:1px}
+.membercard .mc-plan{font-family:var(--disp);font-size:11px;letter-spacing:3px;color:rgba(255,255,255,.85);font-weight:700;margin-top:2px}
+.membercard .mc-bot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:24px}
+.membercard .mc-id{font-family:var(--disp);font-weight:600;font-size:12px;letter-spacing:2px;color:rgba(255,255,255,.85)}
+.membercard .mc-id span{font-size:10px;color:rgba(255,255,255,.55)}
+.barcode{display:flex;gap:2px;align-items:flex-end;height:34px}
+.barcode i{display:block;width:2px;background:#fff;opacity:.9}
+.planrow{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 4px;border-bottom:1px solid var(--line)}
+.planrow:last-child{border-bottom:none}
+.planrow .pn{font-weight:700;font-size:13.5px}
+.planrow .pd{font-size:11.5px;color:var(--muted);margin-top:1px}
+.planrow .pp{font-family:var(--disp);font-weight:700;font-size:22px;white-space:nowrap;color:var(--blue-ink)}
+.planrow .pp small{font-size:11px;color:var(--muted);font-family:var(--sans);font-weight:600}
+
+/* ---------- coaches / club ---------- */
+.coach{display:flex;gap:16px;align-items:flex-start}
+.coach .cav{
+  width:58px;height:58px;flex:0 0 auto;border-radius:16px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--disp);font-weight:700;font-size:20px;color:#fff;
+  background:linear-gradient(150deg,var(--blue),var(--blue-ink));
+}
+.coach .cb b{font-size:15px}
+.coach .cb .role{font-family:var(--disp);font-size:10.5px;letter-spacing:2px;color:var(--blue-deep);font-weight:700;margin:3px 0 6px}
+.coach .cb p{font-size:12.5px;color:var(--muted)}
+.prog{
+  position:relative;overflow:hidden;border-radius:var(--rad);border:1px solid var(--line);background:var(--card);
+  box-shadow:var(--shadow);transition:.18s;
+}
+.prog:hover{transform:translateY(-3px);box-shadow:0 18px 36px -14px rgba(13,30,45,.3)}
+.prog .pimg{height:150px;background-size:cover;background-position:center;position:relative;transition:.4s}
+.prog:hover .pimg{transform:scale(1.04)}
+.prog .pimg-wrap{height:150px;overflow:hidden;position:relative}
+.prog .pimg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,25,40,0) 40%,rgba(11,25,40,.5))}
+.prog .pbody{padding:16px 18px 18px}
+.prog .pt{font-family:var(--disp);font-weight:700;font-size:21px;text-transform:uppercase;letter-spacing:.5px}
+.prog .ps{font-family:var(--disp);font-size:10.5px;letter-spacing:2.5px;color:var(--blue-deep);font-weight:700;margin-top:1px}
+.prog p{font-size:12.5px;color:var(--muted);margin-top:9px}
+.inforow{display:flex;gap:12px;align-items:center;padding:13px 4px;border-bottom:1px solid var(--line);font-size:13px}
+.inforow:last-child{border-bottom:none}
+.inforow .ii{width:32px;height:32px;border-radius:9px;background:rgba(39,157,215,.1);display:flex;align-items:center;justify-content:center;color:var(--blue-deep);flex:0 0 auto}
+.inforow .ii svg{width:15px;height:15px}
+.inforow small{display:block;color:var(--dim);font-family:var(--disp);font-weight:700;font-size:9.5px;letter-spacing:2px}
+.cta-poly{
+  border-radius:var(--rad);overflow:hidden;position:relative;color:#fff;padding:22px;
+  background:url('https://www.apexmma.com.au/wp-content/uploads/apex_footer_bg-1.jpg') center/cover,var(--blue-deep);
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:12px;
+  box-shadow:0 18px 40px -16px rgba(20,121,173,.55);
+}
+.cta-poly::before{content:'';position:absolute;inset:0;background:linear-gradient(100deg,rgba(6,25,40,.6),rgba(6,25,40,.2))}
+.cta-poly>*{position:relative}
+.cta-poly .eyebrow{color:#9FDBFF}
+.cta-poly b{font-family:var(--disp);font-weight:700;font-size:24px;text-transform:uppercase;letter-spacing:.5px}
+.cta-poly p{font-size:12.5px;color:rgba(255,255,255,.8)}
+.cta-poly .btn{background:#fff;color:var(--blue-ink);border-color:transparent}
+.cta-poly .btn:hover{color:var(--blue-deep)}
+
+/* ---------- staff ---------- */
+.kpi{padding:18px}
+.kpi .kk{font-family:var(--disp);font-size:10.5px;letter-spacing:2px;color:var(--dim);font-weight:700;text-transform:uppercase}
+.kpi .kv{font-family:var(--disp);font-weight:700;font-size:34px;margin-top:8px;line-height:1;color:var(--blue-ink)}
+.kpi .kd{font-size:11px;margin-top:6px;color:var(--muted)}
+.kpi .kd.up{color:var(--green)}
+.kpi .kd.dn{color:var(--red)}
+.feed{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--line)}
+.feed:last-child{border-bottom:none}
+.feed .fa{width:32px;height:32px;border-radius:50%;background:var(--card2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);flex:0 0 auto}
+.feed .fb{flex:1;font-size:13px}
+.feed .fb span{color:var(--muted)}
+.feed .ft{font-family:var(--disp);font-weight:600;font-size:11px;color:var(--dim);letter-spacing:.5px}
+.mrow{display:flex;align-items:center;gap:13px;padding:12px 4px;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:none}
+.mrow .mb{flex:1;min-width:0}
+.mrow .mb b{font-size:13.5px}
+.mrow .mb span{display:block;font-size:11px;color:var(--muted);font-family:var(--disp);font-weight:600;letter-spacing:1px;margin-top:1px}
+.search{
+  width:100%;background:#fff;border:1px solid var(--line2);border-radius:12px;color:var(--ink);
+  padding:12px 16px;font-size:13.5px;font-family:var(--sans);outline:none;margin-bottom:14px;transition:.15s;
+}
+.search:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(39,157,215,.15)}
+textarea.search{resize:vertical;min-height:90px}
+
+/* ---------- modal / toast ---------- */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(8,15,24,.55);backdrop-filter:blur(6px);z-index:90;
+  display:flex;align-items:center;justify-content:center;padding:20px;animation:fadein .18s;
+}
+.modal{
+  width:100%;max-width:430px;background:#fff;border:1px solid var(--line);border-radius:22px;
+  padding:26px;max-height:86vh;overflow-y:auto;animation:pop .22s cubic-bezier(.2,.8,.3,1.1);
+  box-shadow:0 40px 90px -20px rgba(8,15,24,.5);
+}
+@keyframes fadein{from{opacity:0}}
+@keyframes pop{from{transform:scale(.94) translateY(10px);opacity:0}}
+.modal h3{font-family:var(--disp);font-weight:700;font-size:24px;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.modal .msub{color:var(--muted);font-size:13px;margin-bottom:18px}
+#toast{
+  position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);z-index:99;
+  background:var(--navy);border:1px solid rgba(39,157,215,.5);color:#fff;border-radius:14px;
+  padding:13px 22px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;
+  box-shadow:0 14px 40px rgba(8,15,24,.45);max-width:88vw;text-align:center;
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast b{color:#5BC2F2}
+.qr{display:grid;grid-template-columns:repeat(21,1fr);gap:1.5px;width:190px;margin:14px auto;padding:12px;background:#fff;border:1px solid var(--line2);border-radius:14px}
+.qr i{display:block;aspect-ratio:1;background:#fff;border-radius:1px}
+.qr i.f{background:#0D1520}
+
+/* ---------- responsive: MOBILE = app ---------- */
+@media (max-width:980px){
+  .sidebar{display:none}
+  .tabbar{display:flex}
+  .wrap{padding:18px 16px 40px;max-width:640px}
+  .mobilebar{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:4px 0 16px;animation:none;
+  }
+  .mob-brand{display:flex;align-items:center;gap:10px}
+  .mob-brand .mark{width:38px;height:38px;border-radius:11px;background:var(--navy)}
+  .mob-brand h1{font-family:var(--disp);font-weight:700;font-size:19px;line-height:1;text-transform:uppercase;letter-spacing:1px}
+  .mob-brand h1 span{color:var(--blue)}
+  .mob-brand small{display:block;font-family:var(--disp);font-size:8px;letter-spacing:2.5px;color:var(--dim);margin-top:2px;font-weight:700}
+  .h-page{font-size:30px}
+  .hero{margin-top:8px;min-height:300px}
+  .hero .hin{padding:24px 22px}
+  .hero h2{font-size:33px}
+  .g4{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr}
+  .g2{grid-template-columns:1fr}
+  .sect{margin-top:26px}
+  .cls{gap:12px;padding:14px}
+  .cls .when{flex-basis:64px}
+  .cls .cap .meter{width:44px}
+  .daytabs button{min-width:64px}
+  .next-card{gap:14px}
+  .membercard .mc-name{font-size:23px}
+}
+@media (min-width:981px){
+  .mobile-only{display:none!important}
+}
+@media (max-width:980px){
+  .desktop-only{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="demostrip">
+  <div class="dt"><b>APEX <i>MMA</i></b>&nbsp;·&nbsp;MEMBER OS&nbsp;·&nbsp;CONCEPT DEMO</div>
+  <div class="modeswitch">
+    <button id="mode-member" class="active" onclick="setMode('member')">MEMBER</button>
+    <button id="mode-staff" onclick="setMode('staff')">STAFF HQ</button>
+  </div>
+</div>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="side-brand">
+      <div class="mark" id="side-mark"></div>
+      <div class="bt">
+        <h1>Apex <span>MMA</span></h1>
+        <small>TRADITION // INNOVATION</small>
+      </div>
+    </div>
+    <nav class="snav" id="snav"></nav>
+    <div class="side-foot">
+      <div class="side-me" onclick="openProfile()">
+        <div class="avatar" id="side-av">J</div>
+        <div>
+          <div class="nm" id="side-nm">Member</div>
+          <div class="pl" id="side-pl">UNLIMITED</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main" id="main"></main>
+</div>
+
+<nav class="tabbar" id="tabbar"></nav>
+<div id="modal-root"></div>
+<div id="toast"></div>
+
+<script>
+/* =============== BRAND ASSETS =============== */
+const CDN = 'https://www.apexmma.com.au/wp-content/uploads/';
+const IMG = {
+  hero: CDN+'apexmma_brookvale_cover_photo.webp',
+  mt:   CDN+'apex_mma_muay_thai_jiu_jitsu_brookvale.webp',
+  ng:   CDN+'apex_jiu_jitsu_brookvale-1024x668.webp',
+  mma:  CDN+'1667036855676-980x639.jpg',
+  kids: CDN+'apex_kids_jiu_jitsu-1024x668.webp',
+  poly: CDN+'apex_footer_bg-1.jpg',
+  patch:CDN+'APEX-PATCH-BLACK-BLUE.png',
+};
+/* Apex chevron mark — black outer chevron, brand-blue inner (from their patch) */
+function chevron(sz, dark){
+  const outer = dark ? '#FFFFFF' : '#0D1520';
+  return `<svg width="${sz}" height="${sz}" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 8 L88 86 L70 86 L50 44 L30 86 L12 86 Z" fill="${outer}"/>
+    <path d="M50 56 L64 86 L36 86 Z" fill="#279DD7"/>
+  </svg>`;
+}
+
+/* =============== ICONS =============== */
+const I = {
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>',
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="17" rx="3"/><path d="M8 2v5M16 2v5M3 11h18"/></svg>',
+  pulse:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>',
+  card:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="15" rx="3"/><path d="M2 10h20M6 15.5h5"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/></svg>',
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.4 3.4-5 6.5-5s5.7 1.6 6.5 5"/><path d="M16 5a3.5 3.5 0 0 1 0 7M21.5 20c-.5-2.2-1.8-3.7-3.7-4.5"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>',
+  qr:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14h1M14 20h1M18 18h3v3h-3z"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 10 18 20 6"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+  phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a12 12 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>',
+  ig:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".8" fill="currentColor"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  send:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>',
+  grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>',
+};
+
+/* =============== DATA =============== */
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const DAYS_S = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+const DIS = {
+  mt:{name:'Muay Thai', c:'var(--mt)', hex:'#1479AD', sub:'The Art of 8 Limbs'},
+  ng:{name:'No-Gi Jiu-Jitsu', c:'var(--ng)', hex:'#279DD7', sub:'The Gentle Art'},
+  mma:{name:'MMA', c:'var(--mma)', hex:'#0B3B5E', sub:'The Adaptable Art'},
+  kids:{name:'Kids & Teens', c:'var(--kids)', hex:'#54B6E8', sub:'Ages 6–16'},
+};
+const LVL = {beg:'BEGINNER', int:'INTERMEDIATE', adv:'ADVANCED', intadv:'INT & ADV', comp:'COMPETITION', all:'ALL LEVELS', kids:'KIDS', invite:'INVITE ONLY'};
+
+/* Real Apex MMA Brookvale timetable */
+const TT = [
+  // Monday
+  {d:0,m:690,dur:60,name:'Open Mat',dis:'ng',lvl:'intadv',coach:'Nick Pudney'},
+  {d:0,m:990,dur:45,name:'Kids & Teens Jiu-Jitsu',dis:'kids',lvl:'kids',coach:'Nick Pudney'},
+  {d:0,m:1050,dur:60,name:'No-Gi Jiu-Jitsu',dis:'ng',lvl:'int',coach:'Sonny Brown'},
+  {d:0,m:1050,dur:60,name:'Muay Thai Competition',dis:'mt',lvl:'comp',coach:'Chad Lumley'},
+  {d:0,m:1110,dur:60,name:'No-Gi Jiu-Jitsu',dis:'ng',lvl:'adv',coach:'Sonny Brown'},
+  {d:0,m:1110,dur:60,name:'Beginner No-Gi',dis:'ng',lvl:'beg',coach:'Nick Pudney'},
+  {d:0,m:1110,dur:60,name:'MMA — Fence Wrestling',dis:'mma',lvl:'int',coach:'Sonny Brown'},
+  // Tuesday
+  {d:1,m:360,dur:60,name:'No-Gi Morning Crew',dis:'ng',lvl:'all',coach:'Nick Pudney'},
+  {d:1,m:990,dur:45,name:'Kids Muay Thai',dis:'kids',lvl:'kids',coach:'Chad Lumley'},
+  {d:1,m:1050,dur:60,name:'Beginner No-Gi',dis:'ng',lvl:'beg',coach:'Nick Pudney'},
+  {d:1,m:1050,dur:60,name:'Muay Thai',dis:'mt',lvl:'intadv',coach:'Chad Lumley'},
+  {d:1,m:1110,dur:60,name:'No-Gi Competition',dis:'ng',lvl:'comp',coach:'Sonny Brown'},
+  {d:1,m:1110,dur:60,name:'Beginner Muay Thai',dis:'mt',lvl:'beg',coach:'Chad Lumley'},
+  {d:1,m:1140,dur:30,name:'MMA — Fence Wrestling',dis:'mma',lvl:'adv',coach:'Sonny Brown'},
+  {d:1,m:1170,dur:30,name:'MMA — Grapple Boxing',dis:'mma',lvl:'adv',coach:'Sonny Brown'},
+  // Wednesday
+  {d:2,m:690,dur:60,name:'No-Gi Jiu-Jitsu',dis:'ng',lvl:'adv',coach:'Sonny Brown'},
+  {d:2,m:990,dur:45,name:'Kids Gi Jiu-Jitsu',dis:'kids',lvl:'kids',coach:'Nick Pudney'},
+  {d:2,m:1050,dur:60,name:'Beginner MMA',dis:'mma',lvl:'beg',coach:'Sonny Brown'},
+  {d:2,m:1050,dur:60,name:'MMA — Shootboxing',dis:'mma',lvl:'int',coach:'Sonny Brown'},
+  {d:2,m:1050,dur:60,name:'Muay Thai',dis:'mt',lvl:'intadv',coach:'Chad Lumley'},
+  {d:2,m:1110,dur:60,name:'No-Gi Jiu-Jitsu',dis:'ng',lvl:'adv',coach:'Nick Pudney'},
+  {d:2,m:1110,dur:60,name:'No-Gi Jiu-Jitsu',dis:'ng',lvl:'int',coach:'Sonny Brown'},
+  {d:2,m:1170,dur:30,name:'MMA — Grapple Boxing',dis:'mma',lvl:'adv',coach:'Sonny Brown'},
+  // Thursday
+  {d:3,m:360,dur:60,name:'No-Gi Morning Crew',dis:'ng',lvl:'all',coach:'Nick Pudney'},
+  {d:3,m:990,dur:45,name:'Kids & Teens Jiu-Jitsu',dis:'kids',lvl:'kids',coach:'Nick Pudney'},
+  {d:3,m:1050,dur:60,name:'MMA',dis:'mma',lvl:'int',coach:'Sonny Brown'},
+  {d:3,m:1050,dur:60,name:'Beginner Muay Thai',dis:'mt',lvl:'beg',coach:'Chad Lumley'},
+  {d:3,m:1110,dur:60,name:'No-Gi Jiu-Jitsu',dis:'ng',lvl:'adv',coach:'Sonny Brown'},
+  {d:3,m:1110,dur:60,name:'Muay Thai',dis:'mt',lvl:'intadv',coach:'Chad Lumley'},
+  {d:3,m:1170,dur:30,name:'MMA — Clinch Striking',dis:'mma',lvl:'adv',coach:'Chad Lumley'},
+  // Friday
+  {d:4,m:360,dur:60,name:'No-Gi Morning Crew',dis:'ng',lvl:'all',coach:'Nick Pudney'},
+  {d:4,m:960,dur:60,name:'Open Mat Jiu-Jitsu',dis:'ng',lvl:'intadv',coach:'Sonny Brown'},
+  {d:4,m:1035,dur:75,name:'Fight Team — Muay Thai & MMA',dis:'mma',lvl:'invite',coach:'Fight Team Coaches'},
+  // Saturday
+  {d:5,m:480,dur:60,name:'Flow Jiu-Jitsu',dis:'ng',lvl:'all',coach:'Nick Pudney'},
+  {d:5,m:550,dur:50,name:'Kids & Family Jiu-Jitsu',dis:'kids',lvl:'kids',coach:'Nick Pudney'},
+  {d:5,m:600,dur:60,name:'Muay Thai',dis:'mt',lvl:'intadv',coach:'Chad Lumley'},
+  {d:5,m:660,dur:60,name:'No-Gi Jiu-Jitsu',dis:'ng',lvl:'intadv',coach:'Sonny Brown'},
+];
+TT.forEach((c,i)=>{ c.id='c'+i; c.cap = c.dis==='kids'?24:20; });
+
+const COACHES = [
+  {n:'Nick Pudney', role:'HEAD COACH · JIU-JITSU & KIDS', bio:'Over 20 years on the mats. Leads the No-Gi program and the kids & teens pathway, carrying the Northern Beaches lineage that started in 1994.'},
+  {n:'Sonny Brown', role:'MMA & GRAPPLING', bio:'Three-time Australian MMA champion and BJJ black belt. Runs the MMA system — fence wrestling, shootboxing and grapple boxing — and the competition No-Gi classes.'},
+  {n:'Chad Lumley', role:'MUAY THAI & FIGHTER DEVELOPMENT', bio:'Leads the Muay Thai program from first 12-week pathway through to the fight team. Precision, ring craft and fighter development.'},
+];
+
+const PLANS = [
+  {id:'2x', n:'Twice Weekly', p:40, d:'Up to two classes per week across all three arts', kids:false},
+  {id:'unl', n:'Unlimited', p:55, d:'Unlimited eligible classes — Muay Thai, No-Gi & MMA', kids:false},
+  {id:'k1', n:'Kids Once Weekly', p:22, d:'One eligible kids or teens class each week', kids:true},
+  {id:'kunl', n:'Kids Unlimited', p:35, d:'Unlimited kids & teens classes', kids:true},
+];
+
+const STAFF_MEMBERS = [
+  ['Jordan Reeves','unl','Intermediate',0],['Mia Calloway','unl','Advanced',0],['Tom Herzog','2x','Beginner',1],
+  ['Sofia Marchetti','unl','Intermediate',0],['Lachlan Pierce','unl','Competition',0],['Ella Nakamura','2x','Beginner',2],
+  ['Ryan Okafor','unl','Advanced',1],['Grace Whitfield','2x','Intermediate',3],['Noah Lindqvist','unl','Beginner',0],
+  ['Isabelle Fontaine','kunl','Kids',1],['Marcus Bellamy','unl','Advanced',0],['Chloe Sterling','2x','Beginner',5],
+  ['Dylan Marsh','unl','Intermediate',2],['Aria Kowalski','k1','Kids',4],['Ben Castellano','unl','Competition',0],
+  ['Zara Whitlock','2x','Beginner',8],
+];
+const FEED_SEED = [
+  ['Mia Calloway','checked in','No-Gi Advanced','6:31 PM'],
+  ['Lachlan Pierce','checked in','No-Gi Advanced','6:29 PM'],
+  ['Tom Herzog','booked','Beginner No-Gi','6:12 PM'],
+  ['Grace Whitfield','checked in','Muay Thai Int & Adv','5:33 PM'],
+  ['Noah Lindqvist','started 7-day trial','—','4:58 PM'],
+  ['Isabelle Fontaine','checked in','Kids & Teens Jiu-Jitsu','4:31 PM'],
+  ['Ryan Okafor','paused membership','2 weeks','2:14 PM'],
+  ['Sofia Marchetti','checked in','Open Mat','11:36 AM'],
+];
+
+/* =============== STATE =============== */
+const LSKEY = 'apexmma_os_v1';
+const todayD = () => (new Date().getDay()+6)%7; // 0=Mon
+function seedHistory(){
+  const now = new Date(); const h=[];
+  const picks = [
+    [2,'Muay Thai','mt','Chad Lumley'],[4,'No-Gi Jiu-Jitsu','ng','Sonny Brown'],[5,'MMA — Shootboxing','mma','Sonny Brown'],
+    [7,'Beginner Muay Thai','mt','Chad Lumley'],[9,'No-Gi Morning Crew','ng','Nick Pudney'],[11,'Muay Thai','mt','Chad Lumley'],
+    [12,'Open Mat','ng','Nick Pudney'],[14,'MMA — Fence Wrestling','mma','Sonny Brown'],[16,'No-Gi Jiu-Jitsu','ng','Sonny Brown'],
+    [18,'Muay Thai','mt','Chad Lumley'],[21,'Beginner No-Gi','ng','Nick Pudney'],[23,'Muay Thai','mt','Chad Lumley'],
+  ];
+  picks.forEach(([ago,n,dis,coach])=>{
+    const d=new Date(now); d.setDate(d.getDate()-ago);
+    h.push({date:d.toISOString().slice(0,10), name:n, dis, coach});
+  });
+  return h;
+}
+let S = null;
+function loadState(){
+  try{ S = JSON.parse(localStorage.getItem(LSKEY)); }catch(e){ S=null; }
+  if(!S || !S.v){
+    S = {
+      v:1, name:'Jordan Reeves', plan:'unl', level:'int', week:7,
+      memberSince:'2025-11-03', memberId:'APX-0214',
+      bookings:[], history:seedHistory(), checkedInToday:false, streak:3,
+      anns:[
+        {t:'In-house No-Gi tournament — Aug 2', b:'All levels welcome. Brackets close July 26. See the front desk to enter.', d:'2 DAYS AGO'},
+        {t:'New 12-week beginner intake', b:'Next beginner pathway for Muay Thai & No-Gi starts Monday July 14. Bring a mate — trial week is free.', d:'5 DAYS AGO'},
+        {t:'Fight team — 3 wins at Wollongong', b:'Huge night for the team. Full write-up on the blog.', d:'1 WEEK AGO'},
+      ],
+    };
+    save();
+  }
+}
+function save(){ localStorage.setItem(LSKEY, JSON.stringify(S)); }
+
+let MODE='member', VIEW='home', TT_DAY=todayD(), TT_FDIS='all', TT_FLVL='all', MEM_Q='';
+
+/* =============== HELPERS =============== */
+const $ = s=>document.querySelector(s);
+function fmt(m){ let h=Math.floor(m/60), mm=m%60; const ap=h>=12?'PM':'AM'; h=h%12||12; return h+':'+String(mm).padStart(2,'0')+' '+ap; }
+function hash(s){ let x=0; for(const ch of s) x=(x*31+ch.charCodeAt(0))>>>0; return x; }
+function booked(c){ const base = 6+(hash(c.id)% (c.cap-9)); return Math.min(c.cap, base + (isBooked(c.id)?1:0)); }
+function isBooked(id){ return S.bookings.includes(id); }
+function canBook(c){
+  if(c.lvl==='invite') return false;
+  if(c.dis==='kids') return false;
+  const rank={beg:0,all:0,int:1,intadv:1,adv:2,comp:3};
+  const mine={beg:0,int:1,adv:2,comp:3}[S.level];
+  return rank[c.lvl]<=mine;
+}
+function initials(n){ return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
+function planName(id){ return (PLANS.find(p=>p.id===id)||{}).n||id; }
+function toast(msg){ const t=$('#toast'); t.innerHTML=msg; t.classList.add('on'); clearTimeout(t._to); t._to=setTimeout(()=>t.classList.remove('on'),2600); }
+function lvlPill(l){ return `<span class="lvl">${LVL[l]}</span>`; }
+function esc(s){ return String(s).replace(/[&<>"]/g, ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])); }
+/* count-up animation for stat numbers */
+function animateCounts(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target=parseFloat(el.dataset.count), dec=+(el.dataset.dec||0);
+    const pre=el.dataset.pre||'', suf=el.dataset.suf||'';
+    const t0=performance.now(), dur=850;
+    function step(t){
+      const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
+      el.textContent=pre+(target*e).toFixed(dec)+suf;
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+/* =============== NAV =============== */
+const NAV_MEMBER = [
+  {id:'home', l:'Home', ic:I.home},
+  {id:'timetable', l:'Timetable', ic:I.cal},
+  {id:'train', l:'My Training', ic:I.pulse},
+  {id:'membership', l:'Membership', ic:I.card},
+  {id:'club', l:'The Club', ic:I.shield},
+];
+const NAV_STAFF = [
+  {id:'hq', l:'Dashboard', ic:I.grid},
+  {id:'roster', l:'Class Roster', ic:I.cal},
+  {id:'members', l:'Members', ic:I.users},
+  {id:'broadcast', l:'Broadcast', ic:I.send},
+];
+function nav(){ return MODE==='member'?NAV_MEMBER:NAV_STAFF; }
+function setMode(m){
+  MODE=m; VIEW = m==='member'?'home':'hq';
+  $('#mode-member').classList.toggle('active',m==='member');
+  $('#mode-staff').classList.toggle('active',m==='staff');
+  render();
+}
+function go(v){ VIEW=v; render(); $('#main').scrollTop=0; }
+
+function renderNav(){
+  $('#snav').innerHTML = `<div class="lbl">${MODE==='member'?'YOUR CLUB':'GYM CONTROL'}</div>` +
+    nav().map(n=>`<button class="${VIEW===n.id?'active':''}" onclick="go('${n.id}')">${n.ic}<span>${n.l}</span></button>`).join('') +
+    (MODE==='member'?`<div class="lbl">QUICK</div>
+      <button onclick="openCheckin()">${I.qr}<span>Check in</span></button>
+      <button onclick="openTrial()">${I.bolt}<span>7-Day free trial</span></button>`:'');
+  $('#tabbar').innerHTML = nav().map(n=>`<button class="${VIEW===n.id?'active':''}" onclick="go('${n.id}')">${n.ic}<span>${n.l}</span></button>`).join('');
+  $('#side-nm').textContent = MODE==='member'?S.name:'Front Desk';
+  $('#side-pl').textContent = MODE==='member'?planName(S.plan).toUpperCase():'STAFF ACCESS';
+  $('#side-av').textContent = MODE==='member'?initials(S.name):'FD';
+}
+
+function mobilebar(){
+  return `<div class="mobilebar">
+    <div class="mob-brand">
+      <div class="mark">${chevron(24, true)}</div>
+      <div><h1>Apex <span>MMA</span></h1><small>TRADITION // INNOVATION</small></div>
+    </div>
+    <div class="avatar" onclick="${MODE==='member'?'openProfile()':''}" style="cursor:pointer">${MODE==='member'?initials(S.name):'FD'}</div>
+  </div>`;
+}
+
+/* =============== VIEWS: MEMBER =============== */
+function nextClass(){
+  const now=new Date(); const nowD=todayD(); const nowM=now.getHours()*60+now.getMinutes();
+  const upcoming = (list)=>{
+    for(let off=0; off<7; off++){
+      const d=(nowD+off)%7;
+      const day=list.filter(c=>c.d===d && (off>0 || c.m>nowM)).sort((a,b)=>a.m-b.m);
+      if(day.length) return {c:day[0], off};
+    }
+    return null;
+  };
+  return upcoming(TT.filter(c=>isBooked(c.id))) || upcoming(TT.filter(c=>canBook(c)));
+}
+function monthCount(){ const mo=new Date().toISOString().slice(0,7); return S.history.filter(h=>h.date.startsWith(mo)).length; }
+
+function vHome(){
+  const nx = nextClass();
+  const nxHtml = nx?`
+    <div class="next-card">
+      <div class="tblock">
+        <div class="d">${nx.off===0?'TODAY':DAYS_S[nx.c.d]}</div>
+        <div class="t">${fmt(nx.c.m)}</div>
+      </div>
+      <div class="info">
+        <div class="n">${esc(nx.c.name)}</div>
+        <div class="c">${nx.c.coach} · ${DIS[nx.c.dis].name} · ${LVL[nx.c.lvl]}</div>
+      </div>
+      ${isBooked(nx.c.id)
+        ?`<span class="pill green">✓ BOOKED</span>`
+        :`<button class="btn primary sm" onclick="book('${nx.c.id}')">Book</button>`}
+    </div>`:'';
+  const week = TT.filter(c=>isBooked(c.id)).sort((a,b)=>a.d-b.d||a.m-b.m);
+  return `${mobilebar()}
+  <div class="hero">
+    <div class="hero-img" style="background-image:url('${IMG.hero}')"></div>
+    <div class="hero-shade"></div>
+    <div class="hin">
+      <div class="tag">BROOKVALE · NORTHERN BEACHES</div>
+      <h2>Tradition <em>//</em> Innovation</h2>
+      <p>One membership. Three martial arts. Muay Thai, No-Gi Jiu-Jitsu and MMA under one roof — with a structured pathway from your first class to the fight team.</p>
+      <div class="hrow">
+        <button class="btn primary" onclick="go('timetable')">Book a class</button>
+        <button class="btn" onclick="openCheckin()">Check in</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sect"><h3>Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'}, ${esc(S.name.split(' ')[0])}</h3><a onclick="go('train')">MY TRAINING →</a></div>
+  ${nxHtml}
+
+  <div class="grid g4 statgrid" style="margin-top:14px">
+    <div class="card stat"><div class="k">Streak</div><div class="v"><span data-count="${S.streak}">0</span> <small>wks</small></div><div class="d">consecutive weeks trained</div></div>
+    <div class="card stat"><div class="k">This month</div><div class="v"><span data-count="${monthCount()}">0</span> <small>sessions</small></div><div class="d">across all disciplines</div></div>
+    <div class="card stat"><div class="k">Pathway</div><div class="v">Wk <span data-count="${S.week}">0</span><small>/12</small></div><div class="d">intermediate block</div></div>
+    <div class="card stat"><div class="k">Plan</div><div class="v" style="font-size:23px;padding-top:5px">${planName(S.plan).toUpperCase()}</div><div class="d">all three arts included</div></div>
+  </div>
+
+  <div class="sect"><h3>Quick actions</h3></div>
+  <div class="grid g4">
+    <button class="qa" onclick="openCheckin()"><div class="ic">${I.qr}</div><b>Check in</b><span>Scan at the front desk</span></button>
+    <button class="qa" onclick="go('timetable')"><div class="ic">${I.cal}</div><b>Timetable</b><span>Book this week's classes</span></button>
+    <button class="qa" onclick="go('membership')"><div class="ic">${I.card}</div><b>Membership</b><span>Card, billing & pause</span></button>
+    <button class="qa" onclick="openTrial()"><div class="ic">${I.bolt}</div><b>Refer a mate</b><span>Free 7-day trial pass</span></button>
+  </div>
+
+  <div class="sect"><h3>Your pathway</h3><a onclick="go('train')">DETAILS →</a></div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px">
+      <b style="font-size:14px">The Apex progression</b>
+      <span class="mono" style="font-size:10.5px;letter-spacing:2px;color:var(--dim)">NO HEAD CONTACT UNTIL ADVANCED</span>
+    </div>
+    <div class="path">
+      <div class="pstep done"><div class="pdot">✓</div><div class="pl2">Beginner</div></div>
+      <div class="pstep now"><div class="pdot">2</div><div class="pl2">Intermediate</div></div>
+      <div class="pstep"><div class="pdot">3</div><div class="pl2">Advanced</div></div>
+      <div class="pstep"><div class="pdot">4</div><div class="pl2">Competition</div></div>
+    </div>
+    <div style="margin-top:16px"><div class="meter"><i style="width:${Math.round(S.week/12*100)}%"></i></div>
+    <div class="muted" style="font-size:11.5px;margin-top:7px">Week ${S.week} of 12 in your intermediate block — ${12-S.week} weeks until advanced eligibility review.</div></div>
+  </div>
+
+  ${week.length?`<div class="sect"><h3>Booked this week</h3><a onclick="go('timetable')">TIMETABLE →</a></div>
+  ${week.map(c=>clsCard(c,true)).join('')}`:''}
+
+  <div class="sect"><h3>Club noticeboard</h3></div>
+  <div class="card" style="padding:6px 18px">
+    ${S.anns.map(a=>`<div class="ann"><div class="dot"></div><div><div class="at">${esc(a.t)}</div><div class="ab">${esc(a.b)}</div><div class="ad">${esc(a.d)}</div></div></div>`).join('')}
+  </div>`;
+}
+
+function clsCard(c, mini){
+  const b=booked(c), full=b>=c.cap, mine=isBooked(c.id), lock=!canBook(c)&&!mine;
+  let action;
+  if(mine) action = `<button class="btn sm" onclick="unbook('${c.id}')" style="border-color:rgba(31,162,98,.4);color:var(--green)">✓ Booked</button>`;
+  else if(c.dis==='kids') action = `<span class="pill">KIDS</span>`;
+  else if(c.lvl==='invite') action = `<span class="pill gold">${LVL.invite}</span>`;
+  else if(lock) action = `<span class="pill" title="Unlocks at ${LVL[c.lvl]}">${I.lock.replace('<svg','<svg width="11" height="11"')} LOCKED</span>`;
+  else if(full) action = `<span class="pill red">FULL</span>`;
+  else action = `<button class="btn primary sm" onclick="book('${c.id}')">Book</button>`;
+  return `<div class="cls" style="--dc:${DIS[c.dis].c}">
+    <div class="when"><div class="st">${fmt(c.m)}</div><div class="en">→ ${fmt(c.m+c.dur)}</div>${mini?`<div class="en" style="color:var(--blue-deep)">${DAYS_S[c.d]}</div>`:''}</div>
+    <div class="cinfo">
+      <div class="cn">${esc(c.name)} ${lvlPill(c.lvl)}</div>
+      <div class="cc">${DIS[c.dis].name} · ${c.coach}</div>
+    </div>
+    <div class="cap desktop-only"><div class="cn2">${b}/${c.cap}</div><div class="meter"><i style="width:${Math.round(b/c.cap*100)}%;${full?'background:var(--red)':''}"></i></div></div>
+    ${action}
+  </div>`;
+}
+
+function vTimetable(){
+  const staff = MODE==='staff';
+  let list = TT.filter(c=>c.d===TT_DAY);
+  if(TT_FDIS!=='all') list=list.filter(c=>c.dis===TT_FDIS);
+  if(TT_FLVL!=='all'){
+    if(TT_FLVL==='beg') list=list.filter(c=>['beg','all'].includes(c.lvl));
+    if(TT_FLVL==='intadv') list=list.filter(c=>['int','adv','intadv','all'].includes(c.lvl));
+    if(TT_FLVL==='comp') list=list.filter(c=>['comp','invite'].includes(c.lvl));
+    if(TT_FLVL==='kids') list=list.filter(c=>c.dis==='kids');
+  }
+  list.sort((a,b)=>a.m-b.m);
+  return `${mobilebar()}
+  <div class="eyebrow">WEEKLY SCHEDULE</div>
+  <div class="h-page">${staff?'Class <em>roster</em>':'The <em>timetable</em>'}</div>
+  <p class="sub">${staff?'Live bookings per class. Tap a class to view its roster.':'Every class across Muay Thai, No-Gi Jiu-Jitsu, MMA and Kids. Book with one tap — your plan covers all three arts.'}</p>
+  <div class="daytabs">
+    ${DAYS.map((d,i)=>`<button class="${TT_DAY===i?'active':''}" onclick="TT_DAY=${i};render()"><div class="dw">${DAYS_S[i]}</div><div class="dn">${DAYS_S[i]===DAYS_S[todayD()]&&i===todayD()?'●':TT.filter(c=>c.d===i).length||'—'}</div></button>`).join('')}
+  </div>
+  <div class="filters">
+    ${[['all','ALL'],['mt','MUAY THAI'],['ng','NO-GI'],['mma','MMA'],['kids','KIDS']].map(([k,l])=>`<button class="fchip ${TT_FDIS===k?'active':''}" onclick="TT_FDIS='${k}';render()">${l}</button>`).join('')}
+    <span style="flex:0 0 8px"></span>
+    ${[['all','ANY LEVEL'],['beg','BEGINNER'],['intadv','INT / ADV'],['comp','COMP']].map(([k,l])=>`<button class="fchip ${TT_FLVL===k?'active':''}" onclick="TT_FLVL='${k}';render()">${l}</button>`).join('')}
+  </div>
+  ${TT_DAY===6
+    ?`<div class="restday"><h4>Sunday — recovery day.</h4><p>The mats rest. So should you. See you Monday for Open Mat.</p></div>`
+    :(list.length? list.map((c,i)=>{const h=staff?rosterCard(c):clsCard(c); return h.replace('class="cls"',`class="cls" data-i="${i}"`).replace('style="--dc',`style="animation-delay:${i*45}ms;--dc`);}).join('') : `<div class="restday"><h4>No classes match.</h4><p>Try clearing a filter.</p></div>`)}`;
+}
+
+/* --------- training --------- */
+function vTrain(){
+  const counts={mt:0,ng:0,mma:0};
+  S.history.forEach(h=>{ if(counts[h.dis]!=null) counts[h.dis]++; });
+  const tot=S.history.length||1;
+  const mo=monthCount();
+  return `${mobilebar()}
+  <div class="eyebrow">MY TRAINING</div>
+  <div class="h-page">The work <em>adds up</em></div>
+  <p class="sub">Every session logged. Every discipline tracked. Your progression review is based on mat time — keep showing up.</p>
+
+  <div class="grid g4 statgrid" style="margin-top:24px">
+    <div class="card stat"><div class="k">All-time</div><div class="v"><span data-count="${S.history.length}">0</span></div><div class="d">sessions logged</div></div>
+    <div class="card stat"><div class="k">This month</div><div class="v"><span data-count="${mo}">0</span></div><div class="d">${mo>=8?'ahead of pace':'target: 8 / month'}</div></div>
+    <div class="card stat"><div class="k">Streak</div><div class="v"><span data-count="${S.streak}">0</span> <small>wks</small></div><div class="d">don't break the chain</div></div>
+    <div class="card stat"><div class="k">Mat hours</div><div class="v"><span data-count="${Math.round(S.history.length*1.0)}">0</span><small> h</small></div><div class="d">approx. total</div></div>
+  </div>
+
+  <div class="sect"><h3>Discipline split</h3></div>
+  <div class="card">
+    ${[['mt',counts.mt],['ng',counts.ng],['mma',counts.mma]].map(([k,v])=>`
+      <div class="disc-row">
+        <div class="dn2" style="color:${DIS[k].c}">${DIS[k].name}</div>
+        <div class="meter"><i style="width:${Math.round(v/tot*100)}%;background:${DIS[k].c}"></i></div>
+        <div class="dv">${v}</div>
+      </div>`).join('')}
+    <div class="muted" style="font-size:11.5px;margin-top:4px">A balanced split across all three arts is the Apex way — your membership covers everything.</div>
+  </div>
+
+  <div class="sect"><h3>Progression</h3></div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:baseline">
+      <b>Intermediate block — week ${S.week} of 12</b>
+      <span class="pill gold">ON TRACK</span>
+    </div>
+    <div style="margin-top:12px" class="meter"><i style="width:${Math.round(S.week/12*100)}%"></i></div>
+    <div class="hair"></div>
+    <div class="grid g2">
+      <div><div class="mono" style="font-size:10.5px;letter-spacing:2px;color:var(--dim)">COACH FOCUS — STRIKING</div><p style="font-size:12.5px;margin-top:5px">Long-range kicking game and clinch entries. Chad wants two Int & Adv Muay Thai sessions a week this block.</p></div>
+      <div><div class="mono" style="font-size:10.5px;letter-spacing:2px;color:var(--dim)">COACH FOCUS — GRAPPLING</div><p style="font-size:12.5px;margin-top:5px">Front-headlock system and fence wrestling entries. Add Wednesday Int No-Gi when possible.</p></div>
+    </div>
+  </div>
+
+  <div class="sect"><h3>Session history</h3></div>
+  <div class="card" style="padding:6px 18px">
+    ${S.history.slice().reverse().slice(0,10).map(h=>{
+      const d=new Date(h.date+'T12:00:00');
+      return `<div class="hist">
+        <div class="hd2"><div class="m">${d.toLocaleString('en-AU',{month:'short'}).toUpperCase()}</div><div class="d">${d.getDate()}</div></div>
+        <div class="hn"><b>${esc(h.name)}</b><span>${DIS[h.dis]?DIS[h.dis].name:''} · ${esc(h.coach)}</span></div>
+        <span class="pill" style="border-color:${DIS[h.dis]?DIS[h.dis].c:'var(--line2)'};color:${DIS[h.dis]?DIS[h.dis].c:'var(--muted)'}">1 HR</span>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+/* --------- membership --------- */
+function barcode(){
+  const h=hash(S.name+S.memberId); let bars='';
+  for(let i=0;i<42;i++){ const v=(h>>(i%28))&3; bars+=`<i style="height:${40+((h>>i%20)&1)*40+v*8}%"></i>`; }
+  return `<div class="barcode">${bars}</div>`;
+}
+function vMembership(){
+  const plan = PLANS.find(p=>p.id===S.plan);
+  const next = new Date(); next.setDate(next.getDate() + (12 - next.getDay()));
+  return `${mobilebar()}
+  <div class="eyebrow">MEMBERSHIP</div>
+  <div class="h-page">One membership. <em>Three arts.</em></div>
+  <p class="sub">No joining fee. No fixed-term contracts. One week's notice to pause or cancel — we keep it simple so you can focus on training.</p>
+
+  <div style="max-width:520px;margin-top:24px">
+    <div class="membercard">
+      <div class="mc-top">
+        <div class="mark">${chevron(26,false)}</div>
+        <span class="pill">ACTIVE</span>
+      </div>
+      <div class="mc-name">${esc(S.name)}</div>
+      <div class="mc-plan">${plan.n.toUpperCase()} · ALL ARTS ACCESS</div>
+      <div class="mc-bot">
+        <div class="mc-id">${S.memberId}<br><span>MEMBER SINCE NOV 2025</span></div>
+        ${barcode()}
+      </div>
+    </div>
+    <button class="btn primary" style="width:100%;margin-top:14px" onclick="openCheckin()">${I.qr.replace('<svg','<svg width="16" height="16"')} Show check-in code</button>
+  </div>
+
+  <div class="sect"><h3>Your plan</h3></div>
+  <div class="card" style="padding:6px 18px">
+    <div class="planrow">
+      <div><div class="pn">${plan.n}</div><div class="pd">${plan.d}</div></div>
+      <div class="pp">$${plan.p}<small>/wk</small></div>
+    </div>
+    <div class="planrow">
+      <div><div class="pn">Next debit</div><div class="pd">Billed fortnightly · $${plan.p*2} on ${next.toLocaleDateString('en-AU',{day:'numeric',month:'long'})}</div></div>
+      <span class="pill green">UP TO DATE</span>
+    </div>
+    <div class="planrow">
+      <div><div class="pn">Pause membership</div><div class="pd">Up to 4 weeks, one week's notice</div></div>
+      <button class="btn sm" onclick="toast('Pause request sent — the front desk will confirm within 24h.')">Request</button>
+    </div>
+  </div>
+
+  <div class="sect"><h3>All plans</h3><a onclick="openTrial()">START A FREE TRIAL →</a></div>
+  <div class="grid g2">
+    ${PLANS.map(p=>`<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+        <b style="font-size:14.5px">${p.n}</b>
+        ${p.id===S.plan?'<span class="pill gold">CURRENT</span>':(p.kids?'<span class="pill">KIDS & TEENS</span>':'')}
+      </div>
+      <div style="font-family:var(--disp);font-weight:700;font-size:32px;margin:10px 0 2px;color:var(--blue-ink)">$${p.p}<small style="font-size:12px;color:var(--muted);font-family:var(--sans);font-weight:600"> /week · billed fortnightly</small></div>
+      <p class="muted" style="font-size:12.5px">${p.d}.</p>
+      ${p.id!==S.plan&&!p.kids?`<button class="btn sm" style="margin-top:12px" onclick="switchPlan('${p.id}')">Switch to this plan</button>`:''}
+    </div>`).join('')}
+  </div>
+  <div class="card" style="margin-top:14px;border-style:dashed;box-shadow:none">
+    <b style="font-size:13.5px">The fine print, minus the fine print.</b>
+    <p class="muted" style="font-size:12.5px;margin-top:6px">No joining fee · no lock-in contracts · one week's cancellation notice · unused classes expire at the end of each billing period · free 7-day trial for new students.</p>
+  </div>`;
+}
+
+/* --------- club --------- */
+function vClub(){
+  return `${mobilebar()}
+  <div class="eyebrow">THE CLUB</div>
+  <div class="h-page">Grounded since <em>1994</em></div>
+  <p class="sub">Born from three decades of Northern Beaches martial arts lineage. Structured pathways, no ego, no head contact for beginners — just craft.</p>
+
+  <div class="sect"><h3>Programs</h3></div>
+  <div class="grid g3">
+    <div class="prog"><div class="pimg-wrap"><div class="pimg" style="background-image:url('${IMG.mt}')"></div></div>
+      <div class="pbody"><div class="pt">Muay Thai</div><div class="ps">THE ART OF 8 LIMBS</div><p>Fists, elbows, knees and shins. A structured 12-week beginner pathway — no head contact — building into the intermediate and advanced rings.</p></div></div>
+    <div class="prog"><div class="pimg-wrap"><div class="pimg" style="background-image:url('${IMG.ng}')"></div></div>
+      <div class="pbody"><div class="pt">No-Gi Jiu-Jitsu</div><div class="ps">THE GENTLE ART</div><p>Takedowns, positional control and submissions. From Morning Crew rolls to the competition team, six days a week.</p></div></div>
+    <div class="prog"><div class="pimg-wrap"><div class="pimg" style="background-image:url('${IMG.mma}')"></div></div>
+      <div class="pbody"><div class="pt">MMA</div><div class="ps">THE ADAPTABLE ART</div><p>Where the arts meet: fence wrestling, shootboxing, grapple boxing and clinch striking — the complete adaptable game.</p></div></div>
+  </div>
+  <div class="prog" style="margin-top:14px"><div class="pimg-wrap" style="height:170px"><div class="pimg" style="height:170px;background-image:url('${IMG.kids}')"></div></div>
+    <div class="pbody"><div class="pt">Kids & Teens</div><div class="ps">AGES 6–16 · GI, MUAY THAI & FAMILY JIU-JITSU</div><p>Discipline, confidence and craft for the next generation — including Saturday family Jiu-Jitsu so you can train together.</p></div></div>
+
+  <div class="sect"><h3>Coaches</h3></div>
+  <div class="grid" style="grid-template-columns:1fr">
+    ${COACHES.map(c=>`<div class="card coach">
+      <div class="cav">${initials(c.n)}</div>
+      <div class="cb"><b>${c.n}</b><div class="role">${c.role}</div><p>${c.bio}</p></div>
+    </div>`).join('')}
+  </div>
+
+  <div class="sect"><h3>Find us</h3></div>
+  <div class="grid g2">
+    <div class="card" style="padding:6px 18px">
+      <div class="inforow"><div class="ii">${I.pin}</div><div><small>ADDRESS</small>L1/28 Cross St, Brookvale NSW 2100</div></div>
+      <div class="inforow"><div class="ii">${I.phone}</div><div><small>PHONE</small>0433 855 107</div></div>
+      <div class="inforow"><div class="ii">${I.ig}</div><div><small>SOCIALS</small>@apexmmabrookvale — IG · FB · YT · TikTok</div></div>
+      <div class="inforow"><div class="ii">${I.clock}</div><div><small>FIRST CLASS</small>Arrive 15 min early — we'll sort the rest</div></div>
+    </div>
+    <div class="cta-poly">
+      <div class="eyebrow">NEW HERE?</div>
+      <b>Try everything free for 7 days</b>
+      <p>Every program, every class at your level, zero pressure. Most people are surprised how fast it clicks.</p>
+      <button class="btn" onclick="openTrial()">Start my free week</button>
+    </div>
+  </div>`;
+}
+
+/* =============== VIEWS: STAFF =============== */
+function rosterCard(c){
+  const b=booked(c);
+  return `<div class="cls" style="--dc:${DIS[c.dis].c};cursor:pointer" onclick="openRoster('${c.id}')">
+    <div class="when"><div class="st">${fmt(c.m)}</div><div class="en">→ ${fmt(c.m+c.dur)}</div></div>
+    <div class="cinfo"><div class="cn">${esc(c.name)} ${lvlPill(c.lvl)}</div><div class="cc">${c.coach}</div></div>
+    <div class="cap"><div class="cn2">${b}/${c.cap} booked</div><div class="meter"><i style="width:${Math.round(b/c.cap*100)}%;${b>=c.cap?'background:var(--red)':''}"></i></div></div>
+    <button class="btn sm">Roster</button>
+  </div>`;
+}
+function vHQ(){
+  const d=todayD();
+  const today = TT.filter(c=>c.d===d).sort((a,b)=>a.m-b.m);
+  const weekCheckins = 312, activeMembers = STAFF_MEMBERS.length + 198, trials = 9;
+  const wk = activeMembers * 46;
+  return `${mobilebar()}
+  <div class="eyebrow">STAFF HQ · ${DAYS[d].toUpperCase()}</div>
+  <div class="h-page">Front desk <em>command</em></div>
+  <p class="sub">Today's floor at a glance — bookings, check-ins and member movement across the club.</p>
+
+  <div class="grid g4" style="margin-top:24px">
+    <div class="card kpi"><div class="kk">Active members</div><div class="kv" data-count="${activeMembers}">0</div><div class="kd up">▲ 12 this month</div></div>
+    <div class="card kpi"><div class="kk">Check-ins this week</div><div class="kv" data-count="${weekCheckins}">0</div><div class="kd up">▲ 8% vs last week</div></div>
+    <div class="card kpi"><div class="kk">Active trials</div><div class="kv" data-count="${trials}">0</div><div class="kd">4 convert-ready</div></div>
+    <div class="card kpi"><div class="kk">Weekly billing</div><div class="kv" data-count="${(wk/1000)}" data-dec="1" data-pre="$" data-suf="k">$0k</div><div class="kd up">▲ $520 vs last week</div></div>
+  </div>
+
+  <div class="sect"><h3>Today's classes</h3><a onclick="go('roster')">FULL ROSTER →</a></div>
+  ${d===6?`<div class="restday"><h4>Sunday — the club rests.</h4><p>No classes scheduled today.</p></div>`
+    :today.map(c=>rosterCard(c)).join('')}
+
+  <div class="sect"><h3>Live activity</h3></div>
+  <div class="card" style="padding:6px 18px">
+    ${FEED_SEED.map(f=>`<div class="feed">
+      <div class="fa">${initials(f[0])}</div>
+      <div class="fb"><b>${f[0]}</b> <span>${f[1]}${f[2]!=='—'?' · '+f[2]:''}</span></div>
+      <div class="ft">${f[3]}</div>
+    </div>`).join('')}
+  </div>`;
+}
+function vMembers(){
+  const q=MEM_Q.toLowerCase();
+  const list = STAFF_MEMBERS.filter(m=>m[0].toLowerCase().includes(q));
+  return `${mobilebar()}
+  <div class="eyebrow">MEMBER DIRECTORY</div>
+  <div class="h-page">${STAFF_MEMBERS.length + 198} members <em>strong</em></div>
+  <p class="sub">Search, view plans and spot who's gone quiet — members 5+ days off the mats are flagged for a check-in call.</p>
+  <div style="margin-top:20px">
+    <input class="search" placeholder="Search members…" value="${esc(MEM_Q)}" oninput="MEM_Q=this.value;renderKeepFocus(this)">
+  </div>
+  <div class="card" style="padding:6px 18px">
+    ${list.length?list.map(m=>{
+      const away=m[3];
+      return `<div class="mrow">
+        <div class="avatar" style="width:34px;height:34px;font-size:12px;${away>=5?'background:var(--card2);color:var(--muted);border:1px solid var(--line2)':''}">${initials(m[0])}</div>
+        <div class="mb"><b>${m[0]}</b><span>${planName(m[1]).toUpperCase()} · ${m[2].toUpperCase()}</span></div>
+        ${away>=5?`<span class="pill red">QUIET ${away}D</span>`:away>0?`<span class="pill">LAST SEEN ${away}D AGO</span>`:'<span class="pill green">IN TODAY</span>'}
+      </div>`;
+    }).join(''):'<div class="muted" style="padding:20px 4px;font-size:13px">No members match that search.</div>'}
+  </div>`;
+}
+function vBroadcast(){
+  return `${mobilebar()}
+  <div class="eyebrow">BROADCAST</div>
+  <div class="h-page">Talk to the <em>whole club</em></div>
+  <p class="sub">Posts land on every member's home screen noticeboard instantly. Keep it short, keep it useful.</p>
+  <div class="card" style="margin-top:20px;max-width:640px">
+    <input class="search" id="bc-title" placeholder="Headline — e.g. Gym closed Monday (public holiday)">
+    <textarea class="search" id="bc-body" placeholder="Details…"></textarea>
+    <button class="btn primary" onclick="postAnn()">${I.send.replace('<svg','<svg width="15" height="15"')} Post to noticeboard</button>
+  </div>
+  <div class="sect"><h3>Currently live</h3></div>
+  <div class="card" style="padding:6px 18px;max-width:640px">
+    ${S.anns.map((a,i)=>`<div class="ann"><div class="dot"></div><div style="flex:1"><div class="at">${esc(a.t)}</div><div class="ab">${esc(a.b)}</div><div class="ad">${esc(a.d)}</div></div>
+    <button class="btn sm ghost danger" onclick="delAnn(${i})">Remove</button></div>`).join('')}
+  </div>`;
+}
+
+/* =============== ACTIONS =============== */
+function book(id){
+  const c=TT.find(x=>x.id===id);
+  if(!S.bookings.includes(id)){ S.bookings.push(id); save(); }
+  toast(`<b>Booked.</b> ${esc(c.name)} — ${DAYS[c.d]} ${fmt(c.m)}`);
+  render();
+}
+function unbook(id){
+  const c=TT.find(x=>x.id===id);
+  S.bookings=S.bookings.filter(b=>b!==id); save();
+  toast(`Booking cancelled — ${esc(c.name)}.`);
+  render();
+}
+function switchPlan(id){
+  S.plan=id; save();
+  toast(`<b>Plan updated.</b> You're now on ${planName(id)} — applies from your next billing cycle.`);
+  render();
+}
+function postAnn(){
+  const t=$('#bc-title').value.trim(), b=$('#bc-body').value.trim();
+  if(!t){ toast('Give it a headline first.'); return; }
+  S.anns.unshift({t, b:b||'—', d:'JUST NOW'}); save();
+  toast('<b>Posted.</b> Live on every member home screen.');
+  render();
+}
+function delAnn(i){ S.anns.splice(i,1); save(); render(); }
+
+/* =============== MODALS =============== */
+function modal(html){
+  $('#modal-root').innerHTML=`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">${html}</div></div>`;
+}
+function closeModal(){ $('#modal-root').innerHTML=''; }
+
+function qrSvg(){
+  const h1=hash(S.name), h2=hash(S.memberId);
+  let cells='';
+  for(let r=0;r<21;r++)for(let c=0;c<21;c++){
+    const finder=(r<7&&c<7)||(r<7&&c>13)||(r>13&&c<7);
+    let f;
+    if(finder){ const rr=r%14>6?r-14:r, cc=c%14>6?c-14:c; f=(rr===0||rr===6||cc===0||cc===6||(rr>1&&rr<5&&cc>1&&cc<5)); }
+    else f=((h1>>((r*3+c)%31))^(h2>>((r+c*5)%29)))&1;
+    cells+=`<i class="${f?'f':''}"></i>`;
+  }
+  return `<div class="qr">${cells}</div>`;
+}
+function openCheckin(){
+  if(S.checkedInToday){
+    modal(`<h3>Already checked in ✓</h3><div class="msub">You're on the mats today — nice work. Streak safe at ${S.streak} weeks.</div>
+    <button class="btn" style="width:100%" onclick="closeModal()">Close</button>`);
+    return;
+  }
+  modal(`<h3>Check in</h3><div class="msub">Scan at the front desk kiosk, or tap the button if reception waves you through.</div>
+  ${qrSvg()}
+  <div class="mono" style="text-align:center;font-size:12px;letter-spacing:2.5px;color:var(--muted);margin-bottom:18px">${S.memberId} · ${esc(S.name.toUpperCase())}</div>
+  <button class="btn primary" style="width:100%" onclick="doCheckin()">I'm through — check me in</button>
+  <button class="btn ghost" style="width:100%;margin-top:8px" onclick="closeModal()">Cancel</button>`);
+}
+function doCheckin(){
+  S.checkedInToday=true;
+  const d=todayD(); const nowM=new Date().getHours()*60+new Date().getMinutes();
+  const cls = TT.filter(c=>c.d===d && isBooked(c.id)).sort((a,b)=>Math.abs(a.m-nowM)-Math.abs(b.m-nowM))[0]
+           || TT.filter(c=>c.d===d && canBook(c)).sort((a,b)=>Math.abs(a.m-nowM)-Math.abs(b.m-nowM))[0];
+  S.history.push({date:new Date().toISOString().slice(0,10), name:cls?cls.name:'Open training', dis:cls?cls.dis:'ng', coach:cls?cls.coach:'—'});
+  save(); closeModal();
+  toast(`<b>Checked in.</b> Enjoy the session, ${esc(S.name.split(' ')[0])}.`);
+  render();
+}
+function openTrial(){
+  modal(`<h3>Free 7-day trial</h3><div class="msub">Every class, every program, at their level — free for a full week. No card needed to start.</div>
+  <input class="search" id="tr-name" placeholder="Their name">
+  <input class="search" id="tr-phone" placeholder="Mobile number">
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <span class="pill gold">MUAY THAI</span><span class="pill gold">NO-GI</span><span class="pill gold">MMA</span><span class="pill gold">KIDS</span>
+  </div>
+  <button class="btn primary" style="width:100%" onclick="sendTrial()">Send trial pass</button>
+  <button class="btn ghost" style="width:100%;margin-top:8px" onclick="closeModal()">Not now</button>`);
+}
+function sendTrial(){
+  const n=$('#tr-name').value.trim();
+  closeModal();
+  toast(n?`<b>Trial pass sent to ${esc(n)}.</b> They'll get an SMS with their first-class guide.`:'<b>Trial pass created.</b> Front desk has the details.');
+}
+function openProfile(){
+  modal(`<h3>Your profile</h3><div class="msub">This is a concept demo — everything saves locally on this device.</div>
+  <div class="mono" style="font-size:10.5px;letter-spacing:2px;margin-bottom:6px;color:var(--dim)">FULL NAME</div>
+  <input class="search" id="pf-name" value="${esc(S.name)}">
+  <div class="mono" style="font-size:10.5px;letter-spacing:2px;margin-bottom:6px;color:var(--dim)">CURRENT LEVEL</div>
+  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px">
+    ${[['beg','Beginner'],['int','Intermediate'],['adv','Advanced'],['comp','Competition']].map(([k,l])=>
+      `<button class="fchip ${S.level===k?'active':''}" onclick="S.level='${k}';save();openProfile()">${l.toUpperCase()}</button>`).join('')}
+  </div>
+  <button class="btn primary" style="width:100%" onclick="saveProfile()">Save</button>
+  <button class="btn ghost" style="width:100%;margin-top:8px" onclick="resetDemo()">Reset demo data</button>`);
+}
+function saveProfile(){
+  const n=$('#pf-name').value.trim();
+  if(n) S.name=n;
+  save(); closeModal(); toast('<b>Saved.</b>'); render();
+}
+function resetDemo(){ localStorage.removeItem(LSKEY); location.reload(); }
+function openRoster(id){
+  const c=TT.find(x=>x.id===id); const b=booked(c);
+  const names=[...STAFF_MEMBERS.map(m=>m[0])].sort((a,b2)=>hash(a+id)-hash(b2+id)).slice(0, Math.min(b, STAFF_MEMBERS.length));
+  modal(`<h3>${esc(c.name)}</h3><div class="msub">${DAYS[c.d]} ${fmt(c.m)}–${fmt(c.m+c.dur)} · ${c.coach} · ${b}/${c.cap} booked</div>
+  <div style="max-height:300px;overflow-y:auto">
+    ${names.map((n,i)=>`<div class="feed"><div class="fa">${initials(n)}</div><div class="fb"><b>${n}</b></div><div class="ft">${i<Math.ceil(b/2)?'CHECKED IN':'BOOKED'}</div></div>`).join('')}
+    ${b>names.length?`<div class="muted" style="font-size:12px;padding:10px 4px">+ ${b-names.length} more members</div>`:''}
+  </div>
+  <button class="btn" style="width:100%;margin-top:14px" onclick="closeModal()">Close</button>`);
+}
+
+/* =============== RENDER =============== */
+function renderKeepFocus(el){
+  const pos=el.selectionStart;
+  render();
+  const n=$('.search'); if(n){ n.focus(); n.setSelectionRange(pos,pos); }
+}
+function render(){
+  renderNav();
+  const views={home:vHome, timetable:vTimetable, train:vTrain, membership:vMembership, club:vClub,
+               hq:vHQ, roster:vTimetable, members:vMembers, broadcast:vBroadcast};
+  $('#main').innerHTML = `<div class="wrap">${(views[VIEW]||vHome)()}</div>`;
+  /* staggered entrance */
+  document.querySelectorAll('.wrap > *').forEach((el,i)=>{ el.style.animationDelay=(i*50)+'ms'; });
+  animateCounts();
+}
+
+document.getElementById('side-mark').innerHTML = chevron(26,false);
+loadState();
+render();
+</script>
+</body>
+</html>

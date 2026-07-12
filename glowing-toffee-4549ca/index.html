@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hoops &amp; Hearts — Episode 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange:#FF6A2B;
+    --orange-soft:#FF8A4C;
+    --red:#E23A3A;
+    --red-deep:#C22A2A;
+    --cream:#FFF6EC;
+    --card:#FFFFFF;
+    --ink:#2A1B12;
+    --muted:#84746A;
+    --line:#F0E2D4;
+    --promptbg:#FFF1E6;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Nunito',system-ui,-apple-system,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 18px 64px;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:20;
+    background:rgba(255,246,236,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .inner{
+    max-width:680px;margin:0 auto;padding:11px 18px;
+    display:flex;align-items:center;gap:9px;
+  }
+  .wordmark{font-family:'Fredoka';font-weight:700;font-size:18px;letter-spacing:-.2px;}
+  .wordmark .amp{color:var(--orange);}
+  .wordmark .h2{color:var(--red);}
+  .miniball{width:18px;height:18px;flex:0 0 auto;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    margin-top:22px;
+    background:linear-gradient(150deg,var(--orange) 0%,var(--red) 100%);
+    border-radius:22px;
+    padding:30px 24px 28px;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 14px 30px -16px rgba(226,58,58,.6);
+  }
+  .hero .glow{
+    position:absolute;width:240px;height:240px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.22),transparent 70%);
+    top:-90px;right:-70px;pointer-events:none;
+  }
+  .hero .bigball{
+    position:absolute;right:-26px;bottom:-30px;width:150px;height:150px;opacity:.92;
+    animation:bounce 3.4s ease-in-out infinite;
+  }
+  .eyebrow{
+    font-family:'Fredoka';font-weight:600;font-size:12.5px;letter-spacing:2.5px;
+    text-transform:uppercase;opacity:.95;margin:0 0 8px;
+  }
+  .hero h1{
+    font-family:'Fredoka';font-weight:700;
+    font-size:clamp(30px,8vw,42px);line-height:1.02;margin:0 0 6px;letter-spacing:-.5px;
+  }
+  .hero .epname{font-family:'Fredoka';font-weight:600;font-size:clamp(17px,4.6vw,21px);margin:0 0 14px;opacity:.97;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px;position:relative;z-index:2;}
+  .chip{
+    background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;padding:5px 12px;font-weight:700;font-size:12.5px;
+  }
+  .logline{
+    position:relative;z-index:2;max-width:440px;
+    font-size:15.5px;font-weight:600;line-height:1.5;margin:0;
+  }
+
+  /* ---------- generic section ---------- */
+  h2.sec{
+    font-family:'Fredoka';font-weight:700;font-size:21px;letter-spacing:-.3px;
+    margin:38px 0 6px;display:flex;align-items:center;gap:9px;
+  }
+  h2.sec .dot{width:9px;height:9px;border-radius:50%;background:var(--red);flex:0 0 auto;}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 16px;font-weight:600;}
+
+  .note{
+    background:var(--card);border:1px solid var(--line);border-left:5px solid var(--orange);
+    border-radius:14px;padding:16px 18px;margin:16px 0;
+  }
+  .note p{margin:0 0 8px;font-size:15px;}
+  .note p:last-child{margin:0;}
+  .note b{color:var(--red-deep);}
+
+  ol.steps{margin:6px 0 0;padding-left:20px;}
+  ol.steps li{margin:0 0 7px;font-size:15px;font-weight:600;}
+  ol.steps li b{color:var(--ink);}
+
+  /* ---------- copy box ---------- */
+  .copybox{
+    position:relative;background:var(--promptbg);border:1px solid #FAD9C2;
+    border-left:5px solid var(--red);border-radius:13px;
+    padding:14px 14px 14px 16px;margin:10px 0;
+  }
+  .copytext{
+    font-family:'Nunito';font-weight:600;font-size:14px;line-height:1.5;
+    color:#3a2417;white-space:pre-wrap;padding-right:64px;
+  }
+  .copybtn{
+    position:absolute;top:10px;right:10px;
+    background:var(--ink);color:#fff;border:none;border-radius:9px;
+    font-family:'Fredoka';font-weight:600;font-size:12px;letter-spacing:.3px;
+    padding:6px 11px;cursor:pointer;transition:background .15s,transform .1s;
+  }
+  .copybtn:hover{background:#3d2a1c;}
+  .copybtn:active{transform:scale(.94);}
+  .copybtn.copied{background:var(--orange);}
+
+  /* ---------- cast ---------- */
+  .cast{display:grid;grid-template-columns:1fr;gap:11px;margin-top:6px;}
+  .person{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:14px 16px;display:flex;gap:13px;align-items:flex-start;
+  }
+  .avatar{
+    width:46px;height:46px;flex:0 0 auto;border-radius:13px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:18px;color:#fff;
+  }
+  .person h3{font-family:'Fredoka';font-weight:600;font-size:16px;margin:0 0 2px;}
+  .person .role{color:var(--red-deep);font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;margin:0 0 5px;}
+  .person p{margin:0;font-size:14px;line-height:1.45;color:#4a382c;}
+
+  /* ---------- scene ---------- */
+  .scene{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:18px 18px 16px;margin:16px 0;box-shadow:0 8px 22px -18px rgba(42,27,18,.4);
+  }
+  .scene-head{display:flex;align-items:center;gap:13px;margin-bottom:10px;}
+  .ball-num{width:46px;height:46px;flex:0 0 auto;position:relative;}
+  .scene-loc .where{font-family:'Fredoka';font-weight:700;font-size:16px;line-height:1.1;margin:0;}
+  .scene-loc .tag{font-weight:800;font-size:11.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--orange);margin:3px 0 0;}
+  .label{
+    font-family:'Fredoka';font-weight:600;font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;
+    color:var(--muted);margin:14px 0 5px;
+  }
+  .happens{font-size:15px;line-height:1.55;margin:0;color:#3a2c22;}
+  .happens em{color:var(--red-deep);font-style:italic;font-weight:700;}
+  .lines{margin:6px 0 0;padding:0;list-style:none;}
+  .lines li{font-size:14.5px;line-height:1.5;margin:0 0 6px;padding-left:2px;}
+  .lines .who{font-family:'Fredoka';font-weight:600;color:var(--red-deep);}
+  .lines .stage{color:var(--muted);font-style:italic;}
+
+  /* ---------- end card ---------- */
+  .endcard{
+    margin-top:26px;background:linear-gradient(150deg,var(--red) 0%,var(--orange) 100%);
+    border-radius:22px;padding:30px 24px;color:#fff;text-align:center;
+    box-shadow:0 14px 30px -16px rgba(255,106,43,.6);
+  }
+  .endcard .quote{font-family:'Fredoka';font-weight:700;font-size:clamp(20px,5.5vw,26px);line-height:1.25;margin:0 0 12px;}
+  .endcard .next{font-size:14.5px;font-weight:700;opacity:.95;margin:0;}
+
+  footer{margin-top:34px;text-align:center;color:var(--muted);font-size:13px;font-weight:600;}
+  footer .hh{font-family:'Fredoka';font-weight:700;color:var(--red);}
+
+  @keyframes bounce{0%,100%{transform:translateY(0) rotate(-6deg);}50%{transform:translateY(-14px) rotate(4deg);}}
+  @media (prefers-reduced-motion:reduce){
+    .hero .bigball{animation:none;}
+    .copybtn{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <svg class="miniball" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#FF6A2B"/><g stroke="#2A1B12" stroke-width="5" fill="none" stroke-linecap="round"><line x1="50" y1="4" x2="50" y2="96"/><line x1="4" y1="50" x2="96" y2="50"/><path d="M14 14 Q50 50 14 86"/><path d="M86 14 Q50 50 86 86"/></g></svg>
+    <span class="wordmark">Hoops <span class="amp">&amp;</span> <span class="h2">Hearts</span></span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="glow"></div>
+    <svg class="bigball" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#fff" opacity="0.16"/><circle cx="50" cy="50" r="40" fill="#FF7A38"/><g stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.85"><line x1="50" y1="12" x2="50" y2="88"/><line x1="12" y1="50" x2="88" y2="50"/><path d="M20 20 Q50 50 20 80"/><path d="M80 20 Q50 50 80 80"/></g></svg>
+    <p class="eyebrow">Episode 1 · ~5 minutes</p>
+    <h1>Wake Up<br>&amp; Ball</h1>
+    <p class="epname">A Hoops &amp; Hearts Story</p>
+    <div class="meta">
+      <span class="chip">🏀 Kids' Cartoon</span>
+      <span class="chip">🧠 Neurodiversity</span>
+      <span class="chip">📺 Built for AI video</span>
+    </div>
+    <p class="logline">A perfect morning shoot turns to chaos when the crew rolls in loud. When it all gets too much, Junaid has to find his calm — and trust the one thing he does better than anyone: reading the game.</p>
+  </div>
+
+  <!-- HOW TO USE -->
+  <h2 class="sec"><span class="dot"></span>How to make this with AI</h2>
+  <p class="sub">The fast workflow — tap "Copy" on any block below.</p>
+  <div class="note">
+    <p>AI video tools make <b>short clips (5–10 sec)</b>, not whole episodes — and they can't really do mouths/lip-sync yet. So the play is:</p>
+    <ol class="steps">
+      <li><b>Make the character art first</b> (next section) so everyone stays consistent.</li>
+      <li><b>Generate shot by shot.</b> Each scene has ready-to-paste <b>shot prompts</b> (visuals only — no talking).</li>
+      <li><b>Add voices + sound after</b> in CapCut. Use the <b>Dialogue</b> lines as voiceover or subtitles.</li>
+    </ol>
+  </div>
+  <div class="note">
+    <p><b>Tools that work well:</b> Kling AI or Hailuo (great motion, generous free tier) or Runway / Pika for the video · ElevenLabs for AI voices · CapCut to stitch it together, add music + the title cards.</p>
+  </div>
+
+  <!-- STYLE STRING -->
+  <h2 class="sec"><span class="dot"></span>The look</h2>
+  <p class="sub">Paste this on the end of every prompt so the whole series matches.</p>
+  <div class="copybox">
+    <button class="copybtn" onclick="copyText(this)">Copy</button>
+    <div class="copytext">warm friendly 3D animated children's cartoon, soft rounded character designs, big expressive eyes, bright saturated orange-and-red colour palette, gentle soft lighting, wholesome family-show tone, clean simple backgrounds, 16:9</div>
+  </div>
+
+  <!-- CAST -->
+  <h2 class="sec"><span class="dot"></span>The cast</h2>
+  <p class="sub">Cartoon versions of your real crew — tweaked just enough to keep them private. Keep these descriptions identical every time.</p>
+  <div class="note"><p><b>Two families, all friends:</b> Junaid, Amaya &amp; Isaac are siblings. Amina &amp; Asiya are siblings. The two crews are best mates who hoop together.</p></div>
+  <div class="cast">
+
+    <div class="person">
+      <div class="avatar" style="background:var(--orange)">J</div>
+      <div>
+        <h3>Junaid · 9</h3>
+        <p class="role">Main character · the mind</p>
+        <p>Autistic, verbal. Reads the game like no one else — sees patterns nobody catches and calls his shots before they drop. Loves routine; loud chaos overwhelms him. Warm brown skin, short dark hair, calm focused look, a touch taller. Orange jersey #7, red shorts.</p>
+      </div>
+    </div>
+
+    <div class="person">
+      <div class="avatar" style="background:var(--red)">I</div>
+      <div>
+        <h3>Isaac · 5</h3>
+        <p class="role">Junaid &amp; Amaya's little brother · the spark</p>
+        <p>Has ADHD. Pure energy, can't sit still, rushes everything, biggest heart in the yard. Smallest of the crew, warm brown skin, short cropped dark hair, cheeky grin. Red tee, orange shorts.</p>
+      </div>
+    </div>
+
+    <div class="person">
+      <div class="avatar" style="background:var(--orange-soft)">A</div>
+      <div>
+        <h3>Asiya · 11</h3>
+        <p class="role">Amina's big sister · the calm</p>
+        <p>Autistic, level 3, non-verbal. Talks through gestures, sounds and expressions; finds calm and joy in the rhythm of the ball. Notices things others miss. The tallest, warm brown skin, long dark wavy hair. Orange jersey #11, red shorts.</p>
+      </div>
+    </div>
+
+    <div class="person">
+      <div class="avatar" style="background:var(--red-deep)">A</div>
+      <div>
+        <h3>Amaya · 8</h3>
+        <p class="role">Junaid &amp; Isaac's sister</p>
+        <p>Bubbly and quick. Warm brown skin, voluminous curly dark hair, big smile. Red hoodie, orange leggings.</p>
+      </div>
+    </div>
+
+    <div class="person">
+      <div class="avatar" style="background:#B8431C">A</div>
+      <div>
+        <h3>Amina · 9</h3>
+        <p class="role">Asiya's little sister</p>
+        <p>Confident organiser. Warm brown skin, long straight dark hair, bright smile. Red-and-orange tracksuit, small orange headband.</p>
+      </div>
+    </div>
+
+    <div class="person">
+      <div class="avatar" style="background:#E0561C">M</div>
+      <div>
+        <h3>Maryam · Mum</h3>
+        <p class="role">Occupational therapist · the kids' mum</p>
+        <p>Mum to Junaid, Amaya &amp; Isaac. Warm, calm, never panics. Runs her own colourful kids' clinic. Warm brown skin, soft orange hijab, red cardigan, kind face.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CHARACTER REFERENCE ART -->
+  <h2 class="sec"><span class="dot"></span>Character reference art</h2>
+  <p class="sub">Make these portraits first, then feed each image into your video tool so the faces stay locked across every clip.</p>
+  <div class="note"><p><b>Best workflow:</b> generate these in an image tool (Midjourney, ChatGPT / DALL·E, or Leonardo), save each character, then use <b>image-to-video</b> in Kling or Hailuo. That holds the faces far better than text prompts alone.</p></div>
+
+  <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Character reference sheet, full body, plain neutral background. Junaid, a 9-year-old boy with warm brown skin and short dark hair, a calm thoughtful focused expression, a touch taller than his friends, wearing an orange basketball jersey with the number 7, red shorts and white sneakers. warm friendly 3D animated children's cartoon style, soft rounded shapes, big expressive eyes, bright orange-and-red palette, soft lighting, front view, consistent character design</div></div>
+
+  <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Character reference sheet, full body, plain neutral background. Isaac, a 5-year-old boy, the smallest of the group, with warm brown skin and short cropped dark hair, a cheeky energetic grin, wearing a red t-shirt, orange shorts and small sneakers. warm friendly 3D animated children's cartoon style, soft rounded shapes, big expressive eyes, bright orange-and-red palette, soft lighting, front view, consistent character design</div></div>
+
+  <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Character reference sheet, full body, plain neutral background. Asiya, an 11-year-old girl, the tallest of the group, with warm brown skin and long dark wavy hair past her shoulders, a calm gentle smile, wearing an orange basketball jersey with the number 11, red shorts and white sneakers. warm friendly 3D animated children's cartoon style, soft rounded shapes, big expressive eyes, bright orange-and-red palette, soft lighting, front view, consistent character design</div></div>
+
+  <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Character reference sheet, full body, plain neutral background. Amaya, an 8-year-old girl with warm brown skin and voluminous curly dark hair to her shoulders, a big bubbly smile, wearing a red hoodie, orange leggings and white sneakers. warm friendly 3D animated children's cartoon style, soft rounded shapes, big expressive eyes, bright orange-and-red palette, soft lighting, front view, consistent character design</div></div>
+
+  <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Character reference sheet, full body, plain neutral background. Amina, a 9-year-old girl with warm brown skin and long straight dark hair, a bright friendly smile, wearing a red-and-orange tracksuit, a small orange headband and white sneakers. warm friendly 3D animated children's cartoon style, soft rounded shapes, big expressive eyes, bright orange-and-red palette, soft lighting, front view, consistent character design</div></div>
+
+  <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Character reference sheet, full body, plain neutral background. Maryam, a warm kind adult woman (the mum), with warm brown skin, wearing a soft orange hijab headscarf and a red cardigan, a gentle caring smile. warm friendly 3D animated children's cartoon style, soft rounded shapes, big expressive eyes, bright orange-and-red palette, soft lighting, front view, consistent character design</div></div>
+
+  <!-- ===================== SCENES ===================== -->
+  <h2 class="sec"><span class="dot"></span>The episode</h2>
+  <p class="sub">7 scenes · shot prompts are visuals only · dialogue is for voiceover.</p>
+
+  <!-- SCENE 1 -->
+  <div class="scene">
+    <div class="scene-head">
+      <div class="ball-num"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FF6A2B"/><g stroke="#2A1B12" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.55"><line x1="50" y1="4" x2="50" y2="96"/><line x1="4" y1="50" x2="96" y2="50"/><path d="M14 14 Q50 50 14 86"/><path d="M86 14 Q50 50 86 86"/></g><text x="50" y="62" font-family="Fredoka,sans-serif" font-size="40" font-weight="700" fill="#fff" text-anchor="middle">1</text></svg></div>
+      <div class="scene-loc"><p class="where">Junaid's Bedroom</p><p class="tag">Interior · Sunrise</p></div>
+    </div>
+
+    <p class="label">What happens</p>
+    <p class="happens">Junaid's room is neat — shoes lined up, ball in its exact spot. He's calmly starting his morning routine when Isaac bursts in like a rocket, bouncing on the bed, arms everywhere, unable to keep still. Junaid's thrown for a second… then grins. Alright. Let's ball.</p>
+
+    <p class="label">Dialogue</p>
+    <ul class="lines">
+      <li><span class="who">ISAAC:</span> <span class="stage">(a mile a minute)</span> "JunaidJunaidJunaid — basketball, NOW, let's GO!"</li>
+      <li><span class="who">JUNAID:</span> <span class="stage">(steady, small smile)</span> "Okay, okay… shoes first. Then we ball."</li>
+    </ul>
+
+    <p class="label">Shot prompts</p>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Tidy kids' bedroom at sunrise, warm orange light, everything neat — shoes lined up in a row, an orange basketball in its exact spot; Junaid (9, warm brown skin, short dark hair) calmly starting his morning routine. warm friendly 3D children's cartoon, big expressive eyes, orange-and-red palette, soft lighting, 16:9</div></div>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Isaac (5, warm brown skin, short cropped dark hair, huge grin, red tee, orange shorts) bursts through the bedroom doorway like a rocket and bounces on the bed, full of restless energy, arms flying everywhere. warm 3D children's cartoon, big expressive eyes, orange-and-red palette, soft lighting, 16:9</div></div>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Close-up: Junaid (9, warm brown skin, short dark hair) looks startled for a beat, then breaks into a warm patient smile at his hyper little brother. warm 3D children's cartoon, big expressive eyes, soft lighting, 16:9</div></div>
+  </div>
+
+  <!-- SCENE 2 -->
+  <div class="scene">
+    <div class="scene-head">
+      <div class="ball-num"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FF6A2B"/><g stroke="#2A1B12" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.55"><line x1="50" y1="4" x2="50" y2="96"/><line x1="4" y1="50" x2="96" y2="50"/><path d="M14 14 Q50 50 14 86"/><path d="M86 14 Q50 50 86 86"/></g><text x="50" y="62" font-family="Fredoka,sans-serif" font-size="40" font-weight="700" fill="#fff" text-anchor="middle">2</text></svg></div>
+      <div class="scene-loc"><p class="where">The Kitchen</p><p class="tag">Interior · Morning</p></div>
+    </div>
+
+    <p class="label">What happens</p>
+    <p class="happens">Mum Maryam's at the stove. Isaac ricochets around the kitchen, grabbing at things, can't settle for a second. Junaid quietly sets his breakfast spot exactly how he likes it. Maryam, calm as ever, sends them out to burn some energy before training.</p>
+
+    <p class="label">Dialogue</p>
+    <ul class="lines">
+      <li><span class="who">MARYAM:</span> <span class="stage">(warm, easy)</span> "Mornin', boys. Isaac — feet on the floor, love. Go burn some of that energy before Coach Aiman's training."</li>
+      <li><span class="who">JUNAID:</span> "Come on, Isaac. Backyard."</li>
+    </ul>
+
+    <p class="label">Shot prompts</p>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Warm bright family kitchen in the morning, Maryam (mum, warm brown skin, soft orange hijab, red cardigan, kind face) at the stove, soft sunlight. warm 3D children's cartoon, orange-and-red palette, soft lighting, 16:9</div></div>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Isaac (5, red tee, huge grin) ricochets around the kitchen full of restless energy while Junaid (9, short dark hair, orange jersey #7) calmly sets his breakfast spot exactly how he likes it; Maryam (orange hijab) smiles warmly and holds out an orange basketball. warm 3D children's cartoon, big expressive eyes, soft lighting, 16:9</div></div>
+  </div>
+
+  <!-- SCENE 3 -->
+  <div class="scene">
+    <div class="scene-head">
+      <div class="ball-num"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FF6A2B"/><g stroke="#2A1B12" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.55"><line x1="50" y1="4" x2="50" y2="96"/><line x1="4" y1="50" x2="96" y2="50"/><path d="M14 14 Q50 50 14 86"/><path d="M86 14 Q50 50 86 86"/></g><text x="50" y="62" font-family="Fredoka,sans-serif" font-size="40" font-weight="700" fill="#fff" text-anchor="middle">3</text></svg></div>
+      <div class="scene-loc"><p class="where">Junaid's Zone</p><p class="tag">Exterior · Backyard</p></div>
+    </div>
+
+    <p class="label">What happens</p>
+    <p class="happens">This is Junaid at his best — calm, locked into his routine, swish after swish. He reads every angle and <em>calls each shot before it drops</em> (his gift on full display). Isaac tries to copy but rushes every shot and clanks it, balls bouncing all over the yard.</p>
+
+    <p class="label">Dialogue</p>
+    <ul class="lines">
+      <li><span class="who">JUNAID:</span> <span class="stage">(quiet, focused)</span> "Off the back rim… in." <span class="stage">(swish)</span> "Off the glass… in." <span class="stage">(swish)</span></li>
+      <li><span class="who">ISAAC:</span> <span class="stage">(rushing)</span> "MY turn, my turn—" <span class="stage">(clank)</span> "again—" <span class="stage">(clank)</span></li>
+    </ul>
+
+    <p class="label">Shot prompts</p>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Wide shot: sunny suburban backyard with a basketball hoop on a pole, Junaid (9, warm brown skin, short dark hair, orange jersey #7) calmly and rhythmically sinking shot after shot, totally in his zone, peaceful focused expression, warm morning light. warm 3D children's cartoon, big expressive eyes, soft lighting, 16:9</div></div>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Isaac (5, red tee, huge grin) impatiently rushes his shots and misses, orange basketballs bouncing everywhere, bursting with restless energy, while Junaid watches calmly. warm 3D children's cartoon, big expressive eyes, soft lighting, 16:9</div></div>
+  </div>
+
+  <!-- SCENE 4 -->
+  <div class="scene">
+    <div class="scene-head">
+      <div class="ball-num"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FF6A2B"/><g stroke="#2A1B12" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.55"><line x1="50" y1="4" x2="50" y2="96"/><line x1="4" y1="50" x2="96" y2="50"/><path d="M14 14 Q50 50 14 86"/><path d="M86 14 Q50 50 86 86"/></g><text x="50" y="62" font-family="Fredoka,sans-serif" font-size="40" font-weight="700" fill="#fff" text-anchor="middle">4</text></svg></div>
+      <div class="scene-loc"><p class="where">The Crew Rolls In</p><p class="tag">Exterior · Backyard</p></div>
+    </div>
+
+    <p class="label">What happens</p>
+    <p class="happens">The gate bangs open — Junaid's mates Amina and Asiya are here. Amaya bounds out from the house to join them, and suddenly it's LOUD: everyone shouting, a fast messy game, nothing like Junaid's calm rhythm. Asiya drifts to the side and finds her own quiet rhythm, gently bouncing a ball to a steady beat — in her own peaceful world.</p>
+
+    <p class="label">Dialogue</p>
+    <ul class="lines">
+      <li><span class="who">AMINA:</span> "We're heeere! Three-on-three, let's run it!"</li>
+      <li><span class="who">AMAYA:</span> "Loser does star jumps!"</li>
+      <li><span class="who">ASIYA:</span> <span class="stage">(content humming sounds, bouncing her own ball to a steady beat)</span></li>
+    </ul>
+
+    <p class="label">Shot prompts</p>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">A wooden back gate bangs open as two kids arrive loudly — Amina (9, long straight dark hair, small orange headband, red-orange tracksuit) and Asiya (11, tallest, long dark wavy hair, orange jersey #11) — while Amaya (8, curly dark hair, red hoodie) runs out from the house to join them. energetic and noisy. warm 3D children's cartoon, orange-and-red palette, soft lighting, 16:9</div></div>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">A fast, loud, chaotic backyard basketball game, kids shouting and moving everywhere; off to one side Asiya (11, tallest, long dark wavy hair, orange jersey #11) calmly bounces her own ball to a steady soothing rhythm, in her own peaceful world. warm 3D children's cartoon, big expressive eyes, soft lighting, 16:9</div></div>
+  </div>
+
+  <!-- SCENE 5 -->
+  <div class="scene">
+    <div class="scene-head">
+      <div class="ball-num"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FF6A2B"/><g stroke="#2A1B12" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.55"><line x1="50" y1="4" x2="50" y2="96"/><line x1="4" y1="50" x2="96" y2="50"/><path d="M14 14 Q50 50 14 86"/><path d="M86 14 Q50 50 86 86"/></g><text x="50" y="62" font-family="Fredoka,sans-serif" font-size="40" font-weight="700" fill="#fff" text-anchor="middle">5</text></svg></div>
+      <div class="scene-loc"><p class="where">Too Loud</p><p class="tag">Exterior · Backyard</p></div>
+    </div>
+
+    <p class="label">What happens</p>
+    <p class="happens">It's too much. The shouting, the bodies, the game gone sideways from how he pictured it — a shot rims out in the mess. The world warps: sounds smear and spike. Junaid clamps his hands over his ears and shuts his eyes, starting to shut down. The crew freezes, unsure. Then <em>Asiya is the first to notice</em> — she quietly comes and sits close beside him. Two autistic kids who just get each other, no words needed.</p>
+
+    <p class="label">Dialogue</p>
+    <ul class="lines">
+      <li><span class="who">SOUND:</span> <span class="stage">(muffle + distort the audio here — Junaid's overwhelm POV)</span></li>
+      <li><span class="who">JUNAID:</span> <span class="stage">(overwhelmed, quiet)</span> "Too loud… too loud."</li>
+      <li><span class="who">ASIYA:</span> <span class="stage">(soft reassuring sound, sits close beside him)</span></li>
+      <li><span class="who">AMINA:</span> <span class="stage">(quietly)</span> "…Did we do something?"</li>
+    </ul>
+
+    <p class="label">Shot prompts</p>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Junaid (9, warm brown skin, short dark hair, orange jersey #7) stands in a chaotic loud backyard, overwhelmed; the background blurs and warps around him, hands pressed hard over his ears, eyes squeezed shut, starting to shut down. emotional and gentle, not scary. warm 3D children's cartoon, big expressive eyes, soft lighting, 16:9</div></div>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">The noisy game stops dead; the other kids freeze, caring but unsure; Asiya (11, tallest, long dark wavy hair, orange jersey #11) quietly steps over and sits close beside Junaid, a wordless understanding between the two of them — two autistic kids who just get each other. tender and warm. warm 3D children's cartoon, soft lighting, 16:9</div></div>
+  </div>
+
+  <!-- SCENE 6 -->
+  <div class="scene">
+    <div class="scene-head">
+      <div class="ball-num"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FF6A2B"/><g stroke="#2A1B12" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.55"><line x1="50" y1="4" x2="50" y2="96"/><line x1="4" y1="50" x2="96" y2="50"/><path d="M14 14 Q50 50 14 86"/><path d="M86 14 Q50 50 86 86"/></g><text x="50" y="62" font-family="Fredoka,sans-serif" font-size="40" font-weight="700" fill="#fff" text-anchor="middle">6</text></svg></div>
+      <div class="scene-loc"><p class="where">Mum's Calm</p><p class="tag">Exterior · Backyard</p></div>
+    </div>
+
+    <p class="label">What happens</p>
+    <p class="happens">Maryam comes out unhurried — no panic. She doesn't crowd him: she waves the noise down, gives him space and a slow breath together, then reminds him of his strength. Junaid resets. <em>This is her OT toolkit, quietly at work.</em></p>
+
+    <p class="label">Dialogue</p>
+    <ul class="lines">
+      <li><span class="who">MARYAM:</span> <span class="stage">(calm, low)</span> "I've got you. Everyone, give him a sec. Big breath in… slow breath out."</li>
+      <li><span class="who">MARYAM:</span> <span class="stage">(gentle)</span> "You see things no one else sees, Junaid. Take your time. Then show 'em."</li>
+    </ul>
+
+    <p class="label">Shot prompts</p>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Maryam (mum, warm brown skin, soft orange hijab, red cardigan) crouches calmly near Junaid (9, short dark hair), giving him space rather than crowding him, the other kids hanging back quietly; warm and reassuring. warm 3D children's cartoon, big expressive eyes, soft lighting, 16:9</div></div>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Tender close two-shot: Maryam (orange hijab) breathes slowly with Junaid (9, short dark hair), modelling calm; he copies her, his shoulders drop and a steadier, settled look returns to his face. warm 3D children's cartoon, soft lighting, 16:9</div></div>
+  </div>
+
+  <!-- SCENE 7 -->
+  <div class="scene">
+    <div class="scene-head">
+      <div class="ball-num"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FF6A2B"/><g stroke="#2A1B12" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.55"><line x1="50" y1="4" x2="50" y2="96"/><line x1="4" y1="50" x2="96" y2="50"/><path d="M14 14 Q50 50 14 86"/><path d="M86 14 Q50 50 86 86"/></g><text x="50" y="62" font-family="Fredoka,sans-serif" font-size="40" font-weight="700" fill="#fff" text-anchor="middle">7</text></svg></div>
+      <div class="scene-loc"><p class="where">Reads the Game</p><p class="tag">Exterior · Backyard</p></div>
+    </div>
+
+    <p class="label">What happens</p>
+    <p class="happens">Calm now, Junaid steps back in — on his terms. The yard settles into a fair game. His eyes scan the court and he <em>sees the pattern</em> nobody else can. He calls it, just like the morning… and drains a perfect shot. The crew erupts. Isaac's jumping, Asiya claps in her own way, Mum glows. Junaid smiles — he fits, exactly as he is.</p>
+
+    <p class="label">Dialogue</p>
+    <ul class="lines">
+      <li><span class="who">JUNAID:</span> <span class="stage">(calm, certain, scanning)</span> "…There." <span class="stage">(sees the angle)</span> "Off the side… in." <span class="stage">(swish)</span></li>
+      <li><span class="who">ALL KIDS:</span> "WHAAAT!! He CALLED it!! Junaid, you genius!!"</li>
+      <li><span class="who">ISAAC:</span> <span class="stage">(jumping, thrilled)</span> "AGAIN! Do it AGAIN!"</li>
+      <li><span class="who">ASIYA:</span> <span class="stage">(joyful sounds, clapping her own way)</span></li>
+    </ul>
+
+    <p class="label">Shot prompts</p>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Junaid (9, warm brown skin, short dark hair, orange jersey #7) stands calm and focused again, scanning the backyard court, his eyes catching a pattern no one else can see; a confident, steady, knowing look. warm 3D children's cartoon, big expressive eyes, soft lighting, 16:9</div></div>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Junaid calls his shot then sinks a perfect basket, the orange ball swishing cleanly through the hoop, warm golden light, satisfying triumphant moment. warm 3D children's cartoon, orange-and-red palette, 16:9</div></div>
+    <div class="copybox"><button class="copybtn" onclick="copyText(this)">Copy</button><div class="copytext">Explosion of joy: all the kids erupt celebrating Junaid, his little brother Isaac (5, red tee) jumping thrilled, Asiya (11, long dark wavy hair, orange jersey #11) clapping happily in her own way, Maryam (orange hijab) beaming proudly. warm group celebration in a sunny backyard. warm 3D children's cartoon, big expressive eyes, soft lighting, 16:9</div></div>
+  </div>
+
+  <!-- END CARD -->
+  <div class="endcard">
+    <p class="quote">"Every mind sees the game differently.<br>That's what makes it beautiful."</p>
+    <p class="next">Next time → the crew visits Mum's colourful clinic, and meets Coach Aiman. 🏀💛</p>
+  </div>
+
+  <footer>
+    <span class="hh">Hoops &amp; Hearts</span> · Episode 1 · @lockdownlab3
+  </footer>
+
+</div>
+
+<script>
+  function copyText(btn){
+    var box = btn.closest('.copybox');
+    var txt = box.querySelector('.copytext').innerText;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){ flash(btn); }).catch(function(){ fallback(txt, btn); });
+    } else {
+      fallback(txt, btn);
+    }
+  }
+  function flash(btn){
+    var old = btn.getAttribute('data-old') || btn.innerText;
+    btn.setAttribute('data-old', old);
+    btn.innerText = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.innerText = old; btn.classList.remove('copied'); }, 1600);
+  }
+  function fallback(txt, btn){
+    try{
+      var ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta); flash(btn);
+    }catch(e){ btn.innerText = 'Copy failed'; }
+  }
+</script>
+
+</body>
+</html>

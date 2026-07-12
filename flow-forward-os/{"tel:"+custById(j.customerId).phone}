@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Flow Forward OS — AI Business Operating System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --accent:#4F46E5; --accent-ink:#ffffff;
+  --accent-grad:linear-gradient(135deg, color-mix(in srgb,var(--accent) 88%,#fff) 0%, var(--accent) 52%, color-mix(in srgb,var(--accent) 82%,#000) 100%);
+  --bg:#F3F4F8; --surface:#FFFFFF; --surface-2:#FAFBFD; --border:#EAECF1; --border-strong:#DBDEE6;
+  --text:#0B1220; --muted:#5B6573; --faint:#98A2B3;
+  --good:#12B76A; --warn:#F79009; --bad:#F04438; --info:#2E90FA;
+  --sidebar:#0A0E17; --sidebar-2:#0E1320; --sidebar-text:#98A2B3; --sidebar-active:#FFFFFF;
+  --radius:14px; --radius-sm:10px;
+  --shadow-xs:0 1px 2px rgba(11,18,32,.04);
+  --shadow:0 1px 3px rgba(11,18,32,.055), 0 1px 2px rgba(11,18,32,.035);
+  --shadow-md:0 6px 16px -4px rgba(11,18,32,.10), 0 2px 6px -2px rgba(11,18,32,.05);
+  --shadow-lg:0 24px 48px -14px rgba(11,18,32,.26), 0 8px 18px -8px rgba(11,18,32,.14);
+  --ring:0 0 0 3.5px color-mix(in srgb,var(--accent) 16%,transparent);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;letter-spacing:-.006em;font-feature-settings:"cv05","ss01","tnum" 0}
+::selection{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;font-size:inherit}
+input,select,textarea{font-family:inherit;font-size:14px;color:var(--text)}
+::placeholder{color:var(--faint)}
+a{color:var(--accent);text-decoration:none}
+#root{min-height:100vh}
+
+/* ---------- shared ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 16px;border-radius:10px;font-weight:600;font-size:13.5px;letter-spacing:-.01em;transition:transform .16s cubic-bezier(.4,0,.2,1),box-shadow .16s,background .16s,filter .16s;white-space:nowrap}
+.btn:active{transform:translateY(0) scale(.985)}
+.btn-primary{background:var(--accent-grad);color:var(--accent-ink);box-shadow:0 1px 2px rgba(11,18,32,.16),inset 0 1px 0 rgba(255,255,255,.16)}
+.btn-primary:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 8px 20px -6px color-mix(in srgb,var(--accent) 60%,transparent),inset 0 1px 0 rgba(255,255,255,.18)}
+.btn-ghost{background:var(--surface);border:1px solid var(--border-strong);color:var(--text);box-shadow:var(--shadow-xs)}
+.btn-ghost:hover{background:var(--surface-2);transform:translateY(-1px);box-shadow:var(--shadow)}
+.btn-danger{background:#FEF3F2;color:var(--bad);border:1px solid #FECDCA}
+.btn-sm{padding:6px 11px;font-size:12.5px;border-radius:8px}
+.btn-lg{padding:12px 22px;font-size:15px;border-radius:12px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none;filter:none}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.input,.select,.textarea{width:100%;padding:10px 13px;border:1px solid var(--border-strong);border-radius:10px;background:var(--surface);outline:none;box-shadow:var(--shadow-xs);transition:border .15s,box-shadow .15s,background .15s}
+.input:hover,.select:hover,.textarea:hover{border-color:color-mix(in srgb,var(--border-strong) 60%,var(--muted))}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--accent);box-shadow:var(--ring)}
+.textarea{resize:vertical;min-height:84px}
+.label{display:block;font-size:12px;font-weight:650;color:var(--muted);margin:0 0 6px 1px;letter-spacing:-.01em}
+.field{margin-bottom:14px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:650;line-height:1.6;letter-spacing:-.01em}
+.b-gray{background:#F2F4F7;color:#475467}.b-green{background:#ECFDF3;color:#067647}.b-amber{background:#FFFAEB;color:#B54708}.b-red{background:#FEF3F2;color:#B42318}.b-blue{background:#EFF8FF;color:#175CD3}.b-purple{background:#F4F3FF;color:#5925DC}.b-accent{background:color-mix(in srgb,var(--accent) 12%,white);color:var(--accent)}
+.dot{width:7px;height:7px;border-radius:99px;display:inline-block}
+.row{display:flex;align-items:center;gap:10px}
+.spread{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.muted{color:var(--muted)}.faint{color:var(--faint)}
+.h1{font-size:24px;font-weight:800;letter-spacing:-.65px}
+.h2{font-size:16.5px;font-weight:750;letter-spacing:-.35px}
+.h3{font-size:13.5px;font-weight:700;letter-spacing:-.2px}
+.tiny{font-size:12px}
+.money{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.avatar{width:34px;height:34px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;color:#fff;flex-shrink:0;box-shadow:0 1px 2px rgba(11,18,32,.18),inset 0 0 0 1px rgba(255,255,255,.14)}
+.clickable{cursor:pointer;transition:background .14s}
+.clickable:hover{background:var(--surface-2)}
+.divider{height:1px;background:var(--border);margin:14px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid2>*,.kanban>*,.stats>*{min-width:0}
+.empty{padding:44px 20px;text-align:center;color:var(--muted)}
+.empty .big{font-size:34px;margin-bottom:10px}
+.section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);margin:0 0 10px}
+
+/* ---------- layout ---------- */
+.shell{display:flex;min-height:100vh}
+.sidebar{width:236px;background:linear-gradient(180deg,var(--sidebar) 0%,var(--sidebar-2) 100%);color:var(--sidebar-text);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:40;padding:16px 12px;overflow-y:auto;border-right:1px solid rgba(255,255,255,.05)}
+.s-brand{display:flex;align-items:center;gap:10px;padding:6px 8px 18px}
+.s-logo{width:36px;height:36px;border-radius:10px;background:var(--accent-grad);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;box-shadow:0 4px 14px -2px color-mix(in srgb,var(--accent) 55%,transparent),inset 0 1px 0 rgba(255,255,255,.2)}
+.s-brand-name{color:#fff;font-weight:700;font-size:14px;line-height:1.2;letter-spacing:-.2px}
+.s-brand-sub{font-size:10.5px;color:var(--sidebar-text)}
+.s-item{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:500;width:100%;text-align:left;color:var(--sidebar-text);transition:background .14s,color .14s,box-shadow .14s;position:relative}
+.s-item:hover{background:rgba(255,255,255,.055);color:#fff}
+.s-item.active{background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 26%,transparent),rgba(255,255,255,.035));color:var(--sidebar-active);font-weight:600;box-shadow:inset 2.5px 0 0 var(--accent)}
+.s-item .ic{width:19px;text-align:center;font-size:15px;flex-shrink:0}
+.s-group{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#4A5468;padding:15px 10px 6px}
+.main{flex:1;margin-left:236px;min-width:0}
+.topbar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 68%,transparent);backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.content{padding:24px 24px 90px;max-width:1200px;margin:0 auto}
+.pagehead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px}
+.stat{padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .2s cubic-bezier(.4,0,.2,1),box-shadow .2s}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.stat .v{font-size:27px;font-weight:800;letter-spacing:-1px;margin:9px 0 3px;font-variant-numeric:tabular-nums}
+.stat .l{font-size:11.5px;font-weight:650;color:var(--muted);letter-spacing:-.01em}
+.stat .d{font-size:11.5px;font-weight:650;letter-spacing:-.01em}
+
+/* table-ish lists */
+.list{display:flex;flex-direction:column}
+.list-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border)}
+.list-row:last-child{border-bottom:none}
+
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(9,14,23,.5);backdrop-filter:blur(5px);z-index:100;display:flex;align-items:flex-end;justify-content:center;animation:fade .18s}
+.modal{background:var(--surface);width:100%;max-width:560px;max-height:92vh;overflow-y:auto;border-radius:22px 22px 0 0;padding:24px;animation:up .22s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow-lg)}
+@media(min-width:640px){.overlay{align-items:center;padding:20px}.modal{border-radius:20px}}
+@keyframes fade{from{opacity:0}}
+@keyframes up{from{transform:translateY(24px);opacity:.6}}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.x{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:16px}
+.x:hover{background:var(--bg)}
+
+/* toast */
+.toasts{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{background:#0C111D;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);animation:up .2s;max-width:90vw}
+@media(min-width:900px){.toasts{bottom:28px}}
+
+/* tabs & filter pills */
+.pills{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.pill{padding:7px 14px;border-radius:99px;font-size:12.5px;font-weight:650;letter-spacing:-.01em;border:1px solid var(--border-strong);background:var(--surface);color:var(--muted);white-space:nowrap;box-shadow:var(--shadow-xs);transition:all .15s}
+.pill:hover{color:var(--text);border-color:var(--muted)}
+.pill.active{background:var(--text);color:#fff;border-color:var(--text);box-shadow:var(--shadow)}
+
+/* kanban */
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;align-items:start}
+.kcol{background:color-mix(in srgb,var(--bg) 60%,var(--surface));border:1px solid var(--border);border-radius:var(--radius);padding:11px}
+.kcard{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:13px;margin-bottom:9px;box-shadow:var(--shadow);cursor:pointer;transition:transform .16s cubic-bezier(.4,0,.2,1),box-shadow .16s,border-color .16s}
+.kcard:hover{border-color:var(--border-strong);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.cal-h{background:var(--bg);padding:8px 4px;text-align:center;font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase}
+.cal-d{background:var(--surface);min-height:86px;padding:6px;font-size:12px;cursor:pointer;position:relative}
+.cal-d:hover{background:var(--bg)}
+.cal-d.off{background:#FAFBFC;color:var(--faint)}
+.cal-d .n{font-weight:600;font-size:11.5px}
+.cal-d.today .n{background:var(--accent);color:var(--accent-ink);width:20px;height:20px;border-radius:99px;display:inline-flex;align-items:center;justify-content:center}
+.cal-ev{margin-top:3px;background:color-mix(in srgb,var(--accent) 14%,white);color:var(--accent);border-radius:5px;padding:2px 5px;font-size:10.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* login */
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;background:var(--sidebar)}
+.login::before{content:'';position:absolute;inset:-10%;pointer-events:none;background:
+  radial-gradient(760px 520px at 12% -5%, color-mix(in srgb,var(--accent) 40%,transparent), transparent 62%),
+  radial-gradient(680px 560px at 92% 108%, color-mix(in srgb,var(--accent) 26%,transparent), transparent 58%),
+  radial-gradient(520px 420px at 78% 18%, rgba(124,111,245,.16), transparent 60%);
+  animation:aurora 16s ease-in-out infinite alternate}
+.login::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.4;background:radial-gradient(120% 90% at 50% 0%,transparent 60%,rgba(0,0,0,.35))}
+@keyframes aurora{from{transform:translate3d(-2%,-1%,0) scale(1)}to{transform:translate3d(2%,2%,0) scale(1.06)}}
+.login-card{width:100%;max-width:460px;position:relative;z-index:1}
+.tenant-tile{display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:15px;border-radius:15px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(14px);box-shadow:0 4px 18px -6px rgba(0,0,0,.35);transition:transform .18s cubic-bezier(.4,0,.2,1),background .18s,border-color .18s;margin-bottom:10px}
+.tenant-tile:hover{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
+.role-tile{flex:1;padding:18px 12px;border-radius:15px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);color:#fff;text-align:center;backdrop-filter:blur(14px);box-shadow:0 4px 18px -6px rgba(0,0,0,.35);transition:transform .18s cubic-bezier(.4,0,.2,1),background .18s,border-color .18s}
+.role-tile:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);transform:translateY(-3px)}
+
+/* switches */
+.switch{width:38px;height:22px;border-radius:99px;background:var(--border-strong);position:relative;transition:background .15s;flex-shrink:0}
+.switch.on{background:var(--good)}
+.switch::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:99px;background:#fff;transition:left .15s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.switch.on::after{left:18px}
+
+/* charts */
+.bar{fill:var(--accent);rx:4}
+.bar.dim{fill:color-mix(in srgb,var(--accent) 25%,white)}
+
+/* quote doc */
+.doc{border:1px solid var(--border);border-radius:var(--radius);padding:26px;background:var(--surface);box-shadow:var(--shadow-md)}
+.doc table{width:100%;border-collapse:collapse;font-size:13px}
+.doc th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--faint);padding:8px 6px;border-bottom:1px solid var(--border)}
+.doc td{padding:9px 6px;border-bottom:1px solid var(--border)}
+.doc td:last-child,.doc th:last-child{text-align:right}
+
+/* mobile */
+.bottomnav{display:none}
+.menu-btn{display:none}
+@media(max-width:900px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .content{padding:16px 14px 96px}
+  .topbar{padding:11px 14px}
+  .stats{grid-template-columns:1fr 1fr}
+  .kanban{grid-template-columns:1fr;}
+  .grid2{grid-template-columns:1fr}
+  .cal-d{min-height:58px;padding:4px}
+  .cal-ev{display:none}
+  .cal-d .has{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:99px;background:var(--accent)}
+  .bottomnav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:50;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  .bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px;font-size:9.5px;font-weight:600;color:var(--faint);border-radius:9px}
+  .bn-item.active{color:var(--accent)}
+  .bn-item .ic{font-size:19px}
+  .menu-btn{display:flex}
+}
+.drawer-overlay{position:fixed;inset:0;background:rgba(12,17,29,.55);z-index:60;animation:fade .15s}
+.drawer{position:fixed;top:0;bottom:0;left:0;width:270px;background:var(--sidebar);z-index:61;padding:16px 12px;overflow-y:auto;animation:slide .2s}
+@keyframes slide{from{transform:translateX(-40px);opacity:.5}}
+@media print{.sidebar,.topbar,.bottomnav,.no-print{display:none!important}.main{margin:0}.content{padding:0}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const {useState,useEffect,useMemo,useRef} = React;
+
+/* ================================================================
+   FLOW FORWARD OS — white-label business operating system
+   V1: fully client-side (localStorage). Modular data layer designed
+   for a drop-in Supabase + Stripe backend in V2.
+   ================================================================ */
+
+const GST = 0.10;
+const uid = () => Math.random().toString(36).slice(2,9);
+const todayISO = () => new Date().toISOString().slice(0,10);
+const addDays = (iso,n) => { const d=new Date(iso+"T12:00:00"); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); };
+const monthKey = iso => iso.slice(0,7);
+const fmt$ = n => "$"+(Math.round(n*100)/100).toLocaleString("en-AU",{minimumFractionDigits: n%1?2:0, maximumFractionDigits:2});
+const fmtDate = iso => { if(!iso) return "—"; const d=new Date(iso+"T12:00:00"); return d.toLocaleDateString("en-AU",{day:"numeric",month:"short"}); };
+const fmtDateFull = iso => { if(!iso) return "—"; const d=new Date(iso+"T12:00:00"); return d.toLocaleDateString("en-AU",{weekday:"short",day:"numeric",month:"short",year:"numeric"}); };
+const initials = n => (n||"?").split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase();
+const AV_COLORS = ["#4F46E5","#0E9384","#D92D20","#DC6803","#7839EE","#175CD3","#C11574","#3B7C0F"];
+const avColor = n => AV_COLORS[(n||"").split("").reduce((a,c)=>a+c.charCodeAt(0),0)%AV_COLORS.length];
+
+/* ---------------- industry presets (white-label engine) -------- */
+const INDUSTRIES = {
+  fencing:{label:"Fencing",icon:"🛠️",jobNoun:"job",rates:[
+    {name:"Colorbond fence supply & install",unit:"m",rate:95,kw:["colorbond","colourbond","steel"]},
+    {name:"Timber paling fence",unit:"m",rate:78,kw:["timber","paling","wood"]},
+    {name:"Frameless glass pool fencing",unit:"m",rate:240,kw:["pool","glass"]},
+    {name:"Gate supply & install",unit:"gate",rate:350,kw:["gate"]},
+    {name:"Old fence demolition & removal",unit:"m",rate:25,kw:["remove","removal","demolish","old fence","tear"]},
+    {name:"Retaining wall (treated pine)",unit:"m",rate:180,kw:["retaining","sleeper"]},
+    {name:"Labour",unit:"hr",rate:85,kw:[]}]},
+  landscaping:{label:"Landscaping",icon:"🌿",jobNoun:"job",rates:[
+    {name:"Turf supply & install",unit:"m²",rate:45,kw:["turf","lawn","grass"]},
+    {name:"Paving supply & install",unit:"m²",rate:120,kw:["paving","paver","patio"]},
+    {name:"Garden design & planting",unit:"job",rate:850,kw:["garden","design","plant"]},
+    {name:"Irrigation system (per zone)",unit:"zone",rate:400,kw:["irrigation","sprinkler","watering"]},
+    {name:"Mulching",unit:"m²",rate:18,kw:["mulch"]},
+    {name:"Hedge & tree trimming",unit:"hr",rate:85,kw:["hedge","trim","tree","prune"]},
+    {name:"Labour",unit:"hr",rate:80,kw:[]}]},
+  plumbing:{label:"Plumbing",icon:"🔧",jobNoun:"job",rates:[
+    {name:"Call-out & diagnosis",unit:"visit",rate:120,kw:["call","inspect","diagnos","look"]},
+    {name:"Tap / fixture replacement",unit:"item",rate:140,kw:["tap","mixer","fixture","faucet"]},
+    {name:"Hot water system replacement",unit:"unit",rate:1450,kw:["hot water","hws","heater"]},
+    {name:"Blocked drain clearing (jet)",unit:"drain",rate:320,kw:["block","drain","clog"]},
+    {name:"Toilet supply & install",unit:"unit",rate:380,kw:["toilet","cistern"]},
+    {name:"Pipe repair / relocation",unit:"hr",rate:130,kw:["pipe","leak","burst"]},
+    {name:"Labour",unit:"hr",rate:110,kw:[]}]},
+  electrical:{label:"Electrical",icon:"⚡",jobNoun:"job",rates:[
+    {name:"Call-out & fault finding",unit:"visit",rate:110,kw:["call","fault","inspect"]},
+    {name:"Power point install",unit:"point",rate:95,kw:["power point","outlet","gpo","socket"]},
+    {name:"Switchboard upgrade",unit:"board",rate:1200,kw:["switchboard","board","fuse"]},
+    {name:"LED lighting install",unit:"point",rate:120,kw:["light","led","downlight"]},
+    {name:"Ceiling fan install",unit:"fan",rate:220,kw:["fan"]},
+    {name:"Safety inspection & certificate",unit:"job",rate:280,kw:["safety","certificate","compliance"]},
+    {name:"Labour",unit:"hr",rate:105,kw:[]}]},
+  roofing:{label:"Roofing",icon:"🏠",jobNoun:"job",rates:[
+    {name:"Roof inspection & report",unit:"visit",rate:180,kw:["inspect","report","check"]},
+    {name:"Tile replacement",unit:"tile",rate:45,kw:["tile"]},
+    {name:"Metal roof replacement",unit:"m²",rate:85,kw:["metal","colorbond","sheet"]},
+    {name:"Gutter replacement",unit:"m",rate:55,kw:["gutter","downpipe"]},
+    {name:"Leak detection & repair",unit:"job",rate:350,kw:["leak","water"]},
+    {name:"Roof restoration & seal",unit:"m²",rate:60,kw:["restor","paint","seal"]},
+    {name:"Labour",unit:"hr",rate:95,kw:[]}]},
+  cleaning:{label:"Cleaning",icon:"🧽",jobNoun:"clean",rates:[
+    {name:"Standard house clean",unit:"hr",rate:55,kw:["standard","regular","house"]},
+    {name:"Deep clean",unit:"hr",rate:75,kw:["deep","spring"]},
+    {name:"End-of-lease clean",unit:"job",rate:450,kw:["lease","bond","move"]},
+    {name:"Carpet steam clean",unit:"room",rate:40,kw:["carpet","steam"]},
+    {name:"Window cleaning",unit:"panel",rate:12,kw:["window","glass"]},
+    {name:"Office / commercial clean",unit:"m²",rate:3.5,kw:["office","commercial"]},
+    {name:"Labour",unit:"hr",rate:50,kw:[]}]},
+  builders:{label:"Building & Construction",icon:"🏗️",jobNoun:"project",rates:[
+    {name:"Site preparation",unit:"day",rate:950,kw:["site","prep","excavat"]},
+    {name:"Framing",unit:"m²",rate:160,kw:["fram"]},
+    {name:"Decking supply & build",unit:"m²",rate:320,kw:["deck"]},
+    {name:"Bathroom renovation",unit:"room",rate:18500,kw:["bathroom","ensuite"]},
+    {name:"Home extension",unit:"m²",rate:2400,kw:["extension","extend","addition"]},
+    {name:"General carpentry",unit:"hr",rate:95,kw:["carpent","repair","reno"]},
+    {name:"Labour",unit:"hr",rate:90,kw:[]}]},
+  realestate:{label:"Real Estate & Property",icon:"🏡",jobNoun:"listing",rates:[
+    {name:"Sales marketing package",unit:"listing",rate:1500,kw:["marketing","photo","campaign","sell","sale"]},
+    {name:"Auction management",unit:"listing",rate:900,kw:["auction"]},
+    {name:"Rental appraisal & listing",unit:"listing",rate:350,kw:["rental","lease","tenant"]},
+    {name:"Property styling",unit:"listing",rate:2200,kw:["styling","staging"]},
+    {name:"Open home management",unit:"event",rate:180,kw:["open home","inspection"]},
+    {name:"Property management (monthly)",unit:"month",rate:220,kw:["manage"]},
+    {name:"Agent hours",unit:"hr",rate:120,kw:[]}]},
+  maintenance:{label:"Property Maintenance",icon:"🧰",jobNoun:"job",rates:[
+    {name:"Handyman service",unit:"hr",rate:75,kw:["handyman","fix","repair","general"]},
+    {name:"Gutter cleaning",unit:"job",rate:180,kw:["gutter"]},
+    {name:"Pressure washing",unit:"m²",rate:8,kw:["pressure","wash","driveway"]},
+    {name:"Interior painting",unit:"m²",rate:35,kw:["paint"]},
+    {name:"Plaster repair",unit:"patch",rate:220,kw:["plaster","wall","hole"]},
+    {name:"Lawn & garden care",unit:"visit",rate:65,kw:["lawn","mow","garden"]},
+    {name:"Labour",unit:"hr",rate:70,kw:[]}]},
+};
+
+/* ---------------- storage layer (swap for Supabase in V2) ------ */
+const DB = {
+  tenantsKey:"ffos_tenants",
+  key: id => "ffos_t_"+id,
+  loadTenants(){ try{ return JSON.parse(localStorage.getItem(this.tenantsKey))||null }catch(e){ return null } },
+  saveTenants(t){ localStorage.setItem(this.tenantsKey, JSON.stringify(t)); },
+  load(id){ try{ return JSON.parse(localStorage.getItem(this.key(id)))||null }catch(e){ return null } },
+  save(id,data){ localStorage.setItem(this.key(id), JSON.stringify(data)); },
+  remove(id){ localStorage.removeItem(this.key(id)); },
+};
+
+/* ---------------- seed engine ---------------------------------- */
+const FIRST=["Sarah","James","Mia","Liam","Olivia","Noah","Priya","Marcus","Elena","Tom","Aisha","Jack","Sofia","Daniel","Grace"];
+const LAST=["Chen","Nguyen","Smith","Patel","Rossi","Kaur","Brown","Wilson","Taylor","Haddad","Jones","Costa","Khan","White","Georgiou"];
+const SUBURBS=["Bankstown","Parramatta","Ryde","Penrith","Liverpool","Blacktown","Chatswood","Hurstville","Campbelltown","Auburn","Castle Hill","Sutherland"];
+const STREETS=["Miller St","Station Rd","Church St","George St","Park Ave","Railway Pde","Bridge Rd","Victoria Rd","High St","Ocean View Dr"];
+
+function seedData(industryKey, teamNames){
+  const ind = INDUSTRIES[industryKey];
+  const t = todayISO();
+  const cust=[],leads=[],quotes=[],jobs=[],invoices=[],reviews=[],photos=[],files=[],messages=[],activity=[];
+  const team = teamNames.map((n,i)=>({id:uid(),name:n,role:i===0?"Owner":"Technician",phone:"04"+String(10000000+Math.floor(Math.random()*89999999)),active:true}));
+  for(let i=0;i<7;i++){
+    const name = FIRST[i]+" "+LAST[i];
+    cust.push({id:uid(),name,phone:"04"+String(10000000+Math.floor(Math.random()*89999999)),
+      email:name.toLowerCase().replace(" ",".")+"@email.com",
+      address:(10+i*7)+" "+STREETS[i%STREETS.length]+", "+SUBURBS[i%SUBURBS.length]+" NSW",
+      notes:"",createdAt:addDays(t,-90+i*10),tags:i<2?["VIP"]:[]});
+  }
+  const leadSources=["Website","Google","Facebook","Referral","Word of mouth"];
+  const leadStages=["new","contacted","quoted","won","lost"];
+  for(let i=0;i<6;i++){
+    const name = FIRST[7+i]+" "+LAST[7+i];
+    leads.push({id:uid(),name,phone:"04"+String(10000000+Math.floor(Math.random()*89999999)),
+      email:name.toLowerCase().replace(" ",".")+"@email.com",
+      source:leadSources[i%leadSources.length],
+      need:ind.rates[i%(ind.rates.length-1)].name,
+      stage:leadStages[Math.min(i,4)%5], value:(i+2)*800,
+      createdAt:addDays(t,-14+i*2), suburb:SUBURBS[(i+3)%SUBURBS.length]});
+  }
+  // quotes: won history + pending
+  const qStatuses=["accepted","accepted","sent","sent","accepted","declined","draft"];
+  for(let i=0;i<7;i++){
+    const c = cust[i%cust.length];
+    const r1 = ind.rates[i%(ind.rates.length-1)], r2 = ind.rates[(i+2)%(ind.rates.length-1)];
+    const items=[{id:uid(),name:r1.name,qty:Math.max(2,(i%5)*4),unit:r1.unit,rate:r1.rate},
+                 {id:uid(),name:r2.name,qty:1+(i%3),unit:r2.unit,rate:r2.rate}];
+    const sub = items.reduce((a,it)=>a+it.qty*it.rate,0);
+    quotes.push({id:uid(),num:"Q-10"+(41+i),customerId:c.id,title:r1.name,items,notes:"Includes site clean-up on completion. Valid for 30 days.",
+      status:qStatuses[i],createdAt:addDays(t,-60+i*8),subtotal:sub,gst:sub*GST,total:sub*(1+GST)});
+  }
+  // jobs across statuses & dates
+  const jStat=["scheduled","scheduled","in_progress","done","done","done"];
+  for(let i=0;i<6;i++){
+    const c=cust[(i+1)%cust.length];
+    const q=quotes[i];
+    jobs.push({id:uid(),num:"J-20"+(31+i),customerId:c.id,title:q.title,quoteId:q.id,
+      status:jStat[i],date:addDays(t, i<2? i*2+1 : -(i*6)), time:["8:00 AM","10:30 AM","1:00 PM"][i%3],
+      assigneeId:team[1+(i%(Math.max(1,team.length-1)))]?.id||team[0].id,
+      address:c.address,notes:"",value:Math.round(q.total)});
+  }
+  // invoices from done jobs
+  jobs.filter(j=>j.status==="done").forEach((j,i)=>{
+    const paid = i<2;
+    invoices.push({id:uid(),num:"INV-30"+(21+i),customerId:j.customerId,jobId:j.id,title:j.title,
+      amount:j.value, status:paid?"paid":(i===2?"overdue":"sent"),
+      issuedAt:addDays(j.date,1), dueAt:addDays(j.date,15), paidAt:paid?addDays(j.date,3+i):null, method:paid?"card":null});
+  });
+  // extra historical + current-month paid invoices for chart depth
+  for(let m=5;m>=0;m--){
+    for(let k=0;k<2+((m*7+1)%3);k++){
+      const c=cust[(m+k)%cust.length];
+      const amt=900+((m*997+k*463)%4200);
+      const d = m===0? addDays(t,-(2+k*4)) : addDays(t,-(m*30)+k*6);
+      const paysLate = (m+k)%cust.length===2 && m>0; // one customer with a factual late-payment pattern
+      invoices.push({id:uid(),num:"INV-2"+(90-m*10-k),customerId:c.id,jobId:null,title:ind.rates[(m+k)%(ind.rates.length-1)].name,
+        amount:amt,status:"paid",issuedAt:d,dueAt:addDays(d,14),paidAt:addDays(d,paysLate?26:4),method:k%2?"card":"bank"});
+    }
+  }
+  reviews.push(
+    {id:uid(),customerId:cust[0].id,rating:5,text:"Absolutely spotless work. Turned up on time, quoted fast and the finish is perfect. Highly recommend!",date:addDays(t,-12),reply:"Thanks so much — enjoy!",platform:"Google"},
+    {id:uid(),customerId:cust[2].id,rating:5,text:"Great communication from quote to completion. The team left the site cleaner than they found it.",date:addDays(t,-26),reply:null,platform:"Google"},
+    {id:uid(),customerId:cust[4].id,rating:4,text:"Quality job at a fair price. Slight delay due to weather but they kept us updated the whole way.",date:addDays(t,-41),reply:"Appreciate the patience with the rain!",platform:"Facebook"});
+  photos.push(
+    {id:uid(),jobId:jobs[3]?.id,title:jobs[3]?.title||"Completed job",before:null,after:null,beforeGrad:"linear-gradient(135deg,#94A3B8,#475569)",afterGrad:"linear-gradient(135deg,#34D399,#059669)",date:addDays(t,-18)},
+    {id:uid(),jobId:jobs[4]?.id,title:jobs[4]?.title||"Completed job",before:null,after:null,beforeGrad:"linear-gradient(135deg,#FCA5A5,#B91C1C)",afterGrad:"linear-gradient(135deg,#93C5FD,#1D4ED8)",date:addDays(t,-30)});
+  files.push(
+    {id:uid(),name:"Public liability insurance.pdf",size:"412 KB",type:"pdf",date:addDays(t,-120),data:null},
+    {id:uid(),name:"Standard terms & conditions.pdf",size:"188 KB",type:"pdf",date:addDays(t,-120),data:null},
+    {id:uid(),name:"Site safety checklist.docx",size:"64 KB",type:"doc",date:addDays(t,-80),data:null});
+  messages.push(
+    {id:uid(),to:cust[1].name,channel:"sms",body:"Hi "+cust[1].name.split(" ")[0]+", reminder: our team arrives tomorrow at 8:00 AM. Reply if anything changes!",date:addDays(t,-1),auto:true},
+    {id:uid(),to:cust[0].name,channel:"email",body:"Thanks for choosing us! Your invoice has been paid — receipt attached. We'd love a quick Google review if you have 30 seconds.",date:addDays(t,-11),auto:true},
+    {id:uid(),to:leads[0].name,channel:"sms",body:"Hi "+leads[0].name.split(" ")[0]+", thanks for your enquiry! We'll call you within the hour to talk through your "+leads[0].need.toLowerCase()+".",date:addDays(t,-13),auto:true});
+  activity.push(
+    {id:uid(),text:"Invoice "+(invoices[0]?.num||"")+" paid via card",date:addDays(t,-2),icon:"💳"},
+    {id:uid(),text:"New 5★ review from "+cust[0].name,date:addDays(t,-12),icon:"⭐"},
+    {id:uid(),text:"Quote "+(quotes[4]?.num||"")+" accepted",date:addDays(t,-15),icon:"✅"});
+  const automations=[
+    {id:uid(),name:"New lead → instant SMS reply",desc:"Sends a text within seconds of a new lead so you're always first to respond.",trigger:"lead_created",channel:"sms",on:true},
+    {id:uid(),name:"Quote accepted → create job",desc:"Automatically creates a scheduled job when a customer accepts a quote.",trigger:"quote_accepted",channel:"system",on:true},
+    {id:uid(),name:"Day-before job reminder",desc:"SMS the customer the day before their booking with arrival time.",trigger:"job_reminder",channel:"sms",on:true},
+    {id:uid(),name:"Job completed → review request",desc:"Emails a Google review link 2 hours after a job is marked done.",trigger:"job_done",channel:"email",on:true},
+    {id:uid(),name:"Invoice overdue → polite chaser",desc:"Sends a friendly payment reminder 3 days after the due date.",trigger:"invoice_overdue",channel:"email",on:true},
+    {id:uid(),name:"Quote follow-up after 3 days",desc:"Follows up unanswered quotes automatically so nothing slips.",trigger:"quote_followup",channel:"sms",on:false}];
+  return {customers:cust,leads,quotes,jobs,invoices,reviews,photos,files,messages,automations,activity,team,
+    rates:JSON.parse(JSON.stringify(ind.rates)),
+    counters:{quote:1048,job:2037,invoice:3025},_v:SEED_V};
+}
+const SEED_V=3;
+
+const DEFAULT_TENANTS = [
+  {id:"crown", name:"Crown Fencing Co.", industry:"fencing", color:"#4F46E5", tagline:"Sydney's fencing specialists", team:["Aiman M","Danny K","Jason T"]},
+  {id:"greenscape", name:"GreenScape Landscaping", industry:"landscaping", color:"#16A34A", tagline:"Outdoor spaces, done right", team:["Sam R","Lucas P"]},
+  {id:"rapid", name:"Rapid Plumbing Group", industry:"plumbing", color:"#0E7DD1", tagline:"24/7 emergency plumbing", team:["Mo H","Chris B","Ali S"]},
+];
+
+function ensureSeeded(){
+  let tenants = DB.loadTenants();
+  if(!tenants){ tenants = DEFAULT_TENANTS.map(t=>({...t})); DB.saveTenants(tenants); }
+  tenants.forEach(t=>{
+    const existing = DB.load(t.id);
+    const isDemo = DEFAULT_TENANTS.some(d=>d.id===t.id);
+    // refresh stale demo data on seed upgrades; NEVER touch user-created tenants
+    if(!existing || (isDemo && (existing._v||1)!==SEED_V)) DB.save(t.id, seedData(t.industry, t.team||["Owner"]));
+  });
+  return tenants;
+}
+
+/* ---------------- automation engine ---------------------------- */
+/* Automations are real: events raised by the app run enabled rules
+   and produce actual in-app effects (messages, jobs, activity). */
+function runAutomations(data, event, payload){
+  const fired=[];
+  data.automations.filter(a=>a.on && a.trigger===event).forEach(a=>{
+    const t=todayISO();
+    if(event==="lead_created"){
+      data.messages.unshift({id:uid(),to:payload.name,channel:"sms",auto:true,date:t,
+        body:"Hi "+payload.name.split(" ")[0]+", thanks for reaching out! We've received your enquiry and will call you within the hour. — "+payload.brandName});
+      fired.push(a.name);
+    }
+    if(event==="quote_accepted"){
+      data.counters.job++;
+      data.jobs.unshift({id:uid(),num:"J-"+data.counters.job,customerId:payload.customerId,title:payload.title,
+        quoteId:payload.quoteId,status:"scheduled",date:addDays(t,3),time:"8:00 AM",
+        assigneeId:data.team[1]?.id||data.team[0]?.id,address:payload.address||"",notes:"Auto-created from accepted quote "+payload.num,value:Math.round(payload.total)});
+      fired.push(a.name);
+    }
+    if(event==="job_done"){
+      data.messages.unshift({id:uid(),to:payload.customerName,channel:"email",auto:true,date:t,
+        body:"Hi "+payload.customerName.split(" ")[0]+", thanks for having us! If you were happy with the work we'd love a quick Google review — it means the world to a local business: g.page/review-link"});
+      fired.push(a.name);
+    }
+    if(event==="invoice_overdue"){
+      data.messages.unshift({id:uid(),to:payload.customerName,channel:"email",auto:true,date:t,
+        body:"Hi "+payload.customerName.split(" ")[0]+", just a friendly reminder that invoice "+payload.num+" ("+fmt$(payload.amount)+") is now past due. You can pay securely online any time: pay.link/"+payload.num});
+      fired.push(a.name);
+    }
+  });
+  fired.forEach(n=>data.activity.unshift({id:uid(),text:"⚙️ Automation ran: "+n,date:todayISO(),icon:"⚙️"}));
+  return fired;
+}
+
+/* ---------------- AI quote brain ------------------------------- */
+function aiDraftQuote(desc, ind){
+  const d=desc.toLowerCase();
+  const items=[];
+  // pull quantities like "25m", "40 m2", "3 gates", "2 rooms"
+  const numNear = kw => {
+    const idx=d.indexOf(kw); if(idx<0) return null;
+    const window=d.slice(Math.max(0,idx-24), idx+kw.length+18);
+    const m=window.match(/(\d+(?:\.\d+)?)\s*(?:m2|m²|sqm|m|x|hrs?|hours?|rooms?|panels?|zones?|gates?|points?|tiles?)?/);
+    return m? parseFloat(m[1]) : null;
+  };
+  ind.rates.forEach(r=>{
+    const hit=r.kw.find(k=>d.includes(k));
+    if(hit){
+      let qty=numNear(hit) || (r.unit==="m"||r.unit==="m²"? 20 : 1);
+      if(qty>2000) qty=1; // phone numbers etc.
+      items.push({id:uid(),name:r.name,qty,unit:r.unit,rate:r.rate});
+    }
+  });
+  if(items.length===0){
+    const lab=ind.rates.find(r=>r.name==="Labour")||ind.rates[ind.rates.length-1];
+    items.push({id:uid(),name:ind.rates[0].name,qty:1,unit:ind.rates[0].unit,rate:ind.rates[0].rate});
+    items.push({id:uid(),name:lab.name,qty:4,unit:lab.unit,rate:lab.rate});
+  } else if(!items.some(i=>i.name==="Labour") && items.length<3){
+    const lab=ind.rates.find(r=>r.name==="Labour");
+    if(lab) items.push({id:uid(),name:lab.name,qty:3,unit:lab.unit,rate:lab.rate});
+  }
+  const notes = "Scope based on your description: \""+desc.trim().slice(0,140)+(desc.length>140?"…":"")+"\". Includes materials, workmanship guarantee and full site clean-up. Any variations quoted before work proceeds. Quote valid 30 days.";
+  return {items,notes};
+}
+
+/* ---------------- payment reliability (internal, facts only) ---- */
+/* Computed purely from invoice history. Shown ONLY in the owner HQ,
+   never in the customer portal. States facts, draws no conclusions. */
+function paymentProfile(data, custId){
+  const inv = data.invoices.filter(i=>i.customerId===custId);
+  const paid = inv.filter(i=>i.status==="paid");
+  const daysLate = i => Math.round((new Date(i.paidAt)-new Date(i.dueAt))/86400000);
+  const late = paid.filter(i=>i.paidAt && i.dueAt && daysLate(i)>0);
+  const overdueNow = inv.filter(i=>i.status==="overdue").length;
+  const owed = inv.filter(i=>i.status!=="paid").reduce((a,i)=>a+i.amount,0);
+  const avgLate = late.length? Math.round(late.reduce((a,i)=>a+daysLate(i),0)/late.length) : 0;
+  return { total:inv.length, paid:paid.length, late:late.length, avgLate, overdueNow, owed,
+    flag: late.length>=2 || (overdueNow>=1 && late.length>=1) };
+}
+function PayHistoryBadge({p}){
+  if(!p.flag) return null;
+  return <span className="badge b-amber" title="Internal only — computed from invoice history, never shown to the customer">
+    ⏱ {p.late} of {p.paid} paid late{p.avgLate?` · avg ${p.avgLate}d`:""}</span>;
+}
+
+/* ---------------- AI insights brain ----------------------------- */
+function aiInsights(data, ind){
+  const t=todayISO(); const thisM=monthKey(t);
+  const lastM=monthKey(addDays(t,-30));
+  const paid=data.invoices.filter(i=>i.status==="paid");
+  const revThis=paid.filter(i=>monthKey(i.paidAt||i.issuedAt)===thisM).reduce((a,i)=>a+i.amount,0);
+  const revLast=paid.filter(i=>monthKey(i.paidAt||i.issuedAt)===lastM).reduce((a,i)=>a+i.amount,0);
+  const sentQ=data.quotes.filter(q=>q.status!=="draft");
+  const winRate=sentQ.length? Math.round(100*sentQ.filter(q=>q.status==="accepted").length/sentQ.length):0;
+  const outstanding=data.invoices.filter(i=>i.status==="sent"||i.status==="overdue");
+  const outSum=outstanding.reduce((a,i)=>a+i.amount,0);
+  const overdue=data.invoices.filter(i=>i.status==="overdue");
+  const newLeads=data.leads.filter(l=>l.stage==="new");
+  const staleQuotes=data.quotes.filter(q=>q.status==="sent");
+  const avgJob=paid.length? paid.reduce((a,i)=>a+i.amount,0)/paid.length:0;
+  const svc={}; paid.forEach(i=>{svc[i.title]=(svc[i.title]||0)+i.amount});
+  const topSvc=Object.entries(svc).sort((a,b)=>b[1]-a[1])[0];
+  const out=[];
+  if(revLast>0) out.push({icon: revThis>=revLast?"📈":"📉", tone: revThis>=revLast?"good":"warn",
+    title:"Revenue is "+(revThis>=revLast?"up":"down")+" "+Math.abs(Math.round(100*(revThis-revLast)/revLast))+"% vs last month",
+    body:"You've collected "+fmt$(revThis)+" so far this month against "+fmt$(revLast)+" last month."+(revThis<revLast?" Push the "+staleQuotes.length+" open quotes to close the gap.":" Keep the momentum — capacity may become your bottleneck."),
+    nav:"analytics", cta:"View analytics"});
+  if(overdue.length) out.push({icon:"🚨",tone:"bad",title:fmt$(overdue.reduce((a,i)=>a+i.amount,0))+" is overdue across "+overdue.length+" invoice"+(overdue.length>1?"s":""),
+    body:"Businesses that chase within 3 days collect 2× faster. Your overdue-chaser automation is "+(data.automations.find(a=>a.trigger==="invoice_overdue")?.on?"on — reminders have been sent.":"OFF — turn it on in Automations.")+"",
+    nav:"invoices", cta:"Chase overdue invoices"});
+  if(newLeads.length) out.push({icon:"⚡",tone:"warn",title:newLeads.length+" new lead"+(newLeads.length>1?"s":"")+" waiting for first contact",
+    body:"Speed-to-lead wins jobs: calling within 5 minutes makes you 21× more likely to qualify the lead. "+newLeads[0].name+" ("+newLeads[0].need+") came in "+fmtDate(newLeads[0].createdAt)+".",
+    nav:"leads", cta:"Open leads pipeline"});
+  out.push({icon:"🎯",tone:winRate>=50?"good":"warn",title:"Quote win rate: "+winRate+"%",
+    body:winRate>=50?"Excellent close rate — you likely have room to lift prices 5-10% without losing volume.":"Under 50% suggests quotes are slow or pricing is off. Enable the 3-day quote follow-up automation and quote same-day.",
+    nav:"quotes", cta:"Review quotes"});
+  if(topSvc) out.push({icon:"💎",tone:"good",title:"\""+topSvc[0]+"\" is your money-maker",
+    body:"It has produced "+fmt$(topSvc[1])+" in paid work — your average sale is "+fmt$(Math.round(avgJob))+". Feature it first on quotes and ads.",
+    nav:"analytics", cta:"See top services"});
+  if(outSum>0) out.push({icon:"💰",tone:"blue",title:fmt$(outSum)+" in invoices awaiting payment",
+    body:"Offering card payment on the customer portal typically halves days-to-paid versus bank transfer.",
+    nav:"invoices", cta:"View invoices"});
+  const payers=data.customers.map(c=>({c,p:paymentProfile(data,c.id)})).filter(x=>x.p.flag).sort((a,b)=>b.p.late-a.p.late);
+  if(payers.length){ const w=payers[0];
+    out.push({icon:"📊",tone:"warn",title:w.c.name+" has paid "+w.p.late+" of "+w.p.paid+" invoices late",
+      body:"Average "+w.p.avgLate+" days past the due date"+(w.p.owed?", with "+fmt$(w.p.owed)+" currently outstanding":"")+". Facts from your invoice history, visible only to you — for future work consider a deposit upfront or payment on the day.",
+      nav:"customers", navId:w.c.id, cta:"Open "+w.c.name.split(" ")[0]+"'s profile"});}
+  return {out, kpis:{revThis,revLast,winRate,outSum,avgJob}};
+}
+
+/* ================================================================
+   SHARED UI
+   ================================================================ */
+const Icon = ({children,style}) => <span style={{fontSize:15,...style}}>{children}</span>;
+
+function Modal({title,onClose,children,wide}){
+  useEffect(()=>{ const h=e=>{if(e.key==="Escape")onClose()}; window.addEventListener("keydown",h);
+    const prev=document.body.style.overflow; document.body.style.overflow="hidden";
+    return ()=>{ window.removeEventListener("keydown",h); document.body.style.overflow=prev; }; },[]);
+  return <div className="overlay" onMouseDown={e=>{if(e.target===e.currentTarget)onClose()}}>
+    <div className="modal" style={wide?{maxWidth:720}:null}>
+      <div className="modal-head"><div className="h2">{title}</div><button className="x" onClick={onClose}>✕</button></div>
+      {children}
+    </div>
+  </div>;
+}
+function Field({label,children}){ return <div className="field"><label className="label">{label}</label>{children}</div>; }
+function Stat({label,value,delta,tone,onClick}){
+  return <div className={"stat"+(onClick?" clickable":"")} onClick={onClick} style={onClick?{cursor:"pointer"}:null}>
+    <div className="l">{label}{onClick&&<span className="faint" style={{float:"right",fontWeight:700}}>→</span>}</div>
+    <div className="v money">{value}</div>
+    {delta!=null && <div className="d" style={{color:tone==="bad"?"var(--bad)":tone==="warn"?"var(--warn)":"var(--good)"}}>{delta}</div>}</div>;
+}
+function Empty({icon,title,sub,action}){
+  return <div className="empty"><div className="big">{icon}</div><div className="h3" style={{color:"var(--text)"}}>{title}</div>
+    <div className="tiny" style={{margin:"4px 0 14px"}}>{sub}</div>{action}</div>;
+}
+function Avatar({name,size}){ return <div className="avatar" style={{background:avColor(name),width:size||34,height:size||34,fontSize:(size||34)*0.37}}>{initials(name)}</div>; }
+function StatusBadge({s}){
+  const map={new:["b-blue","New"],contacted:["b-amber","Contacted"],quoted:["b-purple","Quoted"],won:["b-green","Won"],lost:["b-red","Lost"],
+    draft:["b-gray","Draft"],sent:["b-blue","Sent"],accepted:["b-green","Accepted"],declined:["b-red","Declined"],
+    scheduled:["b-blue","Scheduled"],in_progress:["b-amber","In progress"],done:["b-green","Done"],
+    paid:["b-green","Paid"],overdue:["b-red","Overdue"]};
+  const [cls,label]=map[s]||["b-gray",s];
+  return <span className={"badge "+cls}>{label}</span>;
+}
+function Toggle({on,onChange}){ return <button className={"switch"+(on?" on":"")} onClick={onChange} aria-label="toggle"/>; }
+function Stars({n,size}){ return <span style={{color:"#F79009",fontSize:size||14,letterSpacing:1}}>{"★".repeat(n)}<span style={{color:"var(--border-strong)"}}>{"★".repeat(5-n)}</span></span>; }
+
+/* simple SVG bar chart */
+function BarChart({series,height=150,money=true,onBar}){
+  const max=Math.max(...series.map(s=>s.v),1);
+  const bw=100/series.length;
+  return <div style={{position:"relative"}}>
+    <svg viewBox={"0 0 100 "+ (height/3)} style={{width:"100%",height}} preserveAspectRatio="none">
+      {series.map((s,i)=>{
+        const h=Math.max(1.5,(s.v/max)*(height/3-10));
+        return <rect key={i} className={"bar"+(i===series.length-1?"":" dim")} x={i*bw+bw*0.18} y={height/3-h} width={bw*0.64} height={h} rx="1.4"/>;
+      })}
+    </svg>
+    {onBar && <div style={{position:"absolute",inset:0,display:"flex"}}>
+      {series.map((s,i)=><button key={i} title={s.l+": "+fmt$(s.v)} onClick={()=>onBar(i)} style={{flex:1,background:"transparent",cursor:"pointer"}}/>)}
+    </div>}
+    <div style={{display:"flex"}}>
+      {series.map((s,i)=><div key={i} style={{flex:1,textAlign:"center"}} className="tiny faint">{s.l}</div>)}
+    </div>
+  </div>;
+}
+function Donut({parts,size=120}){
+  const total=parts.reduce((a,p)=>a+p.v,0)||1;
+  let acc=0; const r=15.9, c=2*Math.PI*r;
+  return <svg viewBox="0 0 42 42" style={{width:size,height:size}}>
+    <circle cx="21" cy="21" r={r} fill="none" stroke="var(--border)" strokeWidth="5"/>
+    {parts.map((p,i)=>{
+      const frac=p.v/total, off=acc; acc+=frac;
+      return <circle key={i} cx="21" cy="21" r={r} fill="none" stroke={p.c} strokeWidth="5"
+        strokeDasharray={`${frac*c} ${c}`} strokeDashoffset={-off*c} transform="rotate(-90 21 21)" strokeLinecap="butt"/>;
+    })}
+  </svg>;
+}
+
+/* ================================================================
+   APP ROOT
+   ================================================================ */
+function App(){
+  const [tenants,setTenants]=useState(ensureSeeded);
+  const [session,setSession]=useState(()=>{ try{return JSON.parse(sessionStorage.getItem("ffos_session"))||null}catch(e){return null} });
+  const [toasts,setToasts]=useState([]);
+  const toast=msg=>{ const id=uid(); setToasts(t=>[...t,{id,msg}]); setTimeout(()=>setToasts(t=>t.filter(x=>x.id!==id)),2600); };
+
+  const login=s=>{ setSession(s); sessionStorage.setItem("ffos_session",JSON.stringify(s)); };
+  const logout=()=>{ setSession(null); sessionStorage.removeItem("ffos_session"); };
+
+  const tenant = session && tenants.find(t=>t.id===session.tenantId);
+  useEffect(()=>{ if(tenant){ document.documentElement.style.setProperty("--accent", tenant.color); document.title = tenant.name+" — powered by Flow Forward OS"; } else { document.documentElement.style.setProperty("--accent","#4F46E5"); document.title="Flow Forward OS"; } },[tenant&&tenant.color, tenant&&tenant.name]);
+
+  return <React.Fragment>
+    {!tenant
+      ? <Login tenants={tenants} setTenants={setTenants} onLogin={login}/>
+      : <TenantApp key={tenant.id+session.role+(session.userId||"")} tenant={tenant} tenants={tenants} setTenants={setTenants} session={session} onLogout={logout} toast={toast}/>}
+    <div className="toasts">{toasts.map(t=><div key={t.id} className="toast">{t.msg}</div>)}</div>
+  </React.Fragment>;
+}
+
+/* ================================================================
+   LOGIN — tenant picker (multi-tenant) + role
+   ================================================================ */
+function Login({tenants,setTenants,onLogin}){
+  const [pick,setPick]=useState(null); // tenant chosen, now pick role
+  const [creating,setCreating]=useState(false);
+  const [nb,setNb]=useState({name:"",industry:"fencing",color:"#4F46E5",tagline:""});
+  const [staffPick,setStaffPick]=useState(false);
+  const [custPick,setCustPick]=useState(false);
+
+  const createTenant=()=>{
+    if(!nb.name.trim()) return;
+    const id=uid();
+    const t={id,name:nb.name.trim(),industry:nb.industry,color:nb.color,tagline:nb.tagline||INDUSTRIES[nb.industry].label+" professionals",team:["Owner"]};
+    DB.save(id, seedData(nb.industry,[nb.name.trim().split(" ")[0]+" (Owner)"]));
+    const next=[...tenants,t]; setTenants(next); DB.saveTenants(next);
+    setCreating(false); setPick(t);
+  };
+
+  const data = pick? DB.load(pick.id) : null;
+
+  return <div className="login">
+    <div className="login-card">
+      <div style={{textAlign:"center",marginBottom:26}}>
+        <div style={{width:56,height:56,borderRadius:16,background:pick?"linear-gradient(135deg,"+pick.color+",color-mix(in srgb,"+pick.color+" 70%,#000))":"linear-gradient(135deg,#6D63F2,#4F46E5,#3F37C9)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:21,color:"#fff",marginBottom:15,boxShadow:"0 12px 34px -8px "+(pick?pick.color:"#4F46E5")+"cc, inset 0 1px 0 rgba(255,255,255,.25)"}}>
+          {pick? initials(pick.name) : "FF"}</div>
+        <div style={{color:"#fff",fontSize:23,fontWeight:800,letterSpacing:-.5}}>{pick? pick.name : "Flow Forward OS"}</div>
+        <div style={{color:"#98A2B3",fontSize:13,marginTop:4}}>{pick? pick.tagline : "The AI-powered operating system for Australian service businesses"}</div>
+      </div>
+
+      {!pick && !creating && <React.Fragment>
+        <div style={{color:"#667085",fontSize:11.5,fontWeight:700,textTransform:"uppercase",letterSpacing:.8,margin:"0 2px 10px"}}>Select your business</div>
+        {tenants.map(t=><button key={t.id} className="tenant-tile" onClick={()=>setPick(t)}>
+          <div className="avatar" style={{background:t.color,borderRadius:10}}>{initials(t.name)}</div>
+          <div style={{flex:1}}><div style={{fontWeight:700,fontSize:14}}>{t.name}</div>
+            <div style={{fontSize:11.5,color:"#98A2B3"}}>{INDUSTRIES[t.industry].icon} {INDUSTRIES[t.industry].label} · {t.tagline}</div></div>
+          <span style={{color:"#667085"}}>→</span>
+        </button>)}
+        <button className="tenant-tile" style={{borderStyle:"dashed",justifyContent:"center",color:"#98A2B3"}} onClick={()=>setCreating(true)}>+ Launch a new business on Flow Forward</button>
+        <div style={{textAlign:"center",marginTop:18,fontSize:11,color:"#475467"}}>White-label · Multi-tenant · Every business gets its own brand, data & portals</div>
+      </React.Fragment>}
+
+      {creating && <div className="card" style={{padding:20}}>
+        <div className="h2" style={{marginBottom:14}}>New business setup <span className="badge b-accent" style={{marginLeft:6}}>30 seconds</span></div>
+        <Field label="Business name"><input className="input" autoFocus value={nb.name} onChange={e=>setNb({...nb,name:e.target.value})} placeholder="e.g. Apex Roofing Co."/></Field>
+        <Field label="Industry"><select className="select" value={nb.industry} onChange={e=>setNb({...nb,industry:e.target.value})}>
+          {Object.entries(INDUSTRIES).map(([k,v])=><option key={k} value={k}>{v.icon} {v.label}</option>)}</select></Field>
+        <div className="grid2">
+          <Field label="Brand colour"><input type="color" className="input" style={{height:42,padding:4}} value={nb.color} onChange={e=>setNb({...nb,color:e.target.value})}/></Field>
+          <Field label="Tagline (optional)"><input className="input" value={nb.tagline} onChange={e=>setNb({...nb,tagline:e.target.value})} placeholder="Your slogan"/></Field>
+        </div>
+        <div className="row" style={{marginTop:6}}>
+          <button className="btn btn-primary btn-lg" style={{flex:1,background:nb.color}} onClick={createTenant} disabled={!nb.name.trim()}>Create business</button>
+          <button className="btn btn-ghost btn-lg" onClick={()=>setCreating(false)}>Back</button>
+        </div>
+      </div>}
+
+      {pick && !staffPick && !custPick && <React.Fragment>
+        <div style={{color:"#667085",fontSize:11.5,fontWeight:700,textTransform:"uppercase",letterSpacing:.8,margin:"0 2px 10px"}}>Sign in as</div>
+        <div className="row" style={{alignItems:"stretch"}}>
+          <button className="role-tile" onClick={()=>onLogin({tenantId:pick.id,role:"owner"})}>
+            <div style={{fontSize:26,marginBottom:6}}>👑</div><div style={{fontWeight:700}}>Owner</div><div style={{fontSize:11,color:"#98A2B3"}}>Full business HQ</div></button>
+          <button className="role-tile" onClick={()=>setStaffPick(true)}>
+            <div style={{fontSize:26,marginBottom:6}}>🦺</div><div style={{fontWeight:700}}>Staff</div><div style={{fontSize:11,color:"#98A2B3"}}>Field portal</div></button>
+          <button className="role-tile" onClick={()=>setCustPick(true)}>
+            <div style={{fontSize:26,marginBottom:6}}>🙋</div><div style={{fontWeight:700}}>Customer</div><div style={{fontSize:11,color:"#98A2B3"}}>Quotes & payments</div></button>
+        </div>
+        <button style={{color:"#667085",fontSize:12.5,marginTop:18,width:"100%",textAlign:"center"}} onClick={()=>setPick(null)}>← All businesses</button>
+      </React.Fragment>}
+
+      {pick && staffPick && <React.Fragment>
+        <div style={{color:"#667085",fontSize:11.5,fontWeight:700,textTransform:"uppercase",letterSpacing:.8,margin:"0 2px 10px"}}>Who's working today?</div>
+        {data.team.map(m=><button key={m.id} className="tenant-tile" onClick={()=>onLogin({tenantId:pick.id,role:"staff",userId:m.id})}>
+          <Avatar name={m.name}/><div style={{flex:1}}><div style={{fontWeight:700}}>{m.name}</div><div style={{fontSize:11.5,color:"#98A2B3"}}>{m.role}</div></div><span style={{color:"#667085"}}>→</span></button>)}
+        <button style={{color:"#667085",fontSize:12.5,marginTop:14,width:"100%",textAlign:"center"}} onClick={()=>setStaffPick(false)}>← Back</button>
+      </React.Fragment>}
+
+      {pick && custPick && <React.Fragment>
+        <div style={{color:"#667085",fontSize:11.5,fontWeight:700,textTransform:"uppercase",letterSpacing:.8,margin:"0 2px 10px"}}>Demo: view the portal as…</div>
+        {data.customers.slice(0,5).map(c=><button key={c.id} className="tenant-tile" onClick={()=>onLogin({tenantId:pick.id,role:"customer",userId:c.id})}>
+          <Avatar name={c.name}/><div style={{flex:1}}><div style={{fontWeight:700}}>{c.name}</div><div style={{fontSize:11.5,color:"#98A2B3"}}>{c.address}</div></div><span style={{color:"#667085"}}>→</span></button>)}
+        <button style={{color:"#667085",fontSize:12.5,marginTop:14,width:"100%",textAlign:"center"}} onClick={()=>setCustPick(false)}>← Back</button>
+      </React.Fragment>}
+    </div>
+  </div>;
+}
+
+/* ================================================================
+   TENANT APP — loads tenant data, routes by role
+   ================================================================ */
+function TenantApp({tenant,tenants,setTenants,session,onLogout,toast}){
+  const [data,setDataRaw]=useState(()=>DB.load(tenant.id));
+  const setData=updater=>{
+    setDataRaw(prev=>{
+      const next=typeof updater==="function"? updater(structuredClone(prev)) : updater;
+      DB.save(tenant.id,next); return next;
+    });
+  };
+  const updateTenant=patch=>{
+    const next=tenants.map(t=>t.id===tenant.id?{...t,...patch}:t);
+    setTenants(next); DB.saveTenants(next);
+  };
+  const baseInd=INDUSTRIES[tenant.industry];
+  const ind={...baseInd, rates:(data.rates&&data.rates.length)?data.rates:baseInd.rates};
+  const props={tenant,ind,data,setData,updateTenant,session,onLogout,toast};
+  if(session.role==="staff") return <StaffPortal {...props}/>;
+  if(session.role==="customer") return <CustomerPortal {...props}/>;
+  return <OwnerApp {...props}/>;
+}
+
+/* ================================================================
+   OWNER APP — shell + routing
+   ================================================================ */
+const NAV=[
+  {group:"Run the day"},
+  {id:"dashboard",label:"Dashboard",ic:"⌂"},
+  {id:"schedule",label:"Jobs & Schedule",ic:"🗓"},
+  {id:"calendar",label:"Calendar",ic:"📆"},
+  {group:"Win work"},
+  {id:"leads",label:"Leads",ic:"🎯"},
+  {id:"leadgen",label:"Lead Generator",ic:"🧲"},
+  {id:"quotes",label:"Quotes",ic:"📄"},
+  {id:"customers",label:"Customers",ic:"👥"},
+  {group:"Get paid"},
+  {id:"invoices",label:"Invoices & Payments",ic:"💳"},
+  {group:"Grow"},
+  {id:"insights",label:"AI Insights",ic:"✨"},
+  {id:"analytics",label:"Analytics",ic:"📊"},
+  {id:"reviews",label:"Reviews",ic:"⭐"},
+  {id:"photos",label:"Before / After",ic:"📸"},
+  {group:"Operate"},
+  {id:"messages",label:"SMS & Email",ic:"💬"},
+  {id:"automations",label:"Automations",ic:"⚙️"},
+  {id:"files",label:"Files",ic:"📁"},
+  {id:"settings",label:"Settings",ic:"🎛"},
+];
+const MOBILE_NAV=["dashboard","schedule","quotes","invoices","insights"];
+
+function OwnerApp(props){
+  const {tenant,ind,onLogout}=props;
+  const [page,setPage]=useState("dashboard");
+  const [drawer,setDrawer]=useState(false);
+  const [focus,setFocus]=useState(null);
+  const go=(p,id)=>{ setPage(p); setFocus(id!=null?id:null); setDrawer(false); window.scrollTo(0,0); };
+
+  const SideNav=({inDrawer})=><React.Fragment>
+    <div className="s-brand">
+      <div className="s-logo">{initials(tenant.name)}</div>
+      <div><div className="s-brand-name">{tenant.name}</div><div className="s-brand-sub">powered by Flow Forward</div></div>
+    </div>
+    {NAV.map((n,i)=> n.group
+      ? <div key={i} className="s-group">{n.group}</div>
+      : <button key={n.id} className={"s-item"+(page===n.id?" active":"")} onClick={()=>go(n.id)}><span className="ic">{n.ic}</span>{n.label}</button>)}
+    <div style={{flex:1,minHeight:16}}/>
+    <button className="s-item" onClick={onLogout}><span className="ic">↩</span>Sign out</button>
+  </React.Fragment>;
+
+  const pageTitle=(NAV.find(n=>n.id===page)||{}).label||"";
+
+  return <div className="shell">
+    <nav className="sidebar"><SideNav/></nav>
+    {drawer && <React.Fragment><div className="drawer-overlay" onClick={()=>setDrawer(false)}/><div className="drawer"><SideNav inDrawer/></div></React.Fragment>}
+    <div className="main">
+      <div className="topbar">
+        <div className="row">
+          <button className="btn btn-ghost btn-sm menu-btn" onClick={()=>setDrawer(true)}>☰</button>
+          <div>
+            <div style={{fontWeight:700,fontSize:15}}>{pageTitle}</div>
+            <div className="tiny faint">{ind.icon} {ind.label} · {fmtDateFull(todayISO())}</div>
+          </div>
+        </div>
+        <div className="row">
+          <span className="badge b-accent no-print" style={{display:window.innerWidth<640?"none":"inline-flex"}}>👑 Owner</span>
+          <Avatar name={tenant.name} size={32}/>
+        </div>
+      </div>
+      <div className="content">
+        {page==="dashboard" && <Dashboard {...props} go={go}/>}
+        {page==="leads" && <Leads {...props}/>}
+        {page==="leadgen" && <LeadGen {...props}/>}
+        {page==="customers" && <Customers {...props} focusId={focus}/>}
+        {page==="quotes" && <Quotes {...props}/>}
+        {page==="schedule" && <JobsPage {...props}/>}
+        {page==="calendar" && <CalendarPage {...props}/>}
+        {page==="invoices" && <Invoices {...props}/>}
+        {page==="insights" && <Insights {...props} go={go}/>}
+        {page==="analytics" && <Analytics {...props}/>}
+        {page==="reviews" && <Reviews {...props}/>}
+        {page==="photos" && <Photos {...props}/>}
+        {page==="messages" && <Messages {...props}/>}
+        {page==="automations" && <Automations {...props}/>}
+        {page==="files" && <FilesPage {...props}/>}
+        {page==="settings" && <Settings {...props}/>}
+      </div>
+    </div>
+    <nav className="bottomnav">
+      {MOBILE_NAV.map(id=>{ const n=NAV.find(x=>x.id===id);
+        return <button key={id} className={"bn-item"+(page===id?" active":"")} onClick={()=>go(id)}><span className="ic">{n.ic}</span>{n.label.split(" ")[0]}</button>;})}
+      <button className={"bn-item"+(!MOBILE_NAV.includes(page)?" active":"")} onClick={()=>setDrawer(true)}><span className="ic">☰</span>More</button>
+    </nav>
+  </div>;
+}
+
+/* ================================================================
+   DASHBOARD
+   ================================================================ */
+function activityNav(text){
+  const t=(text||"").toLowerCase();
+  if(t.includes("automation")) return "automations";
+  if(t.includes("invoice")||t.includes("paid")) return "invoices";
+  if(t.includes("review")) return "reviews";
+  if(t.includes("quote")) return "quotes";
+  if(t.includes("lead")) return "leads";
+  if(t.includes("converted to customer")) return "customers";
+  if(t.includes("completed")||t.includes("job")) return "schedule";
+  return null;
+}
+function Dashboard(props){
+  const {tenant,ind,data,go,toast}=props;
+  const t=todayISO();
+  const ai=aiInsights(data,ind);
+  const todayJobs=data.jobs.filter(j=>j.date===t && j.status!=="done");
+  const upcoming=data.jobs.filter(j=>j.date>=t && j.status==="scheduled").sort((a,b)=>a.date.localeCompare(b.date)).slice(0,4);
+  const newLeads=data.leads.filter(l=>l.stage==="new"||l.stage==="contacted").slice(0,4);
+  const custById=id=>data.customers.find(c=>c.id===id)||{name:"—"};
+
+  return <React.Fragment>
+    <div className="pagehead">
+      <div>
+        <div className="h1">G'day 👋</div>
+        <div className="muted tiny">Here's how {tenant.name} is tracking.</div>
+      </div>
+      <div className="row no-print">
+        <button className="btn btn-ghost" onClick={()=>go("leads")}>+ Lead</button>
+        <button className="btn btn-primary" onClick={()=>go("quotes")}>✨ New AI quote</button>
+      </div>
+    </div>
+
+    <div className="stats">
+      <Stat label="Revenue this month" value={fmt$(ai.kpis.revThis)} delta={ai.kpis.revLast?((ai.kpis.revThis>=ai.kpis.revLast?"▲ ":"▼ ")+Math.abs(Math.round(100*(ai.kpis.revThis-ai.kpis.revLast)/ai.kpis.revLast))+"% vs last mth"):null} tone={ai.kpis.revThis>=ai.kpis.revLast?"good":"bad"} onClick={()=>go("analytics")}/>
+      <Stat label="Awaiting payment" value={fmt$(ai.kpis.outSum)} delta={data.invoices.filter(i=>i.status==="overdue").length+" overdue"} tone={data.invoices.some(i=>i.status==="overdue")?"bad":"good"} onClick={()=>go("invoices")}/>
+      <Stat label="Quote win rate" value={ai.kpis.winRate+"%"} delta={data.quotes.filter(q=>q.status==="sent").length+" awaiting reply"} tone="warn" onClick={()=>go("quotes")}/>
+      <Stat label="Open leads" value={data.leads.filter(l=>!["won","lost"].includes(l.stage)).length} delta={data.leads.filter(l=>l.stage==="new").length+" need first contact"} tone="warn" onClick={()=>go("leads")}/>
+    </div>
+
+    {ai.out.length>0 && <div className="card clickable" style={{padding:16,marginBottom:16,borderLeft:"3px solid var(--accent)"}} onClick={()=>go(ai.out[0].nav||"insights",ai.out[0].navId)}>
+      <div className="spread" style={{marginBottom:8}}>
+        <div className="h3">✨ AI insight of the day</div>
+        <button className="btn btn-ghost btn-sm" onClick={e=>{e.stopPropagation();go("insights");}}>All insights →</button>
+      </div>
+      <div style={{fontWeight:700,marginBottom:3}}>{ai.out[0].icon} {ai.out[0].title}</div>
+      <div className="tiny muted">{ai.out[0].body}</div>
+      {ai.out[0].cta && <div className="tiny" style={{marginTop:8,fontWeight:700,color:"var(--accent)"}}>{ai.out[0].cta} →</div>}
+    </div>}
+
+    <div className="grid2" style={{alignItems:"start"}}>
+      <div className="card">
+        <div className="spread" style={{padding:"14px 16px 0"}}>
+          <div className="h3">🗓 {todayJobs.length? "Today's "+ind.jobNoun+"s" : "Next up"}</div>
+          <button className="btn btn-ghost btn-sm" onClick={()=>go("schedule")}>Schedule →</button>
+        </div>
+        <div className="list">
+          {(todayJobs.length?todayJobs:upcoming).map(j=><div key={j.id} className="list-row clickable" onClick={()=>go("schedule")}>
+            <div style={{textAlign:"center",minWidth:44}}>
+              <div style={{fontWeight:800,fontSize:15}}>{fmtDate(j.date).split(" ")[0]}</div>
+              <div className="tiny faint" style={{textTransform:"uppercase"}}>{fmtDate(j.date).split(" ")[1]}</div>
+            </div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{j.title}</div>
+              <div className="tiny muted">{j.time} · {custById(j.customerId).name}</div>
+            </div>
+            <StatusBadge s={j.status}/>
+          </div>)}
+          {todayJobs.length===0&&upcoming.length===0 && <Empty icon="🗓" title="Nothing scheduled" sub={"Accepted quotes automatically become "+ind.jobNoun+"s."}/>}
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="spread" style={{padding:"14px 16px 0"}}>
+          <div className="h3">🎯 Leads needing action</div>
+          <button className="btn btn-ghost btn-sm" onClick={()=>go("leads")}>Pipeline →</button>
+        </div>
+        <div className="list">
+          {newLeads.map(l=><div key={l.id} className="list-row clickable" onClick={()=>go("leads")}>
+            <Avatar name={l.name}/>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontWeight:600}}>{l.name}</div>
+              <div className="tiny muted" style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{l.need} · via {l.source}</div>
+            </div>
+            <StatusBadge s={l.stage}/>
+          </div>)}
+          {newLeads.length===0 && <Empty icon="🎉" title="Inbox zero" sub="Every lead has been actioned."/>}
+        </div>
+      </div>
+    </div>
+
+    <div className="card" style={{marginTop:16}}>
+      <div className="h3" style={{padding:"14px 16px 0"}}>Recent activity</div>
+      <div className="list">
+        {data.activity.slice(0,6).map(a=>{ const dest=activityNav(a.text);
+          return <div key={a.id} className={"list-row"+(dest?" clickable":"")} onClick={dest?(()=>go(dest)):undefined}>
+          <span style={{fontSize:16}}>{a.icon}</span>
+          <div style={{flex:1}} className="tiny">{a.text}</div>
+          <span className="tiny faint">{fmtDate(a.date)}{dest&&<span className="faint"> →</span>}</span>
+        </div>;})}
+        {data.activity.length===0 && <Empty icon="🔔" title="No activity yet" sub="Actions across the app show up here."/>}
+      </div>
+    </div>
+  </React.Fragment>;
+}
+
+/* ================================================================
+   LEADS — pipeline
+   ================================================================ */
+function Leads(props){
+  const {tenant,ind,data,setData,toast}=props;
+  const [filter,setFilter]=useState("all");
+  const [modal,setModal]=useState(null); // "new" | lead object
+  const stages=["new","contacted","quoted","won","lost"];
+  const shown=data.leads.filter(l=>filter==="all"?true:l.stage===filter);
+
+  const saveLead=l=>{
+    setData(d=>{
+      if(l.id){ d.leads=d.leads.map(x=>x.id===l.id?l:x); }
+      else{
+        l={...l,id:uid(),stage:"new",createdAt:todayISO()};
+        d.leads.unshift(l);
+        d.activity.unshift({id:uid(),text:"New lead: "+l.name+" ("+l.source+")",date:todayISO(),icon:"🎯"});
+        runAutomations(d,"lead_created",{name:l.name,brandName:tenant.name});
+      }
+      return d;
+    });
+    setModal(null); toast(l.id?"Lead updated":"Lead added — instant SMS sent ⚙️");
+  };
+  const setStage=(l,stage)=>{
+    setData(d=>{
+      d.leads=d.leads.map(x=>x.id===l.id?{...x,stage}:x);
+      if(stage==="won" && !d.customers.some(c=>c.email===l.email)){
+        d.customers.unshift({id:uid(),name:l.name,phone:l.phone,email:l.email,address:(l.suburb||"")+" NSW",notes:"Converted from lead ("+l.source+")",createdAt:todayISO(),tags:[]});
+        d.activity.unshift({id:uid(),text:l.name+" converted to customer 🎉",date:todayISO(),icon:"🎉"});
+      }
+      return d;
+    });
+    toast(stage==="won"?"Lead won — added to Customers 🎉":"Moved to "+stage);
+  };
+
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">Leads</div><div className="muted tiny">Every enquiry, captured and chased. Speed wins jobs.</div></div>
+      <button className="btn btn-primary no-print" onClick={()=>setModal("new")}>+ Add lead</button>
+    </div>
+    <div className="pills" style={{marginBottom:14}}>
+      {["all",...stages].map(s=><button key={s} className={"pill"+(filter===s?" active":"")} onClick={()=>setFilter(s)}>
+        {s==="all"?"All ("+data.leads.length+")":s[0].toUpperCase()+s.slice(1)}</button>)}
+    </div>
+    <div className="card">
+      <div className="list">
+        {shown.map(l=><div key={l.id} className="list-row">
+          <Avatar name={l.name}/>
+          <div style={{flex:1,minWidth:0,cursor:"pointer"}} onClick={()=>setModal(l)}>
+            <div style={{fontWeight:600}}>{l.name} <span className="tiny faint">· {l.suburb}</span></div>
+            <div className="tiny muted" style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{l.need} · via {l.source} · est {fmt$(l.value)}</div>
+          </div>
+          <select className="select" style={{width:130,padding:"6px 8px",fontSize:12.5}} value={l.stage} onChange={e=>setStage(l,e.target.value)}>
+            {stages.map(s=><option key={s} value={s}>{s[0].toUpperCase()+s.slice(1)}</option>)}
+          </select>
+        </div>)}
+        {shown.length===0 && <Empty icon="🎯" title="No leads here" sub="New enquiries land in this pipeline automatically." action={<button className="btn btn-primary btn-sm" onClick={()=>setModal("new")}>Add your first lead</button>}/>}
+      </div>
+    </div>
+    {modal && <LeadModal lead={modal==="new"?null:modal} ind={ind} onSave={saveLead} onClose={()=>setModal(null)}/>}
+  </React.Fragment>;
+}
+function LeadModal({lead,ind,onSave,onClose}){
+  const [f,setF]=useState(lead||{name:"",phone:"",email:"",suburb:"",source:"Website",need:ind.rates[0].name,value:1000});
+  return <Modal title={lead?"Edit lead":"New lead"} onClose={onClose}>
+    <Field label="Name"><input className="input" autoFocus value={f.name} onChange={e=>setF({...f,name:e.target.value})}/></Field>
+    <div className="grid2">
+      <Field label="Phone"><input className="input" value={f.phone} onChange={e=>setF({...f,phone:e.target.value})}/></Field>
+      <Field label="Suburb"><input className="input" value={f.suburb} onChange={e=>setF({...f,suburb:e.target.value})}/></Field>
+    </div>
+    <Field label="Email"><input className="input" value={f.email} onChange={e=>setF({...f,email:e.target.value})}/></Field>
+    <div className="grid2">
+      <Field label="Source"><select className="select" value={f.source} onChange={e=>setF({...f,source:e.target.value})}>
+        {["Website","Google","Facebook","Instagram","Referral","Word of mouth","Phone call"].map(s=><option key={s}>{s}</option>)}</select></Field>
+      <Field label="Est. value ($)"><input type="number" className="input" value={f.value} onChange={e=>setF({...f,value:+e.target.value})}/></Field>
+    </div>
+    <Field label="What do they need?"><select className="select" value={f.need} onChange={e=>setF({...f,need:e.target.value})}>
+      {ind.rates.map(r=><option key={r.name}>{r.name}</option>)}</select></Field>
+    <button className="btn btn-primary btn-lg" style={{width:"100%"}} disabled={!f.name.trim()} onClick={()=>onSave(f)}>{lead?"Save changes":"Add lead"}</button>
+  </Modal>;
+}
+
+/* ================================================================
+   CUSTOMERS — CRM
+   ================================================================ */
+function Customers(props){
+  const {tenant,data,setData,toast,ind,focusId}=props;
+  const [q,setQ]=useState("");
+  const [modal,setModal]=useState(null);
+  const [view,setView]=useState(focusId||null); // customer detail (deep-link aware)
+  const shown=data.customers.filter(c=>(c.name+c.address+c.email).toLowerCase().includes(q.toLowerCase()));
+  const save=c=>{
+    setData(d=>{
+      if(c.id) d.customers=d.customers.map(x=>x.id===c.id?c:x);
+      else d.customers.unshift({...c,id:uid(),createdAt:todayISO(),tags:[]});
+      return d;
+    });
+    setModal(null); toast("Customer saved");
+  };
+  const lifetime=c=>data.invoices.filter(i=>i.customerId===c.id&&i.status==="paid").reduce((a,i)=>a+i.amount,0);
+
+  if(view){
+    const c=data.customers.find(x=>x.id===view); if(!c){setView(null);return null;}
+    const cQuotes=data.quotes.filter(x=>x.customerId===c.id);
+    const cJobs=data.jobs.filter(x=>x.customerId===c.id);
+    const cInv=data.invoices.filter(x=>x.customerId===c.id);
+    return <React.Fragment>
+      <button className="btn btn-ghost btn-sm" style={{marginBottom:14}} onClick={()=>setView(null)}>← Customers</button>
+      <div className="card" style={{padding:20,marginBottom:14}}>
+        <div className="row" style={{gap:14}}>
+          <Avatar name={c.name} size={52}/>
+          <div style={{flex:1}}>
+            <div className="h2">{c.name} {c.tags?.map(t=><span key={t} className="badge b-accent" style={{marginLeft:6}}>{t}</span>)}</div>
+            <div className="tiny muted">{c.address}</div>
+            <div className="tiny muted">{c.phone} · {c.email}</div>
+            {paymentProfile(data,c.id).flag && <div style={{marginTop:6}}><PayHistoryBadge p={paymentProfile(data,c.id)}/> <span className="tiny faint">internal only</span></div>}
+          </div>
+          <div style={{textAlign:"right"}}>
+            <div className="tiny faint">Lifetime value</div>
+            <div style={{fontWeight:800,fontSize:20}} className="money">{fmt$(lifetime(c))}</div>
+          </div>
+        </div>
+        <div className="row no-print" style={{marginTop:14,flexWrap:"wrap"}}>
+          <button className="btn btn-ghost btn-sm" onClick={()=>setModal(c)}>Edit</button>
+          {c.phone && <a className="btn btn-ghost btn-sm" href={"tel:"+c.phone.replace(/\s/g,"")}>📞 Call</a>}
+          {c.phone && <a className="btn btn-ghost btn-sm" href={"sms:"+c.phone.replace(/\s/g,"")+"?&body="+encodeURIComponent("Hi "+c.name.split(" ")[0]+", ")}>💬 SMS</a>}
+          {c.email && <a className="btn btn-ghost btn-sm" href={"mailto:"+c.email+"?subject="+encodeURIComponent(tenant.name)+"&body="+encodeURIComponent("Hi "+c.name.split(" ")[0]+",\n\n")}>✉️ Email</a>}
+        </div>
+      </div>
+      <div className="grid2" style={{alignItems:"start"}}>
+        <div className="card"><div className="h3" style={{padding:"14px 16px 4px"}}>Quotes ({cQuotes.length})</div>
+          <div className="list">{cQuotes.map(x=><div key={x.id} className="list-row"><div style={{flex:1}}><div style={{fontWeight:600}} className="tiny">{x.num} · {x.title}</div><div className="tiny faint">{fmtDate(x.createdAt)}</div></div><span className="tiny money" style={{fontWeight:700}}>{fmt$(x.total)}</span><StatusBadge s={x.status}/></div>)}
+          {cQuotes.length===0&&<div className="empty tiny">No quotes yet</div>}</div></div>
+        <div className="card"><div className="h3" style={{padding:"14px 16px 4px"}}>Invoices ({cInv.length})</div>
+          <div className="list">{cInv.map(x=><div key={x.id} className="list-row"><div style={{flex:1}}><div style={{fontWeight:600}} className="tiny">{x.num} · {x.title}</div><div className="tiny faint">Due {fmtDate(x.dueAt)}</div></div><span className="tiny money" style={{fontWeight:700}}>{fmt$(x.amount)}</span><StatusBadge s={x.status}/></div>)}
+          {cInv.length===0&&<div className="empty tiny">No invoices yet</div>}</div></div>
+      </div>
+      {modal && <CustomerModal cust={modal} onSave={save} onClose={()=>setModal(null)}/>}
+    </React.Fragment>;
+  }
+
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">Customers</div><div className="muted tiny">Your CRM — every client, every {ind.jobNoun}, every dollar.</div></div>
+      <button className="btn btn-primary no-print" onClick={()=>setModal("new")}>+ Add customer</button>
+    </div>
+    <input className="input" placeholder="Search name, suburb, email…" value={q} onChange={e=>setQ(e.target.value)} style={{marginBottom:14,maxWidth:420}}/>
+    <div className="card"><div className="list">
+      {shown.map(c=><div key={c.id} className="list-row clickable" onClick={()=>setView(c.id)}>
+        <Avatar name={c.name}/>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontWeight:600}}>{c.name} {c.tags?.includes("VIP")&&<span className="badge b-accent" style={{marginLeft:4}}>VIP</span>} <PayHistoryBadge p={paymentProfile(data,c.id)}/></div>
+          <div className="tiny muted" style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.address}</div>
+        </div>
+        <div style={{textAlign:"right"}}><div className="tiny faint">LTV</div><div className="tiny money" style={{fontWeight:700}}>{fmt$(lifetime(c))}</div></div>
+      </div>)}
+      {shown.length===0 && <Empty icon="👥" title="No customers found" sub="Won leads convert to customers automatically."/>}
+    </div></div>
+    {modal && <CustomerModal cust={modal==="new"?null:modal} onSave={save} onClose={()=>setModal(null)}/>}
+  </React.Fragment>;
+}
+function CustomerModal({cust,onSave,onClose}){
+  const [f,setF]=useState(cust||{name:"",phone:"",email:"",address:"",notes:""});
+  return <Modal title={cust?"Edit customer":"New customer"} onClose={onClose}>
+    <Field label="Name"><input className="input" autoFocus value={f.name} onChange={e=>setF({...f,name:e.target.value})}/></Field>
+    <div className="grid2">
+      <Field label="Phone"><input className="input" value={f.phone} onChange={e=>setF({...f,phone:e.target.value})}/></Field>
+      <Field label="Email"><input className="input" value={f.email} onChange={e=>setF({...f,email:e.target.value})}/></Field>
+    </div>
+    <Field label="Address"><input className="input" value={f.address} onChange={e=>setF({...f,address:e.target.value})}/></Field>
+    <Field label="Notes"><textarea className="textarea" value={f.notes} onChange={e=>setF({...f,notes:e.target.value})}/></Field>
+    <button className="btn btn-primary btn-lg" style={{width:"100%"}} disabled={!f.name.trim()} onClick={()=>onSave(f)}>{cust?"Save changes":"Add customer"}</button>
+  </Modal>;
+}
+
+/* ================================================================
+   QUOTES — with AI generator
+   ================================================================ */
+function Quotes(props){
+  const {tenant,ind,data,setData,toast}=props;
+  const [filter,setFilter]=useState("all");
+  const [builder,setBuilder]=useState(false);
+  const [view,setView]=useState(null);
+  const custById=id=>data.customers.find(c=>c.id===id)||{name:"—"};
+  const shown=data.quotes.filter(q=>filter==="all"||q.status===filter);
+
+  const setStatus=(q,status)=>{
+    setData(d=>{
+      d.quotes=d.quotes.map(x=>x.id===q.id?{...x,status}:x);
+      if(status==="accepted"){
+        const c=custById(q.customerId);
+        d.activity.unshift({id:uid(),text:"Quote "+q.num+" accepted by "+c.name,date:todayISO(),icon:"✅"});
+        runAutomations(d,"quote_accepted",{customerId:q.customerId,title:q.title,quoteId:q.id,num:q.num,total:q.total,address:c.address});
+      }
+      return d;
+    });
+    toast(status==="accepted"?"Accepted — job auto-created ⚙️":"Quote "+status);
+  };
+
+  if(view){
+    const q=data.quotes.find(x=>x.id===view); if(!q){setView(null);return null;}
+    return <QuoteDoc q={q} tenant={tenant} cust={custById(q.customerId)} onBack={()=>setView(null)} onStatus={s=>setStatus(q,s)} toast={toast}/>;
+  }
+
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">Quotes</div><div className="muted tiny">Describe the job in plain English — AI drafts the quote in seconds.</div></div>
+      <button className="btn btn-primary no-print" onClick={()=>setBuilder(true)}>✨ New AI quote</button>
+    </div>
+    <div className="pills" style={{marginBottom:14}}>
+      {["all","draft","sent","accepted","declined"].map(s=><button key={s} className={"pill"+(filter===s?" active":"")} onClick={()=>setFilter(s)}>{s[0].toUpperCase()+s.slice(1)}</button>)}
+    </div>
+    <div className="card"><div className="list">
+      {shown.map(q=><div key={q.id} className="list-row clickable" onClick={()=>setView(q.id)}>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontWeight:600}}>{q.num} · {q.title}</div>
+          <div className="tiny muted">{custById(q.customerId).name} · {fmtDate(q.createdAt)}</div>
+        </div>
+        <span className="money" style={{fontWeight:700}}>{fmt$(q.total)}</span>
+        <StatusBadge s={q.status}/>
+      </div>)}
+      {shown.length===0 && <Empty icon="📄" title="No quotes here" sub="Win more work by quoting the same day." action={<button className="btn btn-primary btn-sm" onClick={()=>setBuilder(true)}>✨ Create with AI</button>}/>}
+    </div></div>
+    {builder && <QuoteBuilder {...props} onClose={()=>setBuilder(false)} onCreated={id=>{setBuilder(false);setView(id);}}/>}
+  </React.Fragment>;
+}
+
+function QuoteBuilder({tenant,ind,data,setData,toast,onClose,onCreated}){
+  const [step,setStep]=useState(1);
+  const [desc,setDesc]=useState("");
+  const [custId,setCustId]=useState(data.customers[0]?.id||"");
+  const [draft,setDraft]=useState(null);
+  const [thinking,setThinking]=useState(false);
+
+  const generate=()=>{
+    setThinking(true);
+    setTimeout(()=>{ setDraft(aiDraftQuote(desc,ind)); setThinking(false); setStep(2); },900);
+  };
+  const upd=(i,patch)=>setDraft(d=>({...d,items:d.items.map((it,idx)=>idx===i?{...it,...patch}:it)}));
+  const addItem=name=>{ const r=ind.rates.find(x=>x.name===name); setDraft(d=>({...d,items:[...d.items,{id:uid(),name:r.name,qty:1,unit:r.unit,rate:r.rate}]})); };
+  const sub=draft? draft.items.reduce((a,i)=>a+i.qty*i.rate,0):0;
+
+  const saveQuote=status=>{
+    let newId;
+    setData(d=>{
+      d.counters.quote++;
+      const q={id:uid(),num:"Q-"+d.counters.quote,customerId:custId,title:draft.items[0].name,items:draft.items,notes:draft.notes,
+        status,createdAt:todayISO(),subtotal:sub,gst:sub*GST,total:sub*(1+GST)};
+      newId=q.id; d.quotes.unshift(q);
+      if(status==="sent"){
+        const c=d.customers.find(x=>x.id===custId);
+        d.messages.unshift({id:uid(),to:c.name,channel:"email",auto:false,date:todayISO(),
+          body:"Hi "+c.name.split(" ")[0]+", your quote "+q.num+" ("+fmt$(q.total)+" inc GST) is ready — view and accept it any time in your customer portal."});
+        d.activity.unshift({id:uid(),text:"Quote "+q.num+" sent to "+c.name,date:todayISO(),icon:"📤"});
+      }
+      return d;
+    });
+    toast(status==="sent"?"Quote sent to customer portal 📤":"Draft saved");
+    onCreated(newId);
+  };
+
+  return <Modal title={step===1?"✨ AI Quote Generator":"Review AI draft"} onClose={onClose} wide>
+    {step===1 && <React.Fragment>
+      <Field label="Customer">
+        <select className="select" value={custId} onChange={e=>setCustId(e.target.value)}>
+          {data.customers.map(c=><option key={c.id} value={c.id}>{c.name} — {c.address}</option>)}
+        </select>
+      </Field>
+      {(()=>{ const p=paymentProfile(data,custId); const c=data.customers.find(x=>x.id===custId);
+        return p.flag? <div className="tiny" style={{background:"#FFFAEB",border:"1px solid #FEDF89",color:"#B54708",borderRadius:9,padding:"9px 12px",margin:"-4px 0 14px"}}>
+          📊 <b>Payment history (visible only to you):</b> {c?.name} has paid {p.late} of {p.paid} invoices late (avg {p.avgLate} days). Consider a deposit upfront in the quote terms.</div> : null; })()}
+      <Field label="Describe the job (plain English — sizes help)">
+        <textarea className="textarea" autoFocus rows={4} value={desc} onChange={e=>setDesc(e.target.value)}
+          placeholder={tenant.industry==="fencing"?"e.g. Remove 25m of old timber fence and install new colorbond fence, plus 1 gate":"Describe the work, quantities and any details…"}/>
+      </Field>
+      <div className="tiny faint" style={{marginBottom:14}}>AI matches your description against {tenant.name}'s rate card ({ind.rates.length} services) and drafts line items, quantities and terms. You review everything before it's sent.</div>
+      <button className="btn btn-primary btn-lg" style={{width:"100%"}} disabled={!desc.trim()||thinking} onClick={generate}>{thinking?"Thinking…":"✨ Generate quote"}</button>
+    </React.Fragment>}
+
+    {step===2 && draft && <React.Fragment>
+      <div className="tiny" style={{background:"color-mix(in srgb,var(--accent) 8%,white)",border:"1px solid color-mix(in srgb,var(--accent) 25%,white)",borderRadius:9,padding:"9px 12px",marginBottom:14}}>
+        ✨ AI drafted {draft.items.length} line item{draft.items.length>1?"s":""} from your description. Adjust quantities or rates below — nothing sends until you say so.</div>
+      {draft.items.map((it,i)=><div key={it.id} className="row" style={{marginBottom:8,alignItems:"flex-end"}}>
+        <div style={{flex:1}}><label className="label">{i===0?"Item":""}</label><input className="input" value={it.name} onChange={e=>upd(i,{name:e.target.value})}/></div>
+        <div style={{width:76}}><label className="label">{i===0?"Qty":""}</label><input type="number" className="input" value={it.qty} onChange={e=>upd(i,{qty:+e.target.value||0})}/></div>
+        <div style={{width:96}}><label className="label">{i===0?"Rate":""}</label><input type="number" className="input" value={it.rate} onChange={e=>upd(i,{rate:+e.target.value||0})}/></div>
+        <button className="x" onClick={()=>setDraft(d=>({...d,items:d.items.filter((_,x)=>x!==i)}))}>✕</button>
+      </div>)}
+      <select className="select" style={{marginBottom:14}} value="" onChange={e=>{if(e.target.value)addItem(e.target.value)}}>
+        <option value="">+ Add service from rate card…</option>
+        {ind.rates.map(r=><option key={r.name} value={r.name}>{r.name} ({fmt$(r.rate)}/{r.unit})</option>)}
+      </select>
+      <Field label="Notes & terms"><textarea className="textarea" rows={3} value={draft.notes} onChange={e=>setDraft(d=>({...d,notes:e.target.value}))}/></Field>
+      <div className="card" style={{padding:14,marginBottom:14,boxShadow:"none"}}>
+        <div className="spread tiny"><span className="muted">Subtotal</span><span className="money">{fmt$(sub)}</span></div>
+        <div className="spread tiny" style={{margin:"4px 0"}}><span className="muted">GST 10%</span><span className="money">{fmt$(sub*GST)}</span></div>
+        <div className="spread" style={{fontWeight:800,fontSize:16}}><span>Total inc GST</span><span className="money">{fmt$(sub*(1+GST))}</span></div>
+      </div>
+      <div className="row">
+        <button className="btn btn-ghost btn-lg" onClick={()=>setStep(1)}>← Re-describe</button>
+        <button className="btn btn-ghost btn-lg" style={{flex:1}} onClick={()=>saveQuote("draft")} disabled={!draft.items.length}>Save draft</button>
+        <button className="btn btn-primary btn-lg" style={{flex:2}} onClick={()=>saveQuote("sent")} disabled={!draft.items.length}>Send to customer →</button>
+      </div>
+    </React.Fragment>}
+  </Modal>;
+}
+
+function QuoteDoc({q,tenant,cust,onBack,onStatus,toast,readOnly,onAccept}){
+  return <React.Fragment>
+    {!readOnly && <div className="spread no-print" style={{marginBottom:14}}>
+      <button className="btn btn-ghost btn-sm" onClick={onBack}>← Quotes</button>
+      <div className="row">
+        {q.status==="draft" && <button className="btn btn-primary btn-sm" onClick={()=>onStatus("sent")}>Send to customer</button>}
+        {q.status==="sent" && <React.Fragment>
+          <button className="btn btn-ghost btn-sm" onClick={()=>onStatus("declined")}>Mark declined</button>
+          <button className="btn btn-primary btn-sm" onClick={()=>onStatus("accepted")}>Mark accepted</button>
+        </React.Fragment>}
+        <button className="btn btn-ghost btn-sm" onClick={()=>window.print()}>🖨 Print / PDF</button>
+      </div>
+    </div>}
+    <div className="doc">
+      <div className="spread" style={{marginBottom:22,alignItems:"flex-start"}}>
+        <div className="row">
+          <div className="s-logo" style={{width:44,height:44,borderRadius:11,fontSize:16,background:tenant.color}}>{initials(tenant.name)}</div>
+          <div><div style={{fontWeight:800,fontSize:16}}>{tenant.name}</div><div className="tiny muted">{tenant.tagline}</div></div>
+        </div>
+        <div style={{textAlign:"right"}}>
+          <div style={{fontWeight:800,fontSize:19,letterSpacing:-.3}}>QUOTE {q.num}</div>
+          <div className="tiny muted">{fmtDateFull(q.createdAt)}</div>
+          <div style={{marginTop:5}}><StatusBadge s={q.status}/></div>
+        </div>
+      </div>
+      <div className="tiny muted" style={{marginBottom:4}}>Prepared for</div>
+      <div style={{fontWeight:700,marginBottom:2}}>{cust.name}</div>
+      <div className="tiny muted" style={{marginBottom:18}}>{cust.address}</div>
+      <table>
+        <thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead>
+        <tbody>{q.items.map(it=><tr key={it.id}>
+          <td style={{fontWeight:500}}>{it.name}</td>
+          <td>{it.qty} {it.unit}</td>
+          <td className="money">{fmt$(it.rate)}</td>
+          <td className="money" style={{fontWeight:600}}>{fmt$(it.qty*it.rate)}</td></tr>)}
+        </tbody>
+      </table>
+      <div style={{display:"flex",justifyContent:"flex-end",marginTop:14}}>
+        <div style={{minWidth:230}}>
+          <div className="spread tiny" style={{padding:"3px 0"}}><span className="muted">Subtotal</span><span className="money">{fmt$(q.subtotal)}</span></div>
+          <div className="spread tiny" style={{padding:"3px 0"}}><span className="muted">GST 10%</span><span className="money">{fmt$(q.gst)}</span></div>
+          <div className="spread" style={{fontWeight:800,fontSize:16,borderTop:"2px solid var(--text)",paddingTop:7,marginTop:5}}><span>Total</span><span className="money">{fmt$(q.total)}</span></div>
+        </div>
+      </div>
+      {q.notes && <div className="tiny muted" style={{marginTop:20,padding:"12px 14px",background:"var(--bg)",borderRadius:9}}>{q.notes}</div>}
+      <div className="tiny faint" style={{marginTop:18,textAlign:"center"}}>Powered by Flow Forward OS</div>
+    </div>
+    {readOnly && q.status==="sent" && <div className="row no-print" style={{marginTop:14}}>
+      <button className="btn btn-ghost btn-lg" style={{flex:1}} onClick={()=>onAccept(false)}>Decline</button>
+      <button className="btn btn-primary btn-lg" style={{flex:2}} onClick={()=>onAccept(true)}>✓ Accept quote</button>
+    </div>}
+  </React.Fragment>;
+}
+
+/* ================================================================
+   JOBS & SCHEDULE — kanban
+   ================================================================ */
+function JobsPage(props){
+  const {ind,data,setData,toast}=props;
+  const [modal,setModal]=useState(null);
+  const custById=id=>data.customers.find(c=>c.id===id)||{name:"—"};
+  const teamById=id=>data.team.find(m=>m.id===id)||{name:"Unassigned"};
+  const cols=[["scheduled","Scheduled"],["in_progress","In progress"],["done","Done"]];
+
+  const setStatus=(j,status)=>{
+    setData(d=>{
+      d.jobs=d.jobs.map(x=>x.id===j.id?{...x,status}:x);
+      if(status==="done"){
+        const c=custById(j.customerId);
+        d.activity.unshift({id:uid(),text:j.title+" completed for "+c.name,date:todayISO(),icon:"🏁"});
+        runAutomations(d,"job_done",{customerName:c.name});
+        if(j.value && !d.invoices.some(i=>i.jobId===j.id)){
+          d.counters.invoice++;
+          d.invoices.unshift({id:uid(),num:"INV-"+d.counters.invoice,customerId:j.customerId,jobId:j.id,title:j.title,
+            amount:j.value,status:"sent",issuedAt:todayISO(),dueAt:addDays(todayISO(),14),paidAt:null,method:null});
+          d.activity.unshift({id:uid(),text:"Invoice INV-"+d.counters.invoice+" auto-issued for "+j.title,date:todayISO(),icon:"🧾"});
+        }
+      }
+      return d;
+    });
+    toast(status==="done"?"Done — invoice issued & review request sent ⚙️":"Moved to "+cols.find(c=>c[0]===status)[1]);
+  };
+  const save=j=>{
+    setData(d=>{
+      if(j.id) d.jobs=d.jobs.map(x=>x.id===j.id?j:x);
+      else{ d.counters.job++; d.jobs.unshift({...j,id:uid(),num:"J-"+d.counters.job,status:"scheduled"}); }
+      return d;
+    });
+    setModal(null); toast("Saved");
+  };
+  const del=j=>{
+    setData(d=>{ d.jobs=d.jobs.filter(x=>x.id!==j.id); return d; });
+    setModal(null); toast(ind.jobNoun[0].toUpperCase()+ind.jobNoun.slice(1)+" deleted");
+  };
+
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">Jobs & Schedule</div><div className="muted tiny">Drag {ind.jobNoun}s through to done — invoicing and review requests fire automatically.</div></div>
+      <button className="btn btn-primary no-print" onClick={()=>setModal("new")}>+ New {ind.jobNoun}</button>
+    </div>
+    <div className="kanban">
+      {cols.map(([key,label])=><div key={key} className="kcol">
+        <div className="spread" style={{padding:"4px 6px 10px"}}>
+          <span className="h3">{label}</span>
+          <span className="badge b-gray">{data.jobs.filter(j=>j.status===key).length}</span>
+        </div>
+        {data.jobs.filter(j=>j.status===key).sort((a,b)=>a.date.localeCompare(b.date)).map(j=><div key={j.id} className="kcard" onClick={()=>setModal(j)}>
+          <div className="spread" style={{marginBottom:5}}>
+            <span className="tiny faint">{j.num}</span>
+            <span className="tiny" style={{fontWeight:700}}>{fmtDate(j.date)} · {j.time}</span>
+          </div>
+          <div style={{fontWeight:600,fontSize:13.5,marginBottom:3}}>{j.title}</div>
+          <div className="tiny muted" style={{marginBottom:8}}>{custById(j.customerId).name}</div>
+          <div className="spread">
+            <div className="row" style={{gap:6}}><Avatar name={teamById(j.assigneeId).name} size={22}/><span className="tiny muted">{teamById(j.assigneeId).name}</span></div>
+            <span className="tiny money" style={{fontWeight:700}}>{fmt$(j.value)}</span>
+          </div>
+          <div className="row no-print" style={{marginTop:9,gap:6}} onClick={e=>e.stopPropagation()}>
+            {key!=="scheduled"&&<button className="btn btn-ghost btn-sm" style={{flex:1}} onClick={()=>setStatus(j,key==="done"?"in_progress":"scheduled")}>←</button>}
+            {key!=="done"&&<button className="btn btn-primary btn-sm" style={{flex:2}} onClick={()=>setStatus(j,key==="scheduled"?"in_progress":"done")}>{key==="scheduled"?"Start":"Complete ✓"}</button>}
+          </div>
+        </div>)}
+        {data.jobs.filter(j=>j.status===key).length===0&&<div className="empty tiny" style={{padding:"22px 8px"}}>Empty</div>}
+      </div>)}
+    </div>
+    {modal && <JobModal job={modal==="new"?null:modal} data={data} ind={ind} onSave={save} onDelete={del} onClose={()=>setModal(null)}/>}
+  </React.Fragment>;
+}
+function JobModal({job,data,ind,onSave,onDelete,onClose,defaultDate}){
+  const [f,setF]=useState(job||{customerId:data.customers[0]?.id||"",title:ind.rates[0].name,date:defaultDate||addDays(todayISO(),1),time:"8:00 AM",assigneeId:data.team[0]?.id||"",address:data.customers[0]?.address||"",notes:"",value:500});
+  const valid=f.customerId&&f.title.trim()&&f.date;
+  return <Modal title={job?"Edit "+ind.jobNoun:"New "+ind.jobNoun} onClose={onClose}>
+    <Field label="Customer"><select className="select" value={f.customerId} onChange={e=>{const c=data.customers.find(x=>x.id===e.target.value);setF({...f,customerId:e.target.value,address:c?.address||f.address})}}>
+      {data.customers.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></Field>
+    <Field label="What's the work?"><input className="input" value={f.title} onChange={e=>setF({...f,title:e.target.value})}/></Field>
+    <div className="grid2">
+      <Field label="Date"><input type="date" className="input" value={f.date} onChange={e=>setF({...f,date:e.target.value})}/></Field>
+      <Field label="Arrival time"><select className="select" value={f.time} onChange={e=>setF({...f,time:e.target.value})}>
+        {["7:00 AM","8:00 AM","9:00 AM","10:30 AM","12:00 PM","1:00 PM","3:00 PM"].map(t=><option key={t}>{t}</option>)}</select></Field>
+    </div>
+    <div className="grid2">
+      <Field label="Assign to"><select className="select" value={f.assigneeId} onChange={e=>setF({...f,assigneeId:e.target.value})}>
+        {data.team.map(m=><option key={m.id} value={m.id}>{m.name}</option>)}</select></Field>
+      <Field label="Value ($)"><input type="number" className="input" value={f.value} onChange={e=>setF({...f,value:+e.target.value})}/></Field>
+    </div>
+    <Field label="Address"><input className="input" value={f.address} onChange={e=>setF({...f,address:e.target.value})}/></Field>
+    <Field label="Notes for the crew"><textarea className="textarea" rows={2} value={f.notes} onChange={e=>setF({...f,notes:e.target.value})}/></Field>
+    <div className="row">
+      {job && onDelete && <button className="btn btn-danger btn-lg" onClick={()=>{if(confirm("Delete this "+ind.jobNoun+"? This can't be undone."))onDelete(job)}}>Delete</button>}
+      <button className="btn btn-primary btn-lg" style={{flex:1}} disabled={!valid} onClick={()=>onSave(f)}>{job?"Save changes":"Schedule "+ind.jobNoun}</button>
+    </div>
+  </Modal>;
+}
+
+/* ================================================================
+   CALENDAR
+   ================================================================ */
+function CalendarPage(props){
+  const {data,setData,ind,toast}=props;
+  const [ym,setYm]=useState(monthKey(todayISO()));
+  const [sel,setSel]=useState(null);      // ISO date whose day-sheet is open
+  const [editing,setEditing]=useState(null); // job object | "new" (opens JobModal)
+  const [y,m]=ym.split("-").map(Number);
+  const first=new Date(y,m-1,1); const startDow=(first.getDay()+6)%7; // Mon start
+  const days=new Date(y,m,0).getDate();
+  const cells=[]; for(let i=0;i<startDow;i++)cells.push(null); for(let d=1;d<=days;d++)cells.push(d);
+  const iso=d=>ym+"-"+String(d).padStart(2,"0");
+  const jobsOn=dISO=>data.jobs.filter(j=>j.date===dISO).sort((a,b)=>a.time.localeCompare(b.time));
+  const shift=n=>{ const dt=new Date(y,m-1+n,1); setYm(dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")); };
+  const monthName=first.toLocaleDateString("en-AU",{month:"long",year:"numeric"});
+  const custById=id=>data.customers.find(c=>c.id===id)||{name:"—"};
+  const teamById=id=>data.team.find(t=>t.id===id)||{name:"Unassigned"};
+
+  const save=j=>{
+    setData(d=>{
+      if(j.id) d.jobs=d.jobs.map(x=>x.id===j.id?j:x);
+      else{ d.counters.job++; d.jobs.unshift({...j,id:uid(),num:"J-"+d.counters.job,status:"scheduled"}); }
+      return d;
+    });
+    setEditing(null); toast(j.id?"Rescheduled ✓":"Booked in ✓");
+  };
+  const del=j=>{ setData(d=>{ d.jobs=d.jobs.filter(x=>x.id!==j.id); return d; }); setEditing(null); toast("Deleted"); };
+  const monthCount=data.jobs.filter(j=>monthKey(j.date)===ym).length;
+
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">Calendar</div><div className="muted tiny">Tap any day to book a {ind.jobNoun} · tap a booking to edit, reschedule or remove.</div></div>
+      <div className="row no-print">
+        <button className="btn btn-ghost btn-sm" onClick={()=>setYm(monthKey(todayISO()))}>Today</button>
+        <button className="btn btn-ghost btn-sm" onClick={()=>shift(-1)}>←</button>
+        <span style={{fontWeight:700,minWidth:132,textAlign:"center"}}>{monthName}</span>
+        <button className="btn btn-ghost btn-sm" onClick={()=>shift(1)}>→</button>
+      </div>
+    </div>
+    <div className="tiny muted" style={{marginBottom:10}}>{monthCount} {ind.jobNoun}{monthCount===1?"":"s"} this month</div>
+    <div className="cal">
+      {["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=><div key={d} className="cal-h">{d}</div>)}
+      {cells.map((d,i)=>{
+        if(!d) return <div key={i} className="cal-d off"/>;
+        const dISO=iso(d); const evs=jobsOn(dISO); const isToday=dISO===todayISO();
+        return <div key={i} className={"cal-d"+(isToday?" today":"")} onClick={()=>setSel(dISO)}>
+          <span className="n">{d}</span>
+          {evs.slice(0,2).map(e=><div key={e.id} className="cal-ev" onClick={ev=>{ev.stopPropagation();setEditing(e);}}>{e.time.replace(":00","").replace(" ","")} {e.title}</div>)}
+          {evs.length>2&&<div className="tiny faint cal-ev" style={{background:"transparent"}}>+{evs.length-2} more</div>}
+          {evs.length>0&&<span className="has"/>}
+        </div>;
+      })}
+    </div>
+
+    {sel && <Modal title={fmtDateFull(sel)} onClose={()=>setSel(null)}>
+      {jobsOn(sel).length===0
+        ? <Empty icon="🗓" title={"Nothing booked "+(sel===todayISO()?"today":"this day")} sub={"Add a "+ind.jobNoun+" to fill the day."}/>
+        : jobsOn(sel).map(j=><div key={j.id} className="card clickable" style={{padding:14,marginBottom:9,boxShadow:"none"}} onClick={()=>setEditing(j)}>
+            <div className="spread"><span style={{fontWeight:700}}>{j.time} — {j.title}</span><StatusBadge s={j.status}/></div>
+            <div className="tiny muted" style={{marginTop:3}}>{custById(j.customerId).name}{j.address?" · "+j.address:""}</div>
+            <div className="tiny faint" style={{marginTop:3}}>👷 {teamById(j.assigneeId).name} · {fmt$(j.value)} · tap to edit</div>
+          </div>)}
+      <button className="btn btn-primary btn-lg" style={{width:"100%",marginTop:4}} onClick={()=>setEditing("new")}>+ Add {ind.jobNoun} on this day</button>
+    </Modal>}
+
+    {editing && <JobModal job={editing==="new"?null:editing} data={data} ind={ind} defaultDate={sel||todayISO()} onSave={save} onDelete={del} onClose={()=>setEditing(null)}/>}
+  </React.Fragment>;
+}
+
+/* ================================================================
+   INVOICES & PAYMENTS
+   ================================================================ */
+function Invoices(props){
+  const {tenant,data,setData,toast}=props;
+  const [filter,setFilter]=useState("all");
+  const [chasing,setChasing]=useState(null);
+  const [viewing,setViewing]=useState(null);
+  const custById=id=>data.customers.find(c=>c.id===id)||{name:"—",phone:"",email:""};
+  const shown=data.invoices.filter(i=>filter==="all"||i.status===filter).sort((a,b)=>b.issuedAt.localeCompare(a.issuedAt));
+  const outstanding=data.invoices.filter(i=>i.status!=="paid").reduce((a,i)=>a+i.amount,0);
+  const overdue=data.invoices.filter(i=>i.status==="overdue");
+
+  const markPaid=inv=>{
+    setData(d=>{
+      d.invoices=d.invoices.map(x=>x.id===inv.id?{...x,status:"paid",paidAt:todayISO(),method:"bank"}:x);
+      d.activity.unshift({id:uid(),text:"Invoice "+inv.num+" marked paid (bank transfer)",date:todayISO(),icon:"💳"});
+      return d;
+    });
+    toast("Marked paid 💰");
+  };
+
+  if(viewing){
+    const inv=data.invoices.find(x=>x.id===viewing); if(!inv){setViewing(null);return null;}
+    return <InvoiceDoc inv={inv} tenant={tenant} cust={custById(inv.customerId)} onBack={()=>setViewing(null)}
+      onMarkPaid={()=>{markPaid(inv);setViewing(null);}} onChase={()=>{setViewing(null);setChasing(inv);}}/>;
+  }
+
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">Invoices & Payments</div><div className="muted tiny">Invoices auto-issue when jobs complete. Customers pay by card in their portal (Stripe).</div></div>
+    </div>
+    <div className="stats" style={{gridTemplateColumns:"repeat(3,1fr)"}}>
+      <Stat label="Outstanding" value={fmt$(outstanding)} delta={shown.filter(i=>i.status==="sent").length+" awaiting"} tone="warn"/>
+      <Stat label="Overdue" value={fmt$(overdue.reduce((a,i)=>a+i.amount,0))} delta={overdue.length+" invoice"+(overdue.length!==1?"s":"")} tone={overdue.length?"bad":"good"}/>
+      <Stat label="Collected (all time)" value={fmt$(data.invoices.filter(i=>i.status==="paid").reduce((a,i)=>a+i.amount,0))} delta="via Stripe & bank" tone="good"/>
+    </div>
+    <div className="pills" style={{marginBottom:14}}>
+      {["all","sent","overdue","paid"].map(s=><button key={s} className={"pill"+(filter===s?" active":"")} onClick={()=>setFilter(s)}>{s[0].toUpperCase()+s.slice(1)}</button>)}
+    </div>
+    <div className="card"><div className="list">
+      {shown.map(inv=><div key={inv.id} className="list-row">
+        <div style={{flex:1,minWidth:0,cursor:"pointer"}} onClick={()=>setViewing(inv.id)}>
+          <div style={{fontWeight:600}}>{inv.num} · {inv.title}</div>
+          <div className="tiny muted">{custById(inv.customerId).name} · issued {fmtDate(inv.issuedAt)} · {inv.status==="paid"?"paid "+fmtDate(inv.paidAt)+(inv.method==="card"?" 💳 card":" 🏦 bank"):"due "+fmtDate(inv.dueAt)}</div>
+        </div>
+        <span className="money" style={{fontWeight:700}}>{fmt$(inv.amount)}</span>
+        <StatusBadge s={inv.status}/>
+        {inv.status!=="paid" && <div className="row no-print" style={{gap:6}}>
+          <button className={"btn btn-sm "+(inv.status==="overdue"?"btn-primary":"btn-ghost")} onClick={()=>setChasing(inv)}>{inv.status==="overdue"?"💬 Chase":"💬 Remind"}</button>
+          <button className="btn btn-ghost btn-sm" onClick={()=>markPaid(inv)}>Mark paid</button>
+        </div>}
+      </div>)}
+      {shown.length===0 && <Empty icon="💳" title="No invoices here" sub="Complete a job and its invoice is issued automatically."/>}
+    </div></div>
+    {chasing && <ChaseModal inv={chasing} cust={custById(chasing.customerId)} tenant={tenant} data={data} setData={setData} toast={toast} onClose={()=>setChasing(null)}/>}
+  </React.Fragment>;
+}
+
+/* full printable invoice document — mirrors the quote doc */
+function InvoiceDoc({inv,tenant,cust,onBack,onMarkPaid,onChase}){
+  const sub=inv.amount/(1+GST), gst=inv.amount-sub;
+  return <React.Fragment>
+    <div className="spread no-print" style={{marginBottom:14}}>
+      <button className="btn btn-ghost btn-sm" onClick={onBack}>← Invoices</button>
+      <div className="row">
+        {inv.status!=="paid" && <button className="btn btn-ghost btn-sm" onClick={onChase}>💬 {inv.status==="overdue"?"Chase":"Remind"}</button>}
+        {inv.status!=="paid" && <button className="btn btn-primary btn-sm" onClick={onMarkPaid}>Mark paid</button>}
+        <button className="btn btn-ghost btn-sm" onClick={()=>window.print()}>🖨 Print / PDF</button>
+      </div>
+    </div>
+    <div className="doc">
+      <div className="spread" style={{marginBottom:22,alignItems:"flex-start"}}>
+        <div className="row">
+          <div className="s-logo" style={{width:44,height:44,borderRadius:11,fontSize:16,background:tenant.color}}>{initials(tenant.name)}</div>
+          <div><div style={{fontWeight:800,fontSize:16}}>{tenant.name}</div><div className="tiny muted">{tenant.tagline}</div></div>
+        </div>
+        <div style={{textAlign:"right"}}>
+          <div style={{fontWeight:800,fontSize:19,letterSpacing:-.3}}>INVOICE {inv.num}</div>
+          <div className="tiny muted">Issued {fmtDateFull(inv.issuedAt)}</div>
+          <div style={{marginTop:5}}><StatusBadge s={inv.status}/></div>
+        </div>
+      </div>
+      <div className="grid2" style={{marginBottom:18}}>
+        <div><div className="tiny muted" style={{marginBottom:4}}>Bill to</div>
+          <div style={{fontWeight:700}}>{cust.name}</div>
+          <div className="tiny muted">{cust.address}</div>
+          <div className="tiny muted">{cust.email}{cust.phone?" · "+cust.phone:""}</div></div>
+        <div style={{textAlign:"right"}}><div className="tiny muted" style={{marginBottom:4}}>{inv.status==="paid"?"Paid":"Payment due"}</div>
+          <div style={{fontWeight:700}}>{inv.status==="paid"?fmtDateFull(inv.paidAt):fmtDateFull(inv.dueAt)}</div>
+          {inv.status==="paid"&&<div className="tiny muted">{inv.method==="card"?"💳 Card (Stripe)":"🏦 Bank transfer"}</div>}
+          {inv.status==="overdue"&&<div className="tiny" style={{color:"var(--bad)",fontWeight:600}}>Overdue</div>}</div>
+      </div>
+      <table>
+        <thead><tr><th>Description</th><th>Amount</th></tr></thead>
+        <tbody><tr><td style={{fontWeight:500}}>{inv.title}</td><td className="money" style={{fontWeight:600}}>{fmt$(sub)}</td></tr></tbody>
+      </table>
+      <div style={{display:"flex",justifyContent:"flex-end",marginTop:14}}>
+        <div style={{minWidth:230}}>
+          <div className="spread tiny" style={{padding:"3px 0"}}><span className="muted">Subtotal</span><span className="money">{fmt$(sub)}</span></div>
+          <div className="spread tiny" style={{padding:"3px 0"}}><span className="muted">GST 10%</span><span className="money">{fmt$(gst)}</span></div>
+          <div className="spread" style={{fontWeight:800,fontSize:16,borderTop:"2px solid var(--text)",paddingTop:7,marginTop:5}}><span>{inv.status==="paid"?"Paid":"Total due"}</span><span className="money">{fmt$(inv.amount)}</span></div>
+        </div>
+      </div>
+      <div className="tiny muted" style={{marginTop:20,padding:"12px 14px",background:"var(--bg)",borderRadius:9}}>
+        {inv.status==="paid"?"Payment received with thanks — this invoice is settled in full.":"Pay securely by card any time from your customer portal, or by bank transfer to the account on file. Thank you for your business."}</div>
+      <div className="tiny faint" style={{marginTop:18,textAlign:"center"}}>Powered by Flow Forward OS</div>
+    </div>
+  </React.Fragment>;
+}
+
+/* one-tap payment chaser: number/email pre-populated, message pre-written,
+   opens the phone's own SMS/email app and logs the send in the feed */
+function ChaseModal({inv,cust,tenant,data,setData,toast,onClose}){
+  const isOverdue=inv.status==="overdue";
+  const first=(cust.name||"there").split(" ")[0];
+  const smsBody="Hi "+first+", friendly reminder from "+tenant.name+": invoice "+inv.num+" ("+fmt$(inv.amount)+") "+(isOverdue?"was due "+fmtDate(inv.dueAt):"is due "+fmtDate(inv.dueAt))+". You can pay by card any time in your customer portal. Reply here if anything's up — thanks!";
+  const emailBody="Hi "+first+",\n\nJust a friendly reminder that invoice "+inv.num+" for "+fmt$(inv.amount)+" "+(isOverdue?"was due on "+fmtDateFull(inv.dueAt):"is due on "+fmtDateFull(inv.dueAt))+".\n\nYou can pay securely by card in your customer portal, or reply to this email if you have any questions.\n\nThanks,\n"+tenant.name;
+  const [channel,setChannel]=useState("sms");
+  const [body,setBody]=useState(smsBody);
+  const pickChannel=ch=>{ setChannel(ch); setBody(ch==="sms"?smsBody:emailBody); };
+  const p=paymentProfile(data,cust.id);
+
+  const log=note=>{
+    setData(d=>{
+      d.messages.unshift({id:uid(),to:cust.name,channel,body,date:todayISO(),auto:false});
+      d.activity.unshift({id:uid(),text:"Payment "+(isOverdue?"chase":"reminder")+" sent for "+inv.num+" via "+channel.toUpperCase(),date:todayISO(),icon:"💬"});
+      return d;
+    });
+    toast(note);
+  };
+  const send=()=>{
+    const a=document.createElement("a");
+    a.href = channel==="sms"
+      ? "sms:"+cust.phone+"?&body="+encodeURIComponent(body)
+      : "mailto:"+cust.email+"?subject="+encodeURIComponent("Payment reminder — invoice "+inv.num)+"&body="+encodeURIComponent(body);
+    a.click();
+    log(channel==="sms"?"Opening your SMS app 💬":"Opening your email app ✉️");
+    onClose();
+  };
+  const copy=()=>{
+    (navigator.clipboard?navigator.clipboard.writeText(body):Promise.reject()).then(
+      ()=>log("Message copied — paste it anywhere 📋"),
+      ()=>toast("Couldn't copy on this device"));
+    onClose();
+  };
+
+  return <Modal title={isOverdue?"Chase payment":"Payment reminder"} onClose={onClose}>
+    <div className="card" style={{padding:13,marginBottom:14,boxShadow:"none",background:"var(--bg)"}}>
+      <div className="spread"><span className="tiny muted">{inv.num} · {inv.title}</span><span className="money" style={{fontWeight:800}}>{fmt$(inv.amount)}</span></div>
+      <div className="tiny faint" style={{marginTop:2}}>{isOverdue?"Was due":"Due"} {fmtDateFull(inv.dueAt)}</div>
+    </div>
+    {p.flag && <div className="tiny" style={{background:"#FFFAEB",border:"1px solid #FEDF89",color:"#B54708",borderRadius:9,padding:"9px 12px",marginBottom:14}}>
+      📊 <b>Payment history (visible only to you):</b> {cust.name} has paid {p.late} of {p.paid} invoices late (avg {p.avgLate} days past due).</div>}
+    <Field label="Send via">
+      <div className="row">
+        <button className={"pill"+(channel==="sms"?" active":"")} onClick={()=>pickChannel("sms")}>💬 SMS</button>
+        <button className={"pill"+(channel==="email"?" active":"")} onClick={()=>pickChannel("email")}>✉️ Email</button>
+      </div>
+    </Field>
+    <Field label={channel==="sms"?"To (from their profile)":"To (from their profile)"}>
+      <input className="input" readOnly value={channel==="sms"?(cust.phone||"no phone on file"):(cust.email||"no email on file")} style={{background:"var(--bg)",fontWeight:600}}/>
+    </Field>
+    <Field label="Message (edit if you like)">
+      <textarea className="textarea" rows={5} value={body} onChange={e=>setBody(e.target.value)}/>
+    </Field>
+    <div className="row">
+      <button className="btn btn-ghost btn-lg" onClick={copy}>📋 Copy</button>
+      <button className="btn btn-primary btn-lg" style={{flex:1}} onClick={send} disabled={channel==="sms"?!cust.phone:!cust.email}>
+        {channel==="sms"?"Open SMS app →":"Open email app →"}</button>
+    </div>
+    <div className="tiny faint" style={{textAlign:"center",marginTop:10}}>Opens on your phone with everything pre-filled — just hit send. Logged in your SMS & Email feed either way.</div>
+  </Modal>;
+}
+
+/* ================================================================
+   LEAD GENERATOR — per-business public "Get a Quote" page
+   V1: the shareable link encodes the brand + contact details, and
+   submissions arrive as a structured SMS/email on the owner's phone
+   (zero backend). V2 pipes them straight into the Leads pipeline.
+   ================================================================ */
+function leadLinkFor(tenant){
+  const base=location.origin+location.pathname;
+  const q=new URLSearchParams({lead:"1",b:tenant.name,c:tenant.color,i:tenant.industry,
+    p:tenant.leadPhone||"",e:tenant.leadEmail||"",t:tenant.tagline||""});
+  return base+"?"+q.toString();
+}
+
+function LeadGen(props){
+  const {tenant,ind,data,updateTenant,toast}=props;
+  const [phone,setPhone]=useState(tenant.leadPhone||data.team[0]?.phone||"");
+  const [email,setEmail]=useState(tenant.leadEmail||"");
+  const saved=!!tenant.leadPhone;
+  const link=leadLinkFor({...tenant,leadPhone:phone,leadEmail:email});
+  const save=()=>{ updateTenant({leadPhone:phone.trim(),leadEmail:email.trim()}); toast("Lead page updated ✓"); };
+  const copy=txt=>msg=>(navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast(msg),()=>toast("Couldn't copy on this device"));
+  const missedCall="Sorry I missed your call! You've reached "+tenant.name+". Tell me what you need done (a photo helps) and I'll get back to you within the hour — or grab an instant quote request here: "+link;
+
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">🧲 Lead Generator</div><div className="muted tiny">Your own "Get a Quote" page — share the link everywhere, leads land on your phone.</div></div>
+    </div>
+
+    <div className="card" style={{padding:18,marginBottom:14}}>
+      <div className="h3" style={{marginBottom:4}}>1 · Where should leads go?</div>
+      <div className="tiny muted" style={{marginBottom:14}}>Quote requests arrive as a pre-filled SMS to this number (and email, if you add one).</div>
+      <div className="grid2">
+        <Field label="Mobile that receives leads"><input className="input" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="04xx xxx xxx"/></Field>
+        <Field label="Email (optional backup)"><input className="input" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@business.com.au"/></Field>
+      </div>
+      <button className="btn btn-primary" onClick={save} disabled={!phone.trim()}>{saved?"Update":"Activate my lead page"}</button>
+    </div>
+
+    <div className="card" style={{padding:18,marginBottom:14}}>
+      <div className="h3" style={{marginBottom:4}}>2 · Your lead page</div>
+      <div className="tiny muted" style={{marginBottom:14}}>Fully branded to {tenant.name} — customers describe the job in 30 seconds, you get a structured quote request instantly.</div>
+      <div className="grid2" style={{alignItems:"center"}}>
+        <div>
+          <Field label="Shareable link"><input className="input" readOnly value={link} style={{background:"var(--bg)",fontSize:12}} onFocus={e=>e.target.select()}/></Field>
+          <div className="row" style={{flexWrap:"wrap"}}>
+            <button className="btn btn-primary" onClick={()=>copy(link)("Link copied — paste it anywhere 🧲")}>📋 Copy link</button>
+            <a className="btn btn-ghost" href={link} target="_blank" rel="noopener">👁 Preview</a>
+          </div>
+        </div>
+        <div style={{textAlign:"center"}}>
+          <img alt="QR code for your lead page" width="150" height="150" style={{borderRadius:12,border:"1px solid var(--border)",padding:6,background:"#fff"}}
+            src={"https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+encodeURIComponent(link)}/>
+          <div className="tiny faint" style={{marginTop:6}}>QR — stick it on the ute, cards & invoices</div>
+        </div>
+      </div>
+    </div>
+
+    <div className="grid2" style={{alignItems:"stretch"}}>
+      <div className="card" style={{padding:18}}>
+        <div className="h3" style={{marginBottom:10}}>3 · Put it where the leads are</div>
+        {[["Google Business Profile","Add it as your booking link — the #1 free lead source for tradies"],
+          ["Instagram & Facebook bio","\"Get an instant quote 👇\" beats a phone number nobody rings"],
+          ["Missed calls","Text the link back automatically — copy the template →"],
+          ["Ute, cards & site signs","The QR turns drive-bys into quote requests"],
+          ["Every invoice & quote email","Happy customers re-book and refer with one tap"]].map(([t,d])=>
+          <div key={t} className="row" style={{alignItems:"flex-start",padding:"7px 0",gap:9}}>
+            <span style={{color:"var(--good)",fontWeight:800}}>✓</span>
+            <div><div style={{fontWeight:600,fontSize:13}}>{t}</div><div className="tiny muted">{d}</div></div>
+          </div>)}
+      </div>
+      <div className="card" style={{padding:18}}>
+        <div className="h3" style={{marginBottom:10}}>Missed-call text-back</div>
+        <div className="tiny muted" style={{lineHeight:1.6,marginBottom:12}}>Most tradies lose their biggest jobs to unanswered calls. Save this as a quick-reply on your phone and fire it at every missed call:</div>
+        <div className="tiny" style={{background:"var(--bg)",borderRadius:9,padding:"11px 13px",lineHeight:1.6,marginBottom:12}}>{missedCall}</div>
+        <button className="btn btn-ghost" onClick={()=>copy(missedCall)("Template copied — save it as a quick reply 💬")}>📋 Copy template</button>
+      </div>
+    </div>
+    <div className="tiny faint" style={{textAlign:"center",marginTop:16}}>Leads arrive as SMS today · V2 drops them straight into your Leads pipeline automatically</div>
+  </React.Fragment>;
+}
+
+/* public quote-request page — reached via the shared link, no login */
+function PublicLeadForm(){
+  const q=new URLSearchParams(location.search);
+  const biz=q.get("b")||"this business";
+  const color=q.get("c")||"#4F46E5";
+  const indKey=INDUSTRIES[q.get("i")]?q.get("i"):"fencing";
+  const phone=(q.get("p")||"").replace(/\s/g,"");
+  const email=q.get("e")||"";
+  const tagline=q.get("t")||"";
+  const ind=INDUSTRIES[indKey];
+  const [f,setF]=useState({name:"",phone:"",suburb:"",need:ind.rates[0].name,desc:""});
+  const [sent,setSent]=useState(false);
+  useEffect(()=>{ document.documentElement.style.setProperty("--accent",color); document.title="Get a quote — "+biz; },[]);
+  const ok=f.name.trim()&&f.phone.trim();
+  const message="New quote request via your "+biz+" lead page:\n— Name: "+f.name+"\n— Phone: "+f.phone+"\n— Suburb: "+(f.suburb||"—")+"\n— Needs: "+f.need+(f.desc?"\n— Details: "+f.desc:"");
+  const send=via=>{
+    const a=document.createElement("a");
+    a.href = via==="sms"
+      ? "sms:"+phone+"?&body="+encodeURIComponent(message)
+      : "mailto:"+email+"?subject="+encodeURIComponent("Quote request from "+f.name)+"&body="+encodeURIComponent(message);
+    a.click();
+    setSent(true);
+  };
+  return <div className="login" style={{alignItems:"flex-start",paddingTop:40}}>
+    <div className="login-card">
+      <div style={{textAlign:"center",marginBottom:22}}>
+        <div style={{width:52,height:52,borderRadius:14,background:color,display:"inline-flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:19,color:"#fff",marginBottom:12}}>{initials(biz)}</div>
+        <div style={{color:"#fff",fontSize:21,fontWeight:800,letterSpacing:-.4}}>{biz}</div>
+        <div style={{color:"#98A2B3",fontSize:13,marginTop:3}}>{tagline||ind.label+" professionals"} · {ind.icon}</div>
+      </div>
+      {!sent? <div className="card" style={{padding:20}}>
+        <div className="h2" style={{marginBottom:3}}>Get a fast quote</div>
+        <div className="tiny muted" style={{marginBottom:16}}>Takes 30 seconds — {biz.split(" ")[0]} will get back to you quickly.</div>
+        <div className="grid2">
+          <Field label="Your name"><input className="input" autoFocus value={f.name} onChange={e=>setF({...f,name:e.target.value})}/></Field>
+          <Field label="Your mobile"><input className="input" inputMode="tel" value={f.phone} onChange={e=>setF({...f,phone:e.target.value})}/></Field>
+        </div>
+        <div className="grid2">
+          <Field label="Suburb"><input className="input" value={f.suburb} onChange={e=>setF({...f,suburb:e.target.value})}/></Field>
+          <Field label="What do you need?"><select className="select" value={f.need} onChange={e=>setF({...f,need:e.target.value})}>
+            {ind.rates.filter(r=>r.name!=="Labour").map(r=><option key={r.name}>{r.name}</option>)}<option>Something else</option></select></Field>
+        </div>
+        <Field label="Tell us a bit more (sizes help)"><textarea className="textarea" rows={3} value={f.desc} onChange={e=>setF({...f,desc:e.target.value})} placeholder="e.g. Around 20m along the back boundary, old fence needs removing"/></Field>
+        {phone && <button className="btn btn-primary btn-lg" style={{width:"100%",background:color}} disabled={!ok} onClick={()=>send("sms")}>Send my quote request →</button>}
+        {!phone && email && <button className="btn btn-primary btn-lg" style={{width:"100%",background:color}} disabled={!ok} onClick={()=>send("email")}>Email my quote request →</button>}
+        {phone && email && <button className="btn btn-ghost btn-sm" style={{width:"100%",marginTop:8}} disabled={!ok} onClick={()=>send("email")}>or send by email instead</button>}
+        {phone && <a className="btn btn-ghost" style={{width:"100%",marginTop:8}} href={"tel:"+phone}>📞 Or call {biz.split(" ")[0]} now</a>}
+        {!phone && !email && <div className="tiny" style={{color:"var(--warn)",textAlign:"center"}}>This lead page isn't activated yet — the business needs to add a contact number.</div>}
+      </div>
+      : <div className="card" style={{padding:28,textAlign:"center"}}>
+        <div style={{fontSize:40,marginBottom:10}}>🎉</div>
+        <div className="h2" style={{marginBottom:6}}>Request on its way!</div>
+        <div className="tiny muted" style={{lineHeight:1.6}}>Your message to {biz} opened in your messages app — just hit send if you haven't already. They'll be in touch shortly.</div>
+        {phone && <a className="btn btn-ghost" style={{marginTop:16}} href={"tel:"+phone}>📞 Call instead</a>}
+      </div>}
+      <div style={{textAlign:"center",marginTop:16,fontSize:11,color:"#475467"}}>⚡ Powered by Flow Forward OS</div>
+    </div>
+  </div>;
+}
+
+/* ================================================================
+   AI INSIGHTS
+   ================================================================ */
+function Insights(props){
+  const {data,ind,go}=props;
+  const ai=aiInsights(data,ind);
+  const toneColor={good:"var(--good)",warn:"var(--warn)",bad:"var(--bad)",blue:"var(--info)"};
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">✨ AI Business Insights</div><div className="muted tiny">Your numbers, read for you — tap any insight to act on it.</div></div>
+    </div>
+    {ai.out.map((o,i)=><div key={i} className={"card"+(o.nav?" clickable":"")} style={{padding:18,marginBottom:12,borderLeft:"3px solid "+(toneColor[o.tone]||"var(--accent)")}}
+        onClick={o.nav?(()=>go(o.nav,o.navId)):undefined}>
+      <div style={{fontWeight:700,marginBottom:5,fontSize:14.5}}>{o.icon} {o.title}</div>
+      <div className="tiny muted" style={{lineHeight:1.6}}>{o.body}</div>
+      {o.cta && <div className="tiny" style={{marginTop:9,fontWeight:700,color:"var(--accent)"}}>{o.cta} →</div>}
+    </div>)}
+    <div className="tiny faint" style={{textAlign:"center",marginTop:18}}>Insights recompute live from your CRM, quotes, jobs and payments.</div>
+  </React.Fragment>;
+}
+
+/* ================================================================
+   ANALYTICS
+   ================================================================ */
+function Analytics(props){
+  const {data,ind}=props;
+  const [drill,setDrill]=useState(null); // {title, items:[{main,sub,right}]}
+  const custName=id=>data.customers.find(c=>c.id===id)?.name||"—";
+  const t=todayISO();
+  const months=[]; for(let i=5;i>=0;i--){ const k=monthKey(addDays(t,-i*30)); months.push(k); }
+  const paid=data.invoices.filter(i=>i.status==="paid");
+  const series=months.map(k=>({l:new Date(k+"-15").toLocaleDateString("en-AU",{month:"short"}), v:paid.filter(i=>monthKey(i.paidAt||i.issuedAt)===k).reduce((a,i)=>a+i.amount,0)}));
+  const funnel=[
+    {l:"Leads",v:data.leads.length,c:"var(--info)"},
+    {l:"Quoted",v:data.quotes.length,c:"#7839EE"},
+    {l:"Won",v:data.quotes.filter(q=>q.status==="accepted").length,c:"var(--good)"}];
+  const jobParts=[
+    {v:data.jobs.filter(j=>j.status==="scheduled").length,c:"var(--info)",l:"Scheduled"},
+    {v:data.jobs.filter(j=>j.status==="in_progress").length,c:"var(--warn)",l:"In progress"},
+    {v:data.jobs.filter(j=>j.status==="done").length,c:"var(--good)",l:"Done"}];
+  const svc={}; paid.forEach(i=>{svc[i.title]=(svc[i.title]||0)+i.amount});
+  const topSvcs=Object.entries(svc).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const maxSvc=topSvcs[0]?.[1]||1;
+
+  const drillFunnel=stage=>{
+    if(stage==="Leads") setDrill({title:"All leads ("+data.leads.length+")",items:data.leads.map(l=>({main:l.name,sub:l.need+" · "+l.source,right:l.stage}))});
+    else if(stage==="Quoted") setDrill({title:"All quotes ("+data.quotes.length+")",items:data.quotes.map(q=>({main:q.num+" · "+q.title,sub:custName(q.customerId),right:fmt$(q.total)}))});
+    else setDrill({title:"Won quotes",items:data.quotes.filter(q=>q.status==="accepted").map(q=>({main:q.num+" · "+q.title,sub:custName(q.customerId),right:fmt$(q.total)}))});
+  };
+  const drillJobs=status=>{
+    const map={Scheduled:"scheduled","In progress":"in_progress",Done:"done"};
+    const js=data.jobs.filter(j=>j.status===map[status]);
+    setDrill({title:status+" ("+js.length+")",items:js.map(j=>({main:j.title,sub:custName(j.customerId)+" · "+fmtDate(j.date),right:fmt$(j.value)}))});
+  };
+  const drillSvc=name=>{
+    const invs=paid.filter(i=>i.title===name);
+    setDrill({title:name,items:invs.map(i=>({main:i.num,sub:custName(i.customerId)+" · paid "+fmtDate(i.paidAt||i.issuedAt),right:fmt$(i.amount)}))});
+  };
+  const drillMonth=k=>{
+    const invs=paid.filter(i=>monthKey(i.paidAt||i.issuedAt)===k);
+    setDrill({title:new Date(k+"-15").toLocaleDateString("en-AU",{month:"long",year:"numeric"})+" — "+fmt$(invs.reduce((a,i)=>a+i.amount,0)),items:invs.map(i=>({main:i.num+" · "+i.title,sub:custName(i.customerId),right:fmt$(i.amount)}))});
+  };
+
+  return <React.Fragment>
+    <div className="pagehead"><div><div className="h1">Analytics</div><div className="muted tiny">The full picture — tap any bar, stage or service to see what's behind it.</div></div></div>
+    <div className="card" style={{padding:18,marginBottom:14}}>
+      <div className="h3" style={{marginBottom:12}}>Revenue collected — last 6 months</div>
+      <BarChart series={series} onBar={i=>drillMonth(months[i])}/>
+    </div>
+    <div className="grid2" style={{alignItems:"stretch"}}>
+      <div className="card" style={{padding:18}}>
+        <div className="h3" style={{marginBottom:12}}>Sales funnel</div>
+        {funnel.map((f,i)=><div key={i} className="clickable" style={{marginBottom:10,padding:4,margin:"-4px -4px 6px",borderRadius:8}} onClick={()=>drillFunnel(f.l)}>
+          <div className="spread tiny" style={{marginBottom:4}}><span className="muted">{f.l} →</span><span style={{fontWeight:700}}>{f.v}</span></div>
+          <div style={{height:9,background:"var(--bg)",borderRadius:99}}><div style={{height:"100%",width:Math.max(4,100*f.v/(funnel[0].v||1))+"%",background:f.c,borderRadius:99}}/></div>
+        </div>)}
+        <div className="tiny faint" style={{marginTop:8}}>Lead → won conversion: {funnel[0].v?Math.round(100*funnel[2].v/funnel[0].v):0}%</div>
+      </div>
+      <div className="card" style={{padding:18}}>
+        <div className="h3" style={{marginBottom:12}}>{ind.jobNoun[0].toUpperCase()+ind.jobNoun.slice(1)} status</div>
+        <div className="row" style={{gap:18}}>
+          <Donut parts={jobParts}/>
+          <div>{jobParts.map((p,i)=><div key={i} className="row tiny clickable" style={{gap:7,marginBottom:4,padding:"3px 6px",borderRadius:7}} onClick={()=>drillJobs(p.l)}><span className="dot" style={{background:p.c}}/>{p.l} · <b>{p.v}</b> →</div>)}</div>
+        </div>
+      </div>
+    </div>
+    <div className="card" style={{padding:18,marginTop:14}}>
+      <div className="h3" style={{marginBottom:12}}>Top services by revenue</div>
+      {topSvcs.map(([name,v],i)=><div key={i} className="clickable" style={{marginBottom:10,padding:4,margin:"-4px -4px 6px",borderRadius:8}} onClick={()=>drillSvc(name)}>
+        <div className="spread tiny" style={{marginBottom:4}}><span className="muted" style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:"70%"}}>{name} →</span><span className="money" style={{fontWeight:700}}>{fmt$(v)}</span></div>
+        <div style={{height:9,background:"var(--bg)",borderRadius:99}}><div style={{height:"100%",width:Math.max(4,100*v/maxSvc)+"%",background:"var(--accent)",borderRadius:99,opacity:1-(i*0.15)}}/></div>
+      </div>)}
+      {topSvcs.length===0&&<div className="empty tiny">Complete some jobs to see your top earners.</div>}
+    </div>
+    {drill && <Modal title={drill.title} onClose={()=>setDrill(null)}>
+      <div className="list" style={{margin:"-6px 0"}}>
+        {drill.items.map((it,i)=><div key={i} className="list-row">
+          <div style={{flex:1,minWidth:0}}><div style={{fontWeight:600,fontSize:13}}>{it.main}</div><div className="tiny faint">{it.sub}</div></div>
+          <span className="tiny" style={{fontWeight:700}}>{it.right}</span>
+        </div>)}
+        {drill.items.length===0&&<div className="empty tiny">Nothing here yet.</div>}
+      </div>
+    </Modal>}
+  </React.Fragment>;
+}
+
+/* ================================================================
+   REVIEWS
+   ================================================================ */
+function Reviews(props){
+  const {data,setData,toast}=props;
+  const [replying,setReplying]=useState(null);
+  const [txt,setTxt]=useState("");
+  const custById=id=>data.customers.find(c=>c.id===id)||{name:"A customer"};
+  const avg=data.reviews.length? (data.reviews.reduce((a,r)=>a+r.rating,0)/data.reviews.length):0;
+  const reply=r=>{
+    setData(d=>{ d.reviews=d.reviews.map(x=>x.id===r.id?{...x,reply:txt}:x); return d; });
+    setReplying(null); setTxt(""); toast("Reply posted");
+  };
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">Reviews</div><div className="muted tiny">Review requests send automatically after every completed job.</div></div>
+      <div style={{textAlign:"right"}}><div style={{fontWeight:800,fontSize:24}}>{avg.toFixed(1)} <span style={{fontSize:15}}>⭐</span></div><div className="tiny faint">{data.reviews.length} reviews</div></div>
+    </div>
+    {data.reviews.map(r=><div key={r.id} className="card" style={{padding:18,marginBottom:12}}>
+      <div className="spread" style={{marginBottom:8}}>
+        <div className="row"><Avatar name={custById(r.customerId).name} size={30}/><div><div style={{fontWeight:700,fontSize:13}}>{custById(r.customerId).name}</div><div className="tiny faint">{r.platform} · {fmtDate(r.date)}</div></div></div>
+        <Stars n={r.rating}/>
+      </div>
+      <div className="tiny" style={{lineHeight:1.6}}>{r.text}</div>
+      {r.reply
+        ? <div className="tiny" style={{marginTop:10,padding:"10px 12px",background:"var(--bg)",borderRadius:9}}><b>Your reply:</b> {r.reply}</div>
+        : replying===r.id
+          ? <div style={{marginTop:10}}>
+              <textarea className="textarea" rows={2} autoFocus value={txt} onChange={e=>setTxt(e.target.value)} placeholder="Thanks so much…"/>
+              <div className="row" style={{marginTop:8}}>
+                <button className="btn btn-primary btn-sm" disabled={!txt.trim()} onClick={()=>reply(r)}>Post reply</button>
+                <button className="btn btn-ghost btn-sm" onClick={()=>setReplying(null)}>Cancel</button>
+              </div>
+            </div>
+          : <button className="btn btn-ghost btn-sm no-print" style={{marginTop:10}} onClick={()=>{setReplying(r.id);setTxt("");}}>↩ Reply</button>}
+    </div>)}
+  </React.Fragment>;
+}
+
+/* ================================================================
+   BEFORE / AFTER PHOTOS
+   ================================================================ */
+function usePhotoUpload(){
+  return (cb)=>{
+    const inp=document.createElement("input"); inp.type="file"; inp.accept="image/*";
+    inp.onchange=()=>{ const f=inp.files[0]; if(!f) return;
+      const rd=new FileReader(); rd.onload=()=>cb(rd.result,f); rd.readAsDataURL(f); };
+    inp.click();
+  };
+}
+function Photos(props){
+  const {data,setData,toast,ind}=props;
+  const upload=usePhotoUpload();
+  const [modal,setModal]=useState(false);
+  const [nf,setNf]=useState({title:"",before:null,after:null});
+  const setSide=(pairId,side)=>upload(url=>{
+    setData(d=>{ d.photos=d.photos.map(p=>p.id===pairId?{...p,[side]:url}:p); return d; });
+    toast(side[0].toUpperCase()+side.slice(1)+" photo updated");
+  });
+  const add=()=>{
+    setData(d=>{ d.photos.unshift({id:uid(),jobId:null,title:nf.title||"New "+ind.jobNoun,before:nf.before,after:nf.after,beforeGrad:"linear-gradient(135deg,#94A3B8,#475569)",afterGrad:"linear-gradient(135deg,#34D399,#059669)",date:todayISO()}); return d; });
+    setModal(false); setNf({title:"",before:null,after:null}); toast("Showcase added 📸");
+  };
+  const Half=({p,side,label})=>{
+    const img=p[side];
+    return <div onClick={()=>setSide(p.id,side)} style={{flex:1,aspectRatio:"4/3",borderRadius:10,cursor:"pointer",position:"relative",overflow:"hidden",
+      background:img?("url("+img+") center/cover"):p[side+"Grad"],display:"flex",alignItems:"flex-end"}}>
+      <span className="badge" style={{margin:8,background:"rgba(12,17,29,.72)",color:"#fff"}}>{label}</span>
+      {!img&&<span style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",color:"rgba(255,255,255,.85)",fontSize:11.5,fontWeight:600}}>Tap to add photo</span>}
+    </div>;
+  };
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">Before / After</div><div className="muted tiny">Your best sales tool — proof of quality, ready to share.</div></div>
+      <button className="btn btn-primary no-print" onClick={()=>setModal(true)}>+ Add showcase</button>
+    </div>
+    {data.photos.map(p=><div key={p.id} className="card" style={{padding:14,marginBottom:14}}>
+      <div className="spread" style={{marginBottom:10}}><span style={{fontWeight:700}}>{p.title}</span><span className="tiny faint">{fmtDate(p.date)}</span></div>
+      <div className="row" style={{gap:10}}><Half p={p} side="before" label="BEFORE"/><Half p={p} side="after" label="AFTER"/></div>
+    </div>)}
+    {data.photos.length===0&&<div className="card"><Empty icon="📸" title="No showcases yet" sub="Add before/after pairs from completed jobs."/></div>}
+    {modal && <Modal title="New showcase" onClose={()=>setModal(false)}>
+      <Field label="Title"><input className="input" autoFocus value={nf.title} onChange={e=>setNf({...nf,title:e.target.value})} placeholder={"e.g. Colorbond fence — Bankstown"}/></Field>
+      <div className="tiny muted" style={{marginBottom:14}}>You can tap each side to upload photos after creating.</div>
+      <button className="btn btn-primary btn-lg" style={{width:"100%"}} onClick={add}>Create showcase</button>
+    </Modal>}
+  </React.Fragment>;
+}
+
+/* ================================================================
+   MESSAGES — SMS & Email
+   ================================================================ */
+function Messages(props){
+  const {data,setData,toast}=props;
+  const [compose,setCompose]=useState(false);
+  const [f,setF]=useState({toId:"",channel:"sms",body:""});
+  const [filter,setFilter]=useState("all");
+  const shown=data.messages.filter(m=>filter==="all"||m.channel===filter);
+  const TEMPLATES=[
+    {n:"On our way",t:"Hi {name}, our team is on the way — see you shortly!"},
+    {n:"Running late",t:"Hi {name}, we're running about 30 minutes behind this morning — apologies, see you soon."},
+    {n:"Quote follow-up",t:"Hi {name}, just checking you received our quote — happy to answer any questions!"},
+    {n:"Payment thanks",t:"Hi {name}, payment received with thanks. It was a pleasure working with you!"}];
+  const send=()=>{
+    const c=data.customers.find(x=>x.id===f.toId)||data.customers[0];
+    setData(d=>{ d.messages.unshift({id:uid(),to:c.name,channel:f.channel,body:f.body,date:todayISO(),auto:false}); return d; });
+    setCompose(false); setF({toId:"",channel:"sms",body:""});
+    toast(f.channel==="sms"?"SMS sent 💬":"Email sent ✉️");
+  };
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">SMS & Email</div><div className="muted tiny">Every message to every customer — manual and automated — in one feed.</div></div>
+      <button className="btn btn-primary no-print" onClick={()=>{setF({toId:data.customers[0]?.id||"",channel:"sms",body:""});setCompose(true);}}>+ Compose</button>
+    </div>
+    <div className="pills" style={{marginBottom:14}}>
+      {["all","sms","email"].map(s=><button key={s} className={"pill"+(filter===s?" active":"")} onClick={()=>setFilter(s)}>{s==="all"?"All":s.toUpperCase()}</button>)}
+    </div>
+    <div className="card"><div className="list">
+      {shown.map(m=><div key={m.id} className="list-row" style={{alignItems:"flex-start"}}>
+        <span style={{fontSize:17,marginTop:2}}>{m.channel==="sms"?"💬":"✉️"}</span>
+        <div style={{flex:1,minWidth:0}}>
+          <div className="row" style={{gap:7}}><span style={{fontWeight:700,fontSize:13}}>{m.to}</span>
+            {m.auto&&<span className="badge b-accent">⚙️ automation</span>}
+            <span className="tiny faint">· {fmtDate(m.date)}</span></div>
+          <div className="tiny muted" style={{marginTop:3,lineHeight:1.55}}>{m.body}</div>
+        </div>
+      </div>)}
+      {shown.length===0&&<Empty icon="💬" title="No messages" sub="Automations and manual sends appear here."/>}
+    </div></div>
+    {compose && <Modal title="Compose message" onClose={()=>setCompose(false)}>
+      <div className="grid2">
+        <Field label="To"><select className="select" value={f.toId} onChange={e=>setF({...f,toId:e.target.value})}>
+          {data.customers.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></Field>
+        <Field label="Channel"><select className="select" value={f.channel} onChange={e=>setF({...f,channel:e.target.value})}>
+          <option value="sms">SMS</option><option value="email">Email</option></select></Field>
+      </div>
+      <Field label="Quick templates">
+        <div className="pills">{TEMPLATES.map(t=><button key={t.n} className="pill" onClick={()=>{
+          const c=data.customers.find(x=>x.id===f.toId); setF({...f,body:t.t.replace("{name}",(c?.name||"there").split(" ")[0])});}}>{t.n}</button>)}</div>
+      </Field>
+      <Field label="Message"><textarea className="textarea" rows={4} value={f.body} onChange={e=>setF({...f,body:e.target.value})}/></Field>
+      <button className="btn btn-primary btn-lg" style={{width:"100%"}} disabled={!f.body.trim()} onClick={send}>Send {f.channel==="sms"?"SMS":"email"}</button>
+    </Modal>}
+  </React.Fragment>;
+}
+
+/* ================================================================
+   AUTOMATIONS
+   ================================================================ */
+function Automations(props){
+  const {data,setData,toast}=props;
+  const flip=a=>{
+    setData(d=>{ d.automations=d.automations.map(x=>x.id===a.id?{...x,on:!x.on}:x); return d; });
+    toast(a.on?"Automation paused":"Automation live ⚙️");
+  };
+  const ran=data.activity.filter(a=>a.text.startsWith("⚙️")).length;
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">Automations</div><div className="muted tiny">Set-and-forget workflows that run your admin while you're on the tools.</div></div>
+      <span className="badge b-green">⚙️ {ran + 12} runs this month</span>
+    </div>
+    {data.automations.map(a=><div key={a.id} className="card" style={{padding:16,marginBottom:11}}>
+      <div className="spread">
+        <div style={{flex:1,paddingRight:12}}>
+          <div style={{fontWeight:700,marginBottom:3}}>{a.name} <span className={"badge "+(a.channel==="sms"?"b-blue":a.channel==="email"?"b-purple":"b-gray")} style={{marginLeft:5}}>{a.channel==="system"?"in-app":a.channel.toUpperCase()}</span></div>
+          <div className="tiny muted" style={{lineHeight:1.55}}>{a.desc}</div>
+        </div>
+        <Toggle on={a.on} onChange={()=>flip(a)}/>
+      </div>
+    </div>)}
+    <div className="tiny faint" style={{textAlign:"center",marginTop:16}}>These aren't just switches — enabled automations genuinely fire when events happen in the app.</div>
+  </React.Fragment>;
+}
+
+/* ================================================================
+   FILES
+   ================================================================ */
+function FilesPage(props){
+  const {data,setData,toast}=props;
+  const upload=usePhotoUpload();
+  const icons={pdf:"📕",doc:"📘",img:"🖼️",other:"📄"};
+  const addFile=()=>{
+    const inp=document.createElement("input"); inp.type="file";
+    inp.onchange=()=>{ const f=inp.files[0]; if(!f) return;
+      const rd=new FileReader();
+      rd.onload=()=>{
+        const type=f.type.includes("pdf")?"pdf":f.type.includes("image")?"img":f.name.match(/\.docx?$/)?"doc":"other";
+        const data64=f.size<2_000_000? rd.result : null; // keep storage sane
+        setData(d=>{ d.files.unshift({id:uid(),name:f.name,size:f.size>1e6?(f.size/1e6).toFixed(1)+" MB":Math.round(f.size/1024)+" KB",type,date:todayISO(),data:data64}); return d; });
+        toast(data64?"File uploaded 📁":"File added (too large to store offline — metadata only)");
+      };
+      rd.readAsDataURL(f);
+    };
+    inp.click();
+  };
+  const download=f=>{
+    if(!f.data){ toast("Demo file — no content stored"); return; }
+    const a=document.createElement("a"); a.href=f.data; a.download=f.name; a.click();
+  };
+  const del=f=>{ setData(d=>{ d.files=d.files.filter(x=>x.id!==f.id); return d; }); toast("Deleted"); };
+  return <React.Fragment>
+    <div className="pagehead">
+      <div><div className="h1">Files</div><div className="muted tiny">Insurance, licences, safety docs and job attachments — one place.</div></div>
+      <button className="btn btn-primary no-print" onClick={addFile}>+ Upload</button>
+    </div>
+    <div className="card"><div className="list">
+      {data.files.map(f=><div key={f.id} className="list-row">
+        <span style={{fontSize:20}}>{icons[f.type]||icons.other}</span>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{f.name}</div>
+          <div className="tiny faint">{f.size} · {fmtDate(f.date)}</div>
+        </div>
+        <button className="btn btn-ghost btn-sm" onClick={()=>download(f)}>↓</button>
+        <button className="btn btn-ghost btn-sm" onClick={()=>del(f)}>🗑</button>
+      </div>)}
+      {data.files.length===0&&<Empty icon="📁" title="No files" sub="Upload licences, insurance and job docs."/>}
+    </div></div>
+  </React.Fragment>;
+}
+
+/* ================================================================
+   SETTINGS — white label, team, rate card
+   ================================================================ */
+function Settings(props){
+  const {tenant,updateTenant,ind,data,setData,toast}=props;
+  const [tab,setTab]=useState("brand");
+  const [b,setB]=useState({name:tenant.name,tagline:tenant.tagline,color:tenant.color});
+  const [nm,setNm]=useState({name:"",role:"Technician"});
+
+  const [rateModal,setRateModal]=useState(null); // rate obj | "new"
+  const saveBrand=()=>{ updateTenant(b); toast("Brand updated — whole app rethemed ✨"); };
+  const addMember=()=>{
+    setData(d=>{ d.team.push({id:uid(),name:nm.name,role:nm.role,phone:"",active:true}); return d; });
+    setNm({name:"",role:"Technician"}); toast("Team member added");
+  };
+  const toggleMember=id=>{ setData(d=>{ d.team=d.team.map(m=>m.id===id?{...m,active:!m.active}:m); return d; }); };
+  const removeMember=id=>{
+    if(data.team.length<=1){ toast("Keep at least one team member"); return; }
+    setData(d=>{ d.team=d.team.filter(m=>m.id!==id); return d; }); toast("Team member removed");
+  };
+  const rates=(data.rates&&data.rates.length)?data.rates:ind.rates;
+  const saveRate=r=>{
+    setData(d=>{
+      const base=(d.rates&&d.rates.length)?d.rates:JSON.parse(JSON.stringify(ind.rates));
+      if(r._i!=null){ base[r._i]={name:r.name,unit:r.unit,rate:+r.rate,kw:r.kw}; }
+      else base.push({name:r.name,unit:r.unit,rate:+r.rate,kw:(r.kw||[])});
+      d.rates=base; return d;
+    });
+    setRateModal(null); toast("Rate card updated — AI quotes use this now ✨");
+  };
+  const removeRate=i=>{ setData(d=>{ const base=(d.rates&&d.rates.length)?[...d.rates]:JSON.parse(JSON.stringify(ind.rates)); base.splice(i,1); d.rates=base; return d; }); toast("Service removed"); };
+  const switchPlan=n=>{ updateTenant({plan:n}); toast("Now on the "+n+" plan ✓"); };
+  const curPlan=tenant.plan||"Crew";
+
+  return <React.Fragment>
+    <div className="pagehead"><div><div className="h1">Settings</div><div className="muted tiny">White-label branding, team and pricing.</div></div></div>
+    <div className="pills" style={{marginBottom:16}}>
+      {[["brand","🎨 White label"],["team","👥 Team"],["rates","💲 Rate card"],["plan","🚀 Plan"]].map(([k,l])=>
+        <button key={k} className={"pill"+(tab===k?" active":"")} onClick={()=>setTab(k)}>{l}</button>)}
+    </div>
+
+    {tab==="brand" && <div className="card" style={{padding:20,maxWidth:520}}>
+      <div className="h3" style={{marginBottom:14}}>Your brand, everywhere</div>
+      <Field label="Business name"><input className="input" value={b.name} onChange={e=>setB({...b,name:e.target.value})}/></Field>
+      <Field label="Tagline"><input className="input" value={b.tagline} onChange={e=>setB({...b,tagline:e.target.value})}/></Field>
+      <Field label="Brand colour">
+        <div className="row">
+          <input type="color" className="input" style={{width:64,height:42,padding:4}} value={b.color} onChange={e=>setB({...b,color:e.target.value})}/>
+          <div className="pills">{["#4F46E5","#16A34A","#0E7DD1","#DC6803","#DB2777","#0C111D"].map(c=>
+            <button key={c} style={{width:30,height:30,borderRadius:99,background:c,border:b.color===c?"3px solid var(--text)":"2px solid #fff",boxShadow:"var(--shadow)"}} onClick={()=>setB({...b,color:c})}/>)}</div>
+        </div>
+      </Field>
+      <div className="tiny muted" style={{margin:"6px 0 16px"}}>Changes retheme the entire app instantly — sidebar, buttons, quotes, and both the staff and customer portals. This is the same engine used to spin up a new branded business in 30 seconds.</div>
+      <button className="btn btn-primary" onClick={saveBrand}>Save brand</button>
+    </div>}
+
+    {tab==="team" && <React.Fragment>
+      <div className="card" style={{marginBottom:14}}><div className="list">
+        {data.team.map(m=><div key={m.id} className="list-row">
+          <Avatar name={m.name}/><div style={{flex:1}}><div style={{fontWeight:600}}>{m.name}</div><div className="tiny faint">{m.role}</div></div>
+          <button className={"badge "+(m.active?"b-green":"b-gray")} style={{cursor:"pointer"}} onClick={()=>toggleMember(m.id)}>{m.active?"Active":"Inactive"}</button>
+          <button className="btn btn-ghost btn-sm" onClick={()=>removeMember(m.id)} title="Remove">🗑</button>
+        </div>)}
+      </div></div>
+      <div className="card" style={{padding:16,maxWidth:520}}>
+        <div className="h3" style={{marginBottom:12}}>Add team member</div>
+        <div className="grid2">
+          <Field label="Name"><input className="input" value={nm.name} onChange={e=>setNm({...nm,name:e.target.value})}/></Field>
+          <Field label="Role"><select className="select" value={nm.role} onChange={e=>setNm({...nm,role:e.target.value})}>
+            {["Technician","Apprentice","Office admin","Supervisor"].map(r=><option key={r}>{r}</option>)}</select></Field>
+        </div>
+        <button className="btn btn-primary btn-sm" disabled={!nm.name.trim()} onClick={addMember}>Add member</button>
+        <div className="tiny faint" style={{marginTop:10}}>New members appear instantly in the staff portal sign-in and job assignment.</div>
+      </div>
+    </React.Fragment>}
+
+    {tab==="rates" && <React.Fragment>
+      <div className="card" style={{marginBottom:12}}><div className="spread" style={{padding:"14px 16px"}}>
+        <div><div className="h3">Your rate card</div><div className="tiny muted">Edit prices to match your business — the AI Quote Generator uses these instantly.</div></div>
+        <button className="btn btn-primary btn-sm no-print" onClick={()=>setRateModal("new")}>+ Add service</button>
+      </div>
+      <div className="list">
+        {rates.map((r,i)=><div key={i} className="list-row clickable" onClick={()=>setRateModal({...r,_i:i})}>
+          <div style={{flex:1}}><div style={{fontWeight:600}}>{r.name}</div><div className="tiny faint">AI keywords: {r.kw&&r.kw.length?r.kw.join(", "):"fallback item"}</div></div>
+          <span className="money" style={{fontWeight:700}}>{fmt$(r.rate)}<span className="tiny faint">/{r.unit}</span></span>
+          <button className="btn btn-ghost btn-sm no-print" onClick={e=>{e.stopPropagation();removeRate(i);}} title="Remove">🗑</button>
+        </div>)}
+      </div></div>
+    </React.Fragment>}
+
+    {tab==="plan" && <div className="grid2" style={{alignItems:"stretch"}}>
+      {[{n:"Tradie",p:"$49",f:["1 user","CRM + quotes + invoicing","Customer portal","Email support"]},
+        {n:"Crew",p:"$129",f:["Up to 8 users","Everything in Tradie","Staff portal + scheduling","Automations + AI insights","SMS included (500/mo)"]},
+        {n:"Empire",p:"$299",f:["Unlimited users","Everything in Crew","White-label your own brand","Priority support + onboarding","API access"]}].map(pl=>{
+        const cur=pl.n===curPlan;
+        return <div key={pl.n} className="card" style={{padding:20,border:cur?"2px solid var(--accent)":undefined}}>
+        <div className="spread"><span className="h3">{pl.n}</span>{cur&&<span className="badge b-accent">Current plan</span>}</div>
+        <div style={{fontWeight:800,fontSize:26,margin:"8px 0 2px"}}>{pl.p}<span className="tiny muted" style={{fontWeight:600}}>/month + GST</span></div>
+        <div className="divider"/>
+        {pl.f.map(f=><div key={f} className="tiny" style={{padding:"3px 0"}}>✓ {f}</div>)}
+        {!cur&&<button className="btn btn-ghost btn-sm no-print" style={{marginTop:12,width:"100%"}} onClick={()=>switchPlan(pl.n)}>Switch to {pl.n}</button>}
+      </div>;})}
+    </div>}
+
+    {rateModal && <RateModal rate={rateModal==="new"?null:rateModal} onSave={saveRate} onClose={()=>setRateModal(null)}/>}
+  </React.Fragment>;
+}
+function RateModal({rate,onSave,onClose}){
+  const [f,setF]=useState(rate?{...rate,kw:(rate.kw||[]).join(", ")}:{name:"",unit:"m",rate:0,kw:"",_i:null});
+  const save=()=>onSave({...f,rate:+f.rate||0,kw:f.kw.split(",").map(s=>s.trim()).filter(Boolean),_i:rate?rate._i:null});
+  return <Modal title={rate?"Edit service":"New service"} onClose={onClose}>
+    <Field label="Service name"><input className="input" autoFocus value={f.name} onChange={e=>setF({...f,name:e.target.value})} placeholder="e.g. Colorbond fence supply & install"/></Field>
+    <div className="grid2">
+      <Field label="Rate ($)"><input type="number" className="input" value={f.rate} onChange={e=>setF({...f,rate:e.target.value})}/></Field>
+      <Field label="Per unit"><input className="input" value={f.unit} onChange={e=>setF({...f,unit:e.target.value})} placeholder="m, m², hr, job, gate…"/></Field>
+    </div>
+    <Field label="AI match keywords (comma separated)"><input className="input" value={f.kw} onChange={e=>setF({...f,kw:e.target.value})} placeholder="colorbond, steel, metal"/></Field>
+    <div className="tiny faint" style={{marginBottom:14}}>When a quote description mentions any keyword, the AI adds this line automatically. Leave blank for a fallback/labour item.</div>
+    <button className="btn btn-primary btn-lg" style={{width:"100%"}} disabled={!f.name.trim()} onClick={save}>{rate?"Save changes":"Add service"}</button>
+  </Modal>;
+}
+
+/* ================================================================
+   STAFF PORTAL
+   ================================================================ */
+function StaffPortal(props){
+  const {tenant,ind,data,setData,session,onLogout,toast}=props;
+  const me=data.team.find(m=>m.id===session.userId)||data.team[0];
+  const [tab,setTab]=useState("today");
+  const t=todayISO();
+  const mine=data.jobs.filter(j=>j.assigneeId===me.id);
+  const todayJobs=mine.filter(j=>j.date<=t && j.status!=="done");
+  const upcoming=mine.filter(j=>j.date>t && j.status==="scheduled").sort((a,b)=>a.date.localeCompare(b.date));
+  const doneJobs=mine.filter(j=>j.status==="done");
+  const custById=id=>data.customers.find(c=>c.id===id)||{name:"—",phone:""};
+  const upload=usePhotoUpload();
+
+  const setStatus=(j,status)=>{
+    setData(d=>{
+      d.jobs=d.jobs.map(x=>x.id===j.id?{...x,status}:x);
+      if(status==="done"){
+        const c=custById(j.customerId);
+        d.activity.unshift({id:uid(),text:me.name+" completed "+j.title,date:t,icon:"🏁"});
+        runAutomations(d,"job_done",{customerName:c.name});
+        if(j.value && !d.invoices.some(i=>i.jobId===j.id)){
+          d.counters.invoice++;
+          d.invoices.unshift({id:uid(),num:"INV-"+d.counters.invoice,customerId:j.customerId,jobId:j.id,title:j.title,amount:j.value,status:"sent",issuedAt:t,dueAt:addDays(t,14),paidAt:null,method:null});
+        }
+      }
+      return d;
+    });
+    toast(status==="done"?"Job complete — office notified ✓":"Job started");
+  };
+  const addSitePhoto=j=>upload(url=>{
+    setData(d=>{
+      const pair=d.photos.find(p=>p.jobId===j.id);
+      if(pair) d.photos=d.photos.map(p=>p.jobId===j.id?{...p, [p.before?"after":"before"]:url}:p);
+      else d.photos.unshift({id:uid(),jobId:j.id,title:j.title,before:url,after:null,beforeGrad:"",afterGrad:"linear-gradient(135deg,#34D399,#059669)",date:t});
+      return d;
+    });
+    toast("Site photo saved 📸");
+  });
+
+  const JobCard=({j,active})=><div className="card" style={{padding:16,marginBottom:11}}>
+    <div className="spread" style={{marginBottom:6}}>
+      <span className="tiny faint">{j.num} · {fmtDate(j.date)}</span><StatusBadge s={j.status}/>
+    </div>
+    <div style={{fontWeight:700,fontSize:15,marginBottom:2}}>{j.time} — {j.title}</div>
+    <div className="tiny muted" style={{marginBottom:2}}>{custById(j.customerId).name}</div>
+    <div className="tiny muted">📍 {j.address}</div>
+    {j.notes&&<div className="tiny" style={{marginTop:8,padding:"9px 11px",background:"var(--bg)",borderRadius:8}}>📝 {j.notes}</div>}
+    {active&&<div className="row" style={{marginTop:12}}>
+      <a className="btn btn-ghost btn-sm" href={"tel:"+custById(j.customerId).phone}>📞 Call</a>
+      <a className="btn btn-ghost btn-sm" href={"https://maps.google.com/?q="+encodeURIComponent(j.address)} target="_blank">🗺 Navigate</a>
+      <button className="btn btn-ghost btn-sm" onClick={()=>addSitePhoto(j)}>📸 Photo</button>
+      <div style={{flex:1}}/>
+      {j.status==="scheduled"
+        ? <button className="btn btn-primary btn-sm" onClick={()=>setStatus(j,"in_progress")}>Start job</button>
+        : <button className="btn btn-primary btn-sm" onClick={()=>setStatus(j,"done")}>Complete ✓</button>}
+    </div>}
+  </div>;
+
+  return <div style={{maxWidth:640,margin:"0 auto",padding:"0 14px 40px"}}>
+    <div className="topbar" style={{margin:"0 -14px",padding:"12px 16px"}}>
+      <div className="row">
+        <div className="s-logo" style={{background:tenant.color}}>{initials(tenant.name)}</div>
+        <div><div style={{fontWeight:700,fontSize:14}}>{tenant.name}</div><div className="tiny faint">Staff portal · {me.name}</div></div>
+      </div>
+      <button className="btn btn-ghost btn-sm" onClick={onLogout}>Sign out</button>
+    </div>
+    <div style={{padding:"18px 0 6px"}}>
+      <div className="h1">G'day, {me.name.split(" ")[0]} 🦺</div>
+      <div className="muted tiny">{todayJobs.length? "You've got "+todayJobs.length+" "+ind.jobNoun+(todayJobs.length>1?"s":"")+" on today.":"No "+ind.jobNoun+"s due today — check upcoming."}</div>
+    </div>
+    <div className="pills" style={{margin:"12px 0 16px"}}>
+      {[["today","Today ("+todayJobs.length+")"],["upcoming","Upcoming ("+upcoming.length+")"],["done","Done ("+doneJobs.length+")"]].map(([k,l])=>
+        <button key={k} className={"pill"+(tab===k?" active":"")} onClick={()=>setTab(k)}>{l}</button>)}
+    </div>
+    {tab==="today" && (todayJobs.length? todayJobs.map(j=><JobCard key={j.id} j={j} active/>) : <div className="card"><Empty icon="🎉" title="Nothing due" sub="Enjoy the breather or check upcoming."/></div>)}
+    {tab==="upcoming" && (upcoming.length? upcoming.map(j=><JobCard key={j.id} j={j}/>) : <div className="card"><Empty icon="🗓" title="Nothing booked" sub="New assignments appear here."/></div>)}
+    {tab==="done" && (doneJobs.length? doneJobs.map(j=><JobCard key={j.id} j={j}/>) : <div className="card"><Empty icon="🏁" title="No completed jobs yet" sub=""/></div>)}
+  </div>;
+}
+
+/* ================================================================
+   CUSTOMER PORTAL — quotes, payments (Stripe), job status, reviews
+   ================================================================ */
+function CustomerPortal(props){
+  const {tenant,ind,data,setData,session,onLogout,toast}=props;
+  const me=data.customers.find(c=>c.id===session.userId)||data.customers[0];
+  const myQuotes=data.quotes.filter(q=>q.customerId===me.id && q.status!=="draft");
+  const myJobs=data.jobs.filter(j=>j.customerId===me.id);
+  const myInv=data.invoices.filter(i=>i.customerId===me.id);
+  const due=myInv.filter(i=>i.status!=="paid");
+  const [viewQuote,setViewQuote]=useState(null);
+  const [pay,setPay]=useState(null);
+  const [rev,setRev]=useState(null);
+  const [revF,setRevF]=useState({rating:5,text:""});
+
+  const accept=(q,yes)=>{
+    setData(d=>{
+      d.quotes=d.quotes.map(x=>x.id===q.id?{...x,status:yes?"accepted":"declined"}:x);
+      if(yes){
+        d.activity.unshift({id:uid(),text:"Quote "+q.num+" accepted by "+me.name+" (portal)",date:todayISO(),icon:"✅"});
+        runAutomations(d,"quote_accepted",{customerId:me.id,title:q.title,quoteId:q.id,num:q.num,total:q.total,address:me.address});
+      }
+      return d;
+    });
+    setViewQuote(null);
+    toast(yes?"Quote accepted — we'll be in touch to confirm the booking! 🎉":"No worries — quote declined.");
+  };
+  const submitReview=()=>{
+    setData(d=>{
+      d.reviews.unshift({id:uid(),customerId:me.id,rating:revF.rating,text:revF.text,date:todayISO(),reply:null,platform:"Portal"});
+      d.activity.unshift({id:uid(),text:"New "+revF.rating+"★ review from "+me.name,date:todayISO(),icon:"⭐"});
+      return d;
+    });
+    setRev(null); setRevF({rating:5,text:""}); toast("Thanks for the review! ⭐");
+  };
+
+  if(viewQuote){
+    const q=data.quotes.find(x=>x.id===viewQuote);
+    return <div style={{maxWidth:640,margin:"0 auto",padding:"18px 14px 40px"}}>
+      <button className="btn btn-ghost btn-sm" style={{marginBottom:12}} onClick={()=>setViewQuote(null)}>← Back</button>
+      <QuoteDoc q={q} tenant={tenant} cust={me} readOnly onAccept={yes=>accept(q,yes)}/>
+    </div>;
+  }
+
+  return <div style={{maxWidth:640,margin:"0 auto",padding:"0 14px 40px"}}>
+    <div className="topbar" style={{margin:"0 -14px",padding:"12px 16px"}}>
+      <div className="row">
+        <div className="s-logo" style={{background:tenant.color}}>{initials(tenant.name)}</div>
+        <div><div style={{fontWeight:700,fontSize:14}}>{tenant.name}</div><div className="tiny faint">Customer portal</div></div>
+      </div>
+      <button className="btn btn-ghost btn-sm" onClick={onLogout}>Sign out</button>
+    </div>
+    <div style={{padding:"18px 0 14px"}}>
+      <div className="h1">Hi, {me.name.split(" ")[0]} 👋</div>
+      <div className="muted tiny">Your quotes, bookings and payments with {tenant.name}.</div>
+    </div>
+
+    {due.length>0 && <div className="card" style={{padding:16,marginBottom:14,borderLeft:"3px solid var(--warn)"}}>
+      <div className="h3" style={{marginBottom:10}}>💳 Payments due</div>
+      {due.map(i=><div key={i.id} className="spread" style={{padding:"8px 0",borderTop:"1px solid var(--border)"}}>
+        <div><div style={{fontWeight:600,fontSize:13}}>{i.num} · {i.title}</div><div className="tiny faint">Due {fmtDate(i.dueAt)}</div></div>
+        <div className="row"><span className="money" style={{fontWeight:700}}>{fmt$(i.amount)}</span>
+        <button className="btn btn-primary btn-sm" onClick={()=>setPay(i)}>Pay now</button></div>
+      </div>)}
+    </div>}
+
+    {myQuotes.filter(q=>q.status==="sent").length>0 && <div className="card" style={{padding:16,marginBottom:14,borderLeft:"3px solid var(--accent)"}}>
+      <div className="h3" style={{marginBottom:10}}>📄 Quotes awaiting your decision</div>
+      {myQuotes.filter(q=>q.status==="sent").map(q=><div key={q.id} className="spread" style={{padding:"8px 0",borderTop:"1px solid var(--border)"}}>
+        <div><div style={{fontWeight:600,fontSize:13}}>{q.num} · {q.title}</div><div className="tiny faint">{fmt$(q.total)} inc GST</div></div>
+        <button className="btn btn-primary btn-sm" onClick={()=>setViewQuote(q.id)}>Review & accept</button>
+      </div>)}
+    </div>}
+
+    <div className="card" style={{marginBottom:14}}>
+      <div className="h3" style={{padding:"14px 16px 4px"}}>🗓 Your {ind.jobNoun}s</div>
+      <div className="list">
+        {myJobs.map(j=><div key={j.id} className="list-row">
+          <div style={{flex:1}}><div style={{fontWeight:600,fontSize:13}}>{j.title}</div><div className="tiny faint">{fmtDateFull(j.date)} · {j.time}</div></div>
+          <StatusBadge s={j.status}/>
+          {j.status==="done"&&!data.reviews.some(r=>r.customerId===me.id&&r.text.includes(j.title))&&
+            <button className="btn btn-ghost btn-sm" onClick={()=>{setRev(j);setRevF({rating:5,text:""});}}>⭐ Review</button>}
+        </div>)}
+        {myJobs.length===0&&<Empty icon="🗓" title="No bookings yet" sub="Accepted quotes become bookings automatically."/>}
+      </div>
+    </div>
+
+    <div className="card">
+      <div className="h3" style={{padding:"14px 16px 4px"}}>🧾 Payment history</div>
+      <div className="list">
+        {myInv.filter(i=>i.status==="paid").map(i=><div key={i.id} className="list-row">
+          <div style={{flex:1}}><div style={{fontWeight:600,fontSize:13}}>{i.num} · {i.title}</div><div className="tiny faint">Paid {fmtDate(i.paidAt)} {i.method==="card"?"· 💳 card":"· 🏦 bank"}</div></div>
+          <span className="money tiny" style={{fontWeight:700}}>{fmt$(i.amount)}</span>
+        </div>)}
+        {myInv.filter(i=>i.status==="paid").length===0&&<div className="empty tiny">No payments yet</div>}
+      </div>
+    </div>
+    <div className="tiny faint" style={{textAlign:"center",marginTop:20}}>Powered by Flow Forward OS · Secure payments by Stripe</div>
+
+    {pay && <StripeCheckout inv={pay} tenant={tenant} onClose={()=>setPay(null)} onPaid={()=>{
+      setData(d=>{
+        d.invoices=d.invoices.map(x=>x.id===pay.id?{...x,status:"paid",paidAt:todayISO(),method:"card"}:x);
+        d.activity.unshift({id:uid(),text:"Invoice "+pay.num+" paid online via Stripe 💳",date:todayISO(),icon:"💳"});
+        d.messages.unshift({id:uid(),to:me.name,channel:"email",auto:true,date:todayISO(),body:"Hi "+me.name.split(" ")[0]+", payment of "+fmt$(pay.amount)+" received — receipt attached. Thank you!"});
+        return d;
+      });
+      setPay(null); toast("Payment successful — receipt emailed 🎉");
+    }}/>}
+
+    {rev && <Modal title={"Review: "+rev.title} onClose={()=>setRev(null)}>
+      <Field label="Your rating">
+        <div className="row" style={{gap:4}}>{[1,2,3,4,5].map(n=>
+          <button key={n} style={{fontSize:30,color:n<=revF.rating?"#F79009":"var(--border-strong)"}} onClick={()=>setRevF({...revF,rating:n})}>★</button>)}</div>
+      </Field>
+      <Field label="Tell others about your experience"><textarea className="textarea" rows={3} autoFocus value={revF.text} onChange={e=>setRevF({...revF,text:e.target.value})}/></Field>
+      <button className="btn btn-primary btn-lg" style={{width:"100%"}} disabled={!revF.text.trim()} onClick={submitReview}>Submit review</button>
+    </Modal>}
+  </div>;
+}
+
+/* Stripe-style checkout (simulated in V1; swaps to Stripe Checkout links in V2) */
+function StripeCheckout({inv,tenant,onClose,onPaid}){
+  const [card,setCard]=useState({num:"",exp:"",cvc:"",name:""});
+  const [busy,setBusy]=useState(false);
+  const fmtNum=v=>v.replace(/\D/g,"").slice(0,16).replace(/(.{4})/g,"$1 ").trim();
+  const fmtExp=v=>{const d=v.replace(/\D/g,"").slice(0,4);return d.length>2?d.slice(0,2)+"/"+d.slice(2):d;};
+  const ok=card.num.replace(/\s/g,"").length===16&&card.exp.length===5&&card.cvc.length>=3&&card.name.trim();
+  const submit=()=>{ setBusy(true); setTimeout(onPaid,1400); };
+  return <Modal title="Secure payment" onClose={busy?()=>{}:onClose}>
+    <div className="card" style={{padding:14,marginBottom:16,boxShadow:"none",background:"var(--bg)"}}>
+      <div className="spread"><span className="tiny muted">{inv.num} · {inv.title}</span><span className="money" style={{fontWeight:800,fontSize:18}}>{fmt$(inv.amount)}</span></div>
+      <div className="tiny faint" style={{marginTop:3}}>Paying {tenant.name}</div>
+    </div>
+    <Field label="Card number"><input className="input" inputMode="numeric" placeholder="4242 4242 4242 4242" value={card.num} onChange={e=>setCard({...card,num:fmtNum(e.target.value)})}/></Field>
+    <div className="grid2">
+      <Field label="Expiry"><input className="input" inputMode="numeric" placeholder="MM/YY" value={card.exp} onChange={e=>setCard({...card,exp:fmtExp(e.target.value)})}/></Field>
+      <Field label="CVC"><input className="input" inputMode="numeric" placeholder="123" value={card.cvc} onChange={e=>setCard({...card,cvc:e.target.value.replace(/\D/g,"").slice(0,4)})}/></Field>
+    </div>
+    <Field label="Name on card"><input className="input" value={card.name} onChange={e=>setCard({...card,name:e.target.value})}/></Field>
+    <button className="btn btn-primary btn-lg" style={{width:"100%"}} disabled={!ok||busy} onClick={submit}>{busy?"Processing…":"Pay "+fmt$(inv.amount)}</button>
+    <div className="tiny faint" style={{textAlign:"center",marginTop:12}}>🔒 256-bit encrypted · Powered by <b>Stripe</b> · Demo mode — use 4242 4242 4242 4242</div>
+  </Modal>;
+}
+
+const IS_PUBLIC_LEAD_PAGE = new URLSearchParams(location.search).get("lead")==="1";
+ReactDOM.createRoot(document.getElementById("root")).render(IS_PUBLIC_LEAD_PAGE? <PublicLeadForm/> : <App/>);
+</script>
+</body>
+</html>

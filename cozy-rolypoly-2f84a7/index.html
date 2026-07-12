@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#12403C" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>Borealis SIL OS</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2312403C'/%3E%3Ctext x='50' y='66' font-size='48' text-anchor='middle' fill='%23F7F3E3' font-family='Georgia'%3EB%3C/text%3E%3C/svg%3E" />
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+:root{
+  --bg:#F6F4EC; --surface:#FFFFFF; --surface2:#EFEDE3; --ink:#1B2422; --ink2:#5B6663; --ink3:#8B9490;
+  --brand:#12403C; --brand2:#1D5A54; --brandSoft:#DCEAE6; --accent:#A8265C; --accentSoft:#F7E2EB;
+  --ok:#2E7D4F; --okSoft:#E1F0E6; --warn:#9A6A00; --warnSoft:#FBF0D5; --danger:#B3362B; --dangerSoft:#F9E4E1;
+  --border:#E2DFD2; --shadow:0 1px 3px rgba(20,30,28,.08),0 4px 14px rgba(20,30,28,.06);
+  --radius:14px; --safe-b:env(safe-area-inset-bottom,0px);
+}
+[data-theme="dark"]{
+  --bg:#101716; --surface:#1A2321; --surface2:#22302D; --ink:#EDF2EF; --ink2:#A9B6B1; --ink3:#77837F;
+  --brand:#5FB3A4; --brand2:#7CC7B9; --brandSoft:#1E3833; --accent:#E876A6; --accentSoft:#3A2230;
+  --ok:#68C08B; --okSoft:#1D332A; --warn:#E0B45C; --warnSoft:#3A3220; --danger:#E4776B; --dangerSoft:#3B2422;
+  --border:#2C3A36; --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.01em}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 13px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brandSoft)}
+textarea{resize:vertical;min-height:88px}
+label{display:block;font-size:13px;font-weight:600;color:var(--ink2);margin:12px 0 5px}
+::placeholder{color:var(--ink3)}
+.app{max-width:760px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
+.hdr{position:sticky;top:0;z-index:30;background:var(--brand);color:#F7F3E3;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 12px;display:flex;align-items:center;gap:10px}
+.hdr .logo{font-family:Georgia,serif;font-size:20px;font-weight:700}
+.hdr .sub{font-size:12px;opacity:.75}
+.main{flex:1;padding:16px 16px calc(84px + var(--safe-b));overflow-x:hidden}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+.card h3{font-size:15px;margin-bottom:8px}
+.row{display:flex;gap:10px;align-items:center}
+.grow{flex:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:#fff;border-radius:12px;padding:12px 18px;font-weight:600;font-size:15px;transition:transform .05s}
+.btn:active{transform:scale(.97)}
+.btn.sec{background:var(--surface2);color:var(--ink)}
+.btn.danger{background:var(--danger)}
+.btn.ghost{background:none;color:var(--brand);padding:8px 10px}
+.btn.sm{padding:8px 12px;font-size:13px;border-radius:10px}
+.btn.block{width:100%}
+.btn:disabled{opacity:.45;cursor:default}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:99px;padding:3px 10px}
+.pill.ok{background:var(--okSoft);color:var(--ok)} .pill.warn{background:var(--warnSoft);color:var(--warn)}
+.pill.danger{background:var(--dangerSoft);color:var(--danger)} .pill.brand{background:var(--brandSoft);color:var(--brand)}
+.pill.accent{background:var(--accentSoft);color:var(--accent)}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:760px;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:40;padding-bottom:var(--safe-b)}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 2px 7px;font-size:10.5px;color:var(--ink3);font-weight:600}
+.nav button.on{color:var(--brand)}
+.nav svg{width:23px;height:23px}
+.tile{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);text-align:left;min-height:92px}
+.tile .ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--brandSoft);color:var(--brand)}
+.tile b{font-size:13.5px}
+.tile span{font-size:11.5px;color:var(--ink2);line-height:1.35}
+.list-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.list-item:last-child{border-bottom:none}
+.muted{color:var(--ink2);font-size:13px}
+.tiny{color:var(--ink3);font-size:12px}
+.section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin:20px 0 8px}
+.alert{border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.5;margin-bottom:12px;border:1px solid}
+.alert.warn{background:var(--warnSoft);border-color:var(--warn);color:var(--ink)}
+.alert.danger{background:var(--dangerSoft);border-color:var(--danger);color:var(--ink)}
+.alert.brand{background:var(--brandSoft);border-color:var(--brand);color:var(--ink)}
+.chip{display:inline-block;background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:5px 12px;font-size:12.5px;margin:0 6px 6px 0}
+.check{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--border)}
+.check:last-child{border-bottom:none}
+.cbox{width:26px;height:26px;border-radius:8px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--surface)}
+.cbox.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.big-num{font-size:30px;font-weight:750;letter-spacing:-.02em}
+.seg{display:flex;background:var(--surface2);border-radius:11px;padding:3px;gap:3px;margin-bottom:14px;overflow-x:auto}
+.seg button{flex:1;padding:8px 10px;border-radius:9px;font-size:13px;font-weight:600;color:var(--ink2);white-space:nowrap}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.fab-note{position:fixed;bottom:calc(92px + var(--safe-b));right:max(16px,calc(50% - 364px));z-index:35;background:var(--accent);color:#fff;border-radius:16px;padding:14px 18px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.25);display:flex;gap:8px;align-items:center}
+.modal-bg{position:fixed;inset:0;background:rgba(10,20,18,.55);z-index:60;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:var(--bg);width:100%;max-width:760px;max-height:92dvh;border-radius:20px 20px 0 0;overflow-y:auto;padding:18px 16px calc(24px + var(--safe-b))}
+.modal .grab{width:40px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 14px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--brandSoft);color:var(--brand);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px}
+.kv:last-child{border-bottom:none}
+.kv b{text-align:right}
+.search-hit mark{background:var(--warnSoft);color:inherit;border-radius:3px;padding:0 2px}
+.login-wrap{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:24px;max-width:440px;margin:0 auto}
+.spin{width:20px;height:20px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 60px);left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);border-radius:12px;padding:11px 18px;font-size:14px;font-weight:600;z-index:99;box-shadow:var(--shadow);max-width:90%}
+@media(min-width:761px){.main{padding-left:24px;padding-right:24px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const {useState,useEffect,useMemo,useRef,useCallback} = React;
+
+/* ================= CONFIG & SEED DATA ================= */
+const APP_VER = "1.0.0";
+const LS = {
+  get:(k,d)=>{try{const v=localStorage.getItem("silos:"+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set:(k,v)=>localStorage.setItem("silos:"+k,JSON.stringify(v)),
+  del:(k)=>localStorage.removeItem("silos:"+k)
+};
+const uid = ()=>crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random());
+const todayStr = ()=>new Date().toISOString().slice(0,10);
+const fmtTime = (d)=>new Date(d).toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"});
+const fmtDate = (d)=>new Date(d).toLocaleDateString("en-AU",{weekday:"short",day:"numeric",month:"short"});
+const fmtMoney = (n)=>"$"+Number(n||0).toFixed(2);
+
+/* Participant profile — imported from BSP guide, money guide & team WhatsApp */
+const SEED_PARTICIPANT = {
+  id:"p-khayat", fullName:"Muhamad Samer Khayat", preferredName:"Muhamad",
+  address:"Georges Hall NSW (new SIL property — confirm unit details with Angel). Previous: 51 Merle Street, Chester Hill NSW 2162",
+  languages:"English and Arabic", culture:"Lebanese Muslim",
+  supportNeeds:"24/7 support recommended (SIL)",
+  reportTo:"Case Manager (Angel) / Office / On-Call Supervisor",
+  diagnoses:["Treatment-Resistant Schizophrenia","Mild Intellectual Disability"],
+  presentations:["Hallucinations or unusual beliefs","Religious preoccupation","Disorganised thoughts","Low motivation","Self-neglect","Difficulty with change","Difficulty following complex instructions","Poor insight into mental health needs"],
+  commsDo:["Speak calmly","Use short sentences","Give one instruction at a time","Give him time to respond","Respect his religion and culture","Give him space when upset","Re-approach later when calm"],
+  commsDont:["Do not yell","Do not argue","Do not lecture","Do not keep repeating instructions","Do not challenge hallucinations, delusions or religious beliefs","Do not take swearing personally","Do not follow him around if he walks away"],
+  triggers:["Too many demands placed on him","Staff repeating instructions","Staff pressuring him","Staff continuing after he tries to disengage","Being rushed","Staff arriving late","Having to wait","Sudden changes","Interruption during prayer, meals, smoking or preferred activities","Medical appointments discussed in a stressful way"],
+  warningSigns:["Becoming quiet","Looking away","Increased self-talk","Repeating requests","Fixating on a preferred activity","Mild swearing","Agitation","Walking away"],
+  warningResponse:["Stop the demand","Reduce talking","Give space","Do not repeat the request","Lower noise","Re-approach later"],
+  warningPhrase:"That's okay, we can come back to that later.",
+  escalationSteps:["Stop all demands","Stay calm","Give space","Use minimal words","Do not argue","Do not explain consequences","Do not block exits","Do not stand over him","Do not physically intervene","Call the Case Manager / office if risk increases"],
+  escalationPhrase:"I can see you're not comfortable right now. I'll give you some space.",
+  afterCalm:["Do not lecture him","Do not blame him","Do not bring up the refused task straight away","Offer tea, coffee, food, reading or quiet time","Document what happened"],
+  routine:["Prayer times (5 daily — never interrupt)","Meals (halal only)","Medication 5:30pm","Hygiene (offer once, link to routine e.g. after prayer)","Appointments","Coffee outings (very preferred — often 3-4 sips then discards)","Mosque attendance","Shopping","Reading or quiet time","Safe community access","Household support"],
+  observations:["Rarely finishes food or drink — takes a few bites/sips then discards. Encourage storing leftovers in fridge.","Chain smokes / vapes; when out of cigarettes has smoked tea leaves in rolling papers — monitor closely (fire risk).","Smokes outside/balcony when boundary set calmly — generally compliant with 'no smoking in car' when explained as worker safety rule.","Enjoys making his own coffee, including independently accessing coffee machines (e.g. servo) — may not ask permission.","Discards wrappers/rubbish at will in public — gentle prompts.","Favourite meal: fried cauliflower, potato, garlic, yoghurt and bread. Loves Arabic coffee with lots of sugar, scrambled eggs, kebabs.","May play pokies with pocket money; keeps to himself in public, polite to staff, calls people 'habibi'.","Prefers to be left alone at home unless he initiates; often eats in bedroom.","Frustrated by frequent appointments — reminders of illness. Talk about them calmly and early.","Misses university days; responds well to being treated as intelligent and capable.","May become distressed after difficult family visits — mother offering money has helped de-escalate.","May swear in Arabic when distressed — not more threatening than English swearing."],
+  fireSafety:["Supervise ALL stove use — never unsupported","Calmly make area safe if stove left unattended","Monitor cigarettes, bedding, furniture and rubbish","Encourage outdoor smoking (balcony)","Report all fire risks immediately"],
+  hygiene:["Prepare the bathroom before prompting","Offer hygiene once","Link to routine (e.g. after prayer)","Re-offer later if refused","Never shame or repeat prompts","Never remove preferred activities as consequence","Document refusal"],
+  leavesProperty:["Do NOT physically stop him","Do NOT block the door","Do NOT chase in a threatening way","Try calm phone contact","Call Case Manager / office immediately","Follow office instructions","Document: time left, clothing, direction, contact attempts, office instructions, time returned, presentation on return"],
+  callOfficeFor:["Leaving property without support","Missing / unable to be contacted","Medication refusal","Missed blood test","Missed injection","Fire, stove or smoking risk","Serious verbal aggression that does not settle","Any physical aggression or threat of harm","Appearing very confused, distressed, paranoid, withdrawn or disorganised","Suspected alcohol or substance use","Property damage","Police, ambulance or fire brigade involvement","Any safety risk to Muhamad, staff or the community"],
+  neverRules:["Physically block or restrain","Block exits","Use punishment","Threaten consequences","Argue about religion or hallucinations","Withhold medication","Withhold food","Withhold prayer","Withhold mosque attendance","Withhold preferred activities","Keep pushing tasks when distressed"],
+  contacts:[
+    {name:"Angel", role:"Case Manager (Borealis)", note:"First escalation point. Send completed money forms to Angel/Donya."},
+    {name:"On-Call Supervisor", role:"After hours escalation", note:"Via office"},
+    {name:"Batoul", role:"Sister", phone:"0405 738 111", note:"Provides pocket money. Send receipt photo + remaining balance via WhatsApp after each purchase."},
+    {name:"Mother", role:"Family — Arncliffe", note:"Regular visits. Calming influence."},
+    {name:"Injection clinic", role:"Clinic", phone:"(02) 9601 3175", note:"6B/633–639 Hume Highway, Casula NSW 2170"},
+    {name:"Emergency", role:"Police / Ambulance / Fire", phone:"000", note:"Immediate danger — call 000 FIRST, then Case Manager"}
+  ],
+  moneyRules:["Record opening balance at start of shift","Record every purchase: time, items, amount, remaining balance","Photograph every receipt; send photo + remaining balance to Batoul (sister) via WhatsApp","Count cash at end of shift and confirm it matches recorded balance","New form every day; pouch + form handed over at every handover","Last worker of the day sends completed form to Angel/Donya","Never mix participant money with your own","Report ANY discrepancy immediately — do not wait until end of shift"]
+};
+
+const SEED_MEDS = [
+  {id:"m1", name:"Clozapine", dose:"⚠ CONFIRM: guide says 550mg, team update says 300mg — verify with Angel", time:"17:30", timeLabel:"5:30 PM daily", instructions:"Calm wording: \"Here's your medication, Muhamad.\" Record every dose. Report refusal immediately. Never withhold; never use as reward/punishment."},
+  {id:"m2", name:"Candesartan / Hydrochlorothiazide", dose:"1 tablet", time:"08:00", timeLabel:"Morning daily", instructions:"Blood pressure medication. Record in medication log."}
+];
+
+const SEED_APPTS = [
+  {id:"a1", title:"Blood test (Clozapine monitoring)", recurrence:"Every Tuesday", location:"197–199 Merrylands Road, Merrylands NSW 2160", day:2, notes:"Required for Clozapine safety. Missed test = call office immediately."},
+  {id:"a2", title:"Injection appointment", recurrence:"Every second Wednesday", location:"6B/633–639 Hume Highway, Casula NSW 2170", phone:"(02) 9601 3175", day:3, anchor:"2026-07-01", notes:"Anchor: Wed 1 July 2026, then fortnightly (15 Jul, 29 Jul...). Refusal = call office immediately."},
+  {id:"a3", title:"Collect Clozapine", recurrence:"Every Thursday", location:"Merrylands Community Health Centre, 14 Memorial Avenue, Merrylands NSW 2160", day:4, notes:"Weekly collection of Clozapine supply."}
+];
+
+const SEED_CHECKLIST = [
+  {id:"c1",kind:"daily",label:"Morning medication given & logged (Candesartan)",sort:1},
+  {id:"c2",kind:"daily",label:"Prayer times respected (never interrupted)",sort:2},
+  {id:"c3",kind:"daily",label:"Meals offered — halal, favourites where possible",sort:3},
+  {id:"c4",kind:"daily",label:"Fluids encouraged through the day",sort:4},
+  {id:"c5",kind:"daily",label:"Hygiene offered once (bathroom prepared first)",sort:5},
+  {id:"c6",kind:"daily",label:"5:30pm Clozapine given & logged",sort:6},
+  {id:"c7",kind:"daily",label:"Smoking outdoors only — stove & fire check done",sort:7},
+  {id:"c8",kind:"daily",label:"Money form up to date, receipts photographed",sort:8},
+  {id:"c9",kind:"daily",label:"Progress note written before end of shift",sort:9},
+  {id:"c10",kind:"daily",label:"Handover completed (pouch + keys + form)",sort:10},
+  {id:"k1",kind:"cleaning",label:"Kitchen — dishes, benches, stove wiped & OFF",sort:1},
+  {id:"k2",kind:"cleaning",label:"Bathroom — wiped, restocked, prepared for prompts",sort:2},
+  {id:"k3",kind:"cleaning",label:"Living areas — rubbish collected, floors clear",sort:3},
+  {id:"k4",kind:"cleaning",label:"Balcony — cigarette butts cleared safely",sort:4},
+  {id:"k5",kind:"cleaning",label:"Bedroom support — bedding check (fire safety)",sort:5},
+  {id:"k6",kind:"cleaning",label:"Bins out / brought in (collection day)",sort:6},
+  {id:"k7",kind:"cleaning",label:"Fridge check — discard old food, note low stock",sort:7}
+];
+
+const SEED_INVENTORY = [
+  {id:"i1",item:"Cigarettes",category:"personal",quantity:0,low:1,note:"He smokes tea leaves when out — monitor"},
+  {id:"i2",item:"Coffee (instant + Arabic)",category:"groceries",quantity:1,low:1},
+  {id:"i3",item:"Sugar",category:"groceries",quantity:1,low:1},
+  {id:"i4",item:"Eggs",category:"groceries",quantity:1,low:1,note:"Loves scrambled eggs"},
+  {id:"i5",item:"Bread / rolls",category:"groceries",quantity:1,low:1},
+  {id:"i6",item:"Tea bags",category:"groceries",quantity:1,low:1},
+  {id:"i7",item:"Halal chicken / meat",category:"groceries",quantity:0,low:1},
+  {id:"i8",item:"Yoghurt",category:"groceries",quantity:0,low:1},
+  {id:"i9",item:"Deodorant spray",category:"hygiene",quantity:1,low:1},
+  {id:"i10",item:"Shampoo / body wash",category:"hygiene",quantity:1,low:1},
+  {id:"i11",item:"Toilet paper",category:"hygiene",quantity:2,low:2},
+  {id:"i12",item:"Dish liquid",category:"cleaning",quantity:1,low:1},
+  {id:"i13",item:"Surface spray",category:"cleaning",quantity:1,low:1},
+  {id:"i14",item:"Garbage bags",category:"cleaning",quantity:1,low:1}
+];
+
+const SEED_USERS = [
+  {id:"u-admin",name:"Admin",email:"admin@borealis.local",role:"admin"},
+  {id:"u-angel",name:"Angel",email:"angel@borealis.local",role:"team_leader"},
+  {id:"u-donya",name:"Donya",email:"donya@borealis.local",role:"support_worker"},
+  {id:"u-ahmad",name:"Ahmad",email:"ahmad@borealis.local",role:"support_worker"},
+  {id:"u-damian",name:"Damian",email:"damian@borealis.local",role:"support_worker"},
+  {id:"u-ash",name:"Ash",email:"ash@borealis.local",role:"support_worker"},
+  {id:"u-ali",name:"Ali",email:"ali@borealis.local",role:"support_worker"}
+];
+
+const ROLE_LABEL = {support_worker:"Support Worker",team_leader:"Team Leader",admin:"Admin"};
+
+/* ================= DATA LAYER (local-first, Supabase-ready) ================= */
+function useStore(key, seed){
+  const [data,setData] = useState(()=>LS.get(key,seed));
+  const save = useCallback((next)=>{
+    setData(prev=>{
+      const v = typeof next==="function" ? next(prev) : next;
+      LS.set(key,v);
+      return v;
+    });
+  },[key]);
+  return [data,save];
+}
+function getSupabase(){
+  const cfg = LS.get("sbcfg",null);
+  if(!cfg || !cfg.url || !cfg.key) return null;
+  try{ return window.supabase.createClient(cfg.url, cfg.key); }catch(e){ return null; }
+}
+
+/* ================= AUDIT (local trail; Supabase triggers cover cloud) ================= */
+function audit(actor, action, detail){
+  const log = LS.get("audit",[]);
+  log.unshift({at:new Date().toISOString(), actor, action, detail});
+  LS.set("audit", log.slice(0,2000));
+}
+
+/* ================= NDIS NOTE GENERATOR (~2000 chars) ================= */
+function generateNote(s, user){
+  const p = "Muhamad";
+  const parts = [];
+  const dateLine = new Date().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  parts.push(`PROGRESS NOTE — ${dateLine}. Shift: ${s.shiftType||"day"} (${s.start||"start"}–${s.end||"end"}). Support worker: ${user.name}.`);
+
+  const moodMap = {
+    calm:"presented as calm and settled throughout the shift, with no behaviours of concern observed",
+    happy:"presented in a positive and cheerful mood, engaging warmly with the support worker",
+    tired:"appeared tired, and this was reflected in his overall mood and energy across the shift",
+    flat:"presented with a flat affect and low motivation, requiring gentle, low-pressure encouragement",
+    agitated:"showed periods of agitation; early warning signs were observed and de-escalation strategies from the BSP were applied",
+    distressed:"experienced a period of significant distress during the shift (see incident/detail below); staff followed the BSP by stopping demands, giving space and using minimal calm words"
+  };
+  parts.push(`${p} ${moodMap[s.mood]||"presented as settled"}.`);
+
+  if(s.meals) parts.push(`Nutrition: ${s.meals.trim()} Consistent with his known pattern, staff encouraged storing unfinished food and fluids in the fridge.`);
+  if(s.fluids) parts.push(`Fluids: ${s.fluids.trim()}`);
+
+  if(s.medsGiven==="given") parts.push(`Medication: all scheduled medication was supported and accepted at the scheduled times using calm wording, and recorded in the medication log.`);
+  else if(s.medsGiven==="refused") parts.push(`Medication: ${p} declined medication when offered. In line with the BSP, staff did not pressure or repeat the request, re-approached later, and notified the Case Manager/office immediately. The refusal has been logged and an incident report completed.`);
+  else if(s.medsGiven==="partial") parts.push(`Medication: medication was partially supported this shift — see medication log for detail; the Case Manager has been advised of any missed doses.`);
+
+  if(s.hygiene) parts.push(`Hygiene and self-care: ${s.hygiene.trim()}`);
+  if(s.prayer) parts.push(`Religious and cultural support: ${s.prayer.trim()} Prayer times were respected and never interrupted.`);
+  if(s.community) parts.push(`Community access: ${s.community.trim()}`);
+  if(s.household) parts.push(`Household: ${s.household.trim()}`);
+  if(s.smoking) parts.push(`Smoking/fire safety: ${s.smoking.trim()} Stove use was supervised and a fire-safety check completed.`);
+  if(s.money) parts.push(`Money handling: ${s.money.trim()} All purchases were recorded on the daily reconciliation form with receipts photographed and sent to his sister as required.`);
+  if(s.warnings) parts.push(`Early warning signs observed: ${s.warnings.trim()} Staff responded by stopping the demand, reducing talking and giving space, re-approaching once ${p} was calm ("That's okay, we can come back to that later").`);
+  if(s.incidents) parts.push(`Incident: ${s.incidents.trim()} A separate incident report has been completed and the office notified.`);
+  if(s.goals) parts.push(`Progress toward goals: ${s.goals.trim()}`);
+  if(s.other) parts.push(s.other.trim());
+
+  parts.push(`Handover: the money pouch, keys and reconciliation form were handed to the incoming worker, and outstanding items were communicated. ${p}'s routine, dignity and cultural needs were supported in line with his Interim Behaviour Support Plan throughout the shift.`);
+
+  let note = parts.join(" ");
+  if(note.length > 2050){
+    note = note.slice(0,2000);
+    note = note.slice(0, note.lastIndexOf(".")+1);
+  }
+  return note;
+}
+
+/* ================= ICONS ================= */
+const I = {
+  home:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>,
+  user:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-5.5 8-5.5s6.5 1.5 8 5.5"/></svg>,
+  shift:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>,
+  note:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>,
+  more:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>,
+  pill:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="9" width="18" height="7" rx="3.5" transform="rotate(-35 12 12.5)"/><path d="M9.5 8.5l5 7"/></svg>,
+  money:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.7"/></svg>,
+  cal:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>,
+  alertT:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4M12 17.2v.1"/></svg>,
+  checkl:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 6.5 6 8.5 9.5 5M4 13.5 6 15.5 9.5 12M4 20.3 6 22 9.5 18.7" transform="translate(0,-1.2)"/><path d="M12.5 6h8M12.5 13h8M12.5 20h8" transform="translate(0,-1.2)"/></svg>,
+  box:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><path d="M3.5 8 12 3.5 20.5 8v8L12 20.5 3.5 16z"/><path d="M3.5 8 12 12.5 20.5 8M12 12.5v8"/></svg>,
+  hand:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 11V6a2 2 0 0 1 4 0v5M11 11V5a2 2 0 0 1 4 0v6"/><path d="M15 11.5V7a2 2 0 0 1 4 0v7c0 4-2.5 7-6.5 7S6 18 5.5 15L4.2 10.8a1.8 1.8 0 0 1 3.4-1.1L8.5 12"/></svg>,
+  search:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>,
+  chart:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 20V10M10 20V4M16 20v-8M21 20H3"/></svg>,
+  shield:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><path d="M12 3 5 6v5c0 5 3 8.5 7 10 4-1.5 7-5 7-10V6z"/></svg>,
+  gear:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19 12c0-.6 0-1-.1-1.4l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2.4-1.4L13.7 2h-3.4l-.4 2.6a7 7 0 0 0-2.4 1.4l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12c0 .5 0 1 .1 1.4l-2 1.6 2 3.4 2.4-1c.7.6 1.5 1 2.4 1.4l.4 2.6h3.4l.4-2.6a7 7 0 0 0 2.4-1.4l2.4 1 2-3.4-2-1.6c.1-.4.1-.9.1-1.4z"/></svg>,
+  doc:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/></svg>,
+  book:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5V5.5M20 18v3H6.5"/></svg>,
+  fire:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3c1 3-3 4.5-3 8a3 3 0 0 0 6 0c0-1 -.5-2-1-2.5 2 .5 4 2.5 4 5.5a6 6 0 0 1-12 0c0-5 4.5-7 6-11z"/></svg>,
+  phone:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 4h4l1.5 4L8 9.5a12 12 0 0 0 6.5 6.5l1.5-2.5 4 1.5v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>,
+  moon:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 7 7 0 0 0 20 14.5z"/></svg>
+};
+
+/* ================= SMALL COMPONENTS ================= */
+function Toast({msg}){ return msg ? <div className="toast">{msg}</div> : null; }
+function Modal({open,onClose,children,title}){
+  if(!open) return null;
+  return <div className="modal-bg" onClick={e=>{if(e.target===e.currentTarget)onClose()}}>
+    <div className="modal">
+      <div className="grab"/>
+      {title && <h2 style={{fontSize:18,marginBottom:12}}>{title}</h2>}
+      {children}
+    </div>
+  </div>;
+}
+function Field({label,children}){ return <div><label>{label}</label>{children}</div>; }
+function Empty({text}){ return <div style={{textAlign:"center",padding:"28px 12px"}} className="muted">{text}</div>; }
+
+/* ================= LOGIN ================= */
+function Login({users,setUsers,onLogin}){
+  const [email,setEmail] = useState(LS.get("lastEmail",""));
+  const [name,setName] = useState("");
+  const [isNew,setIsNew] = useState(false);
+  const [busy,setBusy] = useState(false);
+  const sb = getSupabase();
+
+  const go = async ()=>{
+    const em = email.trim().toLowerCase();
+    if(!em) return;
+    setBusy(true);
+    if(sb){
+      // Supabase magic-link auth (production)
+      const {error} = await sb.auth.signInWithOtp({email:em});
+      setBusy(false);
+      if(error) alert("Sign-in error: "+error.message);
+      else alert("Check your email for the sign-in link, then reopen the app.");
+      return;
+    }
+    // Local mode
+    let u = users.find(x=>x.email.toLowerCase()===em);
+    if(!u){
+      if(!isNew){ setIsNew(true); setBusy(false); return; }
+      if(!name.trim()){ setBusy(false); return; }
+      u = {id:uid(),name:name.trim(),email:em,role:"support_worker"};
+      setUsers(prev=>[...prev,u]);
+    }
+    LS.set("lastEmail",em);
+    audit(u.name,"login",{email:em});
+    onLogin(u);
+    setBusy(false);
+  };
+
+  return <div className="login-wrap">
+    <div style={{textAlign:"center",marginBottom:28}}>
+      <div style={{width:72,height:72,borderRadius:20,background:"var(--brand)",color:"#F7F3E3",display:"inline-flex",alignItems:"center",justifyContent:"center",fontFamily:"Georgia,serif",fontSize:40,fontWeight:700,marginBottom:14}}>B</div>
+      <h1 style={{fontSize:24}}>Borealis SIL OS</h1>
+      <p className="muted" style={{marginTop:4}}>Muhamad Khayat support team</p>
+    </div>
+    <div className="card">
+      <Field label="Your work email">
+        <input type="email" inputMode="email" autoComplete="email" placeholder="you@borealis.com.au" value={email} onChange={e=>setEmail(e.target.value)} onKeyDown={e=>e.key==="Enter"&&go()} />
+      </Field>
+      {isNew && !sb && <Field label="Your name (first login)">
+        <input placeholder="e.g. Donya" value={name} onChange={e=>setName(e.target.value)} onKeyDown={e=>e.key==="Enter"&&go()} />
+      </Field>}
+      <button className="btn block" style={{marginTop:16}} onClick={go} disabled={busy}>
+        {busy ? <div className="spin"/> : (sb ? "Email me a sign-in link" : (isNew ? "Create my account" : "Sign in"))}
+      </button>
+      {!sb && <p className="tiny" style={{marginTop:12,textAlign:"center"}}>Local mode — data stays on this device. Connect Supabase in Settings for the whole team to share one secure database.</p>}
+    </div>
+    <p className="tiny" style={{textAlign:"center"}}>Confidential — authorised Borealis support staff only.<br/>Participant information is protected under NDIS Practice Standards.</p>
+  </div>;
+}
+
+/* ================= DASHBOARD ================= */
+function Dashboard({user,go,shift,meds,medLog,appts,checkLog,checklist,handovers,moneyDays,incidents}){
+  const now = new Date();
+  const day = todayStr();
+  const hour = now.getHours();
+  const greet = hour<12?"Good morning":hour<17?"Good afternoon":"Good evening";
+
+  // Next appointment logic
+  const upcoming = useMemo(()=>{
+    const out=[];
+    appts.forEach(a=>{
+      for(let i=0;i<15;i++){
+        const d = new Date(); d.setDate(d.getDate()+i); d.setHours(9,0,0,0);
+        if(d.getDay()!==a.day) continue;
+        if(a.anchor){
+          const weeks = Math.round((d - new Date(a.anchor))/6048e5);
+          if(weeks % 2 !== 0) continue;
+        }
+        out.push({...a,date:d}); break;
+      }
+    });
+    return out.sort((x,y)=>x.date-y.date);
+  },[appts]);
+
+  const clozToday = medLog.some(l=>l.day===day && l.name.startsWith("Clozapine") && l.status==="given");
+  const clozDue = hour>=17 && !clozToday;
+  const dailyDone = checkLog.filter(l=>l.day===day && checklist.find(c=>c.id===l.templateId && c.kind==="daily")).length;
+  const dailyTotal = checklist.filter(c=>c.kind==="daily").length;
+  const lastHand = handovers[0];
+  const todayMoney = moneyDays.find(d=>d.day===day);
+  const openIncCount = (incidents||[]).filter(i=>i.status==="open").length;
+
+  return <div>
+    <div style={{marginBottom:16}}>
+      <h1 style={{fontSize:22}}>{greet}, {user.name.split(" ")[0]}</h1>
+      <p className="muted">{now.toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long"})} · Supporting <b style={{color:"var(--ink)"}}>Muhamad</b></p>
+    </div>
+
+    {!shift && <button className="btn block" style={{marginBottom:12,padding:"16px"}} onClick={()=>go("shift")}>▶ Start my shift</button>}
+    {shift && <div className="card" style={{borderLeft:"4px solid var(--ok)"}}>
+      <div className="row">
+        <div className="grow">
+          <b>Shift in progress</b>
+          <div className="muted">Started {fmtTime(shift.startedAt)} · {shift.shiftType}</div>
+        </div>
+        <button className="btn sm sec" onClick={()=>go("shift")}>Open</button>
+      </div>
+    </div>}
+
+    {clozDue && <div className="alert danger" onClick={()=>go("meds")} style={{cursor:"pointer"}}>
+      <b>⏰ Clozapine due — 5:30 PM.</b> Tap to record. Calm wording: "Here's your medication, Muhamad." Refusal = call office immediately.
+    </div>}
+    {upcoming[0] && (upcoming[0].date.toDateString()===now.toDateString()) &&
+      <div className="alert warn" onClick={()=>go("calendar")} style={{cursor:"pointer"}}>
+        <b>📍 Today: {upcoming[0].title}.</b> {upcoming[0].location}. Discuss calmly and early — avoid pressure.
+      </div>}
+
+    <div className="grid2">
+      <button className="tile" onClick={()=>go("meds")}>
+        <div className="ic"><I.pill/></div><b>Medication</b>
+        <span>{clozToday?"✓ Clozapine logged today":"Clozapine 5:30 PM · morning tablet"}</span>
+      </button>
+      <button className="tile" onClick={()=>go("money")}>
+        <div className="ic"><I.money/></div><b>Money</b>
+        <span>{todayMoney?`Balance ${fmtMoney(todayMoney.balance)}`:"Start today's form"}</span>
+      </button>
+      <button className="tile" onClick={()=>go("checklist")}>
+        <div className="ic"><I.checkl/></div><b>Daily checklist</b>
+        <span>{dailyDone}/{dailyTotal} done today</span>
+      </button>
+      <button className="tile" onClick={()=>go("handover")}>
+        <div className="ic"><I.hand/></div><b>Handover</b>
+        <span>{lastHand?`Last: ${fmtTime(lastHand.at)} by ${lastHand.fromName}`:"No handovers yet"}</span>
+      </button>
+      <button className="tile" onClick={()=>go("profile")}>
+        <div className="ic"><I.book/></div><b>About Muhamad</b>
+        <span>Triggers · warning signs · BSP quick guide</span>
+      </button>
+      <button className="tile" onClick={()=>go("incidents")}>
+        <div className="ic" style={{background:"var(--dangerSoft)",color:"var(--danger)"}}><I.alertT/></div><b>Incidents</b>
+        <span>{openIncCount?`${openIncCount} open`:"Report an incident"}</span>
+      </button>
+    </div>
+
+    <div className="section-title">Next appointments</div>
+    <div className="card">
+      {upcoming.slice(0,3).map(a=><div key={a.id} className="list-item">
+        <div className="avatar" style={{borderRadius:12}}>{a.date.getDate()}</div>
+        <div className="grow">
+          <b style={{fontSize:14}}>{a.title}</b>
+          <div className="tiny">{fmtDate(a.date)} · {a.location}</div>
+        </div>
+      </div>)}
+    </div>
+
+    <div className="section-title">Emergency</div>
+    <div className="card" style={{background:"var(--dangerSoft)",borderColor:"var(--danger)"}}>
+      <p style={{fontSize:13.5,margin:"0 0 10px"}}>Immediate danger: call <b>000 first</b>, then the Case Manager / office. Never manage serious situations alone.</p>
+      <div className="row">
+        <a className="btn danger sm grow" style={{textDecoration:"none",textAlign:"center",justifyContent:"center"}} href="tel:000">📞 000</a>
+        <button className="btn sm sec grow" onClick={()=>go("profile","contacts")}>All contacts</button>
+      </div>
+    </div>
+  </div>;
+}
+
+/* ================= PARTICIPANT PROFILE ================= */
+function Profile({initialTab}){
+  const P = SEED_PARTICIPANT;
+  const [tab,setTab] = useState(initialTab||"quick");
+  const List = ({items,icon})=><ul style={{margin:"4px 0",paddingLeft:20}}>{items.map((x,i)=><li key={i} style={{marginBottom:6,fontSize:14}}>{x}</li>)}</ul>;
+  return <div>
+    <div className="card" style={{display:"flex",gap:14,alignItems:"center"}}>
+      <div className="avatar" style={{width:54,height:54,fontSize:20}}>MK</div>
+      <div>
+        <h2 style={{fontSize:18}}>{P.fullName}</h2>
+        <div className="tiny">{P.culture} · {P.languages} · {P.supportNeeds}</div>
+      </div>
+    </div>
+    <div className="seg">
+      {[["quick","Quick guide"],["triggers","Triggers"],["escalation","Escalation"],["routine","Routine"],["safety","Safety"],["contacts","Contacts"]].map(([k,l])=>
+        <button key={k} className={tab===k?"on":""} onClick={()=>setTab(k)}>{l}</button>)}
+    </div>
+
+    {tab==="quick" && <div>
+      <div className="alert brand"><b>Keep support: Calm. Simple. Respectful. Predictable. Safe.</b> If unsure, call the Case Manager / office — escalate early.</div>
+      <div className="card"><h3>Diagnoses</h3>{P.diagnoses.map(d=><span key={d} className="chip">{d}</span>)}
+        <p className="muted" style={{marginTop:8}}>May experience: {P.presentations.join("; ").toLowerCase()}.</p></div>
+      <div className="card"><h3>✅ Communication — Do</h3><List items={P.commsDo}/></div>
+      <div className="card"><h3>🚫 Communication — Don't</h3><List items={P.commsDont}/></div>
+      <div className="card"><h3>❌ Never (critical worker rules)</h3><List items={P.neverRules}/></div>
+      <div className="card"><h3>What we've learned about Muhamad</h3><List items={P.observations}/></div>
+    </div>}
+
+    {tab==="triggers" && <div>
+      <div className="card"><h3>Known triggers</h3><List items={P.triggers}/></div>
+      <div className="card"><h3>Early warning signs — watch for</h3><List items={P.warningSigns}/></div>
+      <div className="card" style={{borderLeft:"4px solid var(--warn)"}}><h3>When you see warning signs</h3><List items={P.warningResponse}/>
+        <div className="alert warn" style={{marginTop:10,marginBottom:0}}>Use this phrase: <b>"{P.warningPhrase}"</b></div></div>
+    </div>}
+
+    {tab==="escalation" && <div>
+      <div className="card" style={{borderLeft:"4px solid var(--danger)"}}><h3>If Muhamad escalates</h3><List items={P.escalationSteps}/>
+        <div className="alert danger" style={{marginTop:10,marginBottom:0}}>Use this phrase: <b>"{P.escalationPhrase}"</b></div></div>
+      <div className="card"><h3>Once he calms down</h3><List items={P.afterCalm}/></div>
+      <div className="card"><h3>If he leaves the property</h3><List items={P.leavesProperty}/>
+        <div className="alert danger" style={{marginTop:10,marginBottom:0}}>Missing / uncontactable / safety concern = <b>urgent escalation</b>. Immediate danger: <b>000 first</b>, then office.</div></div>
+      <div className="card"><h3>Call the office immediately for</h3><List items={P.callOfficeFor}/></div>
+    </div>}
+
+    {tab==="routine" && <div>
+      <div className="card"><h3>Daily routine to support</h3><List items={P.routine}/>
+        <div className="alert brand" style={{marginTop:10,marginBottom:0}}>Tell Muhamad about changes early: <b>"Muhamad, today we will go shopping in the afternoon instead of the morning."</b></div></div>
+      <div className="card"><h3>Religion & culture</h3>
+        <List items={["Respect prayer times — never interrupt prayer","Never use prayer or mosque as reward or punishment","Support mosque attendance","Ensure all food is halal","Arabic swearing when distressed is not more threatening than English"]}/></div>
+      <div className="card"><h3>Hygiene support</h3><List items={P.hygiene}/></div>
+    </div>}
+
+    {tab==="safety" && <div>
+      <div className="card" style={{borderLeft:"4px solid var(--danger)"}}><h3>🔥 Fire, stove & smoking</h3>
+        <p className="muted">Fire risk due to unsafe stove use and indoor smoking. Has smoked tea leaves in rolling papers when out of cigarettes.</p>
+        <List items={P.fireSafety}/></div>
+      <div className="card"><h3>Money safeguarding</h3><List items={P.moneyRules}/></div>
+    </div>}
+
+    {tab==="contacts" && <div className="card">
+      {P.contacts.map((c,i)=><div key={i} className="list-item">
+        <div className="avatar">{c.name.slice(0,2).toUpperCase()}</div>
+        <div className="grow">
+          <b style={{fontSize:14}}>{c.name}</b> <span className="tiny">— {c.role}</span>
+          <div className="tiny" style={{marginTop:2}}>{c.note}</div>
+        </div>
+        {c.phone && <a className="btn sm sec" href={"tel:"+c.phone.replace(/\s/g,"")} style={{textDecoration:"none"}}>📞</a>}
+      </div>)}
+    </div>}
+  </div>;
+}
+
+/* ================= SHIFT ================= */
+function Shift({user,shift,setShift,shifts,setShifts,go,toast}){
+  const [type,setType] = useState("Day");
+  const start = ()=>{
+    const s = {id:uid(),workerId:user.id,workerName:user.name,shiftType:type,startedAt:new Date().toISOString()};
+    setShift(s); LS.set("activeShift",s);
+    audit(user.name,"shift_start",{type});
+    toast("Shift started — have a great one 💪");
+  };
+  const end = ()=>{
+    if(!confirm("End shift? Make sure your progress note, money form and handover are done.")) return;
+    const done = {...shift,endedAt:new Date().toISOString()};
+    setShifts(prev=>[done,...prev]); setShift(null); LS.del("activeShift");
+    audit(user.name,"shift_end",{});
+    toast("Shift ended. Thanks for looking after Muhamad today 🙏");
+  };
+  return <div>
+    {!shift ? <div className="card">
+      <h3>Start shift</h3>
+      <Field label="Shift type">
+        <select value={type} onChange={e=>setType(e.target.value)}>
+          {["Day","Evening","Sleepover","Active night"].map(t=><option key={t}>{t}</option>)}
+        </select>
+      </Field>
+      <button className="btn block" style={{marginTop:14}} onClick={start}>Start shift now</button>
+      <p className="tiny" style={{marginTop:10}}>Starting a shift stamps the time for your notes, meds and money records.</p>
+    </div> :
+    <div>
+      <div className="card" style={{borderLeft:"4px solid var(--ok)"}}>
+        <h3>Shift in progress</h3>
+        <div className="kv"><span>Worker</span><b>{shift.workerName}</b></div>
+        <div className="kv"><span>Type</span><b>{shift.shiftType}</b></div>
+        <div className="kv"><span>Started</span><b>{fmtTime(shift.startedAt)}</b></div>
+      </div>
+      <div className="grid2">
+        <button className="tile" onClick={()=>go("notes")}><div className="ic"><I.note/></div><b>Write progress note</b><span>AI-composed, NDIS ready</span></button>
+        <button className="tile" onClick={()=>go("handover")}><div className="ic"><I.hand/></div><b>Do handover</b><span>Pouch, keys, summary</span></button>
+      </div>
+      <button className="btn danger block" onClick={end}>End shift</button>
+    </div>}
+    <div className="section-title">Recent shifts</div>
+    <div className="card">
+      {shifts.length===0 ? <Empty text="No completed shifts yet."/> :
+        shifts.slice(0,10).map(s=><div key={s.id} className="list-item">
+          <div className="grow"><b style={{fontSize:14}}>{s.workerName}</b><div className="tiny">{fmtDate(s.startedAt)} · {fmtTime(s.startedAt)}–{s.endedAt?fmtTime(s.endedAt):"—"} · {s.shiftType}</div></div>
+        </div>)}
+    </div>
+  </div>;
+}
+
+/* ================= PROGRESS NOTES ================= */
+function Notes({user,notes,setNotes,shift,toast}){
+  const blank = {mood:"calm",meals:"",fluids:"",medsGiven:"given",hygiene:"",prayer:"",community:"",household:"",smoking:"",money:"",warnings:"",incidents:"",goals:"",other:"",shiftType:shift?shift.shiftType:"Day",start:shift?fmtTime(shift.startedAt):"",end:""};
+  const [f,setF] = useState(blank);
+  const [preview,setPreview] = useState(null);
+  const [writing,setWriting] = useState(false);
+  const set = k=>e=>setF({...f,[k]:e.target.value});
+
+  const gen = ()=>{ setPreview(generateNote(f,user)); };
+  const save = ()=>{
+    const n = {id:uid(),day:todayStr(),workerId:user.id,workerName:user.name,structured:f,narrative:preview,at:new Date().toISOString()};
+    setNotes(prev=>[n,...prev]);
+    audit(user.name,"progress_note",{day:n.day});
+    setPreview(null); setF(blank); setWriting(false);
+    toast("Progress note saved ✓");
+  };
+  const copy = (t)=>{ navigator.clipboard && navigator.clipboard.writeText(t).then(()=>toast("Copied — paste into your provider system")); };
+
+  return <div>
+    {!writing && <button className="btn block" style={{marginBottom:14}} onClick={()=>setWriting(true)}>＋ New progress note</button>}
+    {writing && <div className="card">
+      <h3>Shift observations</h3>
+      <p className="tiny">Fill in what applies — the app composes a professional ~2,000 character NDIS note. Skip anything that didn't happen.</p>
+      <Field label="Mood & presentation">
+        <select value={f.mood} onChange={set("mood")}>
+          <option value="calm">Calm and settled</option><option value="happy">Positive / cheerful</option>
+          <option value="tired">Tired / low energy</option><option value="flat">Flat / low motivation</option>
+          <option value="agitated">Agitated — warning signs seen</option><option value="distressed">Distressed / escalated</option>
+        </select>
+      </Field>
+      <Field label="Medication">
+        <select value={f.medsGiven} onChange={set("medsGiven")}>
+          <option value="given">All given as scheduled</option><option value="partial">Partially given</option><option value="refused">Refused (office notified)</option>
+        </select>
+      </Field>
+      <Field label="Meals & food (what he ate, how much)"><textarea placeholder="e.g. Ate half his scrambled eggs, stored the rest in the fridge. Kebab at Merrylands — two bites. Full coffee." value={f.meals} onChange={set("meals")}/></Field>
+      <Field label="Hygiene & self-care"><textarea placeholder="e.g. Good shower after prayer, applied deodorant, fresh clothes." value={f.hygiene} onChange={set("hygiene")}/></Field>
+      <Field label="Prayer / religious support"><textarea placeholder="e.g. Prayed in the lounge room; attended mosque for midday prayer." value={f.prayer} onChange={set("prayer")}/></Field>
+      <Field label="Community access & activities"><textarea placeholder="e.g. Coffee outing to Merrylands, shopping at Kmart — polite with staff." value={f.community} onChange={set("community")}/></Field>
+      <Field label="Smoking / fire safety"><textarea placeholder="e.g. Smoked on the balcony independently, respected the household boundary." value={f.smoking} onChange={set("smoking")}/></Field>
+      <Field label="Money handled this shift"><textarea placeholder="e.g. $12.50 spent on coffee and eggs, receipts photographed and sent to Batoul, $187.50 remaining." value={f.money} onChange={set("money")}/></Field>
+      <Field label="Warning signs observed (if any)"><textarea placeholder="e.g. Became quiet and walked away when hygiene was offered a second time." value={f.warnings} onChange={set("warnings")}/></Field>
+      <Field label="Incidents (if any)"><textarea value={f.incidents} onChange={set("incidents")} placeholder="Brief summary — full detail goes in the incident report."/></Field>
+      <Field label="Household tasks"><textarea value={f.household} onChange={set("household")} placeholder="e.g. Kitchen cleaned, rubbish out, stove checked off."/></Field>
+      <Field label="Anything else"><textarea value={f.other} onChange={set("other")}/></Field>
+      <div className="row" style={{marginTop:14}}>
+        <button className="btn grow" onClick={gen}>✨ Compose NDIS note</button>
+        <button className="btn sec" onClick={()=>{setWriting(false);setPreview(null)}}>Cancel</button>
+      </div>
+    </div>}
+
+    {preview && <div className="card" style={{borderLeft:"4px solid var(--accent)"}}>
+      <div className="row" style={{marginBottom:8}}><h3 className="grow">Generated note</h3><span className="pill accent">{preview.length} chars</span></div>
+      <textarea style={{minHeight:260,fontSize:13.5}} value={preview} onChange={e=>setPreview(e.target.value)}/>
+      <p className="tiny" style={{margin:"8px 0"}}>Read it, edit anything, then save. You are responsible for its accuracy.</p>
+      <div className="row">
+        <button className="btn grow" onClick={save}>Save note</button>
+        <button className="btn sec" onClick={()=>copy(preview)}>Copy</button>
+      </div>
+    </div>}
+
+    <div className="section-title">Saved notes</div>
+    {notes.length===0 ? <div className="card"><Empty text="No notes yet. Notes are your legal record of every shift."/></div> :
+      notes.map(n=><div key={n.id} className="card">
+        <div className="row"><b className="grow" style={{fontSize:14}}>{fmtDate(n.at)} · {n.workerName}</b>
+          <button className="btn ghost sm" onClick={()=>copy(n.narrative)}>Copy</button></div>
+        <p style={{fontSize:13.5,whiteSpace:"pre-wrap",margin:"6px 0 0"}}>{n.narrative}</p>
+      </div>)}
+  </div>;
+}
+
+/* ================= MEDICATION ================= */
+function Meds({user,medLog,setMedLog,toast}){
+  const day = todayStr();
+  const [refuseFor,setRefuseFor] = useState(null);
+  const [refNote,setRefNote] = useState("");
+  const logDose = (m,status,notes)=>{
+    const entry = {id:uid(),day,name:m.name,nameKey:m.id,status,notes:notes||"",by:user.name,at:new Date().toISOString()};
+    setMedLog(prev=>[entry,...prev]);
+    audit(user.name,"med_"+status,{med:m.name});
+    if(status==="refused") toast("Logged. ☎️ Call the Case Manager / office NOW — refusal must be reported immediately.");
+    else toast(m.name+" recorded ✓");
+    setRefuseFor(null); setRefNote("");
+  };
+  const doneToday = (m)=>medLog.find(l=>l.day===day && l.nameKey===m.id);
+  return <div>
+    <div className="alert warn"><b>Dose check needed:</b> the Support Worker Guide lists Clozapine <b>550mg</b>, but the team update on 30/6 says <b>300mg at 5:30pm</b>. Confirm the current prescribed dose with Angel / the pharmacy and update this in Admin → Medication.</div>
+    {SEED_MEDS.map(m=>{
+      const d = doneToday(m);
+      return <div key={m.id} className="card" style={d?{borderLeft:"4px solid "+(d.status==="given"?"var(--ok)":"var(--danger)")}:{}}>
+        <div className="row">
+          <div className="grow">
+            <b>{m.name}</b>
+            <div className="tiny">{m.timeLabel} · {m.dose}</div>
+          </div>
+          {d && <span className={"pill "+(d.status==="given"?"ok":"danger")}>{d.status==="given"?"✓ Given "+fmtTime(d.at):"✗ Refused"}</span>}
+        </div>
+        <p className="tiny" style={{margin:"8px 0"}}>{m.instructions}</p>
+        {!d && <div className="row">
+          <button className="btn sm grow" onClick={()=>logDose(m,"given")}>✓ Given</button>
+          <button className="btn sm sec grow" onClick={()=>setRefuseFor(m)}>Refused / missed</button>
+        </div>}
+      </div>;
+    })}
+    <Modal open={!!refuseFor} onClose={()=>setRefuseFor(null)} title={"Refusal — "+(refuseFor&&refuseFor.name)}>
+      <div className="alert danger"><b>Do not pressure or repeat.</b> Give space, re-approach later. You must call the Case Manager / office immediately and complete an incident report.</div>
+      <Field label="What happened?"><textarea value={refNote} onChange={e=>setRefNote(e.target.value)} placeholder="e.g. Declined at 5:30pm, walked to bedroom. Will re-offer at 6pm."/></Field>
+      <button className="btn danger block" style={{marginTop:12}} onClick={()=>logDose(refuseFor,"refused",refNote)}>Log refusal</button>
+    </Modal>
+    <div className="section-title">Medication log</div>
+    <div className="card">
+      {medLog.length===0 ? <Empty text="No doses recorded yet."/> :
+        medLog.slice(0,30).map(l=><div key={l.id} className="list-item">
+          <span className={"pill "+(l.status==="given"?"ok":"danger")} style={{marginTop:2}}>{l.status}</span>
+          <div className="grow"><b style={{fontSize:14}}>{l.name}</b>
+            <div className="tiny">{fmtDate(l.at)} {fmtTime(l.at)} · by {l.by}{l.notes?" · "+l.notes:""}</div></div>
+        </div>)}
+    </div>
+  </div>;
+}
+
+/* ================= MONEY RECONCILIATION ================= */
+function Money({user,moneyDays,setMoneyDays,toast}){
+  const day = todayStr();
+  const today = moneyDays.find(d=>d.day===day);
+  const [openBal,setOpenBal] = useState(""); const [from,setFrom] = useState("");
+  const [tx,setTx] = useState({items:"",amount:"",receipt:false,sent:false});
+  const [closing,setClosing] = useState("");
+
+  const startDay = ()=>{
+    const ob = parseFloat(openBal); if(isNaN(ob)) return;
+    setMoneyDays(prev=>[{id:uid(),day,opening:ob,balance:ob,from,tx:[],closed:false},...prev]);
+    audit(user.name,"money_day_start",{opening:ob});
+    toast("Money form started for today");
+  };
+  const addTx = ()=>{
+    const amt = parseFloat(tx.amount); if(isNaN(amt)||!tx.items.trim()) return;
+    setMoneyDays(prev=>prev.map(d=>d.day!==day?d:{...d,balance:+(d.balance-amt).toFixed(2),tx:[...d.tx,{id:uid(),at:new Date().toISOString(),items:tx.items.trim(),amount:amt,receipt:tx.receipt,sent:tx.sent,by:user.name,remaining:+(d.balance-amt).toFixed(2)}]}));
+    audit(user.name,"money_tx",{items:tx.items,amount:amt});
+    setTx({items:"",amount:"",receipt:false,sent:false});
+    if(!tx.receipt||!tx.sent) toast("Saved — remember: photograph the receipt & WhatsApp it to Batoul with the balance");
+    else toast("Purchase recorded ✓");
+  };
+  const closeDay = ()=>{
+    const counted = parseFloat(closing); if(isNaN(counted)) return;
+    const match = Math.abs(counted - today.balance) < 0.005;
+    if(!match && !confirm(`⚠ Counted ${fmtMoney(counted)} but recorded balance is ${fmtMoney(today.balance)}.\n\nDiscrepancies must be reported to management IMMEDIATELY. Continue and log the discrepancy?`)) return;
+    setMoneyDays(prev=>prev.map(d=>d.day!==day?d:{...d,closed:true,counted,match}));
+    audit(user.name,"money_day_close",{counted,recorded:today.balance,match});
+    toast(match?"Balances match ✓ Send the completed form to Angel/Donya":"Discrepancy logged — call the office now");
+  };
+
+  return <div>
+    <div className="alert brand" style={{fontSize:13}}>Every purchase: record it here, photograph the receipt, WhatsApp the photo + remaining balance to <b>Batoul (0405 738 111)</b>. Pouch + form hand over at every shift change. Last worker of the day sends the completed form to Angel/Donya.</div>
+    {!today ? <div className="card">
+      <h3>Start today's form</h3>
+      <div className="grid2">
+        <Field label="Opening cash balance ($)"><input type="number" inputMode="decimal" step="0.05" value={openBal} onChange={e=>setOpenBal(e.target.value)} placeholder="200.00"/></Field>
+        <Field label="Pouch handed over by"><input value={from} onChange={e=>setFrom(e.target.value)} placeholder="e.g. Donya"/></Field>
+      </div>
+      <button className="btn block" style={{marginTop:14}} onClick={startDay} disabled={openBal===""}>Open today's form</button>
+    </div> :
+    <div>
+      <div className="card" style={{textAlign:"center"}}>
+        <div className="tiny">CURRENT BALANCE</div>
+        <div className="big-num">{fmtMoney(today.balance)}</div>
+        <div className="tiny">Opened at {fmtMoney(today.opening)}{today.from?` · pouch from ${today.from}`:""}{today.closed?` · CLOSED (counted ${fmtMoney(today.counted)} ${today.match?"✓ match":"✗ MISMATCH"})`:""}</div>
+      </div>
+      {!today.closed && <div className="card">
+        <h3>Record a purchase</h3>
+        <Field label="Item(s) purchased"><input value={tx.items} onChange={e=>setTx({...tx,items:e.target.value})} placeholder="e.g. Coffee + cigarettes, Coles Merrylands"/></Field>
+        <Field label="Amount spent ($)"><input type="number" inputMode="decimal" step="0.05" value={tx.amount} onChange={e=>setTx({...tx,amount:e.target.value})} placeholder="12.50"/></Field>
+        <label className="check" style={{border:"none"}}><div className={"cbox "+(tx.receipt?"on":"")} onClick={()=>setTx({...tx,receipt:!tx.receipt})}>{tx.receipt&&"✓"}</div><span onClick={()=>setTx({...tx,receipt:!tx.receipt})}>Receipt photographed</span></label>
+        <label className="check" style={{border:"none"}}><div className={"cbox "+(tx.sent?"on":"")} onClick={()=>setTx({...tx,sent:!tx.sent})}>{tx.sent&&"✓"}</div><span onClick={()=>setTx({...tx,sent:!tx.sent})}>Photo + balance sent to Batoul (WhatsApp)</span></label>
+        <button className="btn block" style={{marginTop:10}} onClick={addTx}>Add purchase</button>
+      </div>}
+      <div className="card">
+        <h3>Today's transactions</h3>
+        {today.tx.length===0 ? <Empty text="No purchases yet today."/> :
+          today.tx.map(t=><div key={t.id} className="list-item">
+            <div className="grow"><b style={{fontSize:14}}>{t.items}</b>
+              <div className="tiny">{fmtTime(t.at)} · {t.by} · {t.receipt?"🧾 receipt ✓":"⚠ no receipt"} · {t.sent?"📱 sent ✓":"⚠ not sent"}</div></div>
+            <div style={{textAlign:"right"}}><b style={{color:"var(--danger)"}}>-{fmtMoney(t.amount)}</b><div className="tiny">bal {fmtMoney(t.remaining)}</div></div>
+          </div>)}
+      </div>
+      {!today.closed && <div className="card">
+        <h3>End of shift count</h3>
+        <Field label="Cash counted in pouch ($)"><input type="number" inputMode="decimal" step="0.05" value={closing} onChange={e=>setClosing(e.target.value)} placeholder={String(today.balance)}/></Field>
+        <button className="btn block" style={{marginTop:12}} onClick={closeDay}>Reconcile & close day</button>
+      </div>}
+    </div>}
+    <div className="section-title">Previous days</div>
+    <div className="card">
+      {moneyDays.filter(d=>d.day!==day).length===0 ? <Empty text="History appears here."/> :
+        moneyDays.filter(d=>d.day!==day).slice(0,14).map(d=><div key={d.id} className="list-item">
+          <div className="grow"><b style={{fontSize:14}}>{fmtDate(d.day)}</b>
+            <div className="tiny">{d.tx.length} purchases · {fmtMoney(d.opening)} → {fmtMoney(d.balance)}</div></div>
+          {d.closed && <span className={"pill "+(d.match?"ok":"danger")}>{d.match?"✓ matched":"✗ discrepancy"}</span>}
+        </div>)}
+    </div>
+  </div>;
+}
+
+/* ================= HANDOVER ================= */
+function Handover({user,users,handovers,setHandovers,toast}){
+  const [f,setF] = useState({to:"",summary:"",outstanding:"",pouch:false,keys:false});
+  const save = ()=>{
+    if(!f.summary.trim()) return;
+    const h = {id:uid(),at:new Date().toISOString(),fromName:user.name,toName:f.to||"(next worker)",summary:f.summary.trim(),outstanding:f.outstanding.trim(),pouch:f.pouch,keys:f.keys,ack:null};
+    setHandovers(prev=>[h,...prev]);
+    audit(user.name,"handover",{to:h.toName});
+    setF({to:"",summary:"",outstanding:"",pouch:false,keys:false});
+    toast("Handover posted ✓");
+  };
+  const ack = (id)=>{
+    setHandovers(prev=>prev.map(h=>h.id===id?{...h,ack:{by:user.name,at:new Date().toISOString()}}:h));
+    audit(user.name,"handover_ack",{id});
+  };
+  return <div>
+    <div className="card">
+      <h3>New handover</h3>
+      <Field label="Handing over to">
+        <select value={f.to} onChange={e=>setF({...f,to:e.target.value})}>
+          <option value="">Next worker (unassigned)</option>
+          {users.filter(u=>u.id!==user.id).map(u=><option key={u.id} value={u.name}>{u.name}</option>)}
+        </select>
+      </Field>
+      <Field label="Shift summary — mood, meds, meals, anything the next worker MUST know">
+        <textarea style={{minHeight:120}} value={f.summary} onChange={e=>setF({...f,summary:e.target.value})} placeholder="e.g. Calm day. Clozapine given 5:30pm. Ate half his eggs, rest in fridge. Smoked on balcony only. $54.20 in pouch, form up to date. He mentioned wanting to visit his mother tomorrow."/>
+      </Field>
+      <Field label="Outstanding / follow-ups"><textarea value={f.outstanding} onChange={e=>setF({...f,outstanding:e.target.value})} placeholder="e.g. Blood test tomorrow 10am Merrylands. Cigarettes running low."/></Field>
+      <label className="check" style={{border:"none"}}><div className={"cbox "+(f.pouch?"on":"")} onClick={()=>setF({...f,pouch:!f.pouch})}>{f.pouch&&"✓"}</div><span onClick={()=>setF({...f,pouch:!f.pouch})}>Money pouch + reconciliation form handed over</span></label>
+      <label className="check" style={{border:"none"}}><div className={"cbox "+(f.keys?"on":"")} onClick={()=>setF({...f,keys:!f.keys})}>{f.keys&&"✓"}</div><span onClick={()=>setF({...f,keys:!f.keys})}>House keys handed over</span></label>
+      <button className="btn block" style={{marginTop:12}} onClick={save}>Post handover</button>
+    </div>
+    <div className="section-title">Handover feed</div>
+    {handovers.length===0 ? <div className="card"><Empty text="Handovers from the team appear here — newest first."/></div> :
+      handovers.map(h=><div key={h.id} className="card">
+        <div className="row" style={{marginBottom:6}}>
+          <div className="avatar">{h.fromName.slice(0,2).toUpperCase()}</div>
+          <div className="grow"><b style={{fontSize:14}}>{h.fromName} → {h.toName}</b><div className="tiny">{fmtDate(h.at)} {fmtTime(h.at)}</div></div>
+          {h.pouch && <span className="pill brand">💰 pouch</span>}
+        </div>
+        <p style={{fontSize:14,margin:"4px 0",whiteSpace:"pre-wrap"}}>{h.summary}</p>
+        {h.outstanding && <p className="muted" style={{margin:"4px 0"}}>📌 {h.outstanding}</p>}
+        {h.ack ? <span className="pill ok">✓ Read by {h.ack.by} at {fmtTime(h.ack.at)}</span> :
+          <button className="btn sm sec" onClick={()=>ack(h.id)}>Mark as read</button>}
+      </div>)}
+  </div>;
+}
+
+/* ================= INCIDENTS ================= */
+const INC_CATS = ["Verbal aggression","Major escalation","Left property without notice","Medication refusal","Missed appointment","Fire or stove risk","Property damage","Safety concern","Other"];
+function Incidents({user,incidents,setIncidents,toast}){
+  const [open,setOpen] = useState(false);
+  const [f,setF] = useState({category:INC_CATS[0],severity:"moderate",when:"",description:"",actions:"",notified:false});
+  const save = ()=>{
+    if(!f.description.trim()) return;
+    const inc = {id:uid(),...f,description:f.description.trim(),actions:f.actions.trim(),by:user.name,at:new Date().toISOString(),occurred:f.when||new Date().toISOString(),status:"open"};
+    setIncidents(prev=>[inc,...prev]);
+    audit(user.name,"incident",{category:f.category,severity:f.severity});
+    setF({category:INC_CATS[0],severity:"moderate",when:"",description:"",actions:"",notified:false}); setOpen(false);
+    toast(f.notified?"Incident saved ✓":"Saved — remember to CALL the office, the app doesn't replace the phone call");
+  };
+  const close = (id)=>{ setIncidents(prev=>prev.map(i=>i.id===id?{...i,status:"closed"}:i)); };
+  const sevPill = s=>s==="critical"||s==="high"?"danger":s==="moderate"?"warn":"ok";
+  return <div>
+    <div className="alert danger" style={{fontSize:13}}><b>The app does not replace the phone.</b> For anything on the "call the office immediately" list — refusals, leaving property, fire risk, aggression, missing — <b>call first</b>, then document here.</div>
+    {!open && <button className="btn block" style={{marginBottom:14}} onClick={()=>setOpen(true)}>＋ New incident report</button>}
+    {open && <div className="card">
+      <div className="grid2">
+        <Field label="Category"><select value={f.category} onChange={e=>setF({...f,category:e.target.value})}>{INC_CATS.map(c=><option key={c}>{c}</option>)}</select></Field>
+        <Field label="Severity"><select value={f.severity} onChange={e=>setF({...f,severity:e.target.value})}><option value="low">Low</option><option value="moderate">Moderate</option><option value="high">High</option><option value="critical">Critical</option></select></Field>
+      </div>
+      <Field label="When did it occur?"><input type="datetime-local" value={f.when} onChange={e=>setF({...f,when:e.target.value})}/></Field>
+      <Field label="What happened? (factual, objective — what you saw and heard)">
+        <textarea style={{minHeight:120}} value={f.description} onChange={e=>setF({...f,description:e.target.value})} placeholder="Time, place, what led up to it, exactly what occurred, who was present."/></Field>
+      <Field label="Actions taken (BSP strategies used, who you contacted)">
+        <textarea value={f.actions} onChange={e=>setF({...f,actions:e.target.value})} placeholder="e.g. Stopped all demands, gave space, used minimal words. Called Angel at 3:12pm — advised to monitor."/></Field>
+      <label className="check" style={{border:"none"}}><div className={"cbox "+(f.notified?"on":"")} onClick={()=>setF({...f,notified:!f.notified})}>{f.notified&&"✓"}</div><span onClick={()=>setF({...f,notified:!f.notified})}>Office / Case Manager notified by phone</span></label>
+      <div className="row" style={{marginTop:10}}>
+        <button className="btn grow" onClick={save}>Save incident</button>
+        <button className="btn sec" onClick={()=>setOpen(false)}>Cancel</button>
+      </div>
+    </div>}
+    <div className="section-title">Incident log</div>
+    {incidents.length===0 ? <div className="card"><Empty text="No incidents recorded."/></div> :
+      incidents.map(i=><div key={i.id} className="card">
+        <div className="row" style={{marginBottom:4}}>
+          <b className="grow" style={{fontSize:14}}>{i.category}</b>
+          <span className={"pill "+sevPill(i.severity)}>{i.severity}</span>
+          <span className={"pill "+(i.status==="open"?"warn":"ok")}>{i.status}</span>
+        </div>
+        <div className="tiny">{fmtDate(i.occurred)} · reported by {i.by} · {i.notified?"office notified ✓":"⚠ office NOT marked notified"}</div>
+        <p style={{fontSize:13.5,margin:"6px 0"}}>{i.description}</p>
+        {i.actions && <p className="muted" style={{margin:"4px 0"}}>Actions: {i.actions}</p>}
+        {i.status==="open" && <button className="btn ghost sm" onClick={()=>close(i.id)}>Mark closed</button>}
+      </div>)}
+  </div>;
+}
+
+/* ================= CHECKLIST & CLEANING ================= */
+function Checklist({user,checklist,checkLog,setCheckLog}){
+  const day = todayStr();
+  const [kind,setKind] = useState("daily");
+  const toggle = (t)=>{
+    const existing = checkLog.find(l=>l.day===day && l.templateId===t.id);
+    if(existing) setCheckLog(prev=>prev.filter(l=>l.id!==existing.id));
+    else { setCheckLog(prev=>[{id:uid(),templateId:t.id,day,by:user.name,at:new Date().toISOString()},...prev]); audit(user.name,"check",{item:t.label}); }
+  };
+  const items = checklist.filter(c=>c.kind===kind).sort((a,b)=>a.sort-b.sort);
+  const done = items.filter(t=>checkLog.some(l=>l.day===day&&l.templateId===t.id)).length;
+  return <div>
+    <div className="seg">
+      <button className={kind==="daily"?"on":""} onClick={()=>setKind("daily")}>Daily checklist</button>
+      <button className={kind==="cleaning"?"on":""} onClick={()=>setKind("cleaning")}>Cleaning schedule</button>
+    </div>
+    <div className="card">
+      <div className="row" style={{marginBottom:6}}><h3 className="grow">{kind==="daily"?"Today's essentials":"House cleaning"}</h3><span className="pill brand">{done}/{items.length}</span></div>
+      {items.map(t=>{
+        const l = checkLog.find(x=>x.day===day&&x.templateId===t.id);
+        return <div key={t.id} className="check" onClick={()=>toggle(t)} style={{cursor:"pointer"}}>
+          <div className={"cbox "+(l?"on":"")}>{l&&"✓"}</div>
+          <div className="grow"><span style={l?{opacity:.55,textDecoration:"line-through"}:{}}>{t.label}</span>
+            {l && <div className="tiny">✓ {l.by} · {fmtTime(l.at)}</div>}</div>
+        </div>;
+      })}
+    </div>
+  </div>;
+}
+
+/* ================= CALENDAR ================= */
+function Calendar({appts}){
+  const days = useMemo(()=>{
+    const out=[];
+    for(let i=0;i<21;i++){
+      const d=new Date(); d.setDate(d.getDate()+i); d.setHours(0,0,0,0);
+      const todays = appts.filter(a=>{
+        if(d.getDay()!==a.day) return false;
+        if(a.anchor){ const weeks = Math.round((d - new Date(a.anchor))/6048e5); return weeks%2===0; }
+        return true;
+      });
+      if(todays.length) out.push({date:d,items:todays});
+    }
+    return out;
+  },[appts]);
+  return <div>
+    <div className="alert brand" style={{fontSize:13}}>Discuss appointments <b>calmly and early</b> — they can be a stressful reminder of illness. Never rush him; build in extra time.</div>
+    {days.map(({date,items})=><div key={date.toISOString()} className="card">
+      <b style={{fontSize:14}}>{date.toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long"})}{date.toDateString()===new Date().toDateString()?" — TODAY":""}</b>
+      {items.map(a=><div key={a.id} className="list-item">
+        <div className="avatar" style={{borderRadius:12,background:"var(--accentSoft)",color:"var(--accent)"}}>📍</div>
+        <div className="grow">
+          <b style={{fontSize:14}}>{a.title}</b>
+          <div className="tiny">{a.location}{a.phone?" · "+a.phone:""}</div>
+          <div className="tiny" style={{marginTop:2}}>{a.notes}</div>
+        </div>
+      </div>)}
+    </div>)}
+    <div className="card"><h3>Standing schedule</h3>
+      {appts.map(a=><div key={a.id} className="kv"><span>{a.title}</span><b>{a.recurrence}</b></div>)}
+    </div>
+  </div>;
+}
+
+/* ================= INVENTORY ================= */
+function Inventory({inventory,setInventory,toast}){
+  const [add,setAdd] = useState({item:"",category:"groceries"});
+  const bump = (id,d)=>setInventory(prev=>prev.map(i=>i.id===id?{...i,quantity:Math.max(0,i.quantity+d)}:i));
+  const addItem = ()=>{
+    if(!add.item.trim()) return;
+    setInventory(prev=>[...prev,{id:uid(),item:add.item.trim(),category:add.category,quantity:1,low:1}]);
+    setAdd({item:"",category:"groceries"}); toast("Item added");
+  };
+  const low = inventory.filter(i=>i.quantity<=i.low);
+  const cats = [...new Set(inventory.map(i=>i.category))];
+  return <div>
+    {low.length>0 && <div className="alert warn"><b>Running low:</b> {low.map(i=>i.item).join(", ")}. Add to the next shopping trip (record spending in Money).</div>}
+    {cats.map(c=><div key={c} className="card">
+      <h3 style={{textTransform:"capitalize"}}>{c}</h3>
+      {inventory.filter(i=>i.category===c).map(i=><div key={i.id} className="list-item">
+        <div className="grow"><b style={{fontSize:14}}>{i.item}</b>{i.note&&<div className="tiny">{i.note}</div>}</div>
+        <div className="row">
+          <button className="btn sm sec" onClick={()=>bump(i.id,-1)}>−</button>
+          <b style={{minWidth:22,textAlign:"center",color:i.quantity<=i.low?"var(--danger)":"inherit"}}>{i.quantity}</b>
+          <button className="btn sm sec" onClick={()=>bump(i.id,1)}>＋</button>
+        </div>
+      </div>)}
+    </div>)}
+    <div className="card"><h3>Add item</h3>
+      <div className="row" style={{marginTop:8}}>
+        <input className="grow" placeholder="Item name" value={add.item} onChange={e=>setAdd({...add,item:e.target.value})}/>
+        <select style={{width:130}} value={add.category} onChange={e=>setAdd({...add,category:e.target.value})}>
+          {["groceries","hygiene","cleaning","personal","medical","other"].map(c=><option key={c}>{c}</option>)}
+        </select>
+      </div>
+      <button className="btn block sm" style={{marginTop:10}} onClick={addItem}>Add</button>
+    </div>
+  </div>;
+}
+
+/* ================= GLOBAL SEARCH ================= */
+function buildIndex(state){
+  const P = SEED_PARTICIPANT; const idx=[];
+  const push=(section,view,text)=>text&&idx.push({section,view,text:String(text)});
+  ["triggers","warningSigns","escalationSteps","routine","observations","fireSafety","hygiene","leavesProperty","callOfficeFor","neverRules","commsDo","commsDont","moneyRules"].forEach(k=>P[k].forEach(t=>push(k.replace(/([A-Z])/g," $1").toLowerCase(),"profile",t)));
+  P.contacts.forEach(c=>push("contact","profile",`${c.name} ${c.role} ${c.phone||""} ${c.note}`));
+  SEED_MEDS.forEach(m=>push("medication","meds",`${m.name} ${m.dose} ${m.timeLabel} ${m.instructions}`));
+  SEED_APPTS.forEach(a=>push("appointment","calendar",`${a.title} ${a.recurrence} ${a.location} ${a.notes}`));
+  state.notes.forEach(n=>push("progress note ("+fmtDate(n.at)+")","notes",n.narrative));
+  state.handovers.forEach(h=>push("handover ("+h.fromName+")","handover",h.summary+" "+(h.outstanding||"")));
+  state.incidents.forEach(i=>push("incident ("+i.category+")","incidents",i.description+" "+(i.actions||"")));
+  return idx;
+}
+function Search({state,go}){
+  const [q,setQ] = useState("");
+  const idx = useMemo(()=>buildIndex(state),[state.notes,state.handovers,state.incidents]);
+  const hits = useMemo(()=>{
+    const s=q.trim().toLowerCase(); if(s.length<2) return [];
+    return idx.filter(x=>x.text.toLowerCase().includes(s)).slice(0,40);
+  },[q,idx]);
+  const mark = (t)=>{
+    const s=q.trim(); const i=t.toLowerCase().indexOf(s.toLowerCase());
+    if(i<0) return t.slice(0,140);
+    const st=Math.max(0,i-50);
+    return <span>…{t.slice(st,i)}<mark>{t.slice(i,i+s.length)}</mark>{t.slice(i+s.length,i+s.length+90)}…</span>;
+  };
+  return <div>
+    <input autoFocus placeholder="Search everything — 'clozapine', 'pouch', 'smoking', 'Batoul'…" value={q} onChange={e=>setQ(e.target.value)} style={{marginBottom:12}}/>
+    {q.length>=2 && hits.length===0 && <div className="card"><Empty text="No matches."/></div>}
+    {hits.map((h,i)=><div key={i} className="card search-hit" onClick={()=>go(h.view)} style={{cursor:"pointer",padding:"12px 14px"}}>
+      <span className="pill brand" style={{marginBottom:6}}>{h.section}</span>
+      <p style={{fontSize:13.5,margin:"6px 0 0"}}>{mark(h.text)}</p>
+    </div>)}
+    {q.length<2 && <div className="card">
+      <h3>Try searching for</h3>
+      {["clozapine","injection","blood test","pouch","receipt","Batoul","smoking","stove","prayer","triggers","000","escalate","Georges Hall","coffee"].map(s=><button key={s} className="chip" onClick={()=>setQ(s)}>{s}</button>)}
+    </div>}
+  </div>;
+}
+
+/* ================= ANALYTICS ================= */
+function Analytics({state}){
+  const days = [...Array(14)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-13+i);return d.toISOString().slice(0,10)});
+  const medRate = days.map(d=>state.medLog.filter(l=>l.day===d&&l.status==="given").length);
+  const refusals = state.medLog.filter(l=>l.status==="refused").length;
+  const incBySev = ["low","moderate","high","critical"].map(s=>[s,state.incidents.filter(i=>i.severity===s).length]);
+  const spend = state.moneyDays.reduce((a,d)=>a+d.tx.reduce((x,t)=>x+t.amount,0),0);
+  const receiptsMissing = state.moneyDays.reduce((a,d)=>a+d.tx.filter(t=>!t.receipt).length,0);
+  const max = Math.max(1,...medRate);
+  return <div>
+    <div className="grid2">
+      <div className="card" style={{textAlign:"center"}}><div className="tiny">PROGRESS NOTES</div><div className="big-num">{state.notes.length}</div></div>
+      <div className="card" style={{textAlign:"center"}}><div className="tiny">MED REFUSALS</div><div className="big-num" style={refusals?{color:"var(--danger)"}:{}}>{refusals}</div></div>
+      <div className="card" style={{textAlign:"center"}}><div className="tiny">TOTAL SPEND TRACKED</div><div className="big-num">{fmtMoney(spend)}</div></div>
+      <div className="card" style={{textAlign:"center"}}><div className="tiny">RECEIPTS MISSING</div><div className="big-num" style={receiptsMissing?{color:"var(--warn)"}:{}}>{receiptsMissing}</div></div>
+    </div>
+    <div className="card">
+      <h3>Doses recorded — last 14 days</h3>
+      <div style={{display:"flex",alignItems:"flex-end",gap:4,height:90,marginTop:10}}>
+        {medRate.map((v,i)=><div key={i} style={{flex:1,background:v?"var(--brand)":"var(--surface2)",borderRadius:4,height:Math.max(6,v/max*84)+"px"}} title={days[i]+": "+v}/>)}
+      </div>
+      <div className="tiny" style={{marginTop:6}}>Target: 2 per day (morning tablet + 5:30pm Clozapine). Gaps = missed logging or missed doses — follow up either way.</div>
+    </div>
+    <div className="card"><h3>Incidents by severity</h3>
+      {incBySev.map(([s,n])=><div key={s} className="kv"><span style={{textTransform:"capitalize"}}>{s}</span><b>{n}</b></div>)}
+    </div>
+  </div>;
+}
+
+/* ================= ADMIN ================= */
+function Admin({user,users,setUsers,toast}){
+  const [auditView,setAuditView] = useState(false);
+  const auditLog = LS.get("audit",[]);
+  const setRole=(id,role)=>{ setUsers(prev=>prev.map(u=>u.id===id?{...u,role}:u)); audit(user.name,"role_change",{id,role}); };
+  const exportAll = ()=>{
+    const dump = {}; ["users","notes","medLog","moneyDays","handovers","incidents","checkLog","inventory","shifts","audit"].forEach(k=>dump[k]=LS.get(k,[]));
+    const blob = new Blob([JSON.stringify(dump,null,2)],{type:"application/json"});
+    const a = document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download = `borealis-silos-backup-${todayStr()}.json`; a.click();
+    toast("Backup downloaded — store it securely, it contains participant data");
+  };
+  if(user.role!=="admin" && user.role!=="team_leader") return <div className="card"><Empty text="Admin access only. Ask an administrator to change your role."/></div>;
+  return <div>
+    <div className="card">
+      <h3>Team & roles</h3>
+      {users.map(u=><div key={u.id} className="list-item">
+        <div className="avatar">{u.name.slice(0,2).toUpperCase()}</div>
+        <div className="grow"><b style={{fontSize:14}}>{u.name}</b><div className="tiny">{u.email}</div></div>
+        {user.role==="admin" ? <select style={{width:150,padding:"7px 9px",fontSize:13}} value={u.role} onChange={e=>setRole(u.id,e.target.value)}>
+          {Object.entries(ROLE_LABEL).map(([k,l])=><option key={k} value={k}>{l}</option>)}
+        </select> : <span className="pill brand">{ROLE_LABEL[u.role]}</span>}
+      </div>)}
+      <p className="tiny" style={{marginTop:8}}>New workers appear here automatically the first time they sign in. In Supabase mode, roles live in the profiles table and RLS enforces them server-side.</p>
+    </div>
+    <div className="card">
+      <h3>Audit trail</h3>
+      <p className="tiny">Every login, dose, dollar, note, incident and role change is stamped with who and when. {auditLog.length} events on this device.</p>
+      <button className="btn sm sec" onClick={()=>setAuditView(!auditView)}>{auditView?"Hide":"View"} last 50 events</button>
+      {auditView && <div style={{marginTop:10,maxHeight:300,overflowY:"auto"}}>
+        {auditLog.slice(0,50).map((a,i)=><div key={i} className="tiny" style={{padding:"5px 0",borderBottom:"1px solid var(--border)"}}>
+          {new Date(a.at).toLocaleString("en-AU")} · <b>{a.actor}</b> · {a.action} {a.detail?JSON.stringify(a.detail).slice(0,80):""}</div>)}
+      </div>}
+    </div>
+    <div className="card">
+      <h3>Data</h3>
+      <button className="btn sec block" onClick={exportAll}>⬇ Export encrypted-device backup (JSON)</button>
+      <p className="tiny" style={{marginTop:8}}>For new participants: this app is participant-scoped by design. Duplicate the deployment, replace the profile seed (or add a participant row in Supabase) — no rewrite needed.</p>
+    </div>
+  </div>;
+}
+
+/* ================= SETTINGS ================= */
+function Settings({user,onLogout,theme,setTheme,toast}){
+  const cfg = LS.get("sbcfg",{url:"",key:""});
+  const [url,setUrl] = useState(cfg.url); const [key,setKey] = useState(cfg.key);
+  const saveSb = ()=>{ LS.set("sbcfg",{url:url.trim(),key:key.trim()}); toast("Saved — reload the app to connect"); };
+  return <div>
+    <div className="card">
+      <div className="row"><div className="avatar" style={{width:46,height:46}}>{user.name.slice(0,2).toUpperCase()}</div>
+        <div className="grow"><b>{user.name}</b><div className="tiny">{user.email} · {ROLE_LABEL[user.role]}</div></div></div>
+      <button className="btn sec block" style={{marginTop:14}} onClick={onLogout}>Sign out</button>
+    </div>
+    <div className="card">
+      <h3>Appearance</h3>
+      <div className="row" style={{marginTop:8}}>
+        <button className={"btn sm grow "+(theme==="light"?"":"sec")} onClick={()=>setTheme("light")}>☀ Light</button>
+        <button className={"btn sm grow "+(theme==="dark"?"":"sec")} onClick={()=>setTheme("dark")}>🌙 Dark</button>
+        <button className={"btn sm grow "+(theme==="auto"?"":"sec")} onClick={()=>setTheme("auto")}>Auto</button>
+      </div>
+    </div>
+    <div className="card">
+      <h3>Supabase (team database)</h3>
+      <p className="tiny">Run <b>supabase-schema.sql</b> in a new Supabase project, then paste your Project URL and anon key. The app switches to secure email sign-in with Row Level Security, and the whole team shares one live database.</p>
+      <Field label="Project URL"><input value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://xxxx.supabase.co"/></Field>
+      <Field label="Anon (public) key"><input value={key} onChange={e=>setKey(e.target.value)} placeholder="eyJhbGciOi…"/></Field>
+      <button className="btn block" style={{marginTop:12}} onClick={saveSb}>Save connection</button>
+    </div>
+    <div className="card">
+      <h3>Install as an app</h3>
+      <p className="tiny">iPhone: Share → Add to Home Screen. Android: menu → Install app. Works offline — everything syncs from this device's storage.</p>
+    </div>
+    <p className="tiny" style={{textAlign:"center"}}>Borealis SIL OS v{APP_VER} · Confidential · Participant data must never be shared outside the authorised team.</p>
+  </div>;
+}
+
+/* ================= MORE HUB ================= */
+function MoreHub({go,user}){
+  const items = [
+    ["calendar","Appointments","Blood tests · injections · pickups",I.cal],
+    ["money","Money reconciliation","Pouch, receipts, daily form",I.money],
+    ["incidents","Incident reports","Document and escalate",I.alertT],
+    ["checklist","Checklist & cleaning","Daily essentials + house",I.checkl],
+    ["inventory","Inventory","Groceries, hygiene, supplies",I.box],
+    ["handover","Handover","Team feed + acknowledgements",I.hand],
+    ["search","Search everything","BSP, notes, incidents, contacts",I.search],
+    ["analytics","Analytics","Meds, incidents, spending",I.chart],
+    ["admin","Admin portal","Users, roles, audit, backup",I.shield],
+    ["settings","Settings","Theme, Supabase, account",I.gear],
+  ];
+  return <div className="grid2">
+    {items.map(([v,t,s,Ic])=><button key={v} className="tile" onClick={()=>go(v)}>
+      <div className="ic"><Ic/></div><b>{t}</b><span>{s}</span>
+    </button>)}
+  </div>;
+}
+
+/* ================= APP SHELL ================= */
+const TITLES = {home:"Dashboard",profile:"About Muhamad",shift:"Shift",notes:"Progress notes",meds:"Medication",money:"Money",handover:"Handover",incidents:"Incidents",checklist:"Checklist",calendar:"Appointments",inventory:"Inventory",search:"Search",analytics:"Analytics",admin:"Admin",settings:"Settings",more:"More"};
+
+function App(){
+  const [user,setUser] = useState(()=>LS.get("session",null));
+  const [view,setView] = useState("home");
+  const [subTab,setSubTab] = useState(null);
+  const [theme,setThemeRaw] = useState(()=>LS.get("theme","auto"));
+  const [toastMsg,setToastMsg] = useState("");
+
+  const [users,setUsers] = useStore("users",SEED_USERS);
+  const [notes,setNotes] = useStore("notes",[]);
+  const [medLog,setMedLog] = useStore("medLog",[]);
+  const [moneyDays,setMoneyDays] = useStore("moneyDays",[]);
+  const [handovers,setHandovers] = useStore("handovers",[]);
+  const [incidents,setIncidents] = useStore("incidentsv",LS.get("incidents",[]));
+  const [checkLog,setCheckLog] = useStore("checkLog",[]);
+  const [inventory,setInventory] = useStore("inventory",SEED_INVENTORY);
+  const [shifts,setShifts] = useStore("shifts",[]);
+  const [shift,setShift] = useState(()=>LS.get("activeShift",null));
+  const checklist = SEED_CHECKLIST;
+  const appts = SEED_APPTS;
+
+  const setTheme = t=>{ setThemeRaw(t); LS.set("theme",t); };
+  useEffect(()=>{
+    const apply = ()=>{
+      const dark = theme==="dark" || (theme==="auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.setAttribute("data-theme", dark?"dark":"light");
+    };
+    apply();
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener && mq.addEventListener("change",apply);
+    return ()=>mq.removeEventListener && mq.removeEventListener("change",apply);
+  },[theme]);
+
+  const toast = (m)=>{ setToastMsg(m); setTimeout(()=>setToastMsg(""),3200); };
+  const go = (v,sub)=>{ setView(v); setSubTab(sub||null); window.scrollTo(0,0); };
+  const login = (u)=>{ setUser(u); LS.set("session",u); };
+  const logout = ()=>{ setUser(null); LS.del("session"); setView("home"); };
+
+  // Notification permission + Clozapine reminder while app open
+  useEffect(()=>{
+    if(!user) return;
+    if("Notification" in window && Notification.permission==="default") Notification.requestPermission();
+    const iv = setInterval(()=>{
+      const n = new Date();
+      if(n.getHours()===17 && n.getMinutes()===25){
+        const day = todayStr();
+        const done = LS.get("medLog",[]).some(l=>l.day===day && l.nameKey==="m1");
+        if(!done && "Notification" in window && Notification.permission==="granted")
+          new Notification("Clozapine due at 5:30 PM",{body:"Calm wording: \"Here's your medication, Muhamad.\" Log it in the app."});
+      }
+    },55000);
+    return ()=>clearInterval(iv);
+  },[user]);
+
+  // keep live user object fresh if role changed in admin
+  const liveUser = user ? (users.find(u=>u.id===user.id)||user) : null;
+
+  if(!liveUser) return <><Login users={users} setUsers={setUsers} onLogin={login}/><Toast msg={toastMsg}/></>;
+
+  const state = {notes,handovers,incidents,medLog,moneyDays};
+  const showNoteFab = shift && !["notes","search"].includes(view);
+
+  return <div className="app">
+    <div className="hdr">
+      <div className="grow">
+        <div className="logo">Borealis <span style={{fontWeight:400,opacity:.8}}>SIL OS</span></div>
+        <div className="sub">{TITLES[view]||""} · Muhamad Khayat</div>
+      </div>
+      <button onClick={()=>go("search")} style={{color:"#F7F3E3",width:38,height:38,display:"flex",alignItems:"center",justifyContent:"center"}} aria-label="Search"><div style={{width:22,height:22}}><I.search/></div></button>
+      <button onClick={()=>go("settings")} className="avatar" style={{background:"rgba(255,255,255,.15)",color:"#F7F3E3",width:36,height:36,fontSize:13}}>{liveUser.name.slice(0,2).toUpperCase()}</button>
+    </div>
+
+    <div className="main">
+      {view==="home" && <Dashboard user={liveUser} go={go} shift={shift} meds={SEED_MEDS} medLog={medLog} appts={appts} checkLog={checkLog} checklist={checklist} handovers={handovers} moneyDays={moneyDays} incidents={incidents}/>}
+      {view==="profile" && <Profile initialTab={subTab}/>}
+      {view==="shift" && <Shift user={liveUser} shift={shift} setShift={setShift} shifts={shifts} setShifts={setShifts} go={go} toast={toast}/>}
+      {view==="notes" && <Notes user={liveUser} notes={notes} setNotes={setNotes} shift={shift} toast={toast}/>}
+      {view==="meds" && <Meds user={liveUser} medLog={medLog} setMedLog={setMedLog} toast={toast}/>}
+      {view==="money" && <Money user={liveUser} moneyDays={moneyDays} setMoneyDays={setMoneyDays} toast={toast}/>}
+      {view==="handover" && <Handover user={liveUser} users={users} handovers={handovers} setHandovers={setHandovers} toast={toast}/>}
+      {view==="incidents" && <Incidents user={liveUser} incidents={incidents} setIncidents={setIncidents} toast={toast}/>}
+      {view==="checklist" && <Checklist user={liveUser} checklist={checklist} checkLog={checkLog} setCheckLog={setCheckLog}/>}
+      {view==="calendar" && <Calendar appts={appts}/>}
+      {view==="inventory" && <Inventory inventory={inventory} setInventory={setInventory} toast={toast}/>}
+      {view==="search" && <Search state={state} go={go}/>}
+      {view==="analytics" && <Analytics state={state}/>}
+      {view==="admin" && <Admin user={liveUser} users={users} setUsers={setUsers} toast={toast}/>}
+      {view==="settings" && <Settings user={liveUser} onLogout={logout} theme={theme} setTheme={setTheme} toast={toast}/>}
+      {view==="more" && <MoreHub go={go} user={liveUser}/>}
+    </div>
+
+    {showNoteFab && <button className="fab-note" onClick={()=>go("notes")}><div style={{width:18,height:18}}><I.note/></div> Note</button>}
+
+    <div className="nav">
+      {[["home","Home",I.home],["profile","Muhamad",I.user],["shift","Shift",I.shift],["meds","Meds",I.pill],["more","More",I.more]].map(([v,l,Ic])=>
+        <button key={v} className={view===v||(v==="more"&&!["home","profile","shift","meds"].includes(view))?"on":""} onClick={()=>go(v)}>
+          <Ic/>{l}
+        </button>)}
+    </div>
+    <Toast msg={toastMsg}/>
+  </div>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+
+/* Service worker */
+if("serviceWorker" in navigator && location.protocol==="https:"){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>

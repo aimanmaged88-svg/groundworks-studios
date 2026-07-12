@@ -1,0 +1,133 @@
+/* ============================================================
+   BUSINESS STUDIO OS — Design Tokens
+   One accent. Two themes. Everything else is restraint.
+   ============================================================ */
+
+:root {
+  /* ---- Dark (default) ---- */
+  --bg:            #0B0B0D;   /* page plane */
+  --surface:       #101013;   /* sidebar, topbar */
+  --card:          #151519;   /* cards */
+  --card-2:        #1A1A1F;   /* nested / hover surfaces */
+  --card-3:        #202027;   /* inputs, wells */
+
+  --border:        rgba(255, 255, 255, 0.065);
+  --border-strong: rgba(255, 255, 255, 0.12);
+
+  --text:          #F4F3F0;
+  --text-2:        #A9A7A0;
+  --text-3:        #6C6A64;
+
+  --accent:        #6366F1;   /* Flow indigo — UI chrome */
+  --accent-ink:    #FFFFFF;    /* text on accent */
+  --accent-soft:   rgba(99, 102, 241, 0.14);
+  --accent-line:   rgba(99, 102, 241, 0.45);
+  --accent-grad:   linear-gradient(135deg, color-mix(in srgb, var(--accent) 86%, #fff) 0%, var(--accent) 52%, color-mix(in srgb, var(--accent) 80%, #000) 100%);
+  --sidebar-bg:    linear-gradient(180deg, #0A0E17 0%, #0E1320 100%);
+
+  /* validated chart series (dark surface #161618) */
+  --series-1:      #B8892E;
+  --series-2:      #6B8BE0;
+
+  --good:          #58B588;
+  --good-soft:     rgba(88, 181, 136, 0.12);
+  --warn:          #D9A84E;
+  --warn-soft:     rgba(217, 168, 78, 0.12);
+  --bad:           #D9776B;
+  --bad-soft:      rgba(217, 119, 107, 0.12);
+  --info:          #7E99DC;
+  --info-soft:     rgba(126, 153, 220, 0.12);
+
+  /* ---- vivid palette (FFOS-style colour, decorative) ---- */
+  --v-indigo: #7A6CF7;
+  --v-violet: #B168F5;
+  --v-blue:   #479BF5;
+  --v-cyan:   #22C3DA;
+  --v-teal:   #22C3A0;
+  --v-green:  #35C77B;
+  --v-amber:  #F0A93C;
+  --v-orange: #FB8B47;
+  --v-pink:   #F062A6;
+  --v-rose:   #F5606E;
+
+  --grid-line:     rgba(255, 255, 255, 0.05);
+  --axis-ink:      #898781;
+
+  --shadow-1: 0 1px 2px rgba(0,0,0,.25);
+  --shadow-2: 0 12px 32px -12px rgba(0,0,0,.55);
+  --shadow-3: 0 24px 64px -16px rgba(0,0,0,.65);
+
+  --font-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --t-fast: 150ms var(--ease);
+  --t-med: 280ms var(--ease);
+
+  --sidebar-w: 248px;
+  --topbar-h: 64px;
+
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  /* ---- Flow Forward light palette ---- */
+  --bg:            #F3F4F8;   /* soft grey-blue page */
+  --surface:       #FFFFFF;
+  --card:          #FFFFFF;
+  --card-2:        #FAFBFD;
+  --card-3:        #F2F4F7;
+
+  --border:        #EAECF1;
+  --border-strong: #DBDEE6;
+
+  --text:          #0B1220;
+  --text-2:        #5B6573;
+  --text-3:        #98A2B3;
+
+  --accent:        #4F46E5;   /* Flow indigo */
+  --accent-ink:    #FFFFFF;
+  --accent-soft:   color-mix(in srgb, #4F46E5 12%, #FFFFFF);
+  --accent-line:   rgba(79, 70, 229, 0.35);
+  --accent-grad:   linear-gradient(135deg, color-mix(in srgb, var(--accent) 88%, #fff) 0%, var(--accent) 52%, color-mix(in srgb, var(--accent) 82%, #000) 100%);
+  --sidebar-bg:    linear-gradient(180deg, #0A0E17 0%, #0E1320 100%);
+
+  /* chart series */
+  --series-1:      #4F46E5;
+  --series-2:      #2E90FA;
+
+  --good:          #12B76A;
+  --good-soft:     #ECFDF3;
+  --warn:          #F79009;
+  --warn-soft:     #FFFAEB;
+  --bad:           #F04438;
+  --bad-soft:      #FEF3F2;
+  --info:          #2E90FA;
+  --info-soft:     #EFF8FF;
+
+  /* vivid palette, stepped down for white surfaces */
+  --v-indigo: #5B4DE0;
+  --v-violet: #9333EA;
+  --v-blue:   #2563EB;
+  --v-cyan:   #0891B2;
+  --v-teal:   #0D9488;
+  --v-green:  #16A34A;
+  --v-amber:  #D97706;
+  --v-orange: #EA7317;
+  --v-pink:   #DB2777;
+  --v-rose:   #E11D48;
+
+  --grid-line:     rgba(11, 18, 32, 0.06);
+  --axis-ink:      #98A2B3;
+
+  --shadow-1: 0 1px 3px rgba(11,18,32,.055), 0 1px 2px rgba(11,18,32,.035);
+  --shadow-2: 0 6px 16px -4px rgba(11,18,32,.10), 0 2px 6px -2px rgba(11,18,32,.05);
+  --shadow-3: 0 24px 48px -14px rgba(11,18,32,.24), 0 8px 18px -8px rgba(11,18,32,.12);
+
+  color-scheme: light;
+}

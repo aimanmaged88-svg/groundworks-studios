@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I-BLAST | Pest Control & Pressure Cleaning — South West Sydney</title>
+<meta name="description" content="I-BLAST Pressure Cleaning & Pest Control. South West Sydney's pest control & cleaning experts. Reliable. Professional. Affordable. Licensed & insured.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a1420; --navy:#0a1420; --dark2:#0d1e33; --dark3:#0f233b;
+  --panel:#13263e; --panel2:#16304d; --lined:rgba(255,255,255,.09);
+  --light:#eef2f7; --light2:#e3e9f1;
+  --red:#e11d2a; --red2:#b81722; --wa:#25d366;
+  --white:#fff; --txt:#c3d0e0; --txt2:#8ea3bd; --ink:#0b1622; --muted:#5a6b83;
+  --ok:#22c55e; --warn:#f0932b;
+  --shadow:0 14px 40px rgba(0,0,0,.35); --shadow2:0 24px 60px rgba(0,0,0,.5);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--txt);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,.disp{font-family:'Oswald',sans-serif;text-transform:uppercase;font-weight:700;letter-spacing:.5px;line-height:1.05;color:#fff}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--red);color:#fff;border:none;padding:14px 28px;border-radius:8px;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;font-size:15px;cursor:pointer;transition:.2s;letter-spacing:.7px}
+.btn:hover{background:var(--red2);transform:translateY(-2px);box-shadow:0 12px 26px rgba(225,29,42,.4)}
+.btn.ghost{background:transparent;border:2px solid rgba(255,255,255,.35);color:#fff}
+.btn.ghost:hover{background:rgba(255,255,255,.1);box-shadow:none}
+.btn.wa{background:var(--wa)}.btn.wa:hover{background:#1eb955;box-shadow:0 12px 26px rgba(37,211,102,.4)}
+.btn.blue{background:#1f6fd6}.btn.blue:hover{background:#1a5fb8}
+.btn.gray{background:#3a4a5f}.btn.gray:hover{background:#2e3b4d}
+.btn.sm{padding:10px 18px;font-size:13px}
+.btn.block{width:100%}
+.tagline{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;font-weight:600;font-size:13px;color:var(--red)}
+.center{text-align:center}
+
+/* section headings */
+.sec-title{text-align:center;font-size:38px;margin-bottom:8px}
+.sec-title.on-light{color:var(--ink)}
+.sec-rule{width:70px;height:4px;background:var(--red);margin:0 auto 20px;border-radius:2px}
+.sec-sub{text-align:center;color:var(--txt2);max-width:640px;margin:0 auto 46px;font-size:16px}
+.sec-sub.on-light{color:var(--muted)}
+section.blk{padding:82px 0}
+
+/* NAV */
+header{position:sticky;top:0;z-index:100;background:rgba(9,18,30,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--lined)}
+nav{display:flex;align-items:center;justify-content:space-between;height:78px;gap:20px}
+.logo{cursor:pointer;flex-shrink:0}
+.logo img{height:52px;width:auto;display:block}
+.navlinks{display:flex;align-items:center;gap:26px;margin-left:auto}
+.navlinks a{font-family:'Oswald',sans-serif;text-transform:uppercase;font-weight:500;font-size:15px;letter-spacing:.6px;color:#dbe6f4;cursor:pointer;transition:.15s;position:relative;padding:4px 0}
+.navlinks a:hover{color:var(--red)}
+.callpill{display:flex;align-items:center;gap:11px;background:var(--red);padding:9px 18px;border-radius:8px;flex-shrink:0}
+.callpill .ic{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:15px}
+.callpill small{display:block;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#ffd7da;line-height:1}
+.callpill b{font-family:'Oswald',sans-serif;font-size:18px;color:#fff;letter-spacing:.5px;line-height:1.15}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px}
+.burger span{width:26px;height:3px;background:#fff;border-radius:2px}
+
+/* pages */
+.page{display:none}.page.active{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* HERO */
+.hero{position:relative;background:linear-gradient(96deg,#0a1420 0%,#0a1420 34%,rgba(10,20,32,.86) 50%,rgba(10,20,32,.35) 72%,rgba(10,20,32,.15) 100%),url('house.jpg') right center/cover no-repeat;overflow:hidden}
+.hero .wrap{position:relative;padding:74px 24px 84px;max-width:1200px}
+.hero-in{max-width:600px}
+.hero h1{font-size:56px;margin:14px 0 10px;letter-spacing:0}
+.hero h1 .r{color:var(--red)}
+.hero .rp{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:20px;letter-spacing:1px;color:#fff;margin-bottom:16px}
+.hero p.lead{font-size:16.5px;color:#c7d5e8;max-width:500px;margin-bottom:26px}
+.hbadges{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:28px}
+.hbadges .b{display:flex;align-items:center;gap:11px}
+.hbadges .b .i{width:40px;height:40px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid var(--lined);display:grid;place-items:center;color:var(--red);font-size:18px}
+.hbadges .b b{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:13.5px;letter-spacing:.5px;color:#fff;line-height:1.15;display:block}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+.trust-badge{position:absolute;right:6%;bottom:60px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 50% 40%,#e93744,#c01620);border:4px solid rgba(255,255,255,.25);display:grid;place-items:center;text-align:center;box-shadow:0 14px 40px rgba(0,0,0,.5);transform:rotate(-8deg)}
+.trust-badge div{font-family:'Oswald',sans-serif;text-transform:uppercase;color:#fff;line-height:1.05}
+.trust-badge .t1{font-size:10px;letter-spacing:1.5px;opacity:.9}
+.trust-badge .t2{font-size:20px;font-weight:700;margin:3px 0}
+.trust-badge .t3{font-size:10px;letter-spacing:1px;opacity:.9}
+.trust-badge .stars{color:#ffd24a;font-size:13px;letter-spacing:2px}
+
+/* floating side buttons */
+.floaters{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:2px}
+.floaters a{width:66px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;color:#fff;font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:10px;letter-spacing:.5px;font-weight:600;transition:.2s;border-radius:10px 0 0 10px}
+.floaters a .ic{font-size:22px}
+.floaters .fcall{background:var(--red)}.floaters .fcall:hover{background:var(--red2);padding-right:12px}
+.floaters .fwa{background:var(--wa)}.floaters .fwa:hover{background:#1eb955;padding-right:12px}
+
+/* SERVICES */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.svc-card{background:var(--panel);border:1px solid var(--lined);border-radius:14px;overflow:hidden;transition:.25s;display:flex;flex-direction:column}
+.svc-card:hover{transform:translateY(-6px);box-shadow:var(--shadow2);border-color:rgba(225,29,42,.4)}
+.svc-head{padding:22px 24px;display:flex;align-items:center;gap:13px;border-bottom:1px solid var(--lined);background:linear-gradient(180deg,rgba(255,255,255,.04),transparent)}
+.svc-head .ic{width:46px;height:46px;border-radius:10px;background:rgba(225,29,42,.15);display:grid;place-items:center;font-size:22px;flex-shrink:0}
+.svc-head h3{font-size:21px}
+.svc-body{padding:22px 24px;flex:1;display:flex;flex-direction:column}
+.svc-body ul{list-style:none;margin-bottom:20px;flex:1}
+.svc-body li{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:14.5px;color:var(--txt);border-bottom:1px solid rgba(255,255,255,.05)}
+.svc-body li::before{content:"✓";color:var(--red);font-weight:900;font-size:13px;width:18px;height:18px;border-radius:50%;background:rgba(225,29,42,.15);display:grid;place-items:center;flex-shrink:0}
+
+/* WHY (light) */
+.why{background:var(--light)}
+.why6{display:grid;grid-template-columns:repeat(6,1fr);gap:20px}
+.why6 .c{text-align:center;padding:14px 8px}
+.why6 .ic{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:#fff;border:1px solid var(--light2);display:grid;place-items:center;font-size:26px;box-shadow:0 8px 20px rgba(10,20,40,.08)}
+.why6 h4{color:var(--ink);font-size:15px;margin-bottom:7px;line-height:1.2}
+.why6 p{color:var(--muted);font-size:13px}
+
+/* RESULTS */
+.results{background:var(--dark2)}
+.ba-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.ba{background:var(--panel);border:1px solid var(--lined);border-radius:12px;padding:10px;text-align:center}
+.ba .tile{position:relative;height:120px;border-radius:8px;overflow:hidden;display:flex}
+.ba .half{flex:1;display:grid;place-items:end center;padding-bottom:6px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:1px;color:#fff;text-transform:uppercase}
+.ba .before{background:linear-gradient(160deg,#5a5348,#3d3a33)}
+.ba .after{background:linear-gradient(160deg,#3a7fb5,#1f5f92)}
+.ba .tile::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:3px;background:#fff;transform:translateX(-50%)}
+.ba .knob{position:absolute;left:50%;top:50%;width:26px;height:26px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);display:grid;place-items:center;color:var(--red);font-size:12px;font-weight:900;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.ba .cap{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:12.5px;letter-spacing:.5px;color:#fff;margin-top:10px}
+
+/* TESTIMONIALS (light) */
+.testi-sec{background:var(--light)}
+.testi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.testi .card{background:#fff;border:1px solid var(--light2);border-radius:12px;padding:26px;position:relative;box-shadow:0 10px 30px rgba(10,20,40,.06)}
+.testi .stars{color:#f5b301;font-size:16px;margin-bottom:12px;letter-spacing:2px}
+.testi .quote{position:absolute;top:20px;right:22px;font-size:44px;color:var(--light2);font-family:Georgia,serif;line-height:1}
+.testi p{color:#33475f;font-size:14.5px;margin-bottom:16px;font-style:italic}
+.testi .who b{font-family:'Oswald',sans-serif;text-transform:uppercase;color:var(--ink);font-size:15px;display:block}
+.testi .who span{font-size:12.5px;color:var(--muted)}
+
+/* CONTACT / QUOTE CTA */
+.contact{background:linear-gradient(180deg,var(--navy),var(--dark2))}
+.contact-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:44px;align-items:center}
+.contact h2{font-size:38px;margin-bottom:8px}
+.contact h2 .r{color:var(--red)}
+.contact .cd{color:var(--txt);margin-bottom:24px}
+.cinfo{display:flex;flex-direction:column;gap:14px}
+.cinfo a{display:flex;align-items:center;gap:14px;color:#dbe6f4;font-size:15px}
+.cinfo a .ic{width:44px;height:44px;border-radius:10px;background:rgba(225,29,42,.15);display:grid;place-items:center;color:var(--red);font-size:18px;flex-shrink:0}
+.qform{background:var(--panel);border:1px solid var(--lined);border-radius:16px;padding:28px;box-shadow:var(--shadow)}
+.qform .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fld{margin-bottom:13px}
+.fld label{display:block;font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:11.5px;letter-spacing:.6px;color:var(--txt2);margin-bottom:6px}
+.inp{width:100%;padding:13px 15px;border-radius:9px;border:1px solid var(--lined);background:rgba(255,255,255,.05);color:#fff;font-size:14.5px;font-family:inherit;outline:none;transition:.15s}
+.inp::placeholder{color:#6d81a0}
+.inp:focus{border-color:var(--red);background:rgba(255,255,255,.08)}
+select.inp option{color:#0b1622}
+textarea.inp{resize:vertical;min-height:90px}
+
+/* FOOTER */
+footer{background:#07101c;padding:60px 0 26px;border-top:1px solid var(--lined)}
+.foot{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:32px;margin-bottom:40px}
+.foot .logo img{height:50px;margin-bottom:14px}
+.foot h4{color:#fff;font-size:16px;margin-bottom:16px}
+.foot p,.foot a{display:block;font-size:14px;margin-bottom:9px;color:var(--txt2)}
+.foot a{cursor:pointer}.foot a:hover{color:var(--red)}
+.foot .cols2{columns:2;column-gap:16px}
+.foot-cta a{display:flex;align-items:center;gap:11px;color:#dbe6f4;margin-bottom:12px;font-size:14px}
+.foot-cta a .ic{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.06);display:grid;place-items:center;color:var(--red);flex-shrink:0}
+.foot-bot{border-top:1px solid var(--lined);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--txt2)}
+.foot-bot a{color:var(--txt2)}.foot-bot a:hover{color:#fff}
+
+/* ---- inner app pages (quote/portal/admin) ---- */
+.page-hero{background:linear-gradient(120deg,var(--navy),var(--dark3));padding:56px 0 46px;text-align:center;border-bottom:1px solid var(--lined)}
+.page-hero h1{font-size:42px}
+.page-hero p{color:var(--txt2);margin-top:8px}
+.panel{background:var(--panel);border:1px solid var(--lined);border-radius:16px;padding:32px;box-shadow:var(--shadow)}
+.panel h2{font-size:26px;margin-bottom:6px}
+.pdesc{color:var(--txt2);margin-bottom:22px}
+.quote-wrap{display:grid;grid-template-columns:1fr .82fr;gap:32px;align-items:start}
+.est{background:linear-gradient(160deg,var(--panel2),var(--dark3));border:1px solid rgba(225,29,42,.25);border-radius:16px;padding:28px;position:sticky;top:96px}
+.est h3{font-size:19px;margin-bottom:14px}
+.badge-ai{display:inline-flex;align-items:center;gap:6px;background:rgba(225,29,42,.18);color:#ff8f96;font-family:'Oswald',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:6px 13px;border-radius:999px;margin-bottom:14px}
+.est .big{font-family:'Oswald',sans-serif;font-size:48px;font-weight:700;color:#fff;margin:6px 0}
+.est .note{font-size:13px;color:var(--txt2)}
+.est ul{list-style:none;margin:18px 0;border-top:1px solid var(--lined);padding-top:16px}
+.est li{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;color:var(--txt)}
+.est li span:last-child{font-weight:700;color:#fff}
+
+/* portal */
+.lookup{max-width:540px;margin:-34px auto 0;position:relative;z-index:5}
+.status-track{display:flex;justify-content:space-between;position:relative;margin:26px 0 8px}
+.status-track::before{content:"";position:absolute;top:16px;left:8%;right:8%;height:3px;background:var(--lined)}
+.status-track .st{position:relative;z-index:2;text-align:center;flex:1}
+.status-track .st .dot{width:34px;height:34px;border-radius:50%;background:var(--panel);border:3px solid var(--lined);margin:0 auto 8px;display:grid;place-items:center;font-weight:800;color:var(--txt2);font-size:13px}
+.status-track .st.done .dot{background:var(--ok);border-color:var(--ok);color:#062}
+.status-track .st.active .dot{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 0 0 5px rgba(225,29,42,.2)}
+.status-track .st small{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:11px;color:var(--txt2)}
+.status-track .st.done small,.status-track .st.active small{color:#fff}
+.job-card{border:1px solid var(--lined);border-radius:14px;padding:20px;margin-bottom:16px;background:rgba(255,255,255,.02)}
+.job-card .top{display:flex;justify-content:space-between;align-items:start;margin-bottom:6px;gap:12px}
+.job-card h4{font-size:17px}
+.sub2{font-size:12.5px;color:var(--txt2)}
+.tag{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:11px;font-weight:600;padding:5px 11px;border-radius:999px;letter-spacing:.5px;white-space:nowrap}
+.tag.new{background:rgba(31,111,214,.18);color:#7fb3f0}
+.tag.quoted{background:rgba(240,147,43,.18);color:#f5b869}
+.tag.scheduled{background:rgba(34,197,94,.18);color:#7ee2a0}
+.tag.done{background:rgba(255,255,255,.1);color:#aebfd4}
+.tag.hot{background:rgba(225,29,42,.2);color:#ff8f96}
+.tag.warm{background:rgba(240,147,43,.18);color:#f5b869}
+.tag.cold{background:rgba(31,111,214,.18);color:#7fb3f0}
+
+/* admin */
+.login-screen{min-height:74vh;display:grid;place-items:center;padding:44px 24px}
+.login-box{background:var(--panel);border:1px solid var(--lined);border-radius:20px;padding:40px;max-width:410px;width:100%;box-shadow:var(--shadow2);text-align:center}
+.login-box h2{font-size:26px;margin-bottom:4px}
+.login-box p{color:var(--txt2);margin-bottom:22px;font-size:14px}
+.hint{font-size:12px;color:var(--txt2);margin-top:14px}
+.dash{display:none}.dash.active{display:block}
+.dash-top{background:linear-gradient(120deg,var(--navy),var(--dark3));padding:24px 0;border-bottom:1px solid var(--lined)}
+.dash-top .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.dash-top h1{font-size:24px}
+.dash-top .u{display:flex;align-items:center;gap:14px}
+.dash-top .who{text-align:right}.dash-top .who b{display:block;font-size:14px;color:#fff}.dash-top .who span{font-size:12px;color:var(--txt2)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:28px 0}
+.stat{background:var(--panel);border:1px solid var(--lined);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+.stat .lbl{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:12px;letter-spacing:.5px;color:var(--txt2)}
+.stat .val{font-family:'Oswald',sans-serif;font-size:34px;font-weight:700;margin:6px 0 2px;color:#fff}
+.stat .val.red{color:var(--red)}.stat .val.green{color:var(--ok)}
+.stat .delta{font-size:12.5px;font-weight:600;color:var(--ok)}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--lined);margin-bottom:24px;flex-wrap:wrap}
+.tabs button{background:none;border:none;padding:13px 18px;font-family:'Oswald',sans-serif;text-transform:uppercase;font-weight:500;font-size:15px;letter-spacing:.5px;color:var(--txt2);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs button.on{color:#fff;border-color:var(--red)}
+.subtab{display:none}.subtab.on{display:block;animation:fade .3s}
+.q-table{width:100%;border-collapse:collapse;background:var(--panel);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--lined)}
+.q-table th{background:rgba(255,255,255,.03);text-align:left;padding:14px 16px;font-family:'Oswald',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2);border-bottom:1px solid var(--lined)}
+.q-table td{padding:14px 16px;border-bottom:1px solid var(--lined);font-size:14px;vertical-align:middle;color:var(--txt)}
+.q-table tr:last-child td{border-bottom:none}
+.q-table tr:hover td{background:rgba(255,255,255,.02)}
+.q-table .nm{font-weight:700;color:#fff}
+.sel-status{padding:6px 10px;border-radius:8px;border:1px solid var(--lined);font-weight:700;font-size:12.5px;background:var(--dark3);color:#fff;cursor:pointer}
+.mini{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:12px;color:#ff8f96;font-weight:600;cursor:pointer;background:none;border:none;padding:0}
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.ai-card{background:var(--panel);border:1px solid var(--lined);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+.ai-card h3{font-size:19px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.ai-card .ai-ic{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff5a4d);display:grid;place-items:center;font-size:17px}
+.ai-card>p{color:var(--txt2);font-size:13.5px;margin-bottom:16px}
+.ai-out{background:rgba(255,255,255,.03);border:1px dashed var(--lined);border-radius:12px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;color:var(--txt);line-height:1.55}
+.ai-out.empty{color:var(--txt2);display:grid;place-items:center;text-align:center;font-style:italic}
+.lead-list{display:flex;flex-direction:column;gap:10px}
+.lead-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--lined);border-radius:11px;gap:10px}
+.lead-row .li b{display:block;font-size:14px;color:#fff}.lead-row .li span{font-size:12.5px;color:var(--txt2)}
+.score{font-family:'Oswald',sans-serif;font-weight:700;font-size:20px}
+.score.hot{color:var(--red)}.score.warm{color:var(--warn)}.score.cold{color:#7fb3f0}
+.spark{display:inline-block;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.insight{display:flex;gap:12px;padding:14px;border-radius:12px;background:rgba(255,255,255,.03);margin-bottom:10px;border-left:3px solid var(--red)}
+.insight .ii{font-size:20px}
+.insight b{font-size:14px;color:#fff}.insight p{font-size:13px;color:var(--txt2);margin:0}
+
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--panel);border:1px solid var(--lined);color:#fff;padding:15px 26px;border-radius:12px;font-weight:700;box-shadow:var(--shadow2);z-index:500;transition:.35s;display:flex;align-items:center;gap:10px}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast .ok{color:var(--ok);font-size:18px}
+
+@media(max-width:980px){
+  .navlinks{display:none}
+  .navlinks.open{display:flex;position:absolute;top:78px;left:0;right:0;background:#0a1420;flex-direction:column;padding:22px;gap:18px;border-bottom:1px solid var(--lined)}
+  .burger{display:flex}
+  .callpill{display:none}
+  .hero{background:linear-gradient(180deg,rgba(10,20,32,.78),rgba(10,20,32,.92)),url('house.jpg') center/cover}
+  .hero h1{font-size:40px}
+  .trust-badge{position:static;margin:26px 0 0;transform:none}
+  .svc-grid,.why6,.ba-grid,.testi,.contact-grid,.stats,.ai-grid,.foot,.quote-wrap{grid-template-columns:1fr}
+  .why6{grid-template-columns:1fr 1fr 1fr}
+  .ba-grid{grid-template-columns:1fr 1fr}
+  .est{position:static}
+  .sec-title,.contact h2{font-size:30px}
+  .q-table{display:block;overflow-x:auto;white-space:nowrap}
+}
+@media(max-width:560px){.why6,.ba-grid,.qform .row2{grid-template-columns:1fr}.floaters a{width:56px}}
+</style>
+</head>
+<body>
+
+<!-- floating buttons -->
+<div class="floaters">
+  <a href="tel:0416224292" class="fcall"><span class="ic">📞</span>Call<br>Now</a>
+  <a href="https://wa.me/61416224292" target="_blank" rel="noopener" class="fwa"><span class="ic">💬</span>Whats<br>App</a>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo" onclick="go('home')"><img src="logo.png" alt="I-BLAST Pressure Washing & Pest Control"></div>
+      <div class="navlinks" id="navlinks">
+        <a onclick="go('home')">Home</a>
+        <a onclick="go('home');scrollTo2('services')">Services</a>
+        <a onclick="go('home');scrollTo2('results')">Gallery</a>
+        <a onclick="go('portal')">Portal</a>
+        <a onclick="go('admin')">Admin</a>
+        <a onclick="go('quote')">Contact</a>
+      </div>
+      <a href="tel:0416224292" class="callpill">
+        <span class="ic">📞</span>
+        <span><small>Call Now</small><b>0416 224 292</b></span>
+      </a>
+      <button class="burger" onclick="document.getElementById('navlinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </nav>
+  </div>
+</header>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-in">
+        <span class="tagline">Pressure Cleaning &amp; Pest Control</span>
+        <h1>South West Sydney's <span class="r">Pest Control &amp; Cleaning</span> Experts</h1>
+        <div class="rp">Reliable. Professional. Affordable.</div>
+        <p class="lead">I-BLAST provides professional pest management and exterior cleaning services for homes and businesses across South West Sydney. Safe for your family &amp; pets.</p>
+        <div class="hbadges">
+          <div class="b"><span class="i">🛡️</span><b>Licensed &amp;<br>Insured</b></div>
+          <div class="b"><span class="i">⚡</span><b>Fast<br>Response</b></div>
+          <div class="b"><span class="i">✅</span><b>Satisfaction<br>Guaranteed</b></div>
+        </div>
+        <div class="cta">
+          <a href="tel:0416224292" class="btn">📞 Call Now</a>
+          <button class="btn ghost" onclick="go('quote')">Get a Free Quote</button>
+        </div>
+      </div>
+      <div class="trust-badge">
+        <div>
+          <div class="t1">★ Local Business ★</div>
+          <div class="t2">South West<br>Sydney</div>
+          <div class="stars">★★★★★</div>
+          <div class="t3">You Can Trust</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="blk" id="services">
+    <div class="wrap">
+      <h2 class="sec-title">Our Services</h2>
+      <div class="sec-rule"></div>
+      <p class="sec-sub">One local team for a pest-free home and a spotless exterior — fully insured, professional-grade equipment, family &amp; pet-safe solutions.</p>
+      <div class="svc-grid">
+        <div class="svc-card">
+          <div class="svc-head"><span class="ic">🐜</span><h3>Pest Control</h3></div>
+          <div class="svc-body">
+            <ul>
+              <li>General Pest Treatments</li><li>Rodent Control</li><li>German Cockroach Treatments</li>
+              <li>Spider Control</li><li>Termite Inspections</li><li>Preventative Pest Management</li>
+            </ul>
+            <button class="btn block" onclick="go('quote')">Learn More</button>
+          </div>
+        </div>
+        <div class="svc-card">
+          <div class="svc-head"><span class="ic">💦</span><h3>Pressure Cleaning</h3></div>
+          <div class="svc-body">
+            <ul>
+              <li>Driveway Cleaning</li><li>House Washing</li><li>Roof Cleaning</li>
+              <li>Gutter Cleaning</li><li>Soft Washing</li><li>Exterior Surface Restoration</li>
+            </ul>
+            <button class="btn blue block" onclick="go('quote')">Learn More</button>
+          </div>
+        </div>
+        <div class="svc-card">
+          <div class="svc-head"><span class="ic">🏢</span><h3>Commercial Services</h3></div>
+          <div class="svc-body">
+            <ul>
+              <li>Commercial Pest Control</li><li>Commercial Pressure Washing</li><li>Building Exterior Cleaning</li>
+              <li>Strata Property Maintenance</li><li>Warehouse &amp; Industrial Cleaning</li><li>Ongoing Service Contracts</li>
+            </ul>
+            <button class="btn gray block" onclick="go('quote')">Learn More</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="blk why">
+    <div class="wrap">
+      <h2 class="sec-title on-light">Why Choose I-BLAST?</h2>
+      <div class="sec-rule"></div>
+      <div class="why6" style="margin-top:14px">
+        <div class="c"><div class="ic">👷</div><h4>Experienced Professionals</h4><p>Trained experts with years of industry experience.</p></div>
+        <div class="c"><div class="ic">🛡️</div><h4>Licensed &amp; Insured</h4><p>Fully licensed and insured for your peace of mind.</p></div>
+        <div class="c"><div class="ic">💲</div><h4>Affordable Pricing</h4><p>Competitive pricing with no hidden fees.</p></div>
+        <div class="c"><div class="ic">⏱️</div><h4>Reliable &amp; On-Time</h4><p>We show up on time and get the job done right.</p></div>
+        <div class="c"><div class="ic">⚙️</div><h4>Quality Equipment</h4><p>Professional-grade equipment and safe products.</p></div>
+        <div class="c"><div class="ic">📍</div><h4>South West Sydney Local</h4><p>Proudly servicing our local community.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="blk results" id="results">
+    <div class="wrap">
+      <h2 class="sec-title">Before &amp; After Results</h2>
+      <div class="sec-rule"></div>
+      <div class="ba-grid" style="margin-top:14px">
+        <div class="ba"><div class="tile"><div class="half before">Before</div><div class="half after">After</div><div class="knob">⇄</div></div><div class="cap">Driveway Cleaning</div></div>
+        <div class="ba"><div class="tile"><div class="half before">Before</div><div class="half after">After</div><div class="knob">⇄</div></div><div class="cap">Roof Cleaning</div></div>
+        <div class="ba"><div class="tile"><div class="half before">Before</div><div class="half after">After</div><div class="knob">⇄</div></div><div class="cap">House Washing</div></div>
+        <div class="ba"><div class="tile"><div class="half before">Before</div><div class="half after">After</div><div class="knob">⇄</div></div><div class="cap">Patio Cleaning</div></div>
+        <div class="ba"><div class="tile"><div class="half before">Before</div><div class="half after">After</div><div class="knob">⇄</div></div><div class="cap">Gutter Cleaning</div></div>
+      </div>
+      <div class="center" style="margin-top:28px"><button class="btn" onclick="go('quote')">View More Results</button></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="blk testi-sec">
+    <div class="wrap">
+      <h2 class="sec-title on-light">What Our Customers Say</h2>
+      <div class="sec-rule"></div>
+      <div class="testi" style="margin-top:14px">
+        <div class="card"><span class="quote">”</span><div class="stars">★★★★★</div><p>"I-BLAST transformed our driveway and removed years of built-up dirt. Professional service and great results!"</p><div class="who"><b>Sarah M.</b><span>Liverpool</span></div></div>
+        <div class="card"><span class="quote">”</span><div class="stars">★★★★★</div><p>"Fast response and effective pest treatment. We haven't had any issues since. Highly recommend!"</p><div class="who"><b>James T.</b><span>Campbelltown</span></div></div>
+        <div class="card"><span class="quote">”</span><div class="stars">★★★★★</div><p>"Reliable, affordable and easy to deal with. Will definitely use again for our commercial property."</p><div class="who"><b>Michael R.</b><span>Bankstown</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="blk contact">
+    <div class="wrap contact-grid">
+      <div>
+        <h2>Get a Free<br><span class="r">No Obligation Quote</span></h2>
+        <p class="cd">Need pest control or pressure cleaning? Contact us today for a free quote — same-week bookings available across South West Sydney.</p>
+        <div class="cinfo">
+          <a href="tel:0416224292"><span class="ic">📞</span> 0416 224 292</a>
+          <a href="mailto:info@iblastservices.com.au"><span class="ic">✉️</span> info@iblastservices.com.au</a>
+          <a onclick="go('quote')"><span class="ic">📍</span> South West Sydney, NSW</a>
+          <a href="https://wa.me/61416224292" target="_blank" rel="noopener"><span class="ic">💬</span> Message us on WhatsApp</a>
+        </div>
+      </div>
+      <div class="qform">
+        <div class="row2">
+          <div class="fld"><label>Your Name *</label><input class="inp" id="home-name" placeholder="Full name"></div>
+          <div class="fld"><label>Phone Number *</label><input class="inp" id="home-phone" placeholder="0400 000 000"></div>
+        </div>
+        <div class="row2">
+          <div class="fld"><label>Email Address</label><input class="inp" id="home-email" placeholder="you@email.com"></div>
+          <div class="fld"><label>Service Required *</label>
+            <select class="inp" id="home-svc">
+              <option value="0">Select…</option>
+              <option value="249">Pest Control</option>
+              <option value="299">House Washing</option>
+              <option value="199">Driveways &amp; Paths</option>
+              <option value="449">Roof Cleaning</option>
+              <option value="899">Full Property Package</option>
+            </select>
+          </div>
+        </div>
+        <div class="fld"><label>Tell us about your property</label><textarea class="inp" id="home-msg" placeholder="What do you need done?"></textarea></div>
+        <button class="btn block" onclick="homeQuote()">Submit Enquiry →</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- QUOTE -->
+<div class="page" id="page-quote">
+  <div class="page-hero"><div class="wrap"><h1>Get Your Free Quote</h1><p>Our AI estimator gives you an instant price range — no obligation.</p></div></div>
+  <section class="blk">
+    <div class="wrap quote-wrap">
+      <div class="panel">
+        <h2>Tell us about your job</h2>
+        <p class="pdesc">The more detail you give, the more accurate your quote. It only takes a minute.</p>
+        <div class="qform" style="background:none;border:none;padding:0;box-shadow:none">
+          <div class="row2">
+            <div class="fld"><label>Full name *</label><input class="inp" id="q-name" placeholder="e.g. Jordan Smith"></div>
+            <div class="fld"><label>Phone *</label><input class="inp" id="q-phone" placeholder="0400 000 000"></div>
+          </div>
+          <div class="fld"><label>Email</label><input class="inp" id="q-email" placeholder="you@email.com"></div>
+          <div class="fld"><label>Property address / suburb</label><input class="inp" id="q-addr" placeholder="e.g. 12 Blast St, Liverpool"></div>
+          <div class="row2">
+            <div class="fld"><label>Service needed *</label>
+              <select class="inp" id="q-svc" onchange="quoteCalc()">
+                <option value="0">Select…</option>
+                <option value="299">House Washing</option>
+                <option value="199">Driveways &amp; Paths</option>
+                <option value="449">Roof Cleaning</option>
+                <option value="249">Pest Control</option>
+                <option value="899">Full Property Package</option>
+              </select>
+            </div>
+            <div class="fld"><label>Property size *</label>
+              <select class="inp" id="q-size" onchange="quoteCalc()">
+                <option value="1">Small (unit / townhouse)</option>
+                <option value="1.4">Medium (3-4 bed home)</option>
+                <option value="1.9">Large (5+ bed / double storey)</option>
+              </select>
+            </div>
+          </div>
+          <div class="fld"><label>Property type</label>
+            <select class="inp" id="q-type"><option>Residential</option><option>Commercial</option><option>Strata / Body Corp</option></select>
+          </div>
+          <div class="fld"><label>Anything else we should know?</label><textarea class="inp" id="q-notes" placeholder="e.g. heavy moss on north side, dog in backyard…"></textarea></div>
+          <button class="btn block" onclick="submitQuote()">Submit My Quote Request →</button>
+          <p class="hint center">🔒 Your details are private. No spam, ever.</p>
+        </div>
+      </div>
+      <div>
+        <div class="est">
+          <span class="badge-ai">⚡ AI Instant Estimate</span>
+          <h3>Your estimated price</h3>
+          <div class="big" id="q-amount">$—</div>
+          <div class="note" id="q-range">Select a service to see your price range.</div>
+          <ul id="q-breakdown" style="display:none">
+            <li><span>Base service</span><span id="q-base">$0</span></li>
+            <li><span>Property size</span><span id="q-sizeadd">×1.0</span></li>
+            <li><span>Estimated total</span><span id="q-total">$0</span></li>
+          </ul>
+          <p class="note">This is an instant estimate. We'll confirm your exact fixed price on-site — with no surprises.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PORTAL -->
+<div class="page" id="page-portal">
+  <div class="page-hero"><div class="wrap"><h1>Customer Portal</h1><p>Track your quotes and bookings in real time.</p></div></div>
+  <section class="blk" style="padding-top:0">
+    <div class="wrap">
+      <div class="panel lookup">
+        <h2 style="font-size:20px;margin-bottom:6px">🔎 Find my jobs</h2>
+        <p class="pdesc" style="margin-bottom:16px">Enter the phone number or email you booked with.</p>
+        <div class="fld"><input class="inp" id="portal-key" placeholder="Phone or email…"></div>
+        <button class="btn block" onclick="portalLookup()">View My Jobs</button>
+        <p class="hint">Tip: try the phone/email from a quote you submitted, or <a onclick="portalDemo()" style="color:#ff8f96;cursor:pointer;font-weight:700">view a demo account</a>.</p>
+      </div>
+      <div id="portal-results" style="max-width:740px;margin:30px auto 0"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="page-admin">
+  <div class="login-screen" id="admin-login">
+    <div class="login-box">
+      <img src="logo.png" alt="I-BLAST" style="width:190px;margin:0 auto 18px;display:block">
+      <h2>Business Login</h2>
+      <p>Sign in to your I-BLAST dashboard</p>
+      <div class="fld" style="text-align:left"><label>Email</label><input class="inp" id="ad-email" value="owner@iblast.com.au"></div>
+      <div class="fld" style="text-align:left"><label>Password</label><input class="inp" id="ad-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+      <button class="btn block" onclick="adminLogin()">Sign In →</button>
+      <p class="hint">Demo login → password: <b>iblast2026</b></p>
+    </div>
+  </div>
+  <div class="dash" id="admin-dash">
+    <div class="dash-top">
+      <div class="wrap">
+        <h1>I-BLAST Business Dashboard</h1>
+        <div class="u">
+          <div class="who"><b>Owner</b><span>owner@iblast.com.au</span></div>
+          <button class="btn sm ghost" onclick="adminLogout()">Log out</button>
+        </div>
+      </div>
+    </div>
+    <div class="wrap" style="padding-bottom:60px">
+      <div class="stats" id="admin-stats"></div>
+      <div class="tabs">
+        <button class="on" onclick="subtab(this,'t-quotes')">📋 Quotes &amp; Leads</button>
+        <button onclick="subtab(this,'t-ai')">🤖 AI Lead Engine</button>
+        <button onclick="subtab(this,'t-insights')">📈 Insights</button>
+      </div>
+      <div class="subtab on" id="t-quotes">
+        <table class="q-table">
+          <thead><tr><th>Customer</th><th>Service</th><th>Est. Value</th><th>Lead</th><th>Status</th><th></th></tr></thead>
+          <tbody id="admin-rows"></tbody>
+        </table>
+      </div>
+      <div class="subtab" id="t-ai">
+        <div class="ai-grid">
+          <div class="ai-card">
+            <h3><span class="ai-ic">🤖</span> AI Follow-Up Writer</h3>
+            <p>Pick a lead and let AI draft a personalised SMS/email to win the job.</p>
+            <div class="fld"><label>Choose a lead</label><select class="inp" id="ai-lead"></select></div>
+            <div class="fld"><label>Channel &amp; tone</label>
+              <select class="inp" id="ai-tone">
+                <option value="sms">SMS — friendly &amp; short</option>
+                <option value="email">Email — professional</option>
+                <option value="discount">SMS — win-back with 10% off</option>
+              </select>
+            </div>
+            <button class="btn block" onclick="aiWrite()">✨ Generate Message</button>
+            <div class="ai-out empty" id="ai-msg" style="margin-top:16px">Your AI-generated message will appear here…</div>
+          </div>
+          <div class="ai-card">
+            <h3><span class="ai-ic">🎯</span> AI Lead Scoring</h3>
+            <p>Every lead auto-scored by close-likelihood &amp; value so you chase the money first.</p>
+            <div class="lead-list" id="ai-scores"></div>
+          </div>
+          <div class="ai-card" style="grid-column:1/-1">
+            <h3><span class="ai-ic">🚀</span> AI Growth Assistant</h3>
+            <p>One-click ideas to fill your calendar this week.</p>
+            <button class="btn" onclick="aiGrow()">💡 Generate Growth Plays</button>
+            <div class="ai-out empty" id="ai-grow" style="margin-top:16px">Click above for AI-generated marketing ideas tailored to your business…</div>
+          </div>
+        </div>
+      </div>
+      <div class="subtab" id="t-insights"><div id="admin-insights"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="logo"><img src="logo.png" alt="I-BLAST"></div>
+        <p>Professional pest control and pressure cleaning services throughout South West Sydney.</p>
+        <p>🛡️ Fully insured • Safe for family &amp; pets</p>
+      </div>
+      <div><h4>Quick Links</h4><a onclick="go('home')">Home</a><a onclick="go('home');scrollTo2('services')">Services</a><a onclick="go('home');scrollTo2('results')">Gallery</a><a onclick="go('portal')">Portal</a><a onclick="go('admin')">Admin Login</a></div>
+      <div><h4>Our Services</h4><a onclick="go('quote')">Pest Control</a><a onclick="go('quote')">Pressure Cleaning</a><a onclick="go('quote')">Commercial Services</a><a onclick="go('quote')">Roof Cleaning</a><a onclick="go('quote')">House Washing</a></div>
+      <div>
+        <h4>Service Areas</h4>
+        <div class="cols2">
+          <a onclick="go('quote')">Liverpool</a><a onclick="go('quote')">Campbelltown</a><a onclick="go('quote')">Bankstown</a><a onclick="go('quote')">Fairfield</a><a onclick="go('quote')">Wollondilly</a><a onclick="go('quote')">Camden</a><a onclick="go('quote')">Narellan</a><a onclick="go('quote')">Hoxton Park</a><a onclick="go('quote')">Casula</a><a onclick="go('quote')">+ surrounds</a>
+        </div>
+        <div class="foot-cta" style="margin-top:14px">
+          <a href="tel:0416224292"><span class="ic">📞</span> 0416 224 292</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 I-BLAST Pressure Cleaning &amp; Pest Control. All rights reserved. • Demo site.</span>
+      <span><a onclick="go('quote')">Privacy Policy</a> &nbsp;•&nbsp; <a onclick="go('quote')">Terms &amp; Conditions</a></span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"><span class="ok">✓</span><span id="toast-msg">Done</span></div>
+
+<script>
+function go(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.getElementById('navlinks').classList.remove('open');
+  window.scrollTo({top:0,behavior:'instant'});
+  if(p==='admin') renderAdmin();
+}
+function scrollTo2(id){setTimeout(()=>document.getElementById(id)?.scrollIntoView({behavior:'smooth'}),80);}
+function toast(m){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+
+const SVC_NAMES={299:'House Washing',199:'Driveways & Paths',449:'Roof Cleaning',249:'Pest Control',899:'Full Property Package'};
+function seed(){
+  if(localStorage.getItem('iblast_quotes')) return;
+  const demo=[
+    {id:'IB1042',name:'Sarah Mitchell',phone:'0412 555 019',email:'sarah.m@email.com',addr:'8 Ridge Rd, Liverpool',svc:299,size:1.4,value:419,type:'Residential',notes:'Mould on south wall',status:'Scheduled',date:'2026-07-02'},
+    {id:'IB1041',name:'David Tran',phone:'0433 210 887',email:'dtran@email.com',addr:'22 Park Ave, Campbelltown',svc:249,size:1,value:249,type:'Residential',notes:'Spiders + ants before summer',status:'Quoted',date:'2026-07-04'},
+    {id:'IB1040',name:'Leila Rahman',phone:'0421 778 004',email:'leila.r@email.com',addr:'5 Vista Ct, Bankstown',svc:899,size:1.9,value:1708,type:'Residential',notes:'Full package - roof, walls, paths',status:'New',date:'2026-07-06'},
+    {id:'IB1039',name:'Fairfield Plaza',phone:'02 9644 1200',email:'admin@fplaza.com',addr:'Fairfield Plaza',svc:199,size:1.9,value:378,type:'Commercial',notes:'Monthly carpark clean',status:'Scheduled',date:'2026-07-01'},
+    {id:'IB1038',name:'Michael Osei',phone:'0400 121 334',email:'m.osei@email.com',addr:'14 Oak St, Casula',svc:449,size:1.4,value:629,type:'Residential',notes:'Heavy lichen on roof',status:'Done',date:'2026-06-28'}
+  ];
+  localStorage.setItem('iblast_quotes',JSON.stringify(demo));
+}
+function getQuotes(){return JSON.parse(localStorage.getItem('iblast_quotes')||'[]');}
+function saveQuotes(q){localStorage.setItem('iblast_quotes',JSON.stringify(q));}
+seed();
+
+function calc(base,size){return Math.round(base*size/10)*10 -1;}
+function quoteCalc(){
+  const b=+document.getElementById('q-svc').value, s=+document.getElementById('q-size').value;
+  const amt=document.getElementById('q-amount'),rng=document.getElementById('q-range'),bd=document.getElementById('q-breakdown');
+  if(!b){amt.textContent='$—';rng.textContent='Select a service to see your price range.';bd.style.display='none';return;}
+  const t=calc(b,s);
+  amt.textContent='$'+t;
+  rng.textContent='Estimated range $'+(t-40)+' – $'+(t+60)+' • fixed price confirmed on-site';
+  bd.style.display='block';
+  document.getElementById('q-base').textContent='$'+b;
+  document.getElementById('q-sizeadd').textContent='×'+s.toFixed(1);
+  document.getElementById('q-total').textContent='$'+t;
+}
+function newId(q){return 'IB'+(1043+q.filter(x=>x.id.startsWith('IB')).length);}
+function submitQuote(){
+  const name=val('q-name'),phone=val('q-phone'),b=+val('q-svc'),s=+val('q-size');
+  if(!name||!phone||!b){toast('Please add your name, phone & service');return;}
+  const q=getQuotes();const id=newId(q);
+  q.unshift({id,name,phone,email:val('q-email'),addr:val('q-addr'),svc:b,size:s,value:calc(b,s),type:val('q-type'),notes:val('q-notes'),status:'New',date:'2026-07-07'});
+  saveQuotes(q);
+  toast('Quote submitted! Ref '+id);
+  ['q-name','q-phone','q-email','q-addr','q-notes'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('q-svc').value='0';quoteCalc();
+  setTimeout(()=>{document.getElementById('portal-key').value=phone;go('portal');portalLookup();},900);
+}
+function homeQuote(){
+  const name=val('home-name'),phone=val('home-phone'),b=+document.getElementById('home-svc').value;
+  if(!name||!phone||!b){toast('Please add name, phone & service');return;}
+  const q=getQuotes();const id=newId(q);
+  q.unshift({id,name,phone,email:val('home-email'),addr:'',svc:b,size:1.4,value:calc(b,1.4),type:'Residential',notes:val('home-msg'),status:'New',date:'2026-07-07'});
+  saveQuotes(q);
+  toast('Enquiry sent! Ref '+id);
+  ['home-name','home-phone','home-email','home-msg'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('home-svc').value='0';
+  setTimeout(()=>{document.getElementById('portal-key').value=phone;go('portal');portalLookup();},900);
+}
+function val(id){return document.getElementById(id).value.trim();}
+
+function portalDemo(){document.getElementById('portal-key').value='0412 555 019';portalLookup();}
+function portalLookup(){
+  const k=val('portal-key').toLowerCase().replace(/\s/g,'');
+  const box=document.getElementById('portal-results');
+  if(!k){box.innerHTML='';return;}
+  const jobs=getQuotes().filter(q=>(q.phone||'').toLowerCase().replace(/\s/g,'').includes(k)||(q.email||'').toLowerCase().includes(k));
+  if(!jobs.length){box.innerHTML='<div class="panel center"><h3>No jobs found</h3><p class="pdesc">We couldn\'t find that phone/email. Try the <a onclick="portalDemo()" style="color:#ff8f96;cursor:pointer;font-weight:700">demo account</a> or <a onclick="go(\'quote\')" style="color:#ff8f96;cursor:pointer;font-weight:700">request a quote</a>.</p></div>';return;}
+  const steps=['New','Quoted','Scheduled','Done'];
+  box.innerHTML='<div class="panel"><h2 style="font-size:20px;margin-bottom:4px">Welcome back, '+jobs[0].name.split(' ')[0]+' 👋</h2><p class="pdesc">You have '+jobs.length+' job'+(jobs.length>1?'s':'')+' with I-BLAST.</p>'+
+    jobs.map(j=>{
+      const idx=steps.indexOf(j.status);
+      return '<div class="job-card"><div class="top"><div><h4>'+SVC_NAMES[j.svc]+' <span class="sub2">• Ref '+j.id+'</span></h4><div class="sub2">'+(j.addr||'—')+' • $'+j.value+' est.</div></div><span class="tag '+j.status.toLowerCase()+'">'+j.status+'</span></div>'+
+      '<div class="status-track">'+steps.map((st,i)=>'<div class="st '+(i<idx?'done':i===idx?'active':'')+'"><div class="dot">'+(i<idx?'✓':i+1)+'</div><small>'+st+'</small></div>').join('')+'</div>'+
+      (j.notes?'<p class="sub2" style="margin-top:8px">📝 '+j.notes+'</p>':'')+'</div>';
+    }).join('')+
+    '<button class="btn block" style="margin-top:6px" onclick="go(\'quote\')">+ Request Another Quote</button></div>';
+}
+
+function adminLogin(){
+  if(val('ad-pass')==='iblast2026'){document.getElementById('admin-login').style.display='none';document.getElementById('admin-dash').classList.add('active');renderAdmin();}
+  else toast('Incorrect password (try iblast2026)');
+}
+function adminLogout(){document.getElementById('admin-dash').classList.remove('active');document.getElementById('admin-login').style.display='grid';document.getElementById('ad-pass').value='';}
+function subtab(btn,id){document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.querySelectorAll('.subtab').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');}
+
+function leadScore(q){
+  let s=40;
+  if(q.value>=800)s+=35;else if(q.value>=400)s+=22;else if(q.value>=250)s+=12;
+  if(q.status==='New')s+=18;else if(q.status==='Quoted')s+=10;
+  if(q.type==='Commercial')s+=10;
+  s=Math.min(98,s+(q.id.charCodeAt(q.id.length-1)%6));
+  return s;
+}
+function leadTemp(s){return s>=75?'hot':s>=55?'warm':'cold';}
+
+function renderAdmin(){
+  const q=getQuotes();
+  const openLeads=q.filter(x=>x.status==='New'||x.status==='Quoted').length;
+  const pipeline=q.filter(x=>x.status!=='Done').reduce((a,x)=>a+x.value,0);
+  const won=q.filter(x=>x.status==='Done'||x.status==='Scheduled').reduce((a,x)=>a+x.value,0);
+  const conv=Math.round(q.filter(x=>x.status==='Scheduled'||x.status==='Done').length/q.length*100);
+  document.getElementById('admin-stats').innerHTML=
+    stat('New / Open Leads',openLeads,'red','+'+openLeads+' to action')+
+    stat('Pipeline Value','$'+pipeline.toLocaleString(),'','across '+q.length+' quotes')+
+    stat('Booked Revenue','$'+won.toLocaleString(),'green','scheduled + done')+
+    stat('Conversion Rate',conv+'%','','quote → booked');
+  document.getElementById('admin-rows').innerHTML=q.map(j=>{
+    const sc=leadScore(j),tp=leadTemp(sc);
+    return '<tr><td><div class="nm">'+j.name+'</div><div class="sub2">'+j.phone+' • '+j.id+'</div></td>'+
+    '<td>'+SVC_NAMES[j.svc]+'<div class="sub2">'+j.type+'</div></td>'+
+    '<td><b style="color:#fff">$'+j.value+'</b></td>'+
+    '<td><span class="tag '+tp+'">'+tp.toUpperCase()+' '+sc+'</span></td>'+
+    '<td><select class="sel-status" onchange="setStatus(\''+j.id+'\',this.value)">'+
+      ['New','Quoted','Scheduled','Done'].map(s=>'<option '+(s===j.status?'selected':'')+'>'+s+'</option>').join('')+'</select></td>'+
+    '<td><button class="mini" onclick="quickAI(\''+j.id+'\')">✨ Follow up</button></td></tr>';
+  }).join('');
+  document.getElementById('ai-lead').innerHTML=q.map(j=>'<option value="'+j.id+'">'+j.name+' — '+SVC_NAMES[j.svc]+' ($'+j.value+')</option>').join('');
+  const sorted=[...q].sort((a,b)=>leadScore(b)-leadScore(a));
+  document.getElementById('ai-scores').innerHTML=sorted.map(j=>{const sc=leadScore(j),tp=leadTemp(sc);
+    return '<div class="lead-row"><div class="li"><b>'+j.name+'</b><span>'+SVC_NAMES[j.svc]+' • $'+j.value+' • '+j.status+'</span></div><div style="text-align:right"><div class="score '+tp+'">'+sc+'</div><span class="tag '+tp+'" style="font-size:10px">'+tp.toUpperCase()+'</span></div></div>';
+  }).join('');
+  renderInsights(q,pipeline,openLeads,conv);
+}
+function stat(l,v,c,d){return '<div class="stat"><div class="lbl">'+l+'</div><div class="val '+c+'">'+v+'</div><div class="delta">'+d+'</div></div>';}
+function setStatus(id,s){const q=getQuotes();const j=q.find(x=>x.id===id);if(j){j.status=s;saveQuotes(q);renderAdmin();toast(id+' → '+s);}}
+function quickAI(id){document.querySelector('.tabs button:nth-child(2)').click();document.getElementById('ai-lead').value=id;aiWrite();document.getElementById('t-ai').scrollIntoView({behavior:'smooth'});}
+
+function aiWrite(){
+  const id=document.getElementById('ai-lead').value, tone=document.getElementById('ai-tone').value;
+  const j=getQuotes().find(x=>x.id===id); if(!j)return;
+  const out=document.getElementById('ai-msg'); out.classList.remove('empty');
+  out.innerHTML='<span class="spark">✨ Writing personalised message…</span>';
+  const first=j.name.split(' ')[0], svc=SVC_NAMES[j.svc];
+  setTimeout(()=>{
+    let m;
+    if(tone==='sms') m=`Hi ${first}, it's the team at I-BLAST 👋 Thanks for your interest in our ${svc.toLowerCase()} service for ${j.addr||'your property'}. We can lock in your $${j.value} job as early as this week — want me to hold a spot? Reply YES and we'll sort the rest. – I-BLAST`;
+    else if(tone==='email') m=`Subject: Your I-BLAST ${svc} Quote (Ref ${j.id})\n\nHi ${first},\n\nThank you for reaching out to I-BLAST. Based on the details for ${j.addr||'your property'}, we've prepared a fixed quote of $${j.value} for our professional ${svc.toLowerCase()} service.\n\nWhat's included:\n• Fully insured, professional-grade equipment\n• Safe, eco-friendly solutions for family & pets\n• 100% satisfaction guarantee\n\nWe currently have availability this week. Simply reply to confirm and we'll book a time that suits you.\n\nWarm regards,\nThe I-BLAST Team\n📞 0416 224 292`;
+    else m=`Hi ${first}! We noticed you were interested in ${svc.toLowerCase()} but haven't booked yet. To say thanks for your patience, here's 10% OFF your $${j.value} quote — that's just $${Math.round(j.value*0.9)} if you book this week 🎉 Reply CLEAN to claim. – I-BLAST`;
+    out.textContent=m;
+    const btn=document.createElement('div');btn.style.marginTop='12px';
+    btn.innerHTML='<button class="btn sm" onclick="copyMsg(this)">📋 Copy</button> <button class="btn sm ghost" onclick="toast(\'Sent to '+first+' ✓\')">📤 Send</button>';
+    out.appendChild(btn);
+  },800);
+}
+function copyMsg(b){const txt=b.parentElement.parentElement.childNodes[0].textContent;navigator.clipboard?.writeText(txt);toast('Copied to clipboard');}
+function aiGrow(){
+  const out=document.getElementById('ai-grow');out.classList.remove('empty');
+  out.innerHTML='<span class="spark">🚀 Analysing your leads & local market…</span>';
+  const q=getQuotes();const cold=q.filter(x=>leadTemp(leadScore(x))==='cold').length;
+  setTimeout(()=>{
+    out.textContent=
+`🚀 3 AI GROWTH PLAYS FOR THIS WEEK
+
+1. WIN-BACK CAMPAIGN — You have ${cold||3} colder leads. Send the "10% off, book this week" SMS. Projected recovery: 1–2 jobs (~$400–$800).
+
+2. NEIGHBOUR BUNDLE — Several recent jobs are clustered in Liverpool / Bankstown. Offer those streets a "clean 2 homes, save 15%" referral deal to cut travel and double bookings.
+
+3. SEASONAL PEST PUSH — Summer is spider season. Text past pressure-wash customers a "protect your clean home — add pest control for $199" upsell. Cross-sell rate on existing customers is typically 20–30%.
+
+💰 Estimated upside this week: $1,200–$2,400 in new bookings.`;
+  },1000);
+}
+function renderInsights(q,pipeline,openLeads,conv){
+  const topSvc=Object.entries(q.reduce((a,x)=>{a[SVC_NAMES[x.svc]]=(a[SVC_NAMES[x.svc]]||0)+1;return a;},{})).sort((a,b)=>b[1]-a[1])[0];
+  const avg=Math.round(q.reduce((a,x)=>a+x.value,0)/q.length);
+  document.getElementById('admin-insights').innerHTML=
+  '<div class="ai-card"><h3><span class="ai-ic">📈</span> AI Business Insights</h3><p>Auto-generated from your live quote data.</p>'+
+  ins('🔥',openLeads+' leads need attention','Chasing these fast could add ~$'+(openLeads*avg).toLocaleString()+' to booked revenue. Hot leads go cold after 48h.')+
+  ins('💵','Average job value is $'+avg,'Bundling services (e.g. house + driveway) is your fastest path to raising this. Full Property Packages are your highest-value product.')+
+  ins('⭐','"'+topSvc[0]+'" is your top seller','It makes up '+Math.round(topSvc[1]/q.length*100)+'% of quotes. Feature it in ads and offer a seasonal promo to ride the demand.')+
+  ins('📊',conv+'% quote-to-booking rate','Sending a follow-up within 1 hour typically lifts this by 10–15 points. Use the AI Follow-Up Writer to automate it.')+
+  '</div>';
+}
+function ins(i,t,p){return '<div class="insight"><div class="ii">'+i+'</div><div><b>'+t+'</b><p>'+p+'</p></div></div>';}
+</script>
+</body>
+</html>

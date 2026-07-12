@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lockdown Lab – Basketball IQ Academy</title>
+<meta name="description" content="Live 1-hour basketball IQ Zoom session for players 13–18. $15 per session · 15 spots. Register now." />
+<meta property="og:title" content="Lockdown Lab – Basketball IQ Academy" />
+<meta property="og:description" content="Live 1-hour Zoom session for players 13–18. $15 per session · 15 spots." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0A;
+    --panel:#161616;
+    --field:#242424;
+    --line:#2c2c2c;
+    --gold:#C8A84B;
+    --gold-hi:#d8b85b;
+    --gold-soft:rgba(200,168,75,0.12);
+    --text:#f2f2f2;
+    --muted:#9a9a9a;
+    --dim:#6a6a6a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--line);}
+  .topbar .brand{font-family:'Oswald',sans-serif;font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:14px;}
+  .topbar .handle{font-size:11px;color:var(--gold);letter-spacing:2px;font-weight:600;}
+
+  .hero{text-align:center;padding:54px 22px 42px;border-bottom:1px solid var(--line);background:radial-gradient(120% 90% at 50% 0%, #181818 0%, var(--bg) 62%);}
+  .badge{display:inline-block;background:var(--gold);color:#0A0A0A;font-family:'Oswald',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:6px 14px;border-radius:2px;margin-bottom:22px;}
+  .hero h1{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(30px,8vw,52px);line-height:1.05;letter-spacing:0.5px;}
+  .hero h1 .iq{display:block;color:var(--gold);margin-top:4px;}
+  .hero p{max-width:520px;margin:22px auto 0;color:var(--muted);font-size:15px;}
+  .series{display:flex;flex-direction:column;align-items:center;gap:9px;margin-top:18px;}
+  .series .series-label{font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:3px;text-transform:uppercase;font-size:12px;color:var(--gold);}
+  .series .series-bars{display:flex;gap:6px;}
+  .series .series-bars span{width:26px;height:4px;border-radius:2px;background:var(--line);}
+  .series .series-bars span.on{background:var(--gold);}
+
+  .stats{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:32px;}
+  .stat{min-width:78px;padding:14px 12px;background:var(--panel);border:1px solid var(--line);border-radius:8px;}
+  .stat .num{font-family:'Oswald',sans-serif;font-weight:700;font-size:23px;color:var(--gold);line-height:1;}
+  .stat .lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-top:6px;}
+
+  .wrap{max-width:560px;margin:0 auto;padding:44px 22px 16px;}
+  .eyebrow{font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:3px;text-transform:uppercase;font-size:12px;color:var(--gold);}
+  .wrap h2{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:26px;margin:8px 0 6px;}
+  .lede{color:var(--muted);font-size:14px;margin-bottom:8px;}
+
+  .group{margin-top:28px;}
+  .group-title{font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:2px;text-transform:uppercase;font-size:12px;color:var(--text);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line);}
+  .field{margin-bottom:14px;}
+  .field label{display:block;}
+  .field label span{display:block;font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+  .field input,.field select,.field textarea{width:100%;background:var(--field);border:1px solid var(--line);border-radius:7px;padding:13px 14px;color:var(--text);font-size:15px;font-family:'Inter',sans-serif;outline:none;transition:border-color .15s,box-shadow .15s;}
+  .field input::placeholder,.field textarea::placeholder{color:#5f5f5f;}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft);}
+  .field select{appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23C8A84B' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
+  .field textarea{resize:vertical;min-height:84px;}
+  .hp{position:absolute;left:-9999px;top:-9999px;}
+
+  .submit{width:100%;margin-top:26px;background:var(--gold);color:#0A0A0A;border:none;border-radius:8px;padding:16px;font-family:'Oswald',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:15px;cursor:pointer;transition:transform .08s ease,background .15s;}
+  .submit:hover{background:var(--gold-hi);}
+  .submit:active{transform:scale(.99);}
+  .submit:disabled{opacity:.6;cursor:not-allowed;}
+  .note{text-align:center;color:var(--dim);font-size:12px;margin-top:14px;}
+  .err{display:none;background:#2a1111;border:1px solid #5a2a2a;color:#ff8585;font-size:13px;padding:11px 14px;border-radius:7px;margin-bottom:16px;}
+
+  .success{display:none;text-align:center;padding:34px 0;}
+  .success .emoji{font-size:46px;}
+  .success .eyebrow{display:block;margin:14px 0 10px;}
+  .success h2{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:28px;margin-bottom:12px;}
+  .success p{color:var(--muted);font-size:15px;max-width:380px;margin:0 auto;}
+  .follow{display:inline-block;margin-top:22px;padding:12px 18px;background:var(--panel);border:1px solid var(--gold-soft);border-radius:8px;font-weight:600;color:var(--gold);}
+
+  footer{text-align:center;padding:34px 22px;border-top:1px solid var(--line);color:var(--dim);font-size:13px;margin-top:30px;}
+  footer .ig{display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-weight:600;}
+
+  @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">Lockdown Lab</div>
+  <div class="handle">@lockdownlab3</div>
+</div>
+
+<header class="hero">
+  <span class="badge">Waitlist Open</span>
+  <h1>Lockdown Lab Basketball<span class="iq">IQ Academy</span></h1>
+  <div class="series">
+    <div class="series-label">Session 1 of 4</div>
+    <div class="series-bars"><span class="on"></span><span></span><span></span><span></span></div>
+  </div>
+  <p>A live 1-hour Zoom session for players 13–18. Learn to read the game the way elite players do — before you even touch the ball.</p>
+  <div class="stats">
+    <div class="stat"><div class="num">1 HR</div><div class="lbl">Live Zoom</div></div>
+    <div class="stat"><div class="num">15</div><div class="lbl">Max Spots</div></div>
+    <div class="stat"><div class="num">13–18</div><div class="lbl">Age Group</div></div>
+    <div class="stat"><div class="num">$15</div><div class="lbl">Per Session</div></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="formView">
+    <div class="eyebrow">Secure Your Spot</div>
+    <h2>Register Now</h2>
+    <p class="lede">Date TBA — register now and you'll be the first to know.</p>
+
+    <div class="err" id="errBox"></div>
+
+    <form id='regForm' method='POST' name='registration'>
+      <input type="hidden" name="form-name" value="registration" />
+      <p class="hp"><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
+
+      <div class="group">
+        <div class="group-title">Player Details</div>
+        <div class="field"><label><span>Full Name *</span><input type="text" name="name" placeholder="Your full name" required /></label></div>
+        <div class="field"><label><span>Email *</span><input type="email" name="email" placeholder="your@email.com" required /></label></div>
+        <div class="field"><label><span>Age *</span><input type="number" name="age" placeholder="e.g. 15" min="5" max="25" required /></label></div>
+        <div class="field"><label><span>Phone *</span><input type="tel" name="phone" placeholder="04xx xxx xxx" required /></label></div>
+        <div class="field"><label><span>Instagram Handle</span><input type="text" name="instagram" placeholder="@yourhandle" /></label></div>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Parent / Guardian (if under 18)</div>
+        <div class="field"><label><span>Name</span><input type="text" name="guardianName" placeholder="Guardian's name" /></label></div>
+        <div class="field"><label><span>Email</span><input type="email" name="guardianEmail" placeholder="guardian@email.com" /></label></div>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Your Game</div>
+        <div class="field"><label><span>One Thing You Want To Improve On Offense</span><input type="text" name="improveOffense" placeholder="Your answer" /></label></div>
+        <div class="field"><label><span>One Thing You Want To Improve On Defense</span><input type="text" name="improveDefense" placeholder="Your answer" /></label></div>
+        <div class="field"><label><span>One Thing You're Amazing At On Defense</span><input type="text" name="amazingDefense" placeholder="Your answer" /></label></div>
+        <div class="field"><label><span>One Thing You're Amazing At On Offense</span><input type="text" name="amazingOffense" placeholder="Your answer" /></label></div>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Mindset &amp; Growth</div>
+        <div class="field"><label><span>One Thing You Want To Improve That You Know You Can Get Better At</span><input type="text" name="mindsetImprove" placeholder="Your answer" /></label></div>
+        <div class="field"><label><span>One Thing You're Great At That You Want To Amplify — In Yourself &amp; Others</span><input type="text" name="mindsetAmplify" placeholder="Your answer" /></label></div>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Last Bit</div>
+        <div class="field">
+          <label><span>How Did You Hear About Us?</span>
+          <select name="source">
+            <option value="">Select an option</option>
+            <option value="instagram">Instagram (@lockdownlab3)</option>
+            <option value="friend">Friend / teammate</option>
+            <option value="coach">My coach</option>
+            <option value="other">Other</option>
+          </select></label>
+        </div>
+        <div class="field"><label><span>Any Questions?</span><textarea name="questions" placeholder="Anything you want to know before signing up..."></textarea></label></div>
+      </div>
+
+      <button type="submit" class="submit" id="submitBtn">Register My Spot →</button>
+      <div class="note">Limited to 15 players · Confirmed by email</div>
+    </form>
+  </div>
+
+  <div class="success" id="successView">
+    <div class="emoji">🏀</div>
+    <span class="eyebrow">You're In!</span>
+    <h2 id="successHeading">Spot Locked In!</h2>
+    <p id="successMsg">We'll reach out as soon as the date is set.</p>
+    <a class="follow" href="https://instagram.com/lockdownlab3" target="_blank" rel="noopener">Follow @lockdownlab3 for updates</a>
+  </div>
+</main>
+
+<footer>
+  <a class="ig" href="https://instagram.com/lockdownlab3" target="_blank" rel="noopener">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    @lockdownlab3
+  </a>
+</footer>
+
+<script>
+(function(){
+  var form = document.getElementById('regForm');
+  var btn = document.getElementById('submitBtn');
+  var errBox = document.getElementById('errBox');
+
+  function encode(data){
+    return Object.keys(data).map(function(k){
+      return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
+    }).join('&');
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    errBox.style.display = 'none';
+
+    var fd = new FormData(form);
+    var name = (fd.get('name') || '').trim();
+    var email = (fd.get('email') || '').trim();
+    var age = (fd.get('age') || '').trim();
+    var phone = (fd.get('phone') || '').trim();
+
+    if(!name || !email || !age || !phone){
+      errBox.textContent = 'Please fill in Name, Email, Age and Phone.';
+      errBox.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    var obj = {};
+    fd.forEach(function(v, k){ obj[k] = v; });
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: encode(obj)
+    })
+    .then(function(){
+      var first = name.split(' ')[0];
+      document.getElementById('successHeading').textContent = 'Spot Locked In, ' + first + '!';
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('successView').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    })
+    .catch(function(){
+      errBox.textContent = 'Something went wrong — please try again.';
+      errBox.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Register My Spot →';
+    });
+  });
+})();
+</script>
+</body>
+</html>
