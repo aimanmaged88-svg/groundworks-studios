@@ -10,7 +10,7 @@
 
 (() => {
   const IG_URL = 'https://instagram.com/studiogroundworks';
-  const CAL_URL = 'https://cal.com/aiman-m-clwrda/15min';
+  const CAL_URL = 'https://cal.com/groundworklabs/15min';
   const EMAIL = 'aimanmaged88@gmail.com';
 
   /* -------- client materials storage (Supabase public bucket) -------- */
