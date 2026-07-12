@@ -761,6 +761,12 @@
         const btn = this;
         btn.disabled = true;
         btn.textContent = 'SENDING…';
+        // file the brief into the studio inbox as well (fire-and-forget)
+        fetch(`${SUPA_URL}/rest/v1/briefs`, {
+          method: 'POST',
+          headers: { apikey: SUPA_KEY, authorization: `Bearer ${SUPA_KEY}`, 'content-type': 'application/json', prefer: 'return=minimal' },
+          body: JSON.stringify({ data: brief, text: briefText() }),
+        }).catch(() => {});
         fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

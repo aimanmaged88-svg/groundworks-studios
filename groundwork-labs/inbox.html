@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Groundwork Labs — Inbox</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+  <style>
+    .ib-wrap { max-width: 860px; margin: 0 auto; padding: 30px 20px 90px; }
+    .ib-title { font-size: clamp(28px, 4vw, 40px); font-weight: 800; margin-top: 8px; }
+    .ib-card { background: var(--charcoal); border: 1px solid var(--graphite); border-radius: 18px; padding: 24px; margin-top: 22px; }
+    .ib-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .ib-field span { font-size: 11px; letter-spacing: .14em; color: var(--ash); text-transform: uppercase; font-family: var(--mono); }
+    .ib-input { background: #FDF6EC; border: 1px solid var(--graphite); border-radius: 10px; padding: 12px 14px; font: inherit; color: var(--paper); }
+    .ib-input:focus { outline: none; border-color: var(--ochre); }
+    .ib-btn { background: var(--ochre); color: #fff; border-radius: 99px; padding: 13px 26px; font-weight: 800; font-size: 14px; }
+    .ib-btn.ghost { background: transparent; color: var(--ochre); border: 1.5px solid var(--ochre); }
+    .ib-btn:disabled { opacity: .5; }
+    .ib-msg { margin-top: 12px; font-size: 13.5px; color: var(--ash); }
+    .ib-msg.err { color: #C0533B; }
+    .ib-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    .ib-count { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; color: var(--ash); }
+    .brief-item { background: var(--charcoal); border: 1px solid var(--graphite); border-radius: 16px; padding: 20px 22px; margin-top: 14px; }
+    .brief-item.unread { border-color: var(--ochre); box-shadow: 0 4px 18px rgba(244,121,59,.12); }
+    .bi-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+    .bi-name { font-weight: 800; font-size: 17px; }
+    .bi-name .dot { color: var(--ochre); }
+    .bi-when { font-size: 12px; color: var(--faint); font-family: var(--mono); }
+    .bi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px 18px; margin-top: 12px; }
+    .bi-kv span { display: block; font-size: 10px; letter-spacing: .14em; color: var(--faint); text-transform: uppercase; font-family: var(--mono); }
+    .bi-kv { font-size: 14px; }
+    .bi-files { margin-top: 12px; font-size: 13.5px; line-height: 1.9; overflow-wrap: anywhere; }
+    .bi-files a { color: var(--ochre); font-weight: 700; }
+    .bi-actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .bi-actions button { font-size: 12px; font-weight: 700; border: 1px solid var(--graphite); border-radius: 99px; padding: 8px 16px; color: var(--ash); }
+    .bi-actions button:hover { border-color: var(--ochre); color: var(--ochre); }
+    .ib-empty { text-align: center; color: var(--ash); padding: 50px 10px; }
+  </style>
+</head>
+<body>
+  <div class="ib-wrap">
+    <div class="eyebrow mono">GROUNDWORK LABS · PRIVATE</div>
+    <h1 class="ib-title">Enquiries inbox 📥</h1>
+
+    <div class="ib-card" id="login-card">
+      <div class="ib-field"><span>Email</span><input class="ib-input" id="li-email" type="email" autocomplete="username" value="aimanmaged88@gmail.com"></div>
+      <div class="ib-field"><span>Password</span><input class="ib-input" id="li-pass" type="password" autocomplete="current-password"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="ib-btn" id="li-go">Log in</button>
+        <button class="ib-btn ghost" id="li-signup">First time — create my login</button>
+      </div>
+      <div class="ib-msg" id="li-msg"></div>
+    </div>
+
+    <div id="inbox" hidden>
+      <div class="ib-top">
+        <span class="ib-count" id="ib-count"></span>
+        <span>
+          <button class="ib-btn ghost" id="ib-refresh">↻ Refresh</button>
+          <button class="ib-btn ghost" id="ib-logout">Log out</button>
+        </span>
+      </div>
+      <div id="ib-list"></div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const SUPA_URL = 'https://ymuwuhvqqftgpxwhzoub.supabase.co';
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltdXd1aHZxcWZ0Z3B4d2h6b3ViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NjUyMzgsImV4cCI6MjA5OTI0MTIzOH0.sOkWQpulWj_ZSqMNSV7YP55T70UFSm2mP5e5xapQyQo';
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+  const $ = id => document.getElementById(id);
+  let token = localStorage.getItem('gw-inbox-token') || '';
+
+  const msg = (t, err) => { const m = $('li-msg'); m.textContent = t; m.className = 'ib-msg' + (err ? ' err' : ''); };
+
+  async function auth(path, body) {
+    const r = await fetch(`${SUPA_URL}/auth/v1/${path}`, {
+      method: 'POST',
+      headers: { apikey: SUPA_KEY, 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    return { ok: r.ok, data: await r.json().catch(() => ({})) };
+  }
+
+  $('li-go').addEventListener('click', async () => {
+    msg('Logging in…');
+    const { ok, data } = await auth('token?grant_type=password', { email: $('li-email').value.trim(), password: $('li-pass').value });
+    if (ok && data.access_token) {
+      token = data.access_token;
+      localStorage.setItem('gw-inbox-token', token);
+      show();
+    } else msg(data.error_description || data.msg || 'Login failed — check email and password.', true);
+  });
+
+  $('li-signup').addEventListener('click', async () => {
+    const pass = $('li-pass').value;
+    if (pass.length < 8) return msg('Pick a password of at least 8 characters first, then tap this again.', true);
+    msg('Creating your login…');
+    const { ok, data } = await auth('signup', { email: $('li-email').value.trim(), password: pass });
+    if (!ok) return msg(data.error_description || data.msg || 'Could not create login.', true);
+    if (data.access_token) { token = data.access_token; localStorage.setItem('gw-inbox-token', token); show(); }
+    else msg('Almost there — check your email for a confirmation link, click it, then come back and log in.');
+  });
+
+  $('li-pass').addEventListener('keydown', e => { if (e.key === 'Enter') $('li-go').click(); });
+
+  function fmt(ts) {
+    const d = new Date(ts);
+    return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' }) + ' · ' + d.toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit' });
+  }
+
+  function fileLinks(a) {
+    if (!a) return '';
+    let h = '';
+    if (a.logo) h += `🎨 <a href="${esc(a.logo)}" target="_blank" rel="noopener">Logo</a><br>`;
+    (a.photos || []).forEach((p, i) => { h += `📷 <a href="${esc(p.url)}" target="_blank" rel="noopener">Photo ${i + 1}</a>${p.caption ? ' — ' + esc(p.caption) : ''}<br>`; });
+    if (a.flyer) h += `📄 <a href="${esc(a.flyer)}" target="_blank" rel="noopener">Flyer</a><br>`;
+    (a.videos || []).forEach((v, i) => { h += `🎬 <a href="${esc(v)}" target="_blank" rel="noopener">Video ${i + 1}</a><br>`; });
+    (a.links || []).forEach(l => { h += `🔗 <a href="${esc(l)}" target="_blank" rel="noopener">${esc(l)}</a><br>`; });
+    return h;
+  }
+
+  async function load() {
+    const r = await fetch(`${SUPA_URL}/rest/v1/briefs?select=*&order=created_at.desc&limit=200`, {
+      headers: { apikey: SUPA_KEY, authorization: `Bearer ${token}` },
+    });
+    if (r.status === 401) { logout(); return; }
+    const rows = await r.json();
+    if (!Array.isArray(rows)) { $('ib-list').innerHTML = '<div class="ib-empty">Could not load — try refresh.</div>'; return; }
+    const unread = rows.filter(x => !x.read).length;
+    $('ib-count').textContent = `${rows.length} ENQUIRIES · ${unread} NEW`;
+    document.title = unread ? `(${unread}) Groundwork Inbox` : 'Groundwork Labs — Inbox';
+    if (!rows.length) { $('ib-list').innerHTML = '<div class="ib-empty">No enquiries yet — they\'ll show up here the moment someone sends a brief. 🌱</div>'; return; }
+    $('ib-list').innerHTML = rows.map(row => {
+      const b = row.data || {};
+      const kv = [['Project', b.type], ['Business', b.business], ['Main goal', b.goal],
+        ['Must-haves', (b.features || []).join(', ')], ['Look & feel', b.vibe], ['Website', b.website],
+        ['Timeline', b.timeline], ['Budget', b.budget]]
+        .filter(([, v]) => v)
+        .map(([k, v]) => `<div class="bi-kv"><span>${k}</span>${esc(v)}</div>`).join('');
+      return `<div class="brief-item ${row.read ? '' : 'unread'}">
+        <div class="bi-head">
+          <span class="bi-name">${row.read ? '' : '<span class="dot">●</span> '}${esc(b.name || 'No name')} — ${esc(b.contact || 'no contact')}</span>
+          <span class="bi-when">${fmt(row.created_at)}</span>
+        </div>
+        <div class="bi-grid">${kv}</div>
+        <div class="bi-files">${fileLinks(b.assets)}</div>
+        <div class="bi-actions">
+          ${row.read ? '' : `<button data-read="${row.id}">✓ Mark as read</button>`}
+          <button data-copy="${row.id}">Copy brief</button>
+        </div>
+      </div>`;
+    }).join('');
+    $('ib-list').querySelectorAll('[data-read]').forEach(btn => btn.addEventListener('click', async () => {
+      await fetch(`${SUPA_URL}/rest/v1/briefs?id=eq.${btn.dataset.read}`, {
+        method: 'PATCH',
+        headers: { apikey: SUPA_KEY, authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+        body: JSON.stringify({ read: true }),
+      });
+      load();
+    }));
+    $('ib-list').querySelectorAll('[data-copy]').forEach(btn => btn.addEventListener('click', () => {
+      const row = rows.find(x => String(x.id) === btn.dataset.copy);
+      navigator.clipboard?.writeText(row?.text || JSON.stringify(row?.data, null, 2));
+      btn.textContent = 'Copied ✓';
+    }));
+  }
+
+  function logout() {
+    token = '';
+    localStorage.removeItem('gw-inbox-token');
+    $('inbox').hidden = true;
+    $('login-card').hidden = false;
+    msg('');
+  }
+
+  function show() {
+    $('login-card').hidden = true;
+    $('inbox').hidden = false;
+    load();
+  }
+
+  $('ib-refresh').addEventListener('click', load);
+  $('ib-logout').addEventListener('click', logout);
+  if (token) show();
+})();
+</script>
+</body>
+</html>
