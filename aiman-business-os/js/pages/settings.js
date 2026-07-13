@@ -5,6 +5,7 @@
 const SETTINGS_SECTIONS = [
   { id: 'profile', label: 'Profile', icon: 'user' },
   { id: 'business', label: 'Business', icon: 'building' },
+  { id: 'sync', label: 'Cross-device sync', icon: 'refresh' },
   { id: 'brand', label: 'Brand', icon: 'palette' },
   { id: 'notifications', label: 'Notifications', icon: 'bell' },
   { id: 'appearance', label: 'Appearance', icon: 'sun' },
@@ -62,6 +63,44 @@ function settingsBody() {
         </div>
         <div style="margin-top:20px;text-align:right"><button class="btn primary">Save changes</button></div>`,
     });
+  }
+
+  if (s === 'sync') {
+    const on = window.Sync?.isOn?.();
+    const code = window.Sync?.code?.() || '';
+    const statusRow = on
+      ? `<div class="note-chip" style="border-color:var(--good);background:var(--good-soft);color:var(--text)">
+           <b>${icon('check')} Sync is on.</b> This device is syncing to your workspace in the cloud. Any device with the same code below shows the same clients, leads, projects and tasks — updated automatically.
+         </div>`
+      : `<div class="note-chip" style="border-color:var(--accent-line);background:var(--accent-soft);color:var(--text-2)">
+           Right now your data lives only in <b>this browser</b>. Turn on sync to see the same workspace on your phone and laptop. It's private — only devices with your secret code can read it.
+         </div>`;
+
+    const body = on
+      ? statusRow
+        + `<label class="field" style="margin-top:4px"><span class="label">Your sync code — enter this exact code on your other devices</span>
+             <div class="flex" style="gap:8px">
+               <input class="input" data-sync-code readonly value="${UI.esc(code)}" style="font-family:var(--font-ui);letter-spacing:.02em">
+               <button class="btn" data-sync-copy>${icon('copy')}Copy</button>
+             </div>
+           </label>`
+        + `<div class="flex" style="gap:8px;margin-top:16px;flex-wrap:wrap">
+             <button class="btn primary" data-sync-now>${icon('refresh')}Sync now</button>
+             <button class="btn" data-sync-disconnect style="margin-left:auto;color:var(--bad)">Disconnect this device</button>
+           </div>`
+        + `<p class="tiny t3" style="margin-top:14px;line-height:1.6">To add another device: open this site there → Settings → Cross-device sync → paste this code → Connect. Disconnecting only stops <b>this</b> device; your cloud copy stays safe.</p>`
+      : statusRow
+        + `<label class="field" style="margin-top:4px"><span class="label">Sync code</span>
+             <div class="flex" style="gap:8px">
+               <input class="input" data-sync-code placeholder="Paste a code, or generate one" value="">
+               <button class="btn" data-sync-gen>${icon('zap')}Generate</button>
+             </div>
+             <span class="tiny t3" style="margin-top:6px">Keep it secret, like a password. At least ${window.Sync?.minLen || 12} characters.</span>
+           </label>`
+        + `<div style="margin-top:16px"><button class="btn primary" data-sync-connect>${icon('refresh')}Turn on sync</button></div>`
+        + `<p class="tiny t3" style="margin-top:14px;line-height:1.6">Already set this up on another device? Enter the <b>same</b> code here and this device will pull your workspace down.</p>`;
+
+    return UI.card({ title: 'Cross-device sync', icon: 'refresh', body });
   }
 
   if (s === 'brand') {
@@ -139,7 +178,7 @@ function settingsBody() {
     return UI.card({
       title: 'Security & your data', icon: 'shield',
       body: `<div class="note-chip" style="border-color:var(--accent-line);background:var(--accent-soft)">
-          Your data saves in this browser <b>and syncs to your other devices</b> once the access key is connected (Enquiries page, one time per device). Backups are still smart.
+          Your data saves in this browser <b>and syncs to your other devices</b> once you turn on sync (Settings → Cross-device sync). Backups are still smart.
         </div>`
         + settingRow('Cloud sync', 'Pull the latest copy from your other device now', `<button class="btn sm" data-sync-now>${icon('refresh')}Sync now</button>`)
         + settingRow('Back up your data', 'Downloads a single file with everything', `<button class="btn sm" data-export-db>${icon('download')}Download backup</button>`)
@@ -181,8 +220,33 @@ function wireSettings() {
     if (av) av.textContent = DB.user.initials;
     UI.toast('Profile saved');
   });
+  /* ---- cross-device sync controls ---- */
+  document.querySelector('[data-sync-gen]')?.addEventListener('click', () => {
+    const input = document.querySelector('[data-sync-code]');
+    if (input) input.value = window.Sync.generateCode();
+  });
+  document.querySelector('[data-sync-connect]')?.addEventListener('click', () => {
+    const input = document.querySelector('[data-sync-code]');
+    if (window.Sync.connect(input?.value)) {
+      UI.toast('Sync is on — your workspace is in the cloud ☁️');
+      document.querySelector('#settings-body').innerHTML = settingsBody();
+      wireSettings();
+    }
+  });
+  document.querySelector('[data-sync-copy]')?.addEventListener('click', async () => {
+    const code = document.querySelector('[data-sync-code]')?.value || '';
+    try { await navigator.clipboard.writeText(code); UI.toast('Sync code copied'); }
+    catch (e) { UI.toast('Copy failed — select and copy it manually'); }
+  });
+  document.querySelector('[data-sync-disconnect]')?.addEventListener('click', () => {
+    if (!confirm('Disconnect sync on this device? Your cloud copy and other devices are untouched. This browser goes back to local-only.')) return;
+    window.Sync.disconnect();
+    UI.toast('Sync disconnected on this device');
+    document.querySelector('#settings-body').innerHTML = settingsBody();
+    wireSettings();
+  });
   document.querySelector('[data-sync-now]')?.addEventListener('click', async () => {
-    if (!localStorage.getItem('bsos-leads-key')) { UI.toast('Connect your access key on the Enquiries page first'); return; }
+    if (!window.Sync.isOn()) { UI.toast('Turn on sync in Settings → Cross-device sync first'); return; }
     await window.Sync.pullNow();
     UI.toast('Sync complete');
   });

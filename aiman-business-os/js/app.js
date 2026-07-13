@@ -73,7 +73,7 @@ const App = (() => {
             <div class="storage-chip">
               <div class="spread"><span class="tiny t3">Groundwork OS</span><span class="tiny" style="color:var(--accent)">v2.0</span></div>
               <div class="progress" style="margin-top:8px"><i style="width:80%"></i></div>
-              <div class="tiny t3" style="margin-top:6px" id="sync-status">Local only — open Enquiries to connect sync</div>
+              <div class="tiny t3" style="margin-top:6px" id="sync-status">Local only — connect sync in Settings</div>
             </div>
           </div>
         </aside>

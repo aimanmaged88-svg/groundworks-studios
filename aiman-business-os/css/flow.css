@@ -149,3 +149,7 @@
 /* Lead Finder pipeline stat tiles: the label icon must stay small
    (icon() has no intrinsic size, so unstyled it stretches to fill). */
 .pipe-stats .pipe-stat-ico { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
+
+/* Inline icons inside a note-chip (e.g. the sync status tick) must not
+   stretch — same root cause: icon() carries no intrinsic size. */
+.note-chip svg { width: 15px; height: 15px; display: inline-block; vertical-align: -2px; flex-shrink: 0; }
