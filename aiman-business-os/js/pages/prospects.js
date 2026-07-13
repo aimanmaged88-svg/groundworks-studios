@@ -392,8 +392,8 @@ Pages.prospects = () => {
       </div>
     </div>`
 
-  + `<div class="grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
-      ${stats.map(s => `<div class="card" style="padding:14px 16px"><div class="spread"><span class="small t2">${s.l}</span>${icon(s.ic)}</div><div style="font-size:24px;font-weight:650;margin-top:4px">${s.n}</div></div>`).join('')}
+  + `<div class="grid pipe-stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
+      ${stats.map(s => `<div class="card" style="padding:14px 16px"><div class="spread"><span class="small t2">${s.l}</span>${icon(s.ic, 'pipe-stat-ico')}</div><div style="font-size:24px;font-weight:650;margin-top:4px">${s.n}</div></div>`).join('')}
     </div>`
 
   + UI.card({

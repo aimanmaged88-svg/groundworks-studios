@@ -50,10 +50,10 @@ const App = (() => {
       <div class="shell">
         <aside class="sidebar">
           <a class="brand" href="#/dashboard">
-            <div class="brand-mark" style="background:#14120F;padding:6px">
+            <div class="brand-mark" style="padding:6px">
               <svg viewBox="0 0 122 122" width="17" height="17" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <g fill="#F2EFEA"><rect x="31.3" y="0" width="28" height="28"/><rect x="62.6" y="0" width="28" height="28"/><rect x="94" y="0" width="28" height="28"/><rect x="62.6" y="62.6" width="28" height="28"/><rect x="94" y="62.6" width="28" height="28"/></g>
-                <g fill="#E8A33D"><rect x="0" y="0" width="28" height="28"/><rect x="0" y="31.3" width="28" height="28"/><rect x="0" y="62.6" width="28" height="28"/><rect x="0" y="94" width="28" height="28"/><rect x="31.3" y="94" width="28" height="28"/><rect x="62.6" y="94" width="28" height="28"/><rect x="94" y="94" width="28" height="28"/></g>
+                <g fill="#FFFFFF"><rect x="31.3" y="0" width="28" height="28"/><rect x="62.6" y="0" width="28" height="28"/><rect x="94" y="0" width="28" height="28"/><rect x="62.6" y="62.6" width="28" height="28"/><rect x="94" y="62.6" width="28" height="28"/></g>
+                <g fill="#FFFFFF" opacity="0.6"><rect x="0" y="0" width="28" height="28"/><rect x="0" y="31.3" width="28" height="28"/><rect x="0" y="62.6" width="28" height="28"/><rect x="0" y="94" width="28" height="28"/><rect x="31.3" y="94" width="28" height="28"/><rect x="62.6" y="94" width="28" height="28"/><rect x="94" y="94" width="28" height="28"/></g>
               </svg>
             </div>
             <div class="brand-text">

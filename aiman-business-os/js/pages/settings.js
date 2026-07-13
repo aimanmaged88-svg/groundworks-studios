@@ -67,7 +67,7 @@ function settingsBody() {
   if (s === 'brand') {
     return UI.card({
       title: 'Brand', icon: 'palette',
-      body: settingRow('Accent colour', 'One accent. Groundwork ochre, matching the Instagram brand.',
+      body: settingRow('Accent colour', 'One accent. Flow Forward indigo, clean and modern.',
           `<span class="flex" style="gap:8px">
             <span style="width:26px;height:26px;border-radius:8px;background:var(--accent);box-shadow:0 0 0 2px var(--card),0 0 0 3.5px var(--accent)"></span>
             <span style="width:26px;height:26px;border-radius:8px;background:#6B8BE0;opacity:.45"></span>
@@ -75,7 +75,7 @@ function settingsBody() {
             <span style="width:26px;height:26px;border-radius:8px;background:#D9776B;opacity:.45"></span>
           </span>`)
         + settingRow('Logo', 'Used on invoices, quotes and client portals', `<button class="btn sm">Upload SVG</button>`)
-        + settingRow('Typography', 'Inter for UI · Fraunces for display', `<span class="tag">Locked in v1</span>`),
+        + settingRow('Typography', 'Inter throughout — the Flow Forward OS look', `<span class="tag">Locked in v1</span>`),
     });
   }
 

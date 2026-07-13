@@ -55,6 +55,23 @@
   font-variation-settings: normal !important;
 }
 
+/* Every display-font element now renders Inter — the old serif weight
+   (480) is too light for Inter, so give them Flow's heavier tracking.
+   Big numbers/values sit at 700; the detail-hero name matches page-title. */
+.display, .brief-hello, .stat-tile .stat-value, .chart-head-val,
+.ring-wrap .ring-num, .detail-hero .page-title, .brand-name {
+  font-family: var(--font-ui) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  font-variation-settings: normal !important;
+}
+.stat-tile .stat-value, .chart-head-val { font-weight: 750 !important; letter-spacing: -0.025em !important; }
+.detail-hero .page-title { font-weight: 800 !important; letter-spacing: -0.025em !important; }
+/* tabular figures for money + metrics, exactly like Flow */
+.stat-tile .stat-value, .chart-head-val, .ring-wrap .ring-num, .num {
+  font-feature-settings: "tnum" 1, "cv05" 1 !important;
+}
+
 /* ========================================================
    Light theme = the Flow Forward look (default)
    ======================================================== */
@@ -128,3 +145,7 @@
   background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 60%), var(--surface);
 }
 .mission-ico { background: var(--accent-grad); color: #FFFFFF; }
+
+/* Lead Finder pipeline stat tiles: the label icon must stay small
+   (icon() has no intrinsic size, so unstyled it stretches to fill). */
+.pipe-stats .pipe-stat-ico { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
