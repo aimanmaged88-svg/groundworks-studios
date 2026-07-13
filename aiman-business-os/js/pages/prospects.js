@@ -398,7 +398,7 @@ Pages.prospects = () => {
 
   + UI.card({
       title: 'Hot Leads scanner', icon: 'zap',
-      body: `<p class="small t2" style="line-height:1.65;margin-bottom:12px">Pick a niche + suburb and hit <b>Scan</b> — it pulls every business in the area from Google and ranks the ones with <b>no website or a dying one</b> first. 🔥🔥🔥 means great reviews and nothing to show for it — your perfect landing-page customer. Tap <b>Call</b> and go.</p>
+      body: `<p class="small t2" style="line-height:1.65;margin-bottom:12px">Pick a niche + suburb and hit <b>Scan</b> — it pulls local businesses from OpenStreetMap and ranks the ones with <b>no website or a weak one</b> first. 🔥🔥🔥 = no website at all, your perfect landing-page customer. Tap <b>Call</b> and go. <span class="t3">(Works best for shopfront trades like cafés, barbers, salons, gyms, mechanics and florists.)</span></p>
         <div class="flex" style="flex-wrap:wrap;gap:8px;margin-bottom:12px">
           <select class="select" id="hunt-trade" style="max-width:180px">${NICHES.map(t => `<option ${t === m.niche ? 'selected' : ''}>${t}</option>`).join('')}</select>
           <input class="input" id="hunt-suburb" placeholder="Suburb, e.g. Bankstown" value="Bankstown" style="max-width:180px">
@@ -483,7 +483,7 @@ function scanResultsHTML() {
   if (scanState === 'loading') return `<div class="empty" style="padding:22px">${icon('refresh')}<b style="margin-top:8px">Scanning the suburb…</b><p>Pulling every business from Google and checking their websites.</p></div>`;
   if (scanState === 'no-access-key') return `<div class="empty" style="padding:22px">${icon('key')}<b style="margin-top:8px">Connect your access key first</b><p>Open the Enquiries page once and enter your access key — the scanner uses the same one.</p></div>`;
   if (scanState === 'no-places-key') return `<div class="empty" style="padding:22px">${icon('search')}<b style="margin-top:8px">Auto-scan isn't switched on yet</b><p style="max-width:500px;margin:6px auto 0;line-height:1.7">The one-tap scanner needs a free Google key connected once on the server. Until then, use the <b>manual hunting links below</b> — Google Maps, Instagram, Facebook and the rest all work right now for finding businesses to add. Ask your studio AI to switch the auto-scanner on.</p></div>`;
-  if (scanState === 'error') return `<div class="empty" style="padding:22px">${icon('search')}<b style="margin-top:8px">Auto-scan isn't switched on yet</b><p style="max-width:500px;margin:6px auto 0;line-height:1.7">Use the <b>manual hunting links below</b> for now — they all work. The one-tap scanner needs a quick one-time setup (a free Google key). Ask your studio AI to switch it on.</p></div>`;
+  if (scanState === 'error') return `<div class="empty" style="padding:22px">${icon('refresh')}<b style="margin-top:8px">Scan hiccup — give it another go</b><p style="max-width:500px;margin:6px auto 0;line-height:1.7">The free business directory (OpenStreetMap) was busy or the suburb wasn't found. Try again, check the suburb spelling, or use the <b>manual hunting links below</b> — they always work.</p></div>`;
   if (!scanResults.length) return `<div class="empty" style="padding:22px">${icon('search')}<b style="margin-top:8px">Nothing found there</b><p>Try a bigger suburb or a different trade.</p></div>`;
 
   const inPipeline = name => DB.prospects.some(p => p.business.toLowerCase() === name.toLowerCase());
@@ -565,14 +565,13 @@ Pages._mount.prospects = () => {
   };
 
   const runScan = async () => {
-    const trade = page.querySelector('#hunt-trade')?.value || 'Fencing';
+    const trade = page.querySelector('#hunt-trade')?.value || 'Cafés';
     const suburb = (page.querySelector('#hunt-suburb')?.value || '').trim();
     if (!suburb) { UI.toast('Type a suburb first'); return; }
-    if (!leadsKey()) { scanState = 'no-access-key'; renderScan(); return; }
     scanState = 'loading'; renderScan();
     try {
-      const r = await fetch(`${PLACES_URL}?key=${encodeURIComponent(leadsKey())}&trade=${encodeURIComponent(trade)}&suburb=${encodeURIComponent(suburb)}`);
-      if (r.status === 501 || r.status === 404) { scanState = 'no-places-key'; renderScan(); return; } // backend not set up yet
+      const r = await fetch(`${PLACES_URL}?trade=${encodeURIComponent(trade)}&suburb=${encodeURIComponent(suburb)}`);
+      if (r.status === 501 || r.status === 404) { scanState = 'no-places-key'; renderScan(); return; } // backend not deployed yet
       if (!r.ok) throw new Error('HTTP ' + r.status);
       scanResults = (await r.json()).sort((a, b) =>
         hotScore(a).rank - hotScore(b).rank || (b.reviews || 0) - (a.reviews || 0));

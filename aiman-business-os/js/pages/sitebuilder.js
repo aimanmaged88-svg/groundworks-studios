@@ -8,6 +8,8 @@
    Every mockup saves to your workspace and syncs across devices.
    ============================================================ */
 
+const SITE_IMPORT_URL = 'https://aiman-business-os.netlify.app/.netlify/functions/importsite';
+
 Pages.sites = (id) => id ? siteEditor(id) : siteIndex();
 
 /* niche presets: hero emoji + suggested services + a headline verb */
@@ -268,12 +270,13 @@ function siteEditor(id) {
             <label class="field"><span class="label">Suburb</span><input class="input" data-sf="suburb" value="${UI.esc(s.suburb || '')}" placeholder="Bankstown"></label>
           </div>
           <label class="field"><span class="label">Email</span><input class="input" data-sf="email" value="${UI.esc(s.email || '')}" placeholder="hello@business.com.au"></label>
-          <label class="field"><span class="label">Their current website (optional)</span>
-            <div class="flex" style="gap:8px">
-              <input class="input" data-sf="currentSite" value="${UI.esc(s.currentSite || '')}" placeholder="oldsite.com.au">
+          <label class="field"><span class="label">Their current website — build from it</span>
+            <div class="flex" style="gap:8px;flex-wrap:wrap">
+              <input class="input" data-sf="currentSite" value="${UI.esc(s.currentSite || '')}" placeholder="oldsite.com.au" style="min-width:150px;flex:1">
+              <button type="button" class="btn primary" data-import-current>${icon('download')}Import</button>
               <button type="button" class="btn" data-open-current>${icon('globe')}Open</button>
             </div>
-            <span class="tiny t3" style="margin-top:6px">Open it side-by-side to match their name, colours and services. (Auto-rebuilding from a live site is the AI upgrade — ask your studio AI.)</span>
+            <span class="tiny t3" style="margin-top:6px">Paste their existing site and hit <b>Import</b> — it pulls their name, colours, logo, phone and services in to fill this mockup. Then tidy it up.</span>
           </label>
           <div class="tiny t3" style="line-height:1.6" id="site-saved">Saved automatically · syncs to your devices</div>
         </div>
@@ -430,6 +433,37 @@ Pages._mount.sites = (id) => {
   document.querySelector('[data-open-current]')?.addEventListener('click', () => {
     const u = normUrl(document.querySelector('[data-sf="currentSite"]')?.value);
     if (u) window.open(u, '_blank'); else UI.toast('Enter their website address first');
+  });
+
+  /* import: read their existing site and pull details into the mockup */
+  const importBtn = document.querySelector('[data-import-current]');
+  importBtn?.addEventListener('click', async () => {
+    const raw = document.querySelector('[data-sf="currentSite"]')?.value?.trim();
+    if (!raw) { UI.toast('Paste their website address first'); return; }
+    s.currentSite = raw;
+    const label = importBtn.innerHTML;
+    importBtn.disabled = true;
+    importBtn.innerHTML = icon('refresh') + 'Reading their site…';
+    try {
+      const r = await fetch(SITE_IMPORT_URL + '?url=' + encodeURIComponent(raw));
+      const d = await r.json();
+      if (!r.ok || d.error) { UI.toast(d.error === 'unreachable' || d.error === 'fetch_failed' ? "Couldn't reach that site — check the address" : 'Import didn’t work — fill it in by hand'); return; }
+      if (d.business) s.business = d.business;
+      if (d.tagline) s.tagline = d.tagline;
+      if (d.accent) s.accent = d.accent;
+      if (d.logo) s.logo = d.logo;
+      if (d.phone) s.phone = d.phone;
+      if (d.email) s.email = d.email;
+      if (Array.isArray(d.services) && d.services.length) s.services = d.services.join('\n');
+      saveDB();
+      UI.toast('Imported from their site ✓ — tidy it up and send');
+      App.refresh(); // re-render the editor with the pulled-in values
+    } catch (e) {
+      UI.toast('Import needs the live app (functions run on the server)');
+    } finally {
+      importBtn.disabled = false;
+      importBtn.innerHTML = label;
+    }
   });
 
   document.querySelector('[data-site-download]')?.addEventListener('click', () => { downloadSite(s); UI.toast('Downloaded — text or email it to them 📩'); });

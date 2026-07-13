@@ -1,0 +1,8 @@
+# Static site + serverless functions for the Business OS.
+# No build step — publish the folder as-is and deploy the functions.
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
