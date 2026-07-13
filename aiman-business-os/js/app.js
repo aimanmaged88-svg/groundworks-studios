@@ -16,6 +16,7 @@ const App = (() => {
     ]},
     { section: 'Studio', items: [
       { id: 'aihub', label: 'AI Hub', icon: 'ai' },
+      { id: 'sites', label: 'Website Studio', icon: 'globe' },
       { id: 'content', label: 'Content Studio', icon: 'content' },
       { id: 'finance', label: 'Finance', icon: 'finance' },
       { id: 'documents', label: 'Documents', icon: 'documents' },
@@ -28,7 +29,7 @@ const App = (() => {
 
   const TITLES = {
     dashboard: 'Dashboard', enquiries: 'Enquiries', prospects: 'Lead Finder', clients: 'Clients', projects: 'Projects', tasks: 'Tasks',
-    calendar: 'Calendar', aihub: 'AI Hub', content: 'Content Studio', finance: 'Finance',
+    calendar: 'Calendar', aihub: 'AI Hub', sites: 'Website Studio', content: 'Content Studio', finance: 'Finance',
     documents: 'Documents', analytics: 'Analytics', settings: 'Settings',
   };
 

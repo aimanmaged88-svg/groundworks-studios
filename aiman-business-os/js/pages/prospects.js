@@ -482,8 +482,8 @@ function scanResultsHTML() {
   if (scanState === 'idle') return '';
   if (scanState === 'loading') return `<div class="empty" style="padding:22px">${icon('refresh')}<b style="margin-top:8px">Scanning the suburb…</b><p>Pulling every business from Google and checking their websites.</p></div>`;
   if (scanState === 'no-access-key') return `<div class="empty" style="padding:22px">${icon('key')}<b style="margin-top:8px">Connect your access key first</b><p>Open the Enquiries page once and enter your access key — the scanner uses the same one.</p></div>`;
-  if (scanState === 'no-places-key') return `<div class="empty" style="padding:22px">${icon('key')}<b style="margin-top:8px">One-time setup needed (5 min)</b><p style="max-width:460px;margin:6px auto 0;line-height:1.7">The scanner needs a free Google key on the server. Ask your studio AI for the click-by-click steps — after that, this button works forever.</p></div>`;
-  if (scanState === 'error') return `<div class="empty" style="padding:22px">${icon('bell')}<b style="margin-top:8px">Scan didn't go through</b><p>Check your internet and try again.</p></div>`;
+  if (scanState === 'no-places-key') return `<div class="empty" style="padding:22px">${icon('search')}<b style="margin-top:8px">Auto-scan isn't switched on yet</b><p style="max-width:500px;margin:6px auto 0;line-height:1.7">The one-tap scanner needs a free Google key connected once on the server. Until then, use the <b>manual hunting links below</b> — Google Maps, Instagram, Facebook and the rest all work right now for finding businesses to add. Ask your studio AI to switch the auto-scanner on.</p></div>`;
+  if (scanState === 'error') return `<div class="empty" style="padding:22px">${icon('search')}<b style="margin-top:8px">Auto-scan isn't switched on yet</b><p style="max-width:500px;margin:6px auto 0;line-height:1.7">Use the <b>manual hunting links below</b> for now — they all work. The one-tap scanner needs a quick one-time setup (a free Google key). Ask your studio AI to switch it on.</p></div>`;
   if (!scanResults.length) return `<div class="empty" style="padding:22px">${icon('search')}<b style="margin-top:8px">Nothing found there</b><p>Try a bigger suburb or a different trade.</p></div>`;
 
   const inPipeline = name => DB.prospects.some(p => p.business.toLowerCase() === name.toLowerCase());
@@ -572,7 +572,7 @@ Pages._mount.prospects = () => {
     scanState = 'loading'; renderScan();
     try {
       const r = await fetch(`${PLACES_URL}?key=${encodeURIComponent(leadsKey())}&trade=${encodeURIComponent(trade)}&suburb=${encodeURIComponent(suburb)}`);
-      if (r.status === 501) { scanState = 'no-places-key'; renderScan(); return; }
+      if (r.status === 501 || r.status === 404) { scanState = 'no-places-key'; renderScan(); return; } // backend not set up yet
       if (!r.ok) throw new Error('HTTP ' + r.status);
       scanResults = (await r.json()).sort((a, b) =>
         hotScore(a).rank - hotScore(b).rank || (b.reviews || 0) - (a.reviews || 0));

@@ -153,3 +153,16 @@
 /* Inline icons inside a note-chip (e.g. the sync status tick) must not
    stretch — same root cause: icon() carries no intrinsic size. */
 .note-chip svg { width: 15px; height: 15px; display: inline-block; vertical-align: -2px; flex-shrink: 0; }
+
+/* Raw icon() placed directly inside an .empty state (the Lead Finder
+   scan messages) must be sized — only .empty-icon svg is sized otherwise,
+   so a bare icon balloons to fill the box. */
+.empty > svg { width: 34px; height: 34px; color: var(--text-3); display: block; margin: 0 auto 10px; }
+
+/* Website Studio: form on the left, live preview sticky on the right. */
+.site-editor { display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 16px; align-items: start; }
+.site-preview-wrap { position: sticky; top: 84px; }
+@media (max-width: 900px) {
+  .site-editor { grid-template-columns: 1fr; }
+  .site-preview-wrap { position: static; }
+}

@@ -85,6 +85,8 @@ const DB = {
 
   documents: [],
 
+  sites: [],   // free website mockups built in Website Studio
+
   analytics: {
     leads:   [0, 0, 0, 0, 0, 0, 0],
     conversions: [0, 0, 0, 0, 0, 0, 0],
