@@ -49,16 +49,31 @@ exports.handler = async (event) => {
     const [s, n, w, e] = place.boundingbox.map(Number); // [south, north, west, east]
     const bbox = `${s},${w},${n},${e}`;
 
-    /* 2. pull businesses of this trade inside the box */
+    /* 2. pull businesses of this trade inside the box.
+       Public Overpass mirrors get busy (504s) — try several in turn. */
     const filters = NICHE_FILTERS[trade] || NICHE_FILTERS['Other'];
-    const query = `[out:json][timeout:25];(${filters.map(f => `node${f}(${bbox});way${f}(${bbox});`).join('')});out center tags 80;`;
-    const oRes = await fetch('https://overpass-api.de/api/interpreter', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': UA },
-      body: 'data=' + encodeURIComponent(query),
-    });
-    if (!oRes.ok) return { statusCode: 502, headers: cors, body: JSON.stringify({ error: 'overpass ' + oRes.status }) };
-    const data = await oRes.json();
+    const query = `[out:json][timeout:20];(${filters.map(f => `node${f}(${bbox});way${f}(${bbox});`).join('')});out center tags 80;`;
+    const ENDPOINTS = [
+      'https://overpass-api.de/api/interpreter',
+      'https://overpass.kumi.systems/api/interpreter',
+      'https://overpass.private.coffee/api/interpreter',
+      'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
+    ];
+    let data = null, lastStatus = 0;
+    for (const ep of ENDPOINTS) {
+      try {
+        const oRes = await fetch(ep, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': UA },
+          body: 'data=' + encodeURIComponent(query),
+        });
+        lastStatus = oRes.status;
+        if (!oRes.ok) continue;              // busy mirror → next one
+        data = await oRes.json();
+        break;
+      } catch (e) { /* mirror unreachable → next one */ }
+    }
+    if (!data) return { statusCode: 502, headers: cors, body: JSON.stringify({ error: 'overpass_busy', status: lastStatus }) };
 
     const seen = new Set();
     const results = (data.elements || []).map(el => {
