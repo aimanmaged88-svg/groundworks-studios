@@ -47,7 +47,7 @@ This plan treats the club like a **well-oiled machine from day one**. The app is
 | Person | Title | Login access |
 |---|---|---|
 | **Nour Kabbara** *(N-O-U-R)* | CEO & Founder | Full admin — everything |
-| **Abdulla Chamtia** *(spelling to confirm — Chamtia / Chamtieh?)* | Co-Director | Full admin — everything |
+| **Abdulla Chamtiah** *(C-H-A-M-T-I-A-H)* | Co-Director | Full admin — everything |
 | Aiman | Tech Lead / Admin | Full admin + system owner |
 
 Both directors get a login. On **first sign-in** they're invited by email, set their own password, and land straight on the **full director dashboard** (paid / unpaid, follow-ups, registrations, rosters, schedule). No feature is hidden from them.
