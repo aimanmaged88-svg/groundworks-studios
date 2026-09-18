@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0A0E14; --bg2:#070A0F;
@@ -20,10 +20,10 @@
   --green:#16E37F; --green-deep:#0BB866; --green-ink:#052a19;
   --gold:#FFC63D; --amber:#FFB020; --red:#FF5D5D; --blue:#3DA5FF;
   --sky:#3FC5EC; --sky-deep:#1C9BC6; --grad:linear-gradient(120deg,#E7369B,#F5821F,#FCC21A);
-  --disp:'Anton','Arial Narrow',system-ui,sans-serif;
-  --sans:'Barlow',system-ui,-apple-system,sans-serif;
-  --rad:16px; --rad2:20px;
-  --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -20px rgba(0,0,0,.7);
+  --disp:'Archivo Black','Arial Black',system-ui,sans-serif;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --rad:18px; --rad2:20px;
+  --shadow:0 20px 60px rgba(0,0,0,.5);
   --maxw:520px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -36,7 +36,13 @@ img{max-width:100%}
 ::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-thumb{background:#22303f;border-radius:6px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes pagein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.94);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes shine{0%,60%{transform:translateX(-110%)}90%,100%{transform:translateX(110%)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes spinlogo{to{transform:rotate(360deg)}}
+@keyframes stamp{to{opacity:1;transform:scale(1) rotate(-2deg)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---- demo strip ---- */
@@ -52,38 +58,53 @@ img{max-width:100%}
 /* ---- app frame ---- */
 .app{flex:1 1 auto;display:flex;flex-direction:column;min-height:0;position:relative;max-width:var(--maxw);width:100%;margin:0 auto}
 .scroll{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;padding:16px 16px 96px}
-.scroll>*{animation:fadeUp .4s cubic-bezier(.2,.7,.3,1) both}
+.scroll>*{animation:pagein .38s cubic-bezier(.2,.7,.3,1) both}
+.scroll>*:nth-child(1){animation-delay:.02s}
+.scroll>*:nth-child(2){animation-delay:.06s}
+.scroll>*:nth-child(3){animation-delay:.10s}
+.scroll>*:nth-child(4){animation-delay:.14s}
+.scroll>*:nth-child(5){animation-delay:.18s}
+.scroll>*:nth-child(n+6){animation-delay:.22s}
 
 /* ---- topbar ---- */
-.topbar{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:14px 16px 10px;
-  border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(18,26,36,.6),transparent)}
+.topbar{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:12px 16px;z-index:40;
+  border-bottom:1px solid var(--line);background:rgba(10,14,20,.78);
+  backdrop-filter:blur(22px) saturate(1.6);-webkit-backdrop-filter:blur(22px) saturate(1.6)}
 .logo{width:44px;height:44px;border-radius:50%;flex:0 0 auto;overflow:hidden;display:block}
 .logo img{width:100%;height:100%;display:block}
-.brandtxt .n{font-family:var(--disp);font-weight:700;letter-spacing:.5px;font-size:16px;line-height:1}
-.brandtxt .s{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.brandtxt .n{font-family:var(--disp);font-weight:400;letter-spacing:.04em;font-size:15px;line-height:1;text-transform:uppercase}
+.brandtxt .s{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2,var(--dim));font-weight:700;margin-top:3px}
 .topbar .who{margin-left:auto;text-align:right}
 .topbar .who .nm{font-size:12.5px;font-weight:700}
 .topbar .who .rl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--sky);font-weight:700}
 
 /* ---- headings ---- */
-.h{font-family:var(--disp);font-weight:700;letter-spacing:.4px;font-size:13px;text-transform:uppercase;
-  color:var(--muted);margin:20px 2px 10px;display:flex;align-items:center;gap:8px}
-.h:first-child{margin-top:4px}
-.h .pill{margin-left:auto;font-family:var(--sans);text-transform:none;letter-spacing:0}
+.h{font-family:var(--disp);font-weight:400;letter-spacing:.02em;font-size:18px;line-height:1.04;text-transform:uppercase;
+  color:var(--ink);margin:24px 2px 11px;display:flex;align-items:center;gap:9px}
+.h:first-child{margin-top:6px}
+.h .pill{margin-left:auto;font-family:var(--sans);font-weight:700;text-transform:uppercase;
+  font-size:10px;letter-spacing:.14em;color:var(--dim)}
+/* LOTG-style kicker + hero title */
+.kicker{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.kicker.sky{color:var(--sky)}
+.htitle{font-family:var(--disp);font-weight:400;font-size:29px;line-height:.96;letter-spacing:.2px;
+  text-transform:uppercase;margin-top:7px}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* ---- cards ---- */
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:14px;box-shadow:var(--shadow)}
 .card+.card{margin-top:10px}
 .hero{background:linear-gradient(155deg,#14202c,#0d1620);border:1px solid var(--line2);border-radius:var(--rad2);padding:18px;position:relative;overflow:hidden}
-.hero:before{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;
-  background:radial-gradient(circle,rgba(22,227,127,.22),transparent 70%)}
+.hero:before{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(63,197,236,.20),transparent 70%)}
 
 /* KPI grid */
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px}
-.kpi .v{font-family:var(--disp);font-weight:700;font-size:27px;line-height:1;letter-spacing:.5px}
-.kpi .l{font-size:11px;color:var(--muted);margin-top:5px;letter-spacing:.3px}
-.kpi .sub{font-size:10.5px;margin-top:3px;font-weight:600}
+.kpi .v{font-family:var(--disp);font-weight:400;font-size:28px;line-height:1;letter-spacing:.2px;
+  animation:pop .34s cubic-bezier(.2,.7,.3,1) both}
+.kpi .l{font-size:9.5px;color:var(--muted);margin-top:6px;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.kpi .sub{font-size:10.5px;margin-top:4px;font-weight:700;letter-spacing:.02em}
 .kpi.green .v{color:var(--green)} .kpi.gold .v{color:var(--gold)}
 .kpi.red .v{color:var(--red)} .kpi.blue .v{color:var(--blue)}
 
@@ -95,27 +116,42 @@ img{max-width:100%}
 .av.g2{background:linear-gradient(150deg,#5AA9FF,#2b6fd0)} .av.g3{background:linear-gradient(150deg,var(--gold),#e0a01f)}
 .av.g4{background:linear-gradient(150deg,#C77DFF,#8b47d6)}
 .rmain{flex:1 1 auto;min-width:0}
-.rmain .t{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rmain .m{font-size:11.5px;color:var(--muted);margin-top:1px}
+.rmain .t{font-weight:800;font-size:14px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rmain .m{font-size:11.5px;color:var(--muted);margin-top:3px;font-weight:500}
 .rside{flex:0 0 auto;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
 
 /* tags */
-.tag{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.3px;
-  padding:3px 8px;border-radius:999px;white-space:nowrap}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;padding:5px 10px;border-radius:980px;white-space:nowrap}
 .tag.ok{background:rgba(22,227,127,.14);color:var(--green)}
 .tag.warn{background:rgba(255,176,32,.15);color:var(--amber)}
 .tag.bad{background:rgba(255,93,93,.14);color:var(--red)}
 .tag.info{background:rgba(61,165,255,.14);color:var(--blue)}
 .tag.mut{background:rgba(255,255,255,.06);color:var(--muted)}
 .dot{width:7px;height:7px;border-radius:50%;display:inline-block}
-.dot.ok{background:var(--green)} .dot.warn{background:var(--amber)} .dot.bad{background:var(--red)} .dot.mut{background:var(--dim)}
+.dot.ok{background:var(--green)} .dot.warn{background:var(--amber)} .dot.mut{background:var(--dim)}
+.dot.bad{background:var(--red);animation:pulse 2s ease-in-out infinite}
 
 /* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-weight:700;font-size:13px;
-  padding:11px 15px;border-radius:12px;background:var(--sky);color:#03202b;transition:transform .1s,filter .15s;width:100%}
-.btn:active{transform:scale(.98)}
-.btn.gh{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line2)}
-.btn.sm{width:auto;padding:7px 12px;font-size:12px;border-radius:10px}
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-weight:800;font-size:13px;letter-spacing:.04em;text-transform:uppercase;
+  padding:14px 20px;border-radius:980px;background:var(--sky);color:#03202b;
+  transition:transform .12s ease,opacity .12s ease;width:100%}
+.btn:active{transform:scale(.97)}
+.btn:after{content:"";position:absolute;top:0;bottom:0;width:38%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.42),transparent);
+  animation:shine 4.5s ease-in-out infinite}
+.btn.gh{background:rgba(255,255,255,.07);color:var(--ink);border:1px solid var(--line2)}
+.btn.gh:after{display:none}
+.btn.sm{width:auto;padding:8px 14px;font-size:11px;letter-spacing:.06em}
+.btn.sm:after{display:none}
+.btn{white-space:nowrap}
+/* icon system */
+.nav button .i svg{width:21px;height:21px;display:block}
+.banner .ic svg{width:23px;height:23px}
+.av svg{width:19px;height:19px}
+.av.soft{background:rgba(63,197,236,.13);color:var(--sky);border:1px solid rgba(63,197,236,.22)}
+.btn svg{width:16px;height:16px;flex:0 0 auto}
 .btn.gold{background:var(--gold);color:#241a00}
 .btn.red{background:rgba(255,93,93,.15);color:var(--red);border:1px solid rgba(255,93,93,.3)}
 .btnrow{display:flex;gap:8px;margin-top:12px}
@@ -123,11 +159,11 @@ img{max-width:100%}
 /* schedule slot */
 .slot{display:flex;gap:12px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--card2);align-items:center}
 .slot+.slot{margin-top:9px}
-.slot .time{font-family:var(--disp);font-weight:700;font-size:16px;text-align:center;flex:0 0 auto;width:58px;line-height:1.1}
-.slot .time span{display:block;font-size:10px;color:var(--muted);letter-spacing:1px;font-weight:600}
+.slot .time{font-family:var(--disp);font-weight:400;font-size:17px;text-align:center;flex:0 0 auto;width:58px;line-height:1.05}
+.slot .time span{display:block;font-size:8.5px;color:var(--dim);letter-spacing:.14em;font-weight:800;margin-top:3px}
 .slot .info{flex:1 1 auto;min-width:0}
-.slot .info .tt{font-weight:700;font-size:14px}
-.slot .info .mm{font-size:11.5px;color:var(--muted);margin-top:2px}
+.slot .info .tt{font-family:var(--disp);font-weight:400;font-size:14px;text-transform:uppercase;letter-spacing:.02em;line-height:1.12}
+.slot .info .mm{font-size:11.5px;color:var(--muted);margin-top:4px;font-weight:500}
 .barleft{width:4px;align-self:stretch;border-radius:4px;background:var(--sky);flex:0 0 auto}
 .barleft.game{background:var(--gold)} .barleft.train{background:var(--blue)}
 
@@ -137,8 +173,8 @@ img{max-width:100%}
 .banner.no{background:linear-gradient(150deg,rgba(255,93,93,.14),rgba(255,93,93,.04));border:1px solid rgba(255,93,93,.28)}
 .banner .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:24px;flex:0 0 auto}
 .banner.yes .ic{background:rgba(22,227,127,.2)} .banner.no .ic{background:rgba(255,93,93,.18)}
-.banner .bt{font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:.4px}
-.banner .bm{font-size:12px;color:var(--muted);margin-top:2px}
+.banner .bt{font-family:var(--disp);font-weight:400;font-size:19px;letter-spacing:.01em;text-transform:uppercase;line-height:1.08}
+.banner .bm{font-size:12px;color:var(--muted);margin-top:4px;font-weight:500}
 
 /* progress */
 .meter{height:8px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
@@ -147,17 +183,21 @@ img{max-width:100%}
 /* bottom nav */
 .nav{position:absolute;left:0;right:0;bottom:0;display:flex;background:rgba(10,14,20,.92);
   backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:30}
-.nav button{flex:1 1 0;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--dim);font-size:10px;font-weight:600;padding:4px 2px;border-radius:12px}
+.nav button{flex:1 1 0;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--dim);font-size:8.5px;
+  font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 2px;border-radius:12px}
 .nav button .i{font-size:19px;line-height:1}
 .nav button.on{color:var(--sky)}
 
 /* login */
 .login{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;padding:30px 24px;max-width:var(--maxw);margin:0 auto;width:100%}
-.login .biglogo{width:112px;height:112px;margin:0 auto 18px;border-radius:50%;overflow:hidden;
-  box-shadow:0 16px 50px -14px rgba(63,197,236,.45)}
-.login .biglogo img{width:100%;height:100%;display:block}
-.login h1{font-family:var(--disp);font-weight:700;font-size:30px;text-align:center;letter-spacing:1px}
-.login .sub{text-align:center;color:var(--muted);font-size:13px;margin-top:4px;letter-spacing:.5px}
+.login .biglogo{width:126px;height:126px;margin:0 auto 20px;border-radius:50%;
+  box-shadow:0 22px 50px rgba(0,0,0,.45)}
+.login .biglogo img{width:100%;height:100%;display:block;animation:spinlogo 18s linear infinite;transform-origin:50% 50%}
+.login .biglogo:active img{animation-duration:1.2s}
+.login h1{font-family:var(--disp);font-weight:400;font-size:38px;text-align:center;letter-spacing:.02em;
+  text-transform:uppercase;line-height:.94}
+.login .sub{text-align:center;color:var(--dim);font-size:10.5px;margin-top:9px;letter-spacing:.16em;
+  text-transform:uppercase;font-weight:700}
 .field{margin-top:14px}
 .field label{display:block;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .field input{width:100%;padding:13px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--line2);color:var(--ink);font-size:15px;font-family:var(--sans)}
@@ -181,10 +221,10 @@ img{max-width:100%}
 .task.done .tt{text-decoration:line-through;color:var(--muted)}
 .task .mm{font-size:11px;color:var(--muted);margin-top:2px}
 .segbar{display:flex;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px;margin:2px 0 14px}
-.segbar button{flex:1;font-size:12px;font-weight:700;padding:8px;border-radius:9px;color:var(--muted)}
+.segbar button{flex:1;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:9px 6px;border-radius:980px;color:var(--muted)}
 .segbar button.on{background:var(--card3);color:var(--ink)}
-.divchip{display:inline-flex;align-items:center;font-family:var(--disp);font-weight:700;font-size:11px;letter-spacing:.5px;
-  padding:2px 8px;border-radius:7px;background:rgba(255,255,255,.06);color:var(--muted)}
+.divchip{display:inline-flex;align-items:center;font-family:var(--disp);font-weight:400;font-size:10.5px;letter-spacing:.06em;
+  padding:4px 10px;border-radius:980px;background:rgba(255,255,255,.07);color:var(--muted);text-transform:uppercase}
 .avirow{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .miniav{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#03202b;background:linear-gradient(150deg,var(--sky),var(--sky-deep))}
 .miniav.out{background:#33404e;color:var(--muted)} .miniav.q{background:#2a3644;color:var(--dim)}
@@ -275,6 +315,26 @@ function reset(){ S=JSON.parse(JSON.stringify(SEED)); save(); }
 
 let VIEW = { role:"admin", tab:"home", authed:false, regFilter:"all", moneyFilter:"owing", schedWk:0 };
 
+/* ============================ ICONS ============================ */
+const sv=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const I={
+  home:sv('<path d="M3 10.6 12 3.2l9 7.4"/><path d="M5.6 9.6V20.4h12.8V9.6"/>'),
+  money:sv('<rect x="2.6" y="5.4" width="18.8" height="13.2" rx="2.6"/><path d="M2.6 10.2h18.8"/>'),
+  players:sv('<circle cx="9.2" cy="8" r="3.3"/><path d="M3.2 19.6c0-3.4 2.7-5.2 6-5.2s6 1.8 6 5.2"/><circle cx="17.6" cy="9.2" r="2.3"/><path d="M16.4 14.3c2.9.2 4.9 1.9 4.9 5"/>'),
+  coaches:sv('<circle cx="10.5" cy="7.6" r="3.4"/><path d="M4 20c0-3.7 2.9-5.8 6.5-5.8 1.2 0 2.3.2 3.2.7"/><path d="M15.4 17.6l1.9 1.9 3.6-3.9"/>'),
+  sched:sv('<rect x="3.2" y="5.2" width="17.6" height="15.6" rx="2.6"/><path d="M3.2 10.2h17.6"/><path d="M8.2 3.2v4M15.8 3.2v4"/>'),
+  team:sv('<circle cx="9.2" cy="8" r="3.3"/><path d="M3.2 19.6c0-3.4 2.7-5.2 6-5.2s6 1.8 6 5.2"/><circle cx="17.6" cy="9.2" r="2.3"/><path d="M16.4 14.3c2.9.2 4.9 1.9 4.9 5"/>'),
+  check:sv('<path d="M4.5 12.8l5 5L19.5 7"/>'),
+  x:sv('<path d="M6.4 6.4l11.2 11.2M17.6 6.4L6.4 17.6"/>'),
+  alert:sv('<path d="M12 4.2 2.8 20h18.4L12 4.2z"/><path d="M12 10.2v4"/><path d="M12 17.1v.1"/>'),
+  bell:sv('<path d="M6.2 9.6a5.8 5.8 0 1 1 11.6 0c0 3.9 1.5 5.4 1.5 5.4H4.7s1.5-1.5 1.5-5.4z"/><path d="M10 18.6a2 2 0 0 0 4 0"/>'),
+  ball:sv('<circle cx="12" cy="12" r="8.8"/><path d="M3.2 12h17.6M12 3.2v17.6"/><path d="M5.8 5.8c3.6 2.9 3.6 9.5 0 12.4M18.2 5.8c-3.6 2.9-3.6 9.5 0 12.4"/>'),
+  q:sv('<circle cx="12" cy="12" r="8.8"/><path d="M9.7 9.6a2.4 2.4 0 1 1 3.2 2.3c-.8.3-1.3 1-1.3 1.8v.3"/><path d="M11.6 17.1v.1"/>'),
+  plus:sv('<path d="M12 5.2v13.6M5.2 12h13.6"/>'),
+  send:sv('<path d="M20.4 3.6 3.6 10.4l6.6 2.9 2.9 6.6 7.3-16.3z"/><path d="M10.2 13.3 20.4 3.6"/>'),
+  reset:sv('<path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 3.6V9h-5.4"/>'),
+};
+
 /* ============================ HELPERS ============================ */
 const $=(s,el=document)=>el.querySelector(s);
 const app=$("#app");
@@ -340,12 +400,12 @@ function topbar(){
 }
 function bottomNav(){
   const items = VIEW.role==="admin"
-    ? [["home","🏠","Home"],["money","💳","Money"],["players","📋","Players"],["coaches","🧢","Coaches"],["sched","📅","Schedule"]]
+    ? [["home",I.home,"Home"],["money",I.money,"Money"],["players",I.players,"Players"],["coaches",I.coaches,"Coaches"],["sched",I.sched,"Schedule"]]
     : VIEW.role==="coach"
-    ? [["home","🏠","Team"],["avail","✅","Availability"],["sched","📅","Schedule"]]
+    ? [["home",I.team,"Team"],["avail",I.check,"Availability"],["sched",I.sched,"Schedule"]]
     : VIEW.role==="parent"
-    ? [["home","🏠","Home"],["sched","📅","Schedule"],["team","👥","Team"],["pay","💳","Fees"]]
-    : [["home","🏠","Home"],["sched","📅","Schedule"],["team","👥","Team"]];
+    ? [["home",I.home,"Home"],["sched",I.sched,"Schedule"],["team",I.team,"Team"],["pay",I.money,"Fees"]]
+    : [["home",I.home,"Home"],["sched",I.sched,"Schedule"],["team",I.team,"Team"]];
   return `<div class="nav">${items.map(([k,i,l])=>
     `<button data-tab="${k}" class="${VIEW.tab===k?'on':''}"><span class="i">${i}</span>${l}</button>`).join("")}</div>`;
 }
@@ -354,8 +414,8 @@ function bottomNav(){
 function loginView(){
   return `<div class="login">
     <div class="biglogo"><img src="logo.png" alt="South West Sonics"></div>
-    <h1>SONICS</h1>
-    <div class="sub">SOUTH WEST SYDNEY · ADMIN ACCESS</div>
+    <h1 class="grad">SONICS</h1>
+    <div class="sub">South West Sydney · Admin Access</div>
     <div class="field"><label>Email</label><input id="li-email" value="nour@sonics.club" autocomplete="off"></div>
     <div class="field"><label>Password</label><input id="li-pass" type="password" placeholder="••••••••"></div>
     <div class="btnrow"><button class="btn" data-act="login">Sign in</button></div>
@@ -388,9 +448,10 @@ function dHome(){
   const openTasks=S.tasks.filter(t=>!t.done).length;
   return `
   <div class="hero">
-    <div style="font-family:var(--disp);font-size:12px;letter-spacing:2px;color:var(--sky);font-weight:700">ADMIN CONTROL CENTRE</div>
-    <div style="font-family:var(--disp);font-size:26px;font-weight:700;margin-top:4px;letter-spacing:.5px">Friday Juniors · ${FRI}</div>
-    <div class="small muted" style="margin-top:2px">${VENUE} · ${S.teams.length} teams · ${s.total} players</div>
+    <div class="kicker sky">Admin Control Centre</div>
+    <div class="htitle">Friday <span class="grad">Juniors</span></div>
+    <div class="small muted" style="margin-top:8px">${FRI} · ${VENUE}</div>
+    <div class="small muted" style="margin-top:2px">${S.teams.length} teams · ${s.total} players</div>
   </div>
   <div class="kpis" style="margin-top:12px">
     <div class="kpi green"><div class="v">${s.registered}<span style="font-size:15px;color:var(--muted)">/${s.total}</span></div><div class="l">Registered</div><div class="sub b-red">${s.notReg} need action</div></div>
@@ -401,10 +462,10 @@ function dHome(){
 
   <div class="h">Needs your attention</div>
   <div class="card">
-    ${attnRow("💳", `${S.players.filter(p=>p.pay!=="paid").length} players owe fees`, money(s.outstanding)+" outstanding", "Money", "money")}
-    ${attnRow("📋", `${s.notReg} incomplete registrations`, "Pending / lapsed sign-ups", "Players", "players")}
-    ${attnRow("⚠️", `1 coach missing WWCC`, "Tariq Osman · U18", "Coaches", "coaches")}
-    ${attnRow("🔔", `${s.noResp} haven't confirmed Friday`, "Availability unknown", "Schedule", "sched")}
+    ${attnRow(I.money, `${S.players.filter(p=>p.pay!=="paid").length} players owe fees`, money(s.outstanding)+" outstanding", "Money", "money")}
+    ${attnRow(I.players, `${s.notReg} sign-ups incomplete`, "Pending / lapsed registrations", "Players", "players")}
+    ${attnRow(I.alert, `1 coach missing WWCC`, "Tariq Osman · U18", "Coaches", "coaches")}
+    ${attnRow(I.bell, `${s.noResp} haven't confirmed`, "Friday availability unknown", "Schedule", "sched")}
   </div>
 
   <div class="h">Who does what <span class="pill tag mut">the operating manual</span></div>
@@ -421,7 +482,7 @@ function dHome(){
   ${resetBtn()}`;
 }
 function attnRow(ic,t,m,cta,tab){
-  return `<div class="row"><div class="av g4">${ic}</div>
+  return `<div class="row"><div class="av soft">${ic}</div>
     <div class="rmain"><div class="t">${t}</div><div class="m">${m}</div></div>
     <button class="btn gh sm" data-tab="${tab}">${cta} ›</button></div>`;
 }
@@ -457,7 +518,7 @@ function dMoney(){
       <div class="rmain"><div class="t">${p.name}</div><div class="m"><span class="divchip">${p.div}</span> #${p.jersey} · ${p.guardian!=="—"?p.guardian:"self"}</div></div>
       <div class="rside">${payTag(p)}
         ${p.owe>0?`<button class="btn gold sm" data-act="remind" data-id="${p.id}">Follow up</button>`:`<span class="small muted">✓ settled</span>`}
-      </div></div>`).join("") || `<div class="center muted small" style="padding:16px">🎉 Everyone's paid up.</div>`}
+      </div></div>`).join("") || `<div class="center muted small" style="padding:16px">Everyone's paid up.</div>`}
   </div>
   ${S.feed.length?`<div class="h">Follow-up log</div><div class="card">${S.feed.slice(0,6).map(f=>`<div class="row"><div class="av g2">✓</div><div class="rmain"><div class="t">${f.t}</div><div class="m">${f.m}</div></div></div>`).join("")}</div>`:""}
   ${resetBtn()}`;
@@ -505,7 +566,7 @@ function dCoaches(){
       <div class="rside">${t}
         ${c.wwcc!=="Valid"?`<button class="btn gold sm" data-act="clear" data-id="${c.id}">Request</button>`:`<span class="small muted">✓ cleared</span>`}
       </div></div>`;}).join("")}</div>
-  <div class="card"><button class="btn gh" data-act="addcoach">＋ Add a coach</button></div>
+  <div class="card"><button class="btn gh" data-act="addcoach">${I.plus} Add a coach</button></div>
 
   <div class="h">Teams & assignments</div>
   <div class="card">${S.teams.map((t,i)=>{
@@ -539,16 +600,16 @@ function coachView(){
   const t=S.teams.find(x=>x.div===team);
   return `
   <div class="hero">
-    <div style="font-family:var(--disp);font-size:12px;letter-spacing:2px;color:var(--sky);font-weight:700">MY TEAM</div>
-    <div style="font-family:var(--disp);font-size:26px;font-weight:700;margin-top:4px">${t.name}</div>
-    <div class="small muted" style="margin-top:2px">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div>
+    <div class="kicker sky">My Team</div>
+    <div class="htitle">${t.name}</div>
+    <div class="small muted" style="margin-top:8px">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div>
   </div>
   <div class="h">Roster <span class="pill small muted">${roster.length} players</span></div>
   <div class="card">${roster.map((p,i)=>`<div class="row">
     <div class="av ${avClass(i)}">#${p.jersey}</div>
     <div class="rmain"><div class="t">${p.name}</div><div class="m">${p.guardian}</div></div>
     <div class="rside">${availTag(p.avail)}</div></div>`).join("")}</div>
-  <div class="card"><button class="btn gh" data-act="msg">✉️ Message the team</button></div>
+  <div class="card"><button class="btn gh" data-act="msg">${I.send} Message the team</button></div>
   ${resetBtn()}`;
 }
 
@@ -566,7 +627,7 @@ function rosterView(p,t){
 }
 function feesView(p){
   return `<div class="h">Fees</div>
-  <div class="banner ${p.owe>0?'no':'yes'}"><div class="ic">${p.owe>0?'💳':'✅'}</div>
+  <div class="banner ${p.owe>0?'no':'yes'}"><div class="ic">${p.owe>0?I.money:I.check}</div>
     <div><div class="bt">${p.owe>0?money(p.owe)+" owing":"All paid"}</div>
     <div class="bm">Season fee ${money(FEE)} · ${p.name}</div></div></div>
   ${p.owe>0?`<div class="card"><div class="small muted">Season progress</div><div class="meter"><i style="width:${Math.round((FEE-p.owe)/FEE*100)}%"></i></div>
@@ -586,35 +647,35 @@ function parentView(){
   const playing=p.avail==="in", reg=p.reg==="registered";
   return `
   <div class="hero">
-    <div class="small muted" style="letter-spacing:1px">PARENT ACCOUNT</div>
-    <div style="font-family:var(--disp);font-size:26px;margin-top:2px">Managing ${first}</div>
-    <div class="avirow"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name}</span></div>
-    <div class="small muted" style="margin-top:8px">1 child linked · <span class="b-sky" data-act="addchild">＋ add another</span></div>
+    <div class="kicker sky">Parent Account</div>
+    <div class="htitle">Managing <span class="grad">${first}</span></div>
+    <div class="avirow" style="margin-top:12px"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name}</span></div>
+    <div class="small muted" style="margin-top:10px">1 child linked · <span class="b-sky" data-act="addchild">＋ add another</span></div>
   </div>
 
   <div class="h">Registration</div>
-  <div class="banner ${reg?'yes':'no'}"><div class="ic">${reg?'✅':'⚠️'}</div>
+  <div class="banner ${reg?'yes':'no'}"><div class="ic">${reg?I.check:I.alert}</div>
     <div><div class="bt">${reg?first+" is registered":"Registration incomplete"}</div>
     <div class="bm">${reg?"Season 2026 · good to go":"Finish sign-up to lock the spot"}</div></div>
     ${!reg?`<button class="btn sm" style="margin-left:auto" data-act="approve" data-id="${p.id}">Finish</button>`:""}
   </div>
 
   <div class="h">Fees</div>
-  ${p.owe>0?`<div class="banner no"><div class="ic">💳</div>
+  ${p.owe>0?`<div class="banner no"><div class="ic">${I.money}</div>
     <div><div class="bt">${money(p.owe)} owing</div><div class="bm">Season fee ${money(FEE)} · ${first}</div></div>
     <button class="btn gold sm" style="margin-left:auto" data-tab="pay">Pay</button></div>`:
-  `<div class="banner yes"><div class="ic">✅</div><div><div class="bt">All paid</div><div class="bm">Season fee ${money(FEE)}</div></div></div>`}
+  `<div class="banner yes"><div class="ic">${I.check}</div><div><div class="bt">All paid</div><div class="bm">Season fee ${money(FEE)}</div></div></div>`}
 
   <div class="h">This Friday</div>
-  <div class="banner ${playing?'yes':'no'}"><div class="ic">${playing?'🏀':'❔'}</div>
+  <div class="banner ${playing?'yes':'no'}"><div class="ic">${playing?I.ball:I.q}</div>
     <div><div class="bt">${playing?first+" is playing":"Not confirmed yet"}</div>
     <div class="bm">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div></div>
   </div>
   <div class="card">
     <div class="small muted" style="margin-bottom:8px">Confirm ${first}'s availability for ${FRI}</div>
     <div class="btnrow" style="margin-top:0">
-      <button class="btn ${playing?'':'gh'}" data-act="avail" data-id="${p.id}" data-v="in">✅ Playing</button>
-      <button class="btn ${p.avail==='out'?'red':'gh'}" data-act="avail" data-id="${p.id}" data-v="out">✕ Can't make it</button>
+      <button class="btn ${playing?'':'gh'}" data-act="avail" data-id="${p.id}" data-v="in">${I.check} Playing</button>
+      <button class="btn ${p.avail==='out'?'red':'gh'}" data-act="avail" data-id="${p.id}" data-v="out">${I.x} Can't make it</button>
     </div>
   </div>
 
@@ -636,28 +697,28 @@ function playerView(){
   const playing=p.avail==="in";
   return `
   <div class="hero">
-    <div class="small muted" style="letter-spacing:1px">GOOD AFTERNOON</div>
-    <div style="font-family:var(--disp);font-size:26px;margin-top:2px">${first}'s week</div>
-    <div class="avirow"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name}</span></div>
+    <div class="kicker sky">Good Afternoon</div>
+    <div class="htitle">${first}'s <span class="grad">Week</span></div>
+    <div class="avirow" style="margin-top:12px"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name}</span></div>
   </div>
 
   <div class="h">Am I playing this Friday?</div>
-  <div class="banner ${playing?'yes':'no'}"><div class="ic">${playing?'🏀':'❔'}</div>
+  <div class="banner ${playing?'yes':'no'}"><div class="ic">${playing?I.ball:I.q}</div>
     <div><div class="bt">${playing?"Yes — you're in":"Not confirmed yet"}</div>
     <div class="bm">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div></div>
   </div>
   <div class="card">
     <div class="small muted" style="margin-bottom:8px">Confirm your availability for ${FRI}</div>
     <div class="btnrow" style="margin-top:0">
-      <button class="btn ${playing?'':'gh'}" data-act="avail" data-id="${p.id}" data-v="in">✅ I'm in</button>
-      <button class="btn ${p.avail==='out'?'red':'gh'}" data-act="avail" data-id="${p.id}" data-v="out">✕ Can't make it</button>
+      <button class="btn ${playing?'':'gh'}" data-act="avail" data-id="${p.id}" data-v="in">${I.check} I'm in</button>
+      <button class="btn ${p.avail==='out'?'red':'gh'}" data-act="avail" data-id="${p.id}" data-v="out">${I.x} Can't make it</button>
     </div>
   </div>
 
   <div class="h">My status</div>
   <div class="card">
     <div class="row"><div class="av">${initials(p.name)}</div><div class="rmain"><div class="t">Registration</div><div class="m">Season 2026</div></div><div class="rside">${regTag(p)}</div></div>
-    <div class="row"><div class="av g3">$</div><div class="rmain"><div class="t">Fees</div><div class="m">${p.owe>0?"A parent/guardian looks after this":"Season fee settled"}</div></div><div class="rside">${payTag(p)}</div></div>
+    <div class="row"><div class="av soft">${I.money}</div><div class="rmain"><div class="t">Fees</div><div class="m">${p.owe>0?"A parent/guardian looks after this":"Season fee settled"}</div></div><div class="rside">${payTag(p)}</div></div>
   </div>
 
   <div class="h">My team</div>
@@ -697,7 +758,7 @@ function schedule(isDir, onlyDiv){
   ${resetBtn()}`;
 }
 
-function resetBtn(){ return `<div style="margin-top:22px;text-align:center"><button class="btn gh sm" data-act="reset" style="width:auto">↺ Reset demo data</button></div>`; }
+function resetBtn(){ return `<div style="margin-top:22px;text-align:center"><button class="btn gh sm" data-act="reset" style="width:auto">${I.reset} Reset demo data</button></div>`; }
 
 /* ============================ EVENTS ============================ */
 document.getElementById("roleswitch").addEventListener("click",e=>{
@@ -717,14 +778,14 @@ app.addEventListener("click",e=>{
   if(act==="remind"){ const p=player(id); S.feed.unshift({t:"Reminder sent to "+p.name,m:money(p.owe)+" · "+new Date().toLocaleDateString()}); save(); toast("Payment reminder sent ✓"); render(); return; }
   if(act==="approve"){ const p=player(id); p.reg="registered"; save(); toast(p.name+" registered ✓"); render(); return; }
   if(act==="pay"){ const p=player(id); p.owe=0; p.pay="paid"; save(); toast("Payment complete ✓"); render(); return; }
-  if(act==="avail"){ const p=player(id); p.avail=a.dataset.v; save(); toast(a.dataset.v==="in"?"You're in for Friday 🏀":"Marked unavailable"); render(); return; }
+  if(act==="avail"){ const p=player(id); p.avail=a.dataset.v; save(); toast(a.dataset.v==="in"?"You're in for Friday":"Marked unavailable"); render(); return; }
   if(act==="nudge"){ toast("Nudge sent to players who haven't replied ✓"); return; }
   if(act==="msg"){ toast("Team message sent ✓"); return; }
   if(act==="clear"){ toast("WWCC request sent to coach ✓"); return; }
   if(act==="addcoach"){ toast("Invite a coach — Phase 2"); return; }
   if(act==="addchild"){ toast("Link another child — Phase 2"); return; }
   if(act==="edit"){ toast("Schedule editor — Phase 2"); return; }
-  if(act==="reset"){ reset(); VIEW.tab="home"; toast("Demo data reset ↺"); render(); return; }
+  if(act==="reset"){ reset(); VIEW.tab="home"; toast("Demo data reset"); render(); return; }
 });
 
 /* segmented filters */
