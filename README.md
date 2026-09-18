@@ -27,6 +27,7 @@ The home for all Groundworks Studios projects. Each project lives in its own fol
 
 | Project | Folder | Live site |
 |---------|--------|-----------|
+| Southwest Sonics App (member portal + admin, planning) | [`southwest-sonics-app/`](southwest-sonics-app/) | — |
 | Love of the Game (LOTG) | [`love-of-the-game-lotg/`](love-of-the-game-lotg/) | [love-of-the-game-lotg.netlify.app](https://love-of-the-game-lotg.netlify.app) |
 | LOTG — Wednesday Night Basketball | [`lotg-wednesday-night-basketball/`](lotg-wednesday-night-basketball/) | [lotg-wednesday-night-basketball.netlify.app](https://lotg-wednesday-night-basketball.netlify.app) |
 | Hoops & Hearts — Episode 1 | [`glowing-toffee-4549ca/`](glowing-toffee-4549ca/) | [glowing-toffee-4549ca.netlify.app](https://glowing-toffee-4549ca.netlify.app) |
