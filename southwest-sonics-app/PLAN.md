@@ -70,6 +70,18 @@ We encode this in the app as a **Roles & Responsibilities board** so anyone can 
 
 ---
 
+### 3.2 Access tiers (one app, four levels of access)
+The whole club runs through **one app** — a true one-stop shop — but each person only sees what's theirs. Everyone self-registers/logs in and lands on the right view automatically.
+
+| Tier | Who | What they can do |
+|---|---|---|
+| **Admin** | Nour, Abdulla (+ Aiman) | Everything — dashboard, money & follow-ups, registrations, **coaches & clearances**, schedule, rosters, roles & tasks |
+| **Coach** | Team coaches | Their team only — roster, Friday availability, mark attendance, message the team. No money, no club-wide admin |
+| **Parent** | Guardians of juniors | Register their child, pay fees, confirm the child's availability, see schedule + roster + notifications. Can link multiple children |
+| **Player** | The athletes | Their own view — am I playing, confirm availability, my team & roster, my status. Fees are read-only (a parent handles them) |
+
+Coaches, parents and players each get their **own login**; the backend (Phase 2) enforces these permissions so a parent can never see another family's data.
+
 ## 4. What the app does (features mapped to the problem)
 
 Every feature answers "organisation, scheduling, or who does what."

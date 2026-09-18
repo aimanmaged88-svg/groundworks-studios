@@ -13,11 +13,12 @@ Built around the club's #1 problem: **organisation, scheduling, and who does wha
 - **[`PLAN.md`](PLAN.md)** — the full app & operations plan.
 
 ## Prototype (index.html)
-A working, tap-through demo with three views — switch roles from the strip at the top:
-- **Director** — control centre: registered vs not, playing this Friday, fees collected vs outstanding, a money view with per-player **Follow up**, registrations with consent/medical flags, coach WWCC tracking, the Friday schedule grid, a roles board and a shared task list (the "who does what" fix).
-- **Coach** — my team roster, Friday availability (in / out / no reply), nudge + message.
-- **Player/Parent** — *Am I registered? Am I playing this Friday? Who's on my team?* plus fees owing and a one-tap availability confirm.
+A working, tap-through demo with **four access tiers** — switch roles from the strip at the top:
+- **Admin** (Nour, Abdulla) — control centre: registered vs not, playing this Friday, fees collected vs outstanding, a money view with per-player **Follow up**, registrations with consent/medical flags, a dedicated **Coaches** section (staff, WWCC clearances, team assignments), the Friday schedule grid, a roles board and a shared task list (the "who does what" fix).
+- **Coach** — their team roster, Friday availability (in / out / no reply), nudge + message.
+- **Parent** — register a child, pay fees, confirm the child's availability, see schedule + roster. Can link multiple children.
+- **Player** — the athlete's own view: *Am I playing this Friday? Who's on my team?* with fees shown read-only (a parent handles them).
 
-Data is seeded and stored in the browser (`localStorage`); a **Reset demo data** button restores it. Branding uses a placeholder Sonics mark until the real logo is dropped in.
+Branding uses the club's real identity — the logo is recreated as a scalable SVG (`logo.svg`) and used as the app mark + favicon. Data is seeded and stored in the browser (`localStorage`); a **Reset demo data** button restores it.
 
 **Status:** Phase 1 prototype built. Next: real logins + shared database (Supabase), then installable PWA. See `PLAN.md`.

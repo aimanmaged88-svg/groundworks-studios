@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#0A0E14">
 <title>Sonics App — Sydney Southwest Sonics</title>
 <meta name="description" content="Member portal + admin control centre for the Sydney Southwest Sonics basketball association. Prototype.">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -55,10 +57,8 @@ img{max-width:100%}
 /* ---- topbar ---- */
 .topbar{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:14px 16px 10px;
   border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(18,26,36,.6),transparent)}
-.logo{width:40px;height:40px;border-radius:50%;flex:0 0 auto;background:var(--grad);padding:2.5px;
-  display:block;box-shadow:0 4px 14px -4px rgba(0,0,0,.55)}
-.logo b{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#0b0b0e;
-  font-family:var(--disp);font-weight:700;font-size:17px;color:var(--sky);line-height:1}
+.logo{width:44px;height:44px;border-radius:50%;flex:0 0 auto;overflow:hidden;display:block}
+.logo img{width:100%;height:100%;display:block}
 .brandtxt .n{font-family:var(--disp);font-weight:700;letter-spacing:.5px;font-size:16px;line-height:1}
 .brandtxt .s{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:600}
 .topbar .who{margin-left:auto;text-align:right}
@@ -153,10 +153,9 @@ img{max-width:100%}
 
 /* login */
 .login{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;padding:30px 24px;max-width:var(--maxw);margin:0 auto;width:100%}
-.login .biglogo{width:96px;height:96px;border-radius:50%;margin:0 auto 20px;background:var(--grad);padding:5px;
-  box-shadow:0 14px 44px -12px rgba(63,197,236,.5)}
-.login .biglogo b{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#0b0b0e;
-  font-family:var(--disp);font-weight:700;font-size:38px;color:var(--sky)}
+.login .biglogo{width:112px;height:112px;margin:0 auto 18px;border-radius:50%;overflow:hidden;
+  box-shadow:0 16px 50px -14px rgba(63,197,236,.45)}
+.login .biglogo img{width:100%;height:100%;display:block}
 .login h1{font-family:var(--disp);font-weight:700;font-size:30px;text-align:center;letter-spacing:1px}
 .login .sub{text-align:center;color:var(--muted);font-size:13px;margin-top:4px;letter-spacing:.5px}
 .field{margin-top:14px}
@@ -166,7 +165,7 @@ img{max-width:100%}
 .invite{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:16px;display:flex;gap:10px;align-items:center;text-align:left}
 .invite:active{transform:scale(.99)}
 .muted{color:var(--muted)} .small{font-size:11.5px} .center{text-align:center}
-.b-green{color:var(--green)} .b-gold{color:var(--gold)} .b-red{color:var(--red)}
+.b-green{color:var(--green)} .b-gold{color:var(--gold)} .b-red{color:var(--red)} .b-sky{color:var(--sky);font-weight:700;cursor:pointer}
 
 /* toast */
 .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#05130c;color:var(--green);
@@ -197,8 +196,9 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
 <div class="demostrip">
   <div class="dt">PROTOTYPE · <b>seeded demo data</b> · tap a role to tour</div>
   <div class="roleswitch" id="roleswitch">
-    <button data-role="director">Director</button>
+    <button data-role="admin">Admin</button>
     <button data-role="coach">Coach</button>
+    <button data-role="parent">Parent</button>
     <button data-role="player">Player</button>
   </div>
 </div>
@@ -273,7 +273,7 @@ function load(){ try{const r=localStorage.getItem(LS); if(r) return JSON.parse(r
 function save(){ try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){} }
 function reset(){ S=JSON.parse(JSON.stringify(SEED)); save(); }
 
-let VIEW = { role:"director", tab:"home", authed:false, regFilter:"all", moneyFilter:"owing", schedWk:0 };
+let VIEW = { role:"admin", tab:"home", authed:false, regFilter:"all", moneyFilter:"owing", schedWk:0 };
 
 /* ============================ HELPERS ============================ */
 const $=(s,el=document)=>el.querySelector(s);
@@ -316,31 +316,36 @@ function availTag(a){
 /* ============================ RENDER ROUTER ============================ */
 function render(){
   document.querySelectorAll("#roleswitch button").forEach(b=>b.classList.toggle("on",b.dataset.role===VIEW.role));
-  if(!VIEW.authed && VIEW.role==="director"){ app.innerHTML=loginView(); return; }
+  if(!VIEW.authed && VIEW.role==="admin"){ app.innerHTML=loginView(); return; }
   let body="";
-  if(VIEW.role==="director") body=directorView();
+  if(VIEW.role==="admin") body=adminView();
   else if(VIEW.role==="coach") body=coachView();
+  else if(VIEW.role==="parent") body=parentView();
   else body=playerView();
   app.innerHTML = topbar()+`<div class="scroll">${body}</div>`+bottomNav();
 }
 
 /* ---------- shared chrome ---------- */
 function topbar(){
-  let nm="Nour Kabbara", rl="Director";
+  const kid=player(S.loginPlayer);
+  let nm="Nour Kabbara", rl="Admin · Director";
   if(VIEW.role==="coach"){nm="Marcus Reed";rl="Coach · U12";}
-  if(VIEW.role==="player"){const p=player(S.loginPlayer);nm=p.guardian;rl="Parent · "+p.name;}
+  if(VIEW.role==="parent"){nm=kid.guardian;rl="Parent · "+kid.name;}
+  if(VIEW.role==="player"){nm=kid.name;rl="Player · "+kid.div;}
   return `<div class="topbar">
-    <div class="logo"><b>S</b></div>
+    <div class="logo"><img src="logo.svg" alt="South West Sonics" width="44" height="44"></div>
     <div class="brandtxt"><div class="n">SONICS</div><div class="s">South West Sydney</div></div>
     <div class="who"><div class="nm">${nm}</div><div class="rl">${rl}</div></div>
   </div>`;
 }
 function bottomNav(){
-  const items = VIEW.role==="director"
-    ? [["home","🏠","Home"],["money","💳","Money"],["reg","📋","Registrations"],["sched","📅","Schedule"],["team","👥","Club"]]
+  const items = VIEW.role==="admin"
+    ? [["home","🏠","Home"],["money","💳","Money"],["players","📋","Players"],["coaches","🧢","Coaches"],["sched","📅","Schedule"]]
     : VIEW.role==="coach"
     ? [["home","🏠","Team"],["avail","✅","Availability"],["sched","📅","Schedule"]]
-    : [["home","🏠","Home"],["sched","📅","Schedule"],["team","👥","My Team"],["pay","💳","Fees"]];
+    : VIEW.role==="parent"
+    ? [["home","🏠","Home"],["sched","📅","Schedule"],["team","👥","Team"],["pay","💳","Fees"]]
+    : [["home","🏠","Home"],["sched","📅","Schedule"],["team","👥","Team"]];
   return `<div class="nav">${items.map(([k,i,l])=>
     `<button data-tab="${k}" class="${VIEW.tab===k?'on':''}"><span class="i">${i}</span>${l}</button>`).join("")}</div>`;
 }
@@ -348,9 +353,9 @@ function bottomNav(){
 /* ============================ LOGIN ============================ */
 function loginView(){
   return `<div class="login">
-    <div class="biglogo"><b>S</b></div>
+    <div class="biglogo"><img src="logo.svg" alt="South West Sonics"></div>
     <h1>SONICS</h1>
-    <div class="sub">SOUTH WEST SYDNEY · DIRECTOR ACCESS</div>
+    <div class="sub">SOUTH WEST SYDNEY · ADMIN ACCESS</div>
     <div class="field"><label>Email</label><input id="li-email" value="nour@sonics.club" autocomplete="off"></div>
     <div class="field"><label>Password</label><input id="li-pass" type="password" placeholder="••••••••"></div>
     <div class="btnrow"><button class="btn" data-act="login">Sign in</button></div>
@@ -370,12 +375,12 @@ function loginView(){
   </div>`;
 }
 
-/* ============================ DIRECTOR ============================ */
-function directorView(){
+/* ============================ ADMIN ============================ */
+function adminView(){
   if(VIEW.tab==="money") return dMoney();
-  if(VIEW.tab==="reg") return dReg();
+  if(VIEW.tab==="players") return dReg();
+  if(VIEW.tab==="coaches") return dCoaches();
   if(VIEW.tab==="sched") return schedule(true);
-  if(VIEW.tab==="team") return dClub();
   return dHome();
 }
 function dHome(){
@@ -383,7 +388,7 @@ function dHome(){
   const openTasks=S.tasks.filter(t=>!t.done).length;
   return `
   <div class="hero">
-    <div style="font-family:var(--disp);font-size:12px;letter-spacing:2px;color:var(--sky);font-weight:700">DIRECTOR CONTROL CENTRE</div>
+    <div style="font-family:var(--disp);font-size:12px;letter-spacing:2px;color:var(--sky);font-weight:700">ADMIN CONTROL CENTRE</div>
     <div style="font-family:var(--disp);font-size:26px;font-weight:700;margin-top:4px;letter-spacing:.5px">Friday Juniors · ${FRI}</div>
     <div class="small muted" style="margin-top:2px">${VENUE} · ${S.teams.length} teams · ${s.total} players</div>
   </div>
@@ -397,8 +402,8 @@ function dHome(){
   <div class="h">Needs your attention</div>
   <div class="card">
     ${attnRow("💳", `${S.players.filter(p=>p.pay!=="paid").length} players owe fees`, money(s.outstanding)+" outstanding", "Money", "money")}
-    ${attnRow("📋", `${s.notReg} incomplete registrations`, "Pending / lapsed sign-ups", "Registrations", "reg")}
-    ${attnRow("⚠️", `1 coach missing WWCC`, "Tariq Osman · U18", "Club", "team")}
+    ${attnRow("📋", `${s.notReg} incomplete registrations`, "Pending / lapsed sign-ups", "Players", "players")}
+    ${attnRow("⚠️", `1 coach missing WWCC`, "Tariq Osman · U18", "Coaches", "coaches")}
     ${attnRow("🔔", `${s.noResp} haven't confirmed Friday`, "Availability unknown", "Schedule", "sched")}
   </div>
 
@@ -479,28 +484,36 @@ function dReg(){
         ${p.reg!=="registered"?`<button class="btn sm" data-act="approve" data-id="${p.id}">Complete</button>`:`<span class="small muted">✓</span>`}
       </div></div>`).join("")}
   </div>
-  <div class="note">New sign-ups land here with consent + medical flags. Coaches' Working With Children Checks are tracked under Club.</div>
+  <div class="note">New sign-ups land here with consent + medical flags. Coaches and their clearances are managed under the Coaches tab.</div>
   ${resetBtn()}`;
 }
-function dClub(){
+function dCoaches(){
+  const valid=S.coaches.filter(c=>c.wwcc==="Valid").length;
+  const flagged=S.coaches.length-valid;
   return `
-  <div class="h">Roles & responsibilities</div>
-  <div class="card">${S.roles.map((r,i)=>`<div class="row"><div class="av ${avClass(i)}">${initials(r.who)}</div>
-    <div class="rmain"><div class="t">${r.who}</div><div class="m">${r.area}</div></div></div>`).join("")}</div>
-
-  <div class="h">Coaches & clearances</div>
+  <div class="h">Coaches</div>
+  <div class="kpis">
+    <div class="kpi green"><div class="v">${S.coaches.length}</div><div class="l">Coaches</div></div>
+    <div class="kpi red"><div class="v">${flagged}</div><div class="l">Clearances to action</div></div>
+  </div>
+  <div class="h">Coaching staff <span class="pill small muted">WWCC = Working With Children Check</span></div>
   <div class="card">${S.coaches.map((c,i)=>{
     const t = c.wwcc==="Valid"?`<span class="tag ok">WWCC valid</span>`:c.wwcc==="Expiring"?`<span class="tag warn">Expiring ${c.exp}</span>`:`<span class="tag bad">WWCC missing</span>`;
+    const n=S.players.filter(p=>p.div===c.team).length;
     return `<div class="row"><div class="av ${avClass(i)}">${initials(c.name)}</div>
-      <div class="rmain"><div class="t">${c.name}</div><div class="m">Coach · ${c.team}</div></div>
-      <div class="rside">${t}</div></div>`;}).join("")}</div>
+      <div class="rmain"><div class="t">${c.name}</div><div class="m">Sonics ${c.team} · ${n} players</div></div>
+      <div class="rside">${t}
+        ${c.wwcc!=="Valid"?`<button class="btn gold sm" data-act="clear" data-id="${c.id}">Request</button>`:`<span class="small muted">✓ cleared</span>`}
+      </div></div>`;}).join("")}</div>
+  <div class="card"><button class="btn gh" data-act="addcoach">＋ Add a coach</button></div>
 
-  <div class="h">Teams</div>
+  <div class="h">Teams & assignments</div>
   <div class="card">${S.teams.map((t,i)=>{
     const n=S.players.filter(p=>p.div===t.div).length;
     return `<div class="row"><div class="av ${avClass(i)}">${t.div}</div>
       <div class="rmain"><div class="t">${t.name}</div><div class="m">Coach ${t.coach} · ${n} players · ${t.court}</div></div>
-      <div class="rside"><span class="tag mut">${t.time}pm</span></div></div>`;}).join("")}</div>
+      <div class="rside"><span class="tag mut">Fri ${t.time}pm</span></div></div>`;}).join("")}</div>
+  <div class="note">Coaches get their own login (Coach tier): their roster, Friday availability and team messaging — but not money or club-wide admin.</div>
   ${resetBtn()}`;
 }
 
@@ -539,45 +552,93 @@ function coachView(){
   ${resetBtn()}`;
 }
 
-/* ============================ PLAYER / PARENT ============================ */
-function playerView(){
+/* ============================ SHARED (parent + player) ============================ */
+function rosterView(p,t){
+  const mates=S.players.filter(x=>x.div===p.div);
+  const meLabel = VIEW.role==='parent' ? 'Your child' : 'You';
+  return `<div class="h">${t.name} <span class="pill small muted">Coach ${t.coach}</span></div>
+  <div class="card">${mates.map((m,i)=>`<div class="row">
+    <div class="av ${avClass(i)}">#${m.jersey}</div>
+    <div class="rmain"><div class="t">${m.name}${m.id===p.id?` <span class="tag ok" style="margin-left:4px">${meLabel}</span>`:''}</div>
+      <div class="m">${m.avail==='in'?'In for Friday':m.avail==='out'?'Out this week':'No reply yet'}</div></div>
+    <div class="rside">${availTag(m.avail)}</div></div>`).join("")}</div>
+  ${resetBtn()}`;
+}
+function feesView(p){
+  return `<div class="h">Fees</div>
+  <div class="banner ${p.owe>0?'no':'yes'}"><div class="ic">${p.owe>0?'💳':'✅'}</div>
+    <div><div class="bt">${p.owe>0?money(p.owe)+" owing":"All paid"}</div>
+    <div class="bm">Season fee ${money(FEE)} · ${p.name}</div></div></div>
+  ${p.owe>0?`<div class="card"><div class="small muted">Season progress</div><div class="meter"><i style="width:${Math.round((FEE-p.owe)/FEE*100)}%"></i></div>
+    <div class="small muted" style="margin-top:6px">${money(FEE-p.owe)} of ${money(FEE)} paid</div></div>
+    <div class="card"><button class="btn gold" data-act="pay" data-id="${p.id}">Pay ${money(p.owe)} now</button></div>`:``}
+  ${resetBtn()}`;
+}
+
+/* ============================ PARENT ============================ */
+function parentView(){
   const p=player(S.loginPlayer);
+  const first=p.name.split(" ")[0];
   const t=S.teams.find(x=>x.div===p.div);
   if(VIEW.tab==="sched") return schedule(false,p.div);
-  if(VIEW.tab==="team"){
-    const mates=S.players.filter(x=>x.div===p.div);
-    return `<div class="h">${t.name} <span class="pill small muted">Coach ${t.coach}</span></div>
-    <div class="card">${mates.map((m,i)=>`<div class="row">
-      <div class="av ${avClass(i)}">#${m.jersey}</div>
-      <div class="rmain"><div class="t">${m.name}${m.id===p.id?' <span class="tag ok" style="margin-left:4px">You</span>':''}</div><div class="m">${availTag(m.avail).replace(/<[^>]+>/g,'').trim()==="Playing"?"In for Friday":"—"}</div></div>
-      <div class="rside">${availTag(m.avail)}</div></div>`).join("")}</div>
-    ${resetBtn()}`;
-  }
-  if(VIEW.tab==="pay"){
-    return `<div class="h">Fees</div>
-    <div class="banner ${p.owe>0?'no':'yes'}"><div class="ic">${p.owe>0?'💳':'✅'}</div>
-      <div><div class="bt">${p.owe>0?money(p.owe)+" owing":"All paid"}</div>
-      <div class="bm">Season fee ${money(FEE)} · ${p.name}</div></div></div>
-    ${p.owe>0?`<div class="card"><div class="small muted">Season progress</div><div class="meter"><i style="width:${Math.round((FEE-p.owe)/FEE*100)}%"></i></div>
-      <div class="small muted" style="margin-top:6px">${money(FEE-p.owe)} of ${money(FEE)} paid</div></div>
-      <div class="card"><button class="btn gold" data-act="pay" data-id="${p.id}">Pay ${money(p.owe)} now</button></div>`:``}
-    ${resetBtn()}`;
-  }
-  // HOME
-  const playing = p.avail==="in";
-  const reg = p.reg==="registered";
+  if(VIEW.tab==="team") return rosterView(p,t);
+  if(VIEW.tab==="pay") return feesView(p);
+  const playing=p.avail==="in", reg=p.reg==="registered";
+  return `
+  <div class="hero">
+    <div class="small muted" style="letter-spacing:1px">PARENT ACCOUNT</div>
+    <div style="font-family:var(--disp);font-size:26px;margin-top:2px">Managing ${first}</div>
+    <div class="avirow"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name}</span></div>
+    <div class="small muted" style="margin-top:8px">1 child linked · <span class="b-sky" data-act="addchild">＋ add another</span></div>
+  </div>
+
+  <div class="h">Registration</div>
+  <div class="banner ${reg?'yes':'no'}"><div class="ic">${reg?'✅':'⚠️'}</div>
+    <div><div class="bt">${reg?first+" is registered":"Registration incomplete"}</div>
+    <div class="bm">${reg?"Season 2026 · good to go":"Finish sign-up to lock the spot"}</div></div>
+    ${!reg?`<button class="btn sm" style="margin-left:auto" data-act="approve" data-id="${p.id}">Finish</button>`:""}
+  </div>
+
+  <div class="h">Fees</div>
+  ${p.owe>0?`<div class="banner no"><div class="ic">💳</div>
+    <div><div class="bt">${money(p.owe)} owing</div><div class="bm">Season fee ${money(FEE)} · ${first}</div></div>
+    <button class="btn gold sm" style="margin-left:auto" data-tab="pay">Pay</button></div>`:
+  `<div class="banner yes"><div class="ic">✅</div><div><div class="bt">All paid</div><div class="bm">Season fee ${money(FEE)}</div></div></div>`}
+
+  <div class="h">This Friday</div>
+  <div class="banner ${playing?'yes':'no'}"><div class="ic">${playing?'🏀':'❔'}</div>
+    <div><div class="bt">${playing?first+" is playing":"Not confirmed yet"}</div>
+    <div class="bm">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div></div>
+  </div>
+  <div class="card">
+    <div class="small muted" style="margin-bottom:8px">Confirm ${first}'s availability for ${FRI}</div>
+    <div class="btnrow" style="margin-top:0">
+      <button class="btn ${playing?'':'gh'}" data-act="avail" data-id="${p.id}" data-v="in">✅ Playing</button>
+      <button class="btn ${p.avail==='out'?'red':'gh'}" data-act="avail" data-id="${p.id}" data-v="out">✕ Can't make it</button>
+    </div>
+  </div>
+
+  <div class="h">Team</div>
+  <div class="card"><div class="row" style="border:none;padding:4px">
+    <div class="av">${initials(t.coach)}</div>
+    <div class="rmain"><div class="t">${t.name}</div><div class="m">Coach ${t.coach} · ${S.players.filter(x=>x.div===p.div).length} players</div></div>
+    <button class="btn gh sm" data-tab="team">Roster ›</button></div></div>
+  ${resetBtn()}`;
+}
+
+/* ============================ PLAYER ============================ */
+function playerView(){
+  const p=player(S.loginPlayer);
+  const first=p.name.split(" ")[0];
+  const t=S.teams.find(x=>x.div===p.div);
+  if(VIEW.tab==="sched") return schedule(false,p.div);
+  if(VIEW.tab==="team") return rosterView(p,t);
+  const playing=p.avail==="in";
   return `
   <div class="hero">
     <div class="small muted" style="letter-spacing:1px">GOOD AFTERNOON</div>
-    <div style="font-family:var(--disp);font-size:26px;font-weight:700;margin-top:2px">${p.name.split(" ")[0]}'s week</div>
+    <div style="font-family:var(--disp);font-size:26px;margin-top:2px">${first}'s week</div>
     <div class="avirow"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name}</span></div>
-  </div>
-
-  <div class="h">Am I registered?</div>
-  <div class="banner ${reg?'yes':'no'}"><div class="ic">${reg?'✅':'⚠️'}</div>
-    <div><div class="bt">${reg?"You're registered":"Registration incomplete"}</div>
-    <div class="bm">${reg?"Season 2026 · good to go":"Finish sign-up to lock your spot"}</div></div>
-    ${!reg?`<button class="btn sm" style="margin-left:auto" data-act="approve" data-id="${p.id}">Finish</button>`:""}
   </div>
 
   <div class="h">Am I playing this Friday?</div>
@@ -593,10 +654,11 @@ function playerView(){
     </div>
   </div>
 
-  ${p.owe>0?`<div class="h">Heads up</div>
-  <div class="card"><div class="row" style="border:none;padding:4px">
-    <div class="av g3">💳</div><div class="rmain"><div class="t">${money(p.owe)} in fees owing</div><div class="m">Season fee ${money(FEE)}</div></div>
-    <button class="btn gold sm" data-tab="pay">Pay ›</button></div></div>`:""}
+  <div class="h">My status</div>
+  <div class="card">
+    <div class="row"><div class="av">${initials(p.name)}</div><div class="rmain"><div class="t">Registration</div><div class="m">Season 2026</div></div><div class="rside">${regTag(p)}</div></div>
+    <div class="row"><div class="av g3">$</div><div class="rmain"><div class="t">Fees</div><div class="m">${p.owe>0?"A parent/guardian looks after this":"Season fee settled"}</div></div><div class="rside">${payTag(p)}</div></div>
+  </div>
 
   <div class="h">My team</div>
   <div class="card"><div class="row" style="border:none;padding:4px">
@@ -641,7 +703,6 @@ function resetBtn(){ return `<div style="margin-top:22px;text-align:center"><but
 document.getElementById("roleswitch").addEventListener("click",e=>{
   const b=e.target.closest("button[data-role]"); if(!b)return;
   VIEW.role=b.dataset.role; VIEW.tab="home";
-  if(VIEW.role==="director"&&!VIEW.authed){/* show login */}
   render();
 });
 app.addEventListener("click",e=>{
@@ -649,7 +710,7 @@ app.addEventListener("click",e=>{
   if(tabBtn){ VIEW.tab=tabBtn.dataset.tab; render(); return; }
   const a=e.target.closest("[data-act]"); if(!a) return;
   const act=a.dataset.act, id=a.dataset.id;
-  if(act==="login"||act==="invite"){ VIEW.authed=true; VIEW.role="director"; VIEW.tab="home";
+  if(act==="login"||act==="invite"){ VIEW.authed=true; VIEW.role="admin"; VIEW.tab="home";
     if(act==="invite"){ const d=S.directors.find(x=>x.id===a.dataset.who); if(d){d.activated=true;save();} toast("Welcome — password set ✓"); }
     render(); return; }
   if(act==="task"){ const t=S.tasks.find(x=>x.id===id); t.done=!t.done; save(); render(); return; }
@@ -659,6 +720,9 @@ app.addEventListener("click",e=>{
   if(act==="avail"){ const p=player(id); p.avail=a.dataset.v; save(); toast(a.dataset.v==="in"?"You're in for Friday 🏀":"Marked unavailable"); render(); return; }
   if(act==="nudge"){ toast("Nudge sent to players who haven't replied ✓"); return; }
   if(act==="msg"){ toast("Team message sent ✓"); return; }
+  if(act==="clear"){ toast("WWCC request sent to coach ✓"); return; }
+  if(act==="addcoach"){ toast("Invite a coach — Phase 2"); return; }
+  if(act==="addchild"){ toast("Link another child — Phase 2"); return; }
   if(act==="edit"){ toast("Schedule editor — Phase 2"); return; }
   if(act==="reset"){ reset(); VIEW.tab="home"; toast("Demo data reset ↺"); render(); return; }
 });

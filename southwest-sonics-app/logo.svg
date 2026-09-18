@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="South West Sonics">
+  <defs>
+    <linearGradient id="ring" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#E7369B"/>
+      <stop offset=".28" stop-color="#F0567A"/>
+      <stop offset=".55" stop-color="#F5821F"/>
+      <stop offset="1" stop-color="#FCC21A"/>
+    </linearGradient>
+    <radialGradient id="ball" cx=".38" cy=".32" r=".85">
+      <stop offset="0" stop-color="#6FD4F2"/>
+      <stop offset="1" stop-color="#33A9D6"/>
+    </radialGradient>
+    <path id="arcTop" d="M41.7 78.8 A62 62 0 0 1 158.3 78.8" fill="none"/>
+    <path id="arcBot" d="M52 140 A55 55 0 0 0 148 140" fill="none"/>
+  </defs>
+
+  <!-- gradient ring + black field -->
+  <circle cx="100" cy="100" r="99" fill="url(#ring)"/>
+  <circle cx="100" cy="100" r="87" fill="#0B0B0E"/>
+
+  <!-- basketball -->
+  <g>
+    <circle cx="100" cy="104" r="33" fill="url(#ball)"/>
+    <g fill="none" stroke="#0B0B0E" stroke-width="2.6" stroke-linecap="round">
+      <path d="M67 104 H133"/>
+      <path d="M100 71 V137"/>
+      <path d="M76 76 Q92 104 76 132"/>
+      <path d="M124 76 Q108 104 124 132"/>
+    </g>
+  </g>
+
+  <!-- arced top text -->
+  <text font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="16" letter-spacing="2.5" fill="#FFFFFF">
+    <textPath href="#arcTop" startOffset="50%" text-anchor="middle">SOUTH WEST</textPath>
+  </text>
+
+  <!-- wordmark -->
+  <text x="100" y="118" text-anchor="middle" font-family="'Arial Black','Arial Narrow',Arial,sans-serif" font-weight="900" font-size="34" letter-spacing="0.5" fill="#FFFFFF" stroke="#0B0B0E" stroke-width="1.2" paint-order="stroke">SONICS</text>
+
+  <!-- est banner -->
+  <text x="100" y="150" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="9" letter-spacing="3" fill="#8FB9CC">EST. 2024</text>
+</svg>
