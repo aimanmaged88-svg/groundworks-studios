@@ -149,7 +149,7 @@ The prototype is skinned to the club's real identity, taken from the **@swsonics
 - **Colours:** black + **sky/Carolina blue** + white, with the sunset gradient as the energy accent. Team kit is sky blue + navy.
 - **Handle / socials:** `@swsonics` — "South West Sonics Basketball", Bankstown Basketball Stadium.
 - **Note:** the logo reads *EST. 2024* — worth reconciling with the "started five years ago" story (rebrand year vs founding year) before we print it anywhere.
-- **Still needed from you:** the **high-resolution logo file** (PNG/SVG) so we embed the real mark instead of the CSS stand-in. The prototype currently uses a gradient-ring "S" placeholder.
+- **Logo in the app:** the real badge is now embedded (`logo.png`), lifted from the @swsonics profile and cleaned to a transparent circle. It's fine for the prototype; for print/large use, send the original high-resolution vector when you have it.
 
 ### 6.1 Australia-specific must-dos
 - **Working With Children Check (WWCC)** tracking for every coach/volunteer — store number + expiry, flag when lapsing.

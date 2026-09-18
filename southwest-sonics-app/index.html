@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#0A0E14">
 <title>Sonics App — Sydney Southwest Sonics</title>
 <meta name="description" content="Member portal + admin control centre for the Sydney Southwest Sonics basketball association. Prototype.">
-<link rel="icon" href="logo.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="logo.svg">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="apple-touch-icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -333,7 +333,7 @@ function topbar(){
   if(VIEW.role==="parent"){nm=kid.guardian;rl="Parent · "+kid.name;}
   if(VIEW.role==="player"){nm=kid.name;rl="Player · "+kid.div;}
   return `<div class="topbar">
-    <div class="logo"><img src="logo.svg" alt="South West Sonics" width="44" height="44"></div>
+    <div class="logo"><img src="logo.png" alt="South West Sonics" width="44" height="44"></div>
     <div class="brandtxt"><div class="n">SONICS</div><div class="s">South West Sydney</div></div>
     <div class="who"><div class="nm">${nm}</div><div class="rl">${rl}</div></div>
   </div>`;
@@ -353,7 +353,7 @@ function bottomNav(){
 /* ============================ LOGIN ============================ */
 function loginView(){
   return `<div class="login">
-    <div class="biglogo"><img src="logo.svg" alt="South West Sonics"></div>
+    <div class="biglogo"><img src="logo.png" alt="South West Sonics"></div>
     <h1>SONICS</h1>
     <div class="sub">SOUTH WEST SYDNEY · ADMIN ACCESS</div>
     <div class="field"><label>Email</label><input id="li-email" value="nour@sonics.club" autocomplete="off"></div>

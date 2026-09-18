@@ -19,6 +19,6 @@ A working, tap-through demo with **four access tiers** — switch roles from the
 - **Parent** — register a child, pay fees, confirm the child's availability, see schedule + roster. Can link multiple children.
 - **Player** — the athlete's own view: *Am I playing this Friday? Who's on my team?* with fees shown read-only (a parent handles them).
 
-Branding uses the club's real identity — the logo is recreated as a scalable SVG (`logo.svg`) and used as the app mark + favicon. Data is seeded and stored in the browser (`localStorage`); a **Reset demo data** button restores it.
+Branding uses the club's real identity — the actual South West Sonics badge (`logo.png`, taken from the @swsonics profile and cleaned to a transparent circle) is the app mark, login logo and favicon. Data is seeded and stored in the browser (`localStorage`); a **Reset demo data** button restores it.
 
 **Status:** Phase 1 prototype built. Next: real logins + shared database (Supabase), then installable PWA. See `PLAN.md`.
