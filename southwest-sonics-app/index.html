@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A0E14">
+<title>Sonics App — Sydney Southwest Sonics</title>
+<meta name="description" content="Member portal + admin control centre for the Sydney Southwest Sonics basketball association. Prototype.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0E14; --bg2:#070A0F;
+  --card:#121A24; --card2:#0E151E; --card3:#172230;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+  --ink:#EEF3F9; --muted:#8B97A7; --dim:#5C6675;
+  --green:#16E37F; --green-deep:#0BB866; --green-ink:#052a19;
+  --gold:#FFC63D; --amber:#FFB020; --red:#FF5D5D; --blue:#3DA5FF;
+  --disp:'Rajdhani',system-ui,sans-serif;
+  --sans:'Inter Tight',system-ui,-apple-system,sans-serif;
+  --rad:16px; --rad2:20px;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -20px rgba(0,0,0,.7);
+  --maxw:520px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.45;
+  overflow:hidden;display:flex;flex-direction:column;
+  background-image:radial-gradient(120% 60% at 50% -10%,rgba(22,227,127,.10),transparent 60%);}
+button{font-family:var(--sans);cursor:pointer;border:none;background:none;color:inherit}
+img{max-width:100%}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-thumb{background:#22303f;border-radius:6px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---- demo strip ---- */
+.demostrip{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:7px 14px;background:var(--bg2);border-bottom:1px solid var(--line);z-index:50}
+.demostrip .dt{font-family:var(--disp);font-size:11px;letter-spacing:2px;color:#6C7A89;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.demostrip .dt b{color:#cfd8e2}
+.roleswitch{display:inline-flex;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;flex:0 0 auto}
+.roleswitch button{font-size:11px;font-weight:700;letter-spacing:.3px;padding:5px 9px;border-radius:999px;color:var(--muted)}
+.roleswitch button.on{background:var(--green);color:#04160d}
+
+/* ---- app frame ---- */
+.app{flex:1 1 auto;display:flex;flex-direction:column;min-height:0;position:relative;max-width:var(--maxw);width:100%;margin:0 auto}
+.scroll{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;padding:16px 16px 96px}
+.scroll>*{animation:fadeUp .4s cubic-bezier(.2,.7,.3,1) both}
+
+/* ---- topbar ---- */
+.topbar{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:14px 16px 10px;
+  border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(18,26,36,.6),transparent)}
+.logo{width:38px;height:38px;border-radius:11px;flex:0 0 auto;position:relative;
+  background:conic-gradient(from 210deg,var(--green),var(--gold),var(--green));
+  display:grid;place-items:center;box-shadow:0 0 0 1px rgba(255,255,255,.12),0 6px 18px -6px rgba(22,227,127,.6)}
+.logo b{font-family:var(--disp);font-weight:700;font-size:18px;color:#05130c;line-height:1}
+.brandtxt .n{font-family:var(--disp);font-weight:700;letter-spacing:.5px;font-size:16px;line-height:1}
+.brandtxt .s{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.topbar .who{margin-left:auto;text-align:right}
+.topbar .who .nm{font-size:12.5px;font-weight:700}
+.topbar .who .rl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--green);font-weight:700}
+
+/* ---- headings ---- */
+.h{font-family:var(--disp);font-weight:700;letter-spacing:.4px;font-size:13px;text-transform:uppercase;
+  color:var(--muted);margin:20px 2px 10px;display:flex;align-items:center;gap:8px}
+.h:first-child{margin-top:4px}
+.h .pill{margin-left:auto;font-family:var(--sans);text-transform:none;letter-spacing:0}
+
+/* ---- cards ---- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:14px;box-shadow:var(--shadow)}
+.card+.card{margin-top:10px}
+.hero{background:linear-gradient(155deg,#14202c,#0d1620);border:1px solid var(--line2);border-radius:var(--rad2);padding:18px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(22,227,127,.22),transparent 70%)}
+
+/* KPI grid */
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px}
+.kpi .v{font-family:var(--disp);font-weight:700;font-size:27px;line-height:1;letter-spacing:.5px}
+.kpi .l{font-size:11px;color:var(--muted);margin-top:5px;letter-spacing:.3px}
+.kpi .sub{font-size:10.5px;margin-top:3px;font-weight:600}
+.kpi.green .v{color:var(--green)} .kpi.gold .v{color:var(--gold)}
+.kpi.red .v{color:var(--red)} .kpi.blue .v{color:var(--blue)}
+
+/* rows */
+.row{display:flex;align-items:center;gap:11px;padding:11px 4px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:none}
+.av{width:38px;height:38px;border-radius:11px;flex:0 0 auto;display:grid;place-items:center;font-family:var(--disp);
+  font-weight:700;font-size:15px;color:#05130c;background:linear-gradient(150deg,var(--green),var(--green-deep))}
+.av.g2{background:linear-gradient(150deg,#5AA9FF,#2b6fd0)} .av.g3{background:linear-gradient(150deg,var(--gold),#e0a01f)}
+.av.g4{background:linear-gradient(150deg,#C77DFF,#8b47d6)}
+.rmain{flex:1 1 auto;min-width:0}
+.rmain .t{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rmain .m{font-size:11.5px;color:var(--muted);margin-top:1px}
+.rside{flex:0 0 auto;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+
+/* tags */
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.3px;
+  padding:3px 8px;border-radius:999px;white-space:nowrap}
+.tag.ok{background:rgba(22,227,127,.14);color:var(--green)}
+.tag.warn{background:rgba(255,176,32,.15);color:var(--amber)}
+.tag.bad{background:rgba(255,93,93,.14);color:var(--red)}
+.tag.info{background:rgba(61,165,255,.14);color:var(--blue)}
+.tag.mut{background:rgba(255,255,255,.06);color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.dot.ok{background:var(--green)} .dot.warn{background:var(--amber)} .dot.bad{background:var(--red)} .dot.mut{background:var(--dim)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-weight:700;font-size:13px;
+  padding:11px 15px;border-radius:12px;background:var(--green);color:#04160d;transition:transform .1s,filter .15s;width:100%}
+.btn:active{transform:scale(.98)}
+.btn.gh{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line2)}
+.btn.sm{width:auto;padding:7px 12px;font-size:12px;border-radius:10px}
+.btn.gold{background:var(--gold);color:#241a00}
+.btn.red{background:rgba(255,93,93,.15);color:var(--red);border:1px solid rgba(255,93,93,.3)}
+.btnrow{display:flex;gap:8px;margin-top:12px}
+
+/* schedule slot */
+.slot{display:flex;gap:12px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--card2);align-items:center}
+.slot+.slot{margin-top:9px}
+.slot .time{font-family:var(--disp);font-weight:700;font-size:16px;text-align:center;flex:0 0 auto;width:58px;line-height:1.1}
+.slot .time span{display:block;font-size:10px;color:var(--muted);letter-spacing:1px;font-weight:600}
+.slot .info{flex:1 1 auto;min-width:0}
+.slot .info .tt{font-weight:700;font-size:14px}
+.slot .info .mm{font-size:11.5px;color:var(--muted);margin-top:2px}
+.barleft{width:4px;align-self:stretch;border-radius:4px;background:var(--green);flex:0 0 auto}
+.barleft.game{background:var(--gold)} .barleft.train{background:var(--blue)}
+
+/* bignum banner */
+.banner{border-radius:var(--rad2);padding:16px 18px;display:flex;align-items:center;gap:14px}
+.banner.yes{background:linear-gradient(150deg,rgba(22,227,127,.16),rgba(22,227,127,.05));border:1px solid rgba(22,227,127,.3)}
+.banner.no{background:linear-gradient(150deg,rgba(255,93,93,.14),rgba(255,93,93,.04));border:1px solid rgba(255,93,93,.28)}
+.banner .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:24px;flex:0 0 auto}
+.banner.yes .ic{background:rgba(22,227,127,.2)} .banner.no .ic{background:rgba(255,93,93,.18)}
+.banner .bt{font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:.4px}
+.banner .bm{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* progress */
+.meter{height:8px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
+.meter i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--green),var(--gold))}
+
+/* bottom nav */
+.nav{position:absolute;left:0;right:0;bottom:0;display:flex;background:rgba(10,14,20,.92);
+  backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:30}
+.nav button{flex:1 1 0;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--dim);font-size:10px;font-weight:600;padding:4px 2px;border-radius:12px}
+.nav button .i{font-size:19px;line-height:1}
+.nav button.on{color:var(--green)}
+
+/* login */
+.login{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;padding:30px 24px;max-width:var(--maxw);margin:0 auto;width:100%}
+.login .biglogo{width:88px;height:88px;border-radius:24px;margin:0 auto 20px;display:grid;place-items:center;
+  background:conic-gradient(from 210deg,var(--green),var(--gold),var(--green));box-shadow:0 12px 40px -12px rgba(22,227,127,.7),0 0 0 1px rgba(255,255,255,.12)}
+.login .biglogo b{font-family:var(--disp);font-weight:700;font-size:40px;color:#05130c}
+.login h1{font-family:var(--disp);font-weight:700;font-size:30px;text-align:center;letter-spacing:1px}
+.login .sub{text-align:center;color:var(--muted);font-size:13px;margin-top:4px;letter-spacing:.5px}
+.field{margin-top:14px}
+.field label{display:block;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;padding:13px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--line2);color:var(--ink);font-size:15px;font-family:var(--sans)}
+.field input:focus{outline:none;border-color:var(--green)}
+.invite{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:16px;display:flex;gap:10px;align-items:center;text-align:left}
+.invite:active{transform:scale(.99)}
+.muted{color:var(--muted)} .small{font-size:11.5px} .center{text-align:center}
+.b-green{color:var(--green)} .b-gold{color:var(--gold)} .b-red{color:var(--red)}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#05130c;color:var(--green);
+  border:1px solid var(--green);border-radius:999px;padding:10px 18px;font-size:13px;font-weight:700;z-index:99;
+  box-shadow:0 10px 30px -8px rgba(0,0,0,.6);animation:pop .2s both;white-space:nowrap;max-width:90vw}
+
+/* task */
+.task{display:flex;gap:11px;padding:11px 4px;border-bottom:1px solid var(--line);align-items:flex-start}
+.task:last-child{border-bottom:none}
+.chk{width:22px;height:22px;border-radius:7px;border:2px solid var(--line2);flex:0 0 auto;margin-top:1px;display:grid;place-items:center;font-size:13px;color:#04160d}
+.chk.done{background:var(--green);border-color:var(--green)}
+.task .tt{font-weight:600;font-size:13.5px}
+.task.done .tt{text-decoration:line-through;color:var(--muted)}
+.task .mm{font-size:11px;color:var(--muted);margin-top:2px}
+.segbar{display:flex;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px;margin:2px 0 14px}
+.segbar button{flex:1;font-size:12px;font-weight:700;padding:8px;border-radius:9px;color:var(--muted)}
+.segbar button.on{background:var(--card3);color:var(--ink)}
+.divchip{display:inline-flex;align-items:center;font-family:var(--disp);font-weight:700;font-size:11px;letter-spacing:.5px;
+  padding:2px 8px;border-radius:7px;background:rgba(255,255,255,.06);color:var(--muted)}
+.avirow{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.miniav{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#05130c;background:linear-gradient(150deg,var(--green),var(--green-deep))}
+.miniav.out{background:#33404e;color:var(--muted)} .miniav.q{background:#2a3644;color:var(--dim)}
+hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
+.note{background:rgba(61,165,255,.08);border:1px solid rgba(61,165,255,.2);border-radius:12px;padding:11px 13px;font-size:12px;color:#bcd8f5;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="demostrip">
+  <div class="dt">PROTOTYPE · <b>seeded demo data</b> · tap a role to tour</div>
+  <div class="roleswitch" id="roleswitch">
+    <button data-role="director">Director</button>
+    <button data-role="coach">Coach</button>
+    <button data-role="player">Player</button>
+  </div>
+</div>
+<div class="app" id="app"></div>
+<script>
+/* ============================ SEED DATA ============================ */
+const FRI = "Fri 18 Sep"; // "this Friday" in the demo
+const VENUE = "Southwest Sports Centre";
+const SEED = {
+  club:{ name:"Sydney Southwest Sonics", venue:VENUE },
+  directors:[
+    {id:"nour", name:"Nour Kabbara", role:"CEO & Founder", email:"nour@sonics.club", invited:true, activated:false},
+    {id:"abdulla", name:"Abdulla Chamtiah", role:"Co-Director", email:"abdulla@sonics.club", invited:true, activated:false},
+  ],
+  roles:[
+    {who:"Nour Kabbara", area:"Vision · Sponsors · Partnerships · Public face"},
+    {who:"Abdulla Chamtiah", area:"Operations · Schedule · Venues · Registrations & Payments"},
+    {who:"Aiman", area:"Tech · App · Data · Comms systems"},
+  ],
+  coaches:[
+    {id:"c1", name:"Marcus Reed", team:"U12", wwcc:"Valid", exp:"2027"},
+    {id:"c2", name:"Dave Nguyen", team:"U14", wwcc:"Valid", exp:"2026"},
+    {id:"c3", name:"Sam Elias", team:"U16", wwcc:"Expiring", exp:"Nov 2026"},
+    {id:"c4", name:"Tariq Osman", team:"U18", wwcc:"Missing", exp:"—"},
+  ],
+  teams:[
+    {div:"U12", name:"Sonics U12", coach:"Marcus Reed", court:"Court 1", time:"5:00", type:"game", opp:"Bankstown Bruins"},
+    {div:"U14", name:"Sonics U14", coach:"Dave Nguyen", court:"Court 1", time:"6:00", type:"game", opp:"Liverpool Lakers"},
+    {div:"U16", name:"Sonics U16", coach:"Sam Elias", court:"Court 2", time:"7:00", type:"train", opp:null},
+    {div:"U18", name:"Sonics U18", coach:"Tariq Osman", court:"Court 2", time:"8:00", type:"game", opp:"Fairfield Force"},
+  ],
+  players:[
+    // U12
+    {id:"p1", name:"Zayd Hassan", div:"U14", jersey:7, guardian:"Mariam Hassan", reg:"registered", pay:"partial", owe:40, avail:"in", medical:true},
+    {id:"p2", name:"Omar Fares", div:"U12", jersey:4, guardian:"Layla Fares", reg:"registered", pay:"paid", owe:0, avail:"in"},
+    {id:"p3", name:"Eli Novak", div:"U12", jersey:11, guardian:"Petra Novak", reg:"registered", pay:"paid", owe:0, avail:"unset"},
+    {id:"p4", name:"Kai Mansour", div:"U12", jersey:9, guardian:"Sara Mansour", reg:"pending", pay:"unpaid", owe:120, avail:"unset"},
+    {id:"p5", name:"Leo Tran", div:"U12", jersey:3, guardian:"Anh Tran", reg:"registered", pay:"paid", owe:0, avail:"out"},
+    // U14
+    {id:"p6", name:"Yusuf Kaya", div:"U14", jersey:12, guardian:"Deniz Kaya", reg:"registered", pay:"unpaid", owe:120, avail:"in"},
+    {id:"p7", name:"Marco Bianchi", div:"U14", jersey:5, guardian:"Gina Bianchi", reg:"registered", pay:"paid", owe:0, avail:"in"},
+    {id:"p8", name:"Adam Rahal", div:"U14", jersey:8, guardian:"Nadia Rahal", reg:"pending", pay:"unpaid", owe:120, avail:"unset"},
+    {id:"p9", name:"Bilal Aziz", div:"U14", jersey:6, guardian:"Hana Aziz", reg:"registered", pay:"partial", owe:40, avail:"out"},
+    // U16
+    {id:"p10", name:"Jordan Lee", div:"U16", jersey:23, guardian:"—", reg:"registered", pay:"paid", owe:0, avail:"in"},
+    {id:"p11", name:"Sami Haddad", div:"U16", jersey:15, guardian:"—", reg:"registered", pay:"paid", owe:0, avail:"in"},
+    {id:"p12", name:"Ryan Cole", div:"U16", jersey:2, guardian:"—", reg:"lapsed", pay:"unpaid", owe:120, avail:"unset"},
+    {id:"p13", name:"Noah Khoury", div:"U16", jersey:14, guardian:"—", reg:"registered", pay:"paid", owe:0, avail:"in"},
+    // U18
+    {id:"p14", name:"Malik Turner", div:"U18", jersey:21, guardian:"—", reg:"registered", pay:"paid", owe:0, avail:"in"},
+    {id:"p15", name:"Deng Akol", div:"U18", jersey:10, guardian:"—", reg:"registered", pay:"partial", owe:60, avail:"in"},
+    {id:"p16", name:"Cody Walsh", div:"U18", jersey:0, guardian:"—", reg:"registered", pay:"paid", owe:0, avail:"out"},
+    {id:"p17", name:"Faisal Omar", div:"U18", jersey:33, guardian:"—", reg:"pending", pay:"unpaid", owe:120, avail:"unset"},
+  ],
+  tasks:[
+    {id:"t1", tt:"Chase 4 unpaid U14 registrations", owner:"Abdulla", due:"Due today", done:false},
+    {id:"t2", tt:"Confirm Court 2 booking for Friday", owner:"Abdulla", due:"Due Wed", done:false},
+    {id:"t3", tt:"Collect WWCC from Tariq (U18 coach)", owner:"Abdulla", due:"Due Fri", done:false},
+    {id:"t4", tt:"Sponsor meeting — local businesses", owner:"Nour", due:"Next week", done:false},
+    {id:"t5", tt:"Post Round 2 schedule to parents", owner:"Aiman", due:"", done:true},
+    {id:"t6", tt:"Set up EFT payment reminders", owner:"Aiman", due:"", done:true},
+  ],
+  feed:[],
+  loginPlayer:"p1", // the "logged in" parent/player
+};
+const FEE = 120;
+
+/* ============================ STATE ============================ */
+const LS="sonics_v1";
+let S = load();
+function load(){ try{const r=localStorage.getItem(LS); if(r) return JSON.parse(r);}catch(e){} return JSON.parse(JSON.stringify(SEED)); }
+function save(){ try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){} }
+function reset(){ S=JSON.parse(JSON.stringify(SEED)); save(); }
+
+let VIEW = { role:"director", tab:"home", authed:false, regFilter:"all", moneyFilter:"owing", schedWk:0 };
+
+/* ============================ HELPERS ============================ */
+const $=(s,el=document)=>el.querySelector(s);
+const app=$("#app");
+const initials=n=>n.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase();
+const avClass=i=>["","g2","g3","g4"][i%4];
+const money=n=>"$"+n.toLocaleString();
+function toast(msg){ const t=document.createElement("div"); t.className="toast"; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),1900); }
+function player(id){ return S.players.find(p=>p.id===id); }
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+
+// derived
+function stats(){
+  const P=S.players;
+  const registered=P.filter(p=>p.reg==="registered").length;
+  const notReg=P.length-registered;
+  const paid=P.filter(p=>p.pay==="paid").length;
+  const outstanding=sum(P,p=>p.owe);
+  const collected=sum(P,p=>FEE-p.owe>0?FEE-p.owe:0);
+  const playing=P.filter(p=>p.avail==="in").length;
+  const noResp=P.filter(p=>p.avail==="unset").length;
+  return {total:P.length,registered,notReg,paid,outstanding,collected,playing,noResp};
+}
+function payTag(p){
+  if(p.pay==="paid") return `<span class="tag ok"><span class="dot ok"></span>Paid</span>`;
+  if(p.pay==="partial") return `<span class="tag warn"><span class="dot warn"></span>${money(p.owe)} owing</span>`;
+  return `<span class="tag bad"><span class="dot bad"></span>Unpaid</span>`;
+}
+function regTag(p){
+  if(p.reg==="registered") return `<span class="tag ok">Registered</span>`;
+  if(p.reg==="pending") return `<span class="tag warn">Pending</span>`;
+  return `<span class="tag bad">Lapsed</span>`;
+}
+function availTag(a){
+  if(a==="in") return `<span class="tag ok">Playing</span>`;
+  if(a==="out") return `<span class="tag bad">Out</span>`;
+  return `<span class="tag mut">No reply</span>`;
+}
+
+/* ============================ RENDER ROUTER ============================ */
+function render(){
+  document.querySelectorAll("#roleswitch button").forEach(b=>b.classList.toggle("on",b.dataset.role===VIEW.role));
+  if(!VIEW.authed && VIEW.role==="director"){ app.innerHTML=loginView(); return; }
+  let body="";
+  if(VIEW.role==="director") body=directorView();
+  else if(VIEW.role==="coach") body=coachView();
+  else body=playerView();
+  app.innerHTML = topbar()+`<div class="scroll">${body}</div>`+bottomNav();
+}
+
+/* ---------- shared chrome ---------- */
+function topbar(){
+  let nm="Nour Kabbara", rl="Director";
+  if(VIEW.role==="coach"){nm="Marcus Reed";rl="Coach · U12";}
+  if(VIEW.role==="player"){const p=player(S.loginPlayer);nm=p.guardian;rl="Parent · "+p.name;}
+  return `<div class="topbar">
+    <div class="logo"><b>S</b></div>
+    <div class="brandtxt"><div class="n">SONICS</div><div class="s">Sydney Southwest</div></div>
+    <div class="who"><div class="nm">${nm}</div><div class="rl">${rl}</div></div>
+  </div>`;
+}
+function bottomNav(){
+  const items = VIEW.role==="director"
+    ? [["home","🏠","Home"],["money","💳","Money"],["reg","📋","Registrations"],["sched","📅","Schedule"],["team","👥","Club"]]
+    : VIEW.role==="coach"
+    ? [["home","🏠","Team"],["avail","✅","Availability"],["sched","📅","Schedule"]]
+    : [["home","🏠","Home"],["sched","📅","Schedule"],["team","👥","My Team"],["pay","💳","Fees"]];
+  return `<div class="nav">${items.map(([k,i,l])=>
+    `<button data-tab="${k}" class="${VIEW.tab===k?'on':''}"><span class="i">${i}</span>${l}</button>`).join("")}</div>`;
+}
+
+/* ============================ LOGIN ============================ */
+function loginView(){
+  return `<div class="login">
+    <div class="biglogo"><b>S</b></div>
+    <h1>SONICS</h1>
+    <div class="sub">SYDNEY SOUTHWEST · DIRECTOR ACCESS</div>
+    <div class="field"><label>Email</label><input id="li-email" value="nour@sonics.club" autocomplete="off"></div>
+    <div class="field"><label>Password</label><input id="li-pass" type="password" placeholder="••••••••"></div>
+    <div class="btnrow"><button class="btn" data-act="login">Sign in</button></div>
+    <div class="h" style="margin-top:22px">First time here?</div>
+    <div class="invite" data-act="invite" data-who="nour">
+      <div class="av">${initials("Nour Kabbara")}</div>
+      <div class="rmain"><div class="t">Nour Kabbara</div><div class="m">CEO & Founder · invite pending → set password</div></div>
+      <span class="tag info">Activate</span>
+    </div>
+    <div class="invite" data-act="invite" data-who="abdulla">
+      <div class="av g3">${initials("Abdulla Chamtiah")}</div>
+      <div class="rmain"><div class="t">Abdulla Chamtiah</div><div class="m">Co-Director · invite pending → set password</div></div>
+      <span class="tag info">Activate</span>
+    </div>
+    <div class="note">Both directors are pre-invited. First sign-in sets their own password and drops them straight onto the full dashboard — nothing hidden.</div>
+    <div class="center small muted" style="margin-top:16px">Prototype · demo only · no real accounts created</div>
+  </div>`;
+}
+
+/* ============================ DIRECTOR ============================ */
+function directorView(){
+  if(VIEW.tab==="money") return dMoney();
+  if(VIEW.tab==="reg") return dReg();
+  if(VIEW.tab==="sched") return schedule(true);
+  if(VIEW.tab==="team") return dClub();
+  return dHome();
+}
+function dHome(){
+  const s=stats();
+  const openTasks=S.tasks.filter(t=>!t.done).length;
+  return `
+  <div class="hero">
+    <div style="font-family:var(--disp);font-size:12px;letter-spacing:2px;color:var(--green);font-weight:700">DIRECTOR CONTROL CENTRE</div>
+    <div style="font-family:var(--disp);font-size:26px;font-weight:700;margin-top:4px;letter-spacing:.5px">Friday Juniors · ${FRI}</div>
+    <div class="small muted" style="margin-top:2px">${VENUE} · ${S.teams.length} teams · ${s.total} players</div>
+  </div>
+  <div class="kpis" style="margin-top:12px">
+    <div class="kpi green"><div class="v">${s.registered}<span style="font-size:15px;color:var(--muted)">/${s.total}</span></div><div class="l">Registered</div><div class="sub b-red">${s.notReg} need action</div></div>
+    <div class="kpi gold"><div class="v">${s.playing}</div><div class="l">Playing this Friday</div><div class="sub muted">${s.noResp} no reply</div></div>
+    <div class="kpi red"><div class="v">${money(s.outstanding)}</div><div class="l">Fees outstanding</div><div class="sub b-gold">${money(s.collected)} collected</div></div>
+    <div class="kpi blue"><div class="v">${openTasks}</div><div class="l">Open tasks</div><div class="sub muted">who does what</div></div>
+  </div>
+
+  <div class="h">Needs your attention</div>
+  <div class="card">
+    ${attnRow("💳", `${S.players.filter(p=>p.pay!=="paid").length} players owe fees`, money(s.outstanding)+" outstanding", "Money", "money")}
+    ${attnRow("📋", `${s.notReg} incomplete registrations`, "Pending / lapsed sign-ups", "Registrations", "reg")}
+    ${attnRow("⚠️", `1 coach missing WWCC`, "Tariq Osman · U18", "Club", "team")}
+    ${attnRow("🔔", `${s.noResp} haven't confirmed Friday`, "Availability unknown", "Schedule", "sched")}
+  </div>
+
+  <div class="h">Who does what <span class="pill tag mut">the operating manual</span></div>
+  <div class="card">
+    ${S.roles.map((r,i)=>`<div class="row"><div class="av ${avClass(i)}">${initials(r.who)}</div>
+      <div class="rmain"><div class="t">${r.who}</div><div class="m">${r.area}</div></div></div>`).join("")}
+  </div>
+
+  <div class="h">Shared task board <span class="pill small muted">${openTasks} open</span></div>
+  <div class="card">
+    ${S.tasks.map(taskRow).join("")}
+  </div>
+  <div class="note">This is the fix for "who does what" — every follow-up has a named owner and a due date. Tap a task to tick it off.</div>
+  ${resetBtn()}`;
+}
+function attnRow(ic,t,m,cta,tab){
+  return `<div class="row"><div class="av g4">${ic}</div>
+    <div class="rmain"><div class="t">${t}</div><div class="m">${m}</div></div>
+    <button class="btn gh sm" data-tab="${tab}">${cta} ›</button></div>`;
+}
+function taskRow(t){
+  return `<div class="task ${t.done?'done':''}" data-act="task" data-id="${t.id}">
+    <div class="chk ${t.done?'done':''}">${t.done?'✓':''}</div>
+    <div class="rmain"><div class="tt">${t.tt}</div>
+      <div class="mm">${t.owner?`Owner: <b style="color:var(--ink)">${t.owner}</b>`:""}${t.due?` · ${t.due}`:""}</div></div>
+  </div>`;
+}
+function dMoney(){
+  const s=stats();
+  const list=S.players.slice().sort((a,b)=>b.owe-a.owe);
+  const shown = VIEW.moneyFilter==="owing" ? list.filter(p=>p.owe>0) : list;
+  return `
+  <div class="h">Money</div>
+  <div class="kpis">
+    <div class="kpi gold"><div class="v">${money(s.collected)}</div><div class="l">Collected</div></div>
+    <div class="kpi red"><div class="v">${money(s.outstanding)}</div><div class="l">Outstanding</div></div>
+  </div>
+  <div class="card" style="margin-top:10px">
+    <div class="small muted">Season fees collected</div>
+    <div class="meter"><i style="width:${Math.round(s.collected/(s.collected+s.outstanding)*100)}%"></i></div>
+    <div class="small muted" style="margin-top:6px">${money(s.collected)} of ${money(s.collected+s.outstanding)} · ${S.players.filter(p=>p.pay==="paid").length}/${s.total} fully paid</div>
+  </div>
+  <div class="segbar" style="margin-top:14px">
+    <button data-mf="owing" class="${VIEW.moneyFilter==="owing"?'on':''}">Owing (${S.players.filter(p=>p.owe>0).length})</button>
+    <button data-mf="all" class="${VIEW.moneyFilter==="all"?'on':''}">Everyone (${s.total})</button>
+  </div>
+  <div class="card">
+    ${shown.map((p,i)=>`<div class="row">
+      <div class="av ${avClass(i)}">${initials(p.name)}</div>
+      <div class="rmain"><div class="t">${p.name}</div><div class="m"><span class="divchip">${p.div}</span> #${p.jersey} · ${p.guardian!=="—"?p.guardian:"self"}</div></div>
+      <div class="rside">${payTag(p)}
+        ${p.owe>0?`<button class="btn gold sm" data-act="remind" data-id="${p.id}">Follow up</button>`:`<span class="small muted">✓ settled</span>`}
+      </div></div>`).join("") || `<div class="center muted small" style="padding:16px">🎉 Everyone's paid up.</div>`}
+  </div>
+  ${S.feed.length?`<div class="h">Follow-up log</div><div class="card">${S.feed.slice(0,6).map(f=>`<div class="row"><div class="av g2">✓</div><div class="rmain"><div class="t">${f.t}</div><div class="m">${f.m}</div></div></div>`).join("")}</div>`:""}
+  ${resetBtn()}`;
+}
+function dReg(){
+  const s=stats();
+  const groups=[["all","All"],["registered","Registered"],["pending","Pending"],["lapsed","Lapsed"]];
+  const shown = VIEW.regFilter==="all"?S.players:S.players.filter(p=>p.reg===VIEW.regFilter);
+  return `
+  <div class="h">Registrations</div>
+  <div class="kpis">
+    <div class="kpi green"><div class="v">${s.registered}</div><div class="l">Registered</div></div>
+    <div class="kpi red"><div class="v">${s.notReg}</div><div class="l">Pending / lapsed</div></div>
+  </div>
+  <div class="segbar" style="margin-top:14px">
+    ${groups.map(([k,l])=>`<button data-rf="${k}" class="${VIEW.regFilter===k?'on':''}">${l}</button>`).join("")}
+  </div>
+  <div class="card">
+    ${shown.map((p,i)=>`<div class="row">
+      <div class="av ${avClass(i)}">${initials(p.name)}</div>
+      <div class="rmain"><div class="t">${p.name} ${p.medical?'<span class="tag warn" style="margin-left:4px">medical</span>':''}</div>
+        <div class="m"><span class="divchip">${p.div}</span> #${p.jersey} · guardian ${p.guardian}</div></div>
+      <div class="rside">${regTag(p)}
+        ${p.reg!=="registered"?`<button class="btn sm" data-act="approve" data-id="${p.id}">Complete</button>`:`<span class="small muted">✓</span>`}
+      </div></div>`).join("")}
+  </div>
+  <div class="note">New sign-ups land here with consent + medical flags. Coaches' Working With Children Checks are tracked under Club.</div>
+  ${resetBtn()}`;
+}
+function dClub(){
+  return `
+  <div class="h">Roles & responsibilities</div>
+  <div class="card">${S.roles.map((r,i)=>`<div class="row"><div class="av ${avClass(i)}">${initials(r.who)}</div>
+    <div class="rmain"><div class="t">${r.who}</div><div class="m">${r.area}</div></div></div>`).join("")}</div>
+
+  <div class="h">Coaches & clearances</div>
+  <div class="card">${S.coaches.map((c,i)=>{
+    const t = c.wwcc==="Valid"?`<span class="tag ok">WWCC valid</span>`:c.wwcc==="Expiring"?`<span class="tag warn">Expiring ${c.exp}</span>`:`<span class="tag bad">WWCC missing</span>`;
+    return `<div class="row"><div class="av ${avClass(i)}">${initials(c.name)}</div>
+      <div class="rmain"><div class="t">${c.name}</div><div class="m">Coach · ${c.team}</div></div>
+      <div class="rside">${t}</div></div>`;}).join("")}</div>
+
+  <div class="h">Teams</div>
+  <div class="card">${S.teams.map((t,i)=>{
+    const n=S.players.filter(p=>p.div===t.div).length;
+    return `<div class="row"><div class="av ${avClass(i)}">${t.div}</div>
+      <div class="rmain"><div class="t">${t.name}</div><div class="m">Coach ${t.coach} · ${n} players · ${t.court}</div></div>
+      <div class="rside"><span class="tag mut">${t.time}pm</span></div></div>`;}).join("")}</div>
+  ${resetBtn()}`;
+}
+
+/* ============================ COACH ============================ */
+function coachView(){
+  const team="U12";
+  const roster=S.players.filter(p=>p.div===team);
+  if(VIEW.tab==="sched") return schedule(false,team);
+  if(VIEW.tab==="avail"){
+    return `<div class="h">Availability · ${FRI}</div>
+    <div class="kpis">
+      <div class="kpi green"><div class="v">${roster.filter(p=>p.avail==="in").length}</div><div class="l">In</div></div>
+      <div class="kpi red"><div class="v">${roster.filter(p=>p.avail==="out").length}</div><div class="l">Out</div></div>
+    </div>
+    <div class="card" style="margin-top:10px">${roster.map((p,i)=>`<div class="row">
+      <div class="av ${avClass(i)}">#${p.jersey}</div>
+      <div class="rmain"><div class="t">${p.name}</div><div class="m">${p.guardian}</div></div>
+      <div class="rside">${availTag(p.avail)}</div></div>`).join("")}</div>
+    <div class="card"><button class="btn" data-act="nudge">Nudge ${roster.filter(p=>p.avail==="unset").length} who haven't replied</button></div>
+    ${resetBtn()}`;
+  }
+  // home = my team
+  const t=S.teams.find(x=>x.div===team);
+  return `
+  <div class="hero">
+    <div style="font-family:var(--disp);font-size:12px;letter-spacing:2px;color:var(--green);font-weight:700">MY TEAM</div>
+    <div style="font-family:var(--disp);font-size:26px;font-weight:700;margin-top:4px">${t.name}</div>
+    <div class="small muted" style="margin-top:2px">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div>
+  </div>
+  <div class="h">Roster <span class="pill small muted">${roster.length} players</span></div>
+  <div class="card">${roster.map((p,i)=>`<div class="row">
+    <div class="av ${avClass(i)}">#${p.jersey}</div>
+    <div class="rmain"><div class="t">${p.name}</div><div class="m">${p.guardian}</div></div>
+    <div class="rside">${availTag(p.avail)}</div></div>`).join("")}</div>
+  <div class="card"><button class="btn gh" data-act="msg">✉️ Message the team</button></div>
+  ${resetBtn()}`;
+}
+
+/* ============================ PLAYER / PARENT ============================ */
+function playerView(){
+  const p=player(S.loginPlayer);
+  const t=S.teams.find(x=>x.div===p.div);
+  if(VIEW.tab==="sched") return schedule(false,p.div);
+  if(VIEW.tab==="team"){
+    const mates=S.players.filter(x=>x.div===p.div);
+    return `<div class="h">${t.name} <span class="pill small muted">Coach ${t.coach}</span></div>
+    <div class="card">${mates.map((m,i)=>`<div class="row">
+      <div class="av ${avClass(i)}">#${m.jersey}</div>
+      <div class="rmain"><div class="t">${m.name}${m.id===p.id?' <span class="tag ok" style="margin-left:4px">You</span>':''}</div><div class="m">${availTag(m.avail).replace(/<[^>]+>/g,'').trim()==="Playing"?"In for Friday":"—"}</div></div>
+      <div class="rside">${availTag(m.avail)}</div></div>`).join("")}</div>
+    ${resetBtn()}`;
+  }
+  if(VIEW.tab==="pay"){
+    return `<div class="h">Fees</div>
+    <div class="banner ${p.owe>0?'no':'yes'}"><div class="ic">${p.owe>0?'💳':'✅'}</div>
+      <div><div class="bt">${p.owe>0?money(p.owe)+" owing":"All paid"}</div>
+      <div class="bm">Season fee ${money(FEE)} · ${p.name}</div></div></div>
+    ${p.owe>0?`<div class="card"><div class="small muted">Season progress</div><div class="meter"><i style="width:${Math.round((FEE-p.owe)/FEE*100)}%"></i></div>
+      <div class="small muted" style="margin-top:6px">${money(FEE-p.owe)} of ${money(FEE)} paid</div></div>
+      <div class="card"><button class="btn gold" data-act="pay" data-id="${p.id}">Pay ${money(p.owe)} now</button></div>`:``}
+    ${resetBtn()}`;
+  }
+  // HOME
+  const playing = p.avail==="in";
+  const reg = p.reg==="registered";
+  return `
+  <div class="hero">
+    <div class="small muted" style="letter-spacing:1px">GOOD AFTERNOON</div>
+    <div style="font-family:var(--disp);font-size:26px;font-weight:700;margin-top:2px">${p.name.split(" ")[0]}'s week</div>
+    <div class="avirow"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name}</span></div>
+  </div>
+
+  <div class="h">Am I registered?</div>
+  <div class="banner ${reg?'yes':'no'}"><div class="ic">${reg?'✅':'⚠️'}</div>
+    <div><div class="bt">${reg?"You're registered":"Registration incomplete"}</div>
+    <div class="bm">${reg?"Season 2026 · good to go":"Finish sign-up to lock your spot"}</div></div>
+    ${!reg?`<button class="btn sm" style="margin-left:auto" data-act="approve" data-id="${p.id}">Finish</button>`:""}
+  </div>
+
+  <div class="h">Am I playing this Friday?</div>
+  <div class="banner ${playing?'yes':'no'}"><div class="ic">${playing?'🏀':'❔'}</div>
+    <div><div class="bt">${playing?"Yes — you're in":"Not confirmed yet"}</div>
+    <div class="bm">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div></div>
+  </div>
+  <div class="card">
+    <div class="small muted" style="margin-bottom:8px">Confirm your availability for ${FRI}</div>
+    <div class="btnrow" style="margin-top:0">
+      <button class="btn ${playing?'':'gh'}" data-act="avail" data-id="${p.id}" data-v="in">✅ I'm in</button>
+      <button class="btn ${p.avail==='out'?'red':'gh'}" data-act="avail" data-id="${p.id}" data-v="out">✕ Can't make it</button>
+    </div>
+  </div>
+
+  ${p.owe>0?`<div class="h">Heads up</div>
+  <div class="card"><div class="row" style="border:none;padding:4px">
+    <div class="av g3">💳</div><div class="rmain"><div class="t">${money(p.owe)} in fees owing</div><div class="m">Season fee ${money(FEE)}</div></div>
+    <button class="btn gold sm" data-tab="pay">Pay ›</button></div></div>`:""}
+
+  <div class="h">My team</div>
+  <div class="card"><div class="row" style="border:none;padding:4px">
+    <div class="av">${initials(t.coach)}</div>
+    <div class="rmain"><div class="t">${t.name}</div><div class="m">Coach ${t.coach} · ${S.players.filter(x=>x.div===p.div).length} players</div></div>
+    <button class="btn gh sm" data-tab="team">Roster ›</button></div></div>
+  ${resetBtn()}`;
+}
+
+/* ============================ SCHEDULE ============================ */
+function schedule(isDir, onlyDiv){
+  const wk = VIEW.schedWk;
+  const dates=[FRI,"Fri 25 Sep","Fri 2 Oct"];
+  let teams = S.teams.slice();
+  if(onlyDiv) teams=teams.filter(t=>t.div===onlyDiv);
+  return `
+  <div class="h">Schedule ${isDir?'<span class="pill small b-green">Friday grid</span>':''}</div>
+  <div class="segbar">${dates.map((d,i)=>`<button data-wk="${i}" class="${wk===i?'on':''}">${d.replace("Fri ","")}</button>`).join("")}</div>
+  <div class="card" style="background:transparent;border:none;padding:0">
+    <div class="small muted" style="margin:0 2px 10px">${dates[wk]} · ${VENUE}</div>
+    ${teams.map(t=>{
+      const inCount=S.players.filter(p=>p.div===t.div&&p.avail==="in").length;
+      const cls=t.type==="game"?"game":"train";
+      return `<div class="slot">
+        <div class="barleft ${cls}"></div>
+        <div class="time">${t.time}<span>PM</span></div>
+        <div class="info">
+          <div class="tt">${t.name} · ${t.type==="game"?"Game":"Training"}</div>
+          <div class="mm">${t.court} · ${t.type==="game"?"vs "+t.opp:"Skills & scrimmage"} · Coach ${t.coach}</div>
+          ${isDir?`<div class="mm b-green" style="margin-top:3px">${inCount} confirmed available</div>`:``}
+        </div>
+        <div class="rside">${t.type==="game"?'<span class="tag warn">Game</span>':'<span class="tag info">Train</span>'}</div>
+      </div>`;}).join("")}
+  </div>
+  ${isDir?`<div class="card"><button class="btn gh" data-act="edit">✏️ Edit Friday grid</button></div>`:``}
+  ${resetBtn()}`;
+}
+
+function resetBtn(){ return `<div style="margin-top:22px;text-align:center"><button class="btn gh sm" data-act="reset" style="width:auto">↺ Reset demo data</button></div>`; }
+
+/* ============================ EVENTS ============================ */
+document.getElementById("roleswitch").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-role]"); if(!b)return;
+  VIEW.role=b.dataset.role; VIEW.tab="home";
+  if(VIEW.role==="director"&&!VIEW.authed){/* show login */}
+  render();
+});
+app.addEventListener("click",e=>{
+  const tabBtn=e.target.closest("[data-tab]");
+  if(tabBtn){ VIEW.tab=tabBtn.dataset.tab; render(); return; }
+  const a=e.target.closest("[data-act]"); if(!a) return;
+  const act=a.dataset.act, id=a.dataset.id;
+  if(act==="login"||act==="invite"){ VIEW.authed=true; VIEW.role="director"; VIEW.tab="home";
+    if(act==="invite"){ const d=S.directors.find(x=>x.id===a.dataset.who); if(d){d.activated=true;save();} toast("Welcome — password set ✓"); }
+    render(); return; }
+  if(act==="task"){ const t=S.tasks.find(x=>x.id===id); t.done=!t.done; save(); render(); return; }
+  if(act==="remind"){ const p=player(id); S.feed.unshift({t:"Reminder sent to "+p.name,m:money(p.owe)+" · "+new Date().toLocaleDateString()}); save(); toast("Payment reminder sent ✓"); render(); return; }
+  if(act==="approve"){ const p=player(id); p.reg="registered"; save(); toast(p.name+" registered ✓"); render(); return; }
+  if(act==="pay"){ const p=player(id); p.owe=0; p.pay="paid"; save(); toast("Payment complete ✓"); render(); return; }
+  if(act==="avail"){ const p=player(id); p.avail=a.dataset.v; save(); toast(a.dataset.v==="in"?"You're in for Friday 🏀":"Marked unavailable"); render(); return; }
+  if(act==="nudge"){ toast("Nudge sent to players who haven't replied ✓"); return; }
+  if(act==="msg"){ toast("Team message sent ✓"); return; }
+  if(act==="edit"){ toast("Schedule editor — Phase 2"); return; }
+  if(act==="reset"){ reset(); VIEW.tab="home"; toast("Demo data reset ↺"); render(); return; }
+});
+
+/* segmented filters */
+app.addEventListener("click",e=>{
+  const mf=e.target.closest("[data-mf]"); if(mf){VIEW.moneyFilter=mf.dataset.mf;render();return;}
+  const rf=e.target.closest("[data-rf]"); if(rf){VIEW.regFilter=rf.dataset.rf;render();return;}
+  const wk=e.target.closest("[data-wk]"); if(wk){VIEW.schedWk=+wk.dataset.wk;render();return;}
+});
+
+render();
+</script>
+</body>
+</html>
