@@ -1,0 +1,5 @@
+# Netlify config for deploying the Southwest Sonics app from this monorepo.
+# The app is a static single-page site; publish only its folder as the site root.
+[build]
+  publish = "southwest-sonics-app"
+  command = ""
