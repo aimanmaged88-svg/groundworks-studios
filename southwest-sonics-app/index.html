@@ -8,7 +8,7 @@
 <meta name="description" content="Member portal + admin control centre for the Sydney Southwest Sonics basketball association. Prototype.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0A0E14; --bg2:#070A0F;
@@ -17,8 +17,9 @@
   --ink:#EEF3F9; --muted:#8B97A7; --dim:#5C6675;
   --green:#16E37F; --green-deep:#0BB866; --green-ink:#052a19;
   --gold:#FFC63D; --amber:#FFB020; --red:#FF5D5D; --blue:#3DA5FF;
-  --disp:'Rajdhani',system-ui,sans-serif;
-  --sans:'Inter Tight',system-ui,-apple-system,sans-serif;
+  --sky:#3FC5EC; --sky-deep:#1C9BC6; --grad:linear-gradient(120deg,#E7369B,#F5821F,#FCC21A);
+  --disp:'Anton','Arial Narrow',system-ui,sans-serif;
+  --sans:'Barlow',system-ui,-apple-system,sans-serif;
   --rad:16px; --rad2:20px;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -20px rgba(0,0,0,.7);
   --maxw:520px;
@@ -27,7 +28,7 @@
 html,body{height:100%}
 body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.45;
   overflow:hidden;display:flex;flex-direction:column;
-  background-image:radial-gradient(120% 60% at 50% -10%,rgba(22,227,127,.10),transparent 60%);}
+  background-image:radial-gradient(120% 60% at 50% -10%,rgba(63,197,236,.13),transparent 60%);}
 button{font-family:var(--sans);cursor:pointer;border:none;background:none;color:inherit}
 img{max-width:100%}
 ::-webkit-scrollbar{width:8px}
@@ -44,7 +45,7 @@ img{max-width:100%}
 .demostrip .dt b{color:#cfd8e2}
 .roleswitch{display:inline-flex;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;flex:0 0 auto}
 .roleswitch button{font-size:11px;font-weight:700;letter-spacing:.3px;padding:5px 9px;border-radius:999px;color:var(--muted)}
-.roleswitch button.on{background:var(--green);color:#04160d}
+.roleswitch button.on{background:var(--sky);color:#03202b}
 
 /* ---- app frame ---- */
 .app{flex:1 1 auto;display:flex;flex-direction:column;min-height:0;position:relative;max-width:var(--maxw);width:100%;margin:0 auto}
@@ -54,15 +55,15 @@ img{max-width:100%}
 /* ---- topbar ---- */
 .topbar{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:14px 16px 10px;
   border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(18,26,36,.6),transparent)}
-.logo{width:38px;height:38px;border-radius:11px;flex:0 0 auto;position:relative;
-  background:conic-gradient(from 210deg,var(--green),var(--gold),var(--green));
-  display:grid;place-items:center;box-shadow:0 0 0 1px rgba(255,255,255,.12),0 6px 18px -6px rgba(22,227,127,.6)}
-.logo b{font-family:var(--disp);font-weight:700;font-size:18px;color:#05130c;line-height:1}
+.logo{width:40px;height:40px;border-radius:50%;flex:0 0 auto;background:var(--grad);padding:2.5px;
+  display:block;box-shadow:0 4px 14px -4px rgba(0,0,0,.55)}
+.logo b{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#0b0b0e;
+  font-family:var(--disp);font-weight:700;font-size:17px;color:var(--sky);line-height:1}
 .brandtxt .n{font-family:var(--disp);font-weight:700;letter-spacing:.5px;font-size:16px;line-height:1}
 .brandtxt .s{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:600}
 .topbar .who{margin-left:auto;text-align:right}
 .topbar .who .nm{font-size:12.5px;font-weight:700}
-.topbar .who .rl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--green);font-weight:700}
+.topbar .who .rl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--sky);font-weight:700}
 
 /* ---- headings ---- */
 .h{font-family:var(--disp);font-weight:700;letter-spacing:.4px;font-size:13px;text-transform:uppercase;
@@ -90,7 +91,7 @@ img{max-width:100%}
 .row{display:flex;align-items:center;gap:11px;padding:11px 4px;border-bottom:1px solid var(--line)}
 .row:last-child{border-bottom:none}
 .av{width:38px;height:38px;border-radius:11px;flex:0 0 auto;display:grid;place-items:center;font-family:var(--disp);
-  font-weight:700;font-size:15px;color:#05130c;background:linear-gradient(150deg,var(--green),var(--green-deep))}
+  font-weight:700;font-size:15px;color:#03202b;background:linear-gradient(150deg,var(--sky),var(--sky-deep))}
 .av.g2{background:linear-gradient(150deg,#5AA9FF,#2b6fd0)} .av.g3{background:linear-gradient(150deg,var(--gold),#e0a01f)}
 .av.g4{background:linear-gradient(150deg,#C77DFF,#8b47d6)}
 .rmain{flex:1 1 auto;min-width:0}
@@ -111,7 +112,7 @@ img{max-width:100%}
 
 /* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-weight:700;font-size:13px;
-  padding:11px 15px;border-radius:12px;background:var(--green);color:#04160d;transition:transform .1s,filter .15s;width:100%}
+  padding:11px 15px;border-radius:12px;background:var(--sky);color:#03202b;transition:transform .1s,filter .15s;width:100%}
 .btn:active{transform:scale(.98)}
 .btn.gh{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line2)}
 .btn.sm{width:auto;padding:7px 12px;font-size:12px;border-radius:10px}
@@ -127,7 +128,7 @@ img{max-width:100%}
 .slot .info{flex:1 1 auto;min-width:0}
 .slot .info .tt{font-weight:700;font-size:14px}
 .slot .info .mm{font-size:11.5px;color:var(--muted);margin-top:2px}
-.barleft{width:4px;align-self:stretch;border-radius:4px;background:var(--green);flex:0 0 auto}
+.barleft{width:4px;align-self:stretch;border-radius:4px;background:var(--sky);flex:0 0 auto}
 .barleft.game{background:var(--gold)} .barleft.train{background:var(--blue)}
 
 /* bignum banner */
@@ -141,20 +142,21 @@ img{max-width:100%}
 
 /* progress */
 .meter{height:8px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
-.meter i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--green),var(--gold))}
+.meter i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--sky),var(--gold))}
 
 /* bottom nav */
 .nav{position:absolute;left:0;right:0;bottom:0;display:flex;background:rgba(10,14,20,.92);
   backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:30}
 .nav button{flex:1 1 0;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--dim);font-size:10px;font-weight:600;padding:4px 2px;border-radius:12px}
 .nav button .i{font-size:19px;line-height:1}
-.nav button.on{color:var(--green)}
+.nav button.on{color:var(--sky)}
 
 /* login */
 .login{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;padding:30px 24px;max-width:var(--maxw);margin:0 auto;width:100%}
-.login .biglogo{width:88px;height:88px;border-radius:24px;margin:0 auto 20px;display:grid;place-items:center;
-  background:conic-gradient(from 210deg,var(--green),var(--gold),var(--green));box-shadow:0 12px 40px -12px rgba(22,227,127,.7),0 0 0 1px rgba(255,255,255,.12)}
-.login .biglogo b{font-family:var(--disp);font-weight:700;font-size:40px;color:#05130c}
+.login .biglogo{width:96px;height:96px;border-radius:50%;margin:0 auto 20px;background:var(--grad);padding:5px;
+  box-shadow:0 14px 44px -12px rgba(63,197,236,.5)}
+.login .biglogo b{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#0b0b0e;
+  font-family:var(--disp);font-weight:700;font-size:38px;color:var(--sky)}
 .login h1{font-family:var(--disp);font-weight:700;font-size:30px;text-align:center;letter-spacing:1px}
 .login .sub{text-align:center;color:var(--muted);font-size:13px;margin-top:4px;letter-spacing:.5px}
 .field{margin-top:14px}
@@ -185,7 +187,7 @@ img{max-width:100%}
 .divchip{display:inline-flex;align-items:center;font-family:var(--disp);font-weight:700;font-size:11px;letter-spacing:.5px;
   padding:2px 8px;border-radius:7px;background:rgba(255,255,255,.06);color:var(--muted)}
 .avirow{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.miniav{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#05130c;background:linear-gradient(150deg,var(--green),var(--green-deep))}
+.miniav{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#03202b;background:linear-gradient(150deg,var(--sky),var(--sky-deep))}
 .miniav.out{background:#33404e;color:var(--muted)} .miniav.q{background:#2a3644;color:var(--dim)}
 hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
 .note{background:rgba(61,165,255,.08);border:1px solid rgba(61,165,255,.2);border-radius:12px;padding:11px 13px;font-size:12px;color:#bcd8f5;margin-top:12px}
@@ -204,7 +206,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
 <script>
 /* ============================ SEED DATA ============================ */
 const FRI = "Fri 18 Sep"; // "this Friday" in the demo
-const VENUE = "Southwest Sports Centre";
+const VENUE = "Bankstown Basketball Stadium";
 const SEED = {
   club:{ name:"Sydney Southwest Sonics", venue:VENUE },
   directors:[
@@ -329,7 +331,7 @@ function topbar(){
   if(VIEW.role==="player"){const p=player(S.loginPlayer);nm=p.guardian;rl="Parent · "+p.name;}
   return `<div class="topbar">
     <div class="logo"><b>S</b></div>
-    <div class="brandtxt"><div class="n">SONICS</div><div class="s">Sydney Southwest</div></div>
+    <div class="brandtxt"><div class="n">SONICS</div><div class="s">South West Sydney</div></div>
     <div class="who"><div class="nm">${nm}</div><div class="rl">${rl}</div></div>
   </div>`;
 }
@@ -348,7 +350,7 @@ function loginView(){
   return `<div class="login">
     <div class="biglogo"><b>S</b></div>
     <h1>SONICS</h1>
-    <div class="sub">SYDNEY SOUTHWEST · DIRECTOR ACCESS</div>
+    <div class="sub">SOUTH WEST SYDNEY · DIRECTOR ACCESS</div>
     <div class="field"><label>Email</label><input id="li-email" value="nour@sonics.club" autocomplete="off"></div>
     <div class="field"><label>Password</label><input id="li-pass" type="password" placeholder="••••••••"></div>
     <div class="btnrow"><button class="btn" data-act="login">Sign in</button></div>
@@ -381,7 +383,7 @@ function dHome(){
   const openTasks=S.tasks.filter(t=>!t.done).length;
   return `
   <div class="hero">
-    <div style="font-family:var(--disp);font-size:12px;letter-spacing:2px;color:var(--green);font-weight:700">DIRECTOR CONTROL CENTRE</div>
+    <div style="font-family:var(--disp);font-size:12px;letter-spacing:2px;color:var(--sky);font-weight:700">DIRECTOR CONTROL CENTRE</div>
     <div style="font-family:var(--disp);font-size:26px;font-weight:700;margin-top:4px;letter-spacing:.5px">Friday Juniors · ${FRI}</div>
     <div class="small muted" style="margin-top:2px">${VENUE} · ${S.teams.length} teams · ${s.total} players</div>
   </div>
@@ -524,7 +526,7 @@ function coachView(){
   const t=S.teams.find(x=>x.div===team);
   return `
   <div class="hero">
-    <div style="font-family:var(--disp);font-size:12px;letter-spacing:2px;color:var(--green);font-weight:700">MY TEAM</div>
+    <div style="font-family:var(--disp);font-size:12px;letter-spacing:2px;color:var(--sky);font-weight:700">MY TEAM</div>
     <div style="font-family:var(--disp);font-size:26px;font-weight:700;margin-top:4px">${t.name}</div>
     <div class="small muted" style="margin-top:2px">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div>
   </div>

@@ -38,6 +38,8 @@ This plan treats the club like a **well-oiled machine from day one**. The app is
 
 **v1 focus = the Friday Juniors program.** We build the machine around Fridays first, then extend the same system to U21 and UBL once it's proven.
 
+**Home venue:** Bankstown Basketball Stadium. The club also runs a **UBL team**, a **Japan Tour**, an **NZ Tour 2027**, **sponsorship packages**, and has a sister **Hong Kong Sonics** — all out of scope for v1 but good to keep in mind as the platform grows.
+
 ---
 
 ## 3. Who runs it — people & roles
@@ -128,6 +130,14 @@ Move from demo data to a live database so all three admins see the same numbers 
 - Ship as an **installable PWA** first (add-to-home-screen, like `tiny-champions-app`'s web manifest) — this is the "download the Sonics app" experience without app-store friction. Native App Store / Play wrappers later only if needed.
 - **Push/SMS/email** reminders for availability and payment follow-ups.
 - **Online payments** (Stripe) for registration fees, if we want to collect in-app rather than just track.
+
+### 6.0 Brand & identity (from @swsonics)
+The prototype is skinned to the club's real identity, taken from the **@swsonics** Instagram:
+- **Logo:** circular black badge with a **sunset gradient ring** (pink → orange → gold), a **sky-blue basketball**, a player dunking, "SOUTH WEST" arced over "SONICS", and "EST. 2024".
+- **Colours:** black + **sky/Carolina blue** + white, with the sunset gradient as the energy accent. Team kit is sky blue + navy.
+- **Handle / socials:** `@swsonics` — "South West Sonics Basketball", Bankstown Basketball Stadium.
+- **Note:** the logo reads *EST. 2024* — worth reconciling with the "started five years ago" story (rebrand year vs founding year) before we print it anywhere.
+- **Still needed from you:** the **high-resolution logo file** (PNG/SVG) so we embed the real mark instead of the CSS stand-in. The prototype currently uses a gradient-ring "S" placeholder.
 
 ### 6.1 Australia-specific must-dos
 - **Working With Children Check (WWCC)** tracking for every coach/volunteer — store number + expiry, flag when lapsing.
