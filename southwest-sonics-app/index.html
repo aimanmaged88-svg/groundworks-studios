@@ -465,6 +465,40 @@ body{font-size:15px;letter-spacing:0;
 .amb i{opacity:.2}
 .rollchip{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
 .audsel button{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+
+/* ==================== PARENT EXPERIENCE ==================== */
+.childcard{border:1px solid rgba(63,197,236,.24);
+  background:linear-gradient(135deg,rgba(63,197,236,.10),rgba(63,197,236,.02))}
+
+/* next game card */
+.nx{background:linear-gradient(160deg,#1b1b20,#121215);border:1px solid var(--line2)}
+.nxtop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.nxday{font-family:var(--disp);font-weight:400;font-size:21px;letter-spacing:.2px;text-transform:uppercase;line-height:1}
+.nxwhen{font-size:12.5px;font-weight:600;color:var(--muted);margin-top:6px}
+.nxvs{font-family:var(--disp);font-weight:400;font-size:17px;text-transform:uppercase;letter-spacing:.2px;
+  margin-top:14px;color:var(--sky)}
+.nxmeta{font-size:12.5px;color:var(--muted);margin-top:5px;font-weight:500}
+.nxnote{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 12px;border-radius:12px;
+  background:rgba(255,255,255,.04);font-size:12.5px;color:var(--muted);font-weight:500}
+.nxnote svg{width:15px;height:15px;color:var(--green);flex:0 0 auto}
+.cd{flex:0 0 auto;font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  padding:6px 11px;border-radius:980px;background:rgba(255,255,255,.08);color:var(--muted);white-space:nowrap}
+.cd.ok{background:rgba(22,227,127,.16);color:var(--green)}
+.cd.no{background:rgba(255,93,93,.15);color:var(--red)}
+
+/* progress ring */
+.ring{width:68px;height:68px;flex:0 0 auto}
+.ring .rbg{fill:none;stroke:rgba(255,255,255,.09);stroke-width:7}
+.ring .rfg{fill:none;stroke-width:7;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;
+  transition:stroke-dashoffset 1.2s var(--spring)}
+.ring .rtx{font-family:var(--disp);font-weight:400;font-size:19px;fill:#fff;letter-spacing:.2px}
+.sortedtop{display:flex;align-items:center;gap:15px;padding:4px 2px 2px}
+
+/* checklist */
+.ck{width:27px;height:27px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  border:2px solid var(--line2);color:transparent;transition:all .35s var(--spring)}
+.ck.on{background:var(--green);border-color:var(--green);color:#04160d}
+.ck svg{width:15px;height:15px}
 </style>
 </head>
 <body>
@@ -554,8 +588,11 @@ function migrate(){
     if(p.sess===undefined) p.sess=8;
     if(p.att===undefined) p.att=ATT[i%ATT.length];
     if(p.here===undefined) p.here=(p.avail==="in");
+    if(p.consent===undefined) p.consent = p.reg==="registered";
+    if(p.uniform===undefined) p.uniform = (i%4!==1);
     if(!p.phone) p.phone="04"+String(10+i).padStart(2,"0")+" "+String(100+i*37).slice(0,3)+" "+String(200+i*53).slice(0,3);
   });
+  S.coaches.forEach((c,i)=>{ if(!c.phone) c.phone="04"+String(20+i).padStart(2,"0")+" "+String(300+i*41).slice(0,3)+" "+String(400+i*29).slice(0,3); });
   if(!S.notices) S.notices=[
     {id:"n1",t:"Round 3 starts this Friday",b:"First tip-off 5:00pm at Bankstown. Be there 20 minutes early for warm-up.",aud:"Everyone",when:"2 days ago"},
     {id:"n2",t:"Season fees due end of month",b:"Fees need to be settled before finals. You can pay straight from the app under Fees.",aud:"Parents",when:"5 days ago"}
@@ -584,6 +621,9 @@ const I={
   plus:sv('<path d="M12 5.2v13.6M5.2 12h13.6"/>'),
   send:sv('<path d="M20.4 3.6 3.6 10.4l6.6 2.9 2.9 6.6 7.3-16.3z"/><path d="M10.2 13.3 20.4 3.6"/>'),
   reset:sv('<path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 3.6V9h-5.4"/>'),
+  phone:sv('<path d="M20.5 16.9v2.6a1.7 1.7 0 0 1-1.9 1.7 17 17 0 0 1-7.4-2.6 16.7 16.7 0 0 1-5.1-5.1A17 17 0 0 1 3.5 6a1.7 1.7 0 0 1 1.7-1.9h2.6a1.7 1.7 0 0 1 1.7 1.5c.1.8.3 1.6.6 2.4a1.7 1.7 0 0 1-.4 1.8l-1.1 1.1a13.6 13.6 0 0 0 5.1 5.1l1.1-1.1a1.7 1.7 0 0 1 1.8-.4c.8.3 1.6.5 2.4.6a1.7 1.7 0 0 1 1.5 1.8z"/>'),
+  map:sv('<path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>'),
+  shirt:sv('<path d="M8.4 3.6 12 6l3.6-2.4 4.4 2.2-2 4-2-.8V20H6V9l-2 .8-2-4z"/>'),
 };
 
 /* ============================ HELPERS ============================ */
@@ -652,6 +692,7 @@ function playerSheet(id){
   const t=S.teams.find(x=>x.div===p.div)||{};
   const rate=Math.round(p.att/Math.max(1,p.sess)*100);
   const admin=VIEW.role==="admin";
+  const own=VIEW.role==="parent" && p.id===S.loginPlayer;
   return `
   <div class="sh-head">
     <div class="av" style="width:52px;height:52px;border-radius:15px;font-size:19px">${initials(p.name)}</div>
@@ -674,12 +715,18 @@ function playerSheet(id){
       <div class="meter" style="margin-top:7px"><i style="width:${Math.round((FEE-p.owe)/FEE*100)}%"></i></div>
       <div class="small muted" style="margin-top:6px">${money(FEE-p.owe)} of ${money(FEE)}</div></div>
     <div class="sh-item"><div class="k">Guardian</div><div class="v">${p.guardian!=="—"?p.guardian:"Plays independently"}</div></div>
-    <div class="sh-item"><div class="k">Contact</div><div class="v">${admin||VIEW.role==="coach"?p.phone:"—"}</div></div>
+    <div class="sh-item"><div class="k">Contact</div><div class="v">${admin||own||VIEW.role==="coach"?p.phone:"—"}</div></div>
+    <div class="sh-item"><div class="k">Consent form</div><div class="v ${p.consent?'b-green':'b-red'}">${p.consent?"Signed":"Outstanding"}</div></div>
+    <div class="sh-item"><div class="k">Uniform</div><div class="v ${p.uniform?'b-green':'b-red'}">${p.uniform?"Collected":"Not collected"}</div></div>
     <div class="sh-item sh-full"><div class="k">This Friday</div>
       <div class="v">${t.time||""}pm · ${t.court||""} · ${t.type==="game"?"vs "+t.opp:"Training"}</div>
       <div class="small muted" style="margin-top:5px">Coach ${t.coach||"—"}</div></div>
   </div>
 
+  ${own?`<div class="btnrow" style="margin-top:14px">
+    ${p.owe>0?`<button class="btn gold" data-tab="pay" data-act="closesheet">Pay ${money(p.owe)}</button>`:''}
+    <button class="btn gh" data-act="callcoach">${I.phone} Call coach</button>
+  </div>`:''}
   ${admin?`<div class="btnrow" style="margin-top:14px;flex-wrap:wrap">
     ${p.reg!=="registered"?`<button class="btn" data-act="approve" data-id="${p.id}">Complete registration</button>`:''}
     ${p.owe>0?`<button class="btn gold" data-act="remind" data-id="${p.id}">Send reminder</button>
@@ -705,6 +752,26 @@ function noticeComposer(){
     </div></div>
   <div class="btnrow"><button class="btn" data-act="postnotice">Post notice</button></div>
   <div class="btnrow" style="margin-top:8px"><button class="btn gh" data-act="closesheet">Cancel</button></div>`;
+}
+
+function coachOf(div){ return S.coaches.find(c=>c.team===div)||{}; }
+const OPPS=["Bankstown Bruins","Liverpool Lakers","Fairfield Force","Campbelltown Crushers","Canterbury Cats","Holroyd Hornets"];
+function fixturesFor(div){
+  const t=S.teams.find(x=>x.div===div)||{};
+  return [FRI,"Fri 25 Sep","Fri 2 Oct"].map((d,i)=>({
+    date:d, time:t.time, court:t.court,
+    type: i===0 ? t.type : (i%2 ? "train" : "game"),
+    opp:  i===0 ? t.opp  : OPPS[(i*2+div.length)%OPPS.length]
+  }));
+}
+/* animated progress ring */
+function ring(pct,color){
+  const r=27, c=+(2*Math.PI*r).toFixed(1), off=+(c*(1-pct/100)).toFixed(1);
+  return `<svg class="ring" viewBox="0 0 70 70">
+    <circle class="rbg" cx="35" cy="35" r="${r}"/>
+    <circle class="rfg" cx="35" cy="35" r="${r}" data-c="${c}" data-off="${off}"
+      style="stroke:${color};stroke-dasharray:${c};stroke-dashoffset:${c}"/>
+    <text class="rtx" x="35" y="43" text-anchor="middle">${pct}%</text></svg>`;
 }
 
 /* LOTG-style photo hero */
@@ -822,6 +889,10 @@ function afterPaint(s,soft){
   s.querySelectorAll(".meter i").forEach(el=>{
     const w=el.style.width; el.style.width="0%";
     requestAnimationFrame(()=>requestAnimationFrame(()=>{el.style.width=w;}));
+  });
+  s.querySelectorAll(".ring .rfg").forEach(el=>{
+    el.style.strokeDashoffset=el.dataset.c;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ el.style.strokeDashoffset=el.dataset.off; }));
   });
   if(!soft){ countUps(s); revealBelowFold(s); }
 }
@@ -1157,49 +1228,105 @@ function feesView(p){
 function parentView(){
   const p=player(S.loginPlayer);
   const first=p.name.split(" ")[0];
-  const t=S.teams.find(x=>x.div===p.div);
+  const t=S.teams.find(x=>x.div===p.div)||{};
+  const c=coachOf(p.div);
   if(VIEW.tab==="sched") return schedule(false,p.div);
-  if(VIEW.tab==="team") return rosterView(p,t);
-  if(VIEW.tab==="pay") return feesView(p);
-  const playing=p.avail==="in", reg=p.reg==="registered";
+  if(VIEW.tab==="team")  return rosterView(p,t);
+  if(VIEW.tab==="pay")   return feesView(p);
+
+  const playing=p.avail==="in", out=p.avail==="out";
+  const att=Math.round(p.att/Math.max(1,p.sess)*100);
+  const fx=fixturesFor(p.div);
+
+  const todo=[
+    {k:"Registration", ok:p.reg==="registered", bad:"Sign-up not finished",
+     btn:`data-act="approve" data-id="${p.id}"`, cta:"Finish"},
+    {k:"Season fees",  ok:p.owe===0,            bad:money(p.owe)+" still owing",
+     btn:`data-tab="pay"`, cta:"Pay now"},
+    {k:"Consent form", ok:!!p.consent,          bad:"Needs your signature",
+     btn:`data-act="consent" data-id="${p.id}"`, cta:"Sign"},
+    {k:"Uniform",      ok:!!p.uniform,          bad:"Not picked up yet",
+     btn:`data-act="uniform" data-id="${p.id}"`, cta:"Collected"}
+  ];
+  const done=todo.filter(x=>x.ok).length;
+  const pct=Math.round(done/todo.length*100);
+
   return `
   ${photoHero(first+"'s season.",t.name+".",`${p.div} · #${p.jersey} · Coach ${t.coach}`,"Parent")}
-  <div class="card" style="margin-top:10px"><div class="row" style="border:none;padding:2px">
-    <div class="rmain"><div class="t">1 child linked</div><div class="m">${p.name} · ${t.name}</div></div>
-    <button class="btn gh sm" data-act="addchild">Add another</button></div></div>
 
-  ${noticeBlock()}
-  <div class="h">Registration</div>
-  <div class="banner ${reg?'yes':'no'}"><div class="ic">${reg?I.check:I.alert}</div>
-    <div><div class="bt">${reg?first+" is registered":"Registration incomplete"}</div>
-    <div class="bm">${reg?"Season 2026 · good to go":"Finish sign-up to lock the spot"}</div></div>
-    ${!reg?`<button class="btn sm" style="margin-left:auto" data-act="approve" data-id="${p.id}">Finish</button>`:""}
-  </div>
-
-  <div class="h">Fees</div>
-  ${p.owe>0?`<div class="banner no"><div class="ic">${I.money}</div>
-    <div><div class="bt">${money(p.owe)} owing</div><div class="bm">Season fee ${money(FEE)} · ${first}</div></div>
-    <button class="btn gold sm" style="margin-left:auto" data-tab="pay">Pay</button></div>`:
-  `<div class="banner yes"><div class="ic">${I.check}</div><div><div class="bt">All paid</div><div class="bm">Season fee ${money(FEE)}</div></div></div>`}
-
-  <div class="h">This Friday</div>
-  <div class="banner ${playing?'yes':'no'}"><div class="ic">${playing?I.ball:I.q}</div>
-    <div><div class="bt">${playing?first+" is playing":"Not confirmed yet"}</div>
-    <div class="bm">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div></div>
-  </div>
-  <div class="card">
-    <div class="small muted" style="margin-bottom:8px">Confirm ${first}'s availability for ${FRI}</div>
-    <div class="btnrow" style="margin-top:0">
-      <button class="btn ${playing?'':'gh'}" data-act="avail" data-id="${p.id}" data-v="in">${I.check} Playing</button>
-      <button class="btn ${p.avail==='out'?'red':'gh'}" data-act="avail" data-id="${p.id}" data-v="out">${I.x} Can't make it</button>
+  <div class="card childcard" data-act="pl" data-id="${p.id}" style="margin-top:10px">
+    <div class="row" style="border:none;padding:2px">
+      <div class="av" style="width:46px;height:46px;font-size:17px">${initials(p.name)}</div>
+      <div class="rmain"><div class="t">${p.name}</div>
+        <div class="m">${t.name} · #${p.jersey} · tap for the full picture</div></div>
+      <span class="tag info">Profile</span>
     </div>
   </div>
 
-  <div class="h">Team</div>
-  <div class="card"><div class="row" style="border:none;padding:4px">
-    <div class="av">${initials(t.coach)}</div>
-    <div class="rmain"><div class="t">${t.name}</div><div class="m">Coach ${t.coach} · ${S.players.filter(x=>x.div===p.div).length} players</div></div>
-    <button class="btn gh sm" data-tab="team">Roster ›</button></div></div>
+  <div class="h">This Friday</div>
+  <div class="card nx">
+    <div class="nxtop">
+      <div><div class="nxday">${fx[0].date}</div>
+        <div class="nxwhen">${fx[0].time}pm · ${fx[0].court}</div></div>
+      <span class="cd ${playing?'ok':out?'no':''}">${playing?"Playing":out?"Not playing":"Not confirmed"}</span>
+    </div>
+    <div class="nxvs">${t.type==="game"?"vs "+t.opp:"Training session"}</div>
+    <div class="nxmeta">${VENUE}</div>
+    <div class="nxnote">${I.check} Arrive 20 minutes early for warm-up</div>
+    <div class="btnrow">
+      <button class="btn ${playing?'':'gh'}" data-act="avail" data-id="${p.id}" data-v="in">${I.check} ${first} is in</button>
+      <button class="btn ${out?'red':'gh'}" data-act="avail" data-id="${p.id}" data-v="out">${I.x} Can't make it</button>
+    </div>
+    <div class="btnrow" style="margin-top:9px">
+      <button class="btn gh sm" style="width:100%" data-act="directions">${I.map} Directions</button>
+      <button class="btn gh sm" style="width:100%" data-act="calendar">${I.sched} Add to calendar</button>
+    </div>
+  </div>
+
+  <div class="h">Everything sorted <span class="pill small muted">${done}/${todo.length}</span></div>
+  <div class="card">
+    <div class="sortedtop">
+      ${ring(pct, pct===100?"var(--green)":"var(--sky)")}
+      <div class="rmain">
+        <div class="t" style="font-size:16px">${pct===100?"You're all set":done+" of "+todo.length+" done"}</div>
+        <div class="m">${pct===100?"Nothing needed from you right now.":"Just a couple of things to finish off."}</div>
+      </div>
+    </div>
+    <hr class="sep">
+    ${todo.map(x=>`<div class="row">
+      <div class="ck ${x.ok?'on':''}">${x.ok?I.check:''}</div>
+      <div class="rmain"><div class="t">${x.k}</div><div class="m">${x.ok?"Done":x.bad}</div></div>
+      ${x.ok?'<span class="small muted">✓</span>':`<button class="btn gold sm" ${x.btn}>${x.cta}</button>`}
+    </div>`).join("")}
+  </div>
+
+  <div class="h">${first}'s season</div>
+  <div class="kpis">
+    <div class="kpi green"><div class="v">${att}<span style="font-size:15px;color:var(--muted)">%</span></div>
+      <div class="l">Attendance</div><div class="sub muted">${p.att} of ${p.sess} sessions</div></div>
+    <div class="kpi gold"><div class="v">${p.sess}</div>
+      <div class="l">Sessions</div><div class="sub muted">played this season</div></div>
+  </div>
+
+  <div class="h">Your coach</div>
+  <div class="card"><div class="row" style="border:none;padding:2px">
+    <div class="av g2">${initials(t.coach||"")}</div>
+    <div class="rmain"><div class="t">${t.coach}</div><div class="m">${t.name} · ${c.phone||""}</div></div>
+    <button class="btn gh sm" data-act="callcoach">${I.phone} Call</button>
+  </div></div>
+
+  ${noticeBlock()}
+
+  <div class="h">Coming up</div>
+  <div class="card" style="background:transparent;border:none;padding:0;box-shadow:none">
+    ${fx.slice(1).map(f=>`<div class="slot">
+      <div class="barleft ${f.type==="game"?"game":"train"}"></div>
+      <div class="time">${f.time}<span>PM</span></div>
+      <div class="info"><div class="tt">${f.type==="game"?"vs "+f.opp:"Training"}</div>
+        <div class="mm">${f.date} · ${f.court}</div></div>
+      <div class="rside">${f.type==="game"?'<span class="tag warn">Game</span>':'<span class="tag info">Train</span>'}</div>
+    </div>`).join("")}
+  </div>
   ${resetBtn()}`;
 }
 
@@ -1337,6 +1464,11 @@ function handleAct(a){
   if(act==="clear"){ toast("WWCC request sent to coach"); return; }
   if(act==="addcoach"){ toast("Invite a coach — Phase 2"); return; }
   if(act==="addchild"){ toast("Link another child — Phase 2"); return; }
+  if(act==="consent"){ const p=player(id); p.consent=true; save(); toast("Consent form signed"); render(SOFT); refreshSheet(); return; }
+  if(act==="uniform"){ const p=player(id); p.uniform=true; save(); toast("Uniform marked as collected"); render(SOFT); refreshSheet(); return; }
+  if(act==="directions"){ toast("Opening directions to "+VENUE); return; }
+  if(act==="calendar"){ toast("Added to your calendar"); return; }
+  if(act==="callcoach"){ toast("Calling your coach"); return; }
   if(act==="edit"){ toast("Schedule editor — Phase 2"); return; }
   if(act==="reset"){ reset(); VIEW.tab="home"; toast("Demo data reset"); render(); return; }
 }
