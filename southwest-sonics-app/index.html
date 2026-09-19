@@ -231,6 +231,49 @@ img{max-width:100%}
 hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
 .note{background:rgba(61,165,255,.08);border:1px solid rgba(61,165,255,.2);border-radius:12px;padding:11px 13px;font-size:12px;color:#bcd8f5;margin-top:12px}
 
+/* ================== SHEET / DETAIL ================== */
+.sheetwrap{position:fixed;inset:0;z-index:200;display:none}
+.sheetwrap.on{display:block}
+.sheetbg{position:absolute;inset:0;background:rgba(3,6,10,.64);-webkit-backdrop-filter:blur(7px);
+  backdrop-filter:blur(7px);opacity:0;transition:opacity .32s var(--ease)}
+.sheetwrap.in .sheetbg{opacity:1}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-width:var(--maxw);margin:0 auto;
+  background:linear-gradient(180deg,#151f2c,#0c131c);border-top:1px solid var(--line2);
+  border-radius:26px 26px 0 0;box-shadow:0 -24px 70px rgba(0,0,0,.65);
+  padding:10px 16px calc(26px + env(safe-area-inset-bottom));
+  transform:translateY(102%);transition:transform .46s var(--spring);max-height:90%;overflow-y:auto}
+.sheetwrap.in .sheet{transform:none}
+.grab{width:44px;height:4px;border-radius:99px;background:rgba(255,255,255,.2);margin:4px auto 16px}
+.sh-head{display:flex;align-items:center;gap:13px}
+.sh-name{font-family:var(--disp);font-weight:400;font-size:22px;text-transform:uppercase;line-height:1.04}
+.sh-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.sh-item{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:11px 12px}
+.sh-item .k{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.sh-item .v{font-size:13.5px;font-weight:700;margin-top:5px;letter-spacing:-.01em}
+.sh-full{grid-column:1/-1}
+input.fld,textarea.fld{width:100%;padding:12px 13px;border-radius:13px;background:var(--card2);
+  border:1px solid var(--line2);color:var(--ink);font-family:var(--sans);font-size:14px;resize:none}
+input.fld:focus,textarea.fld:focus{outline:none;border-color:var(--sky)}
+.audsel{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.audsel button{padding:7px 12px;border-radius:980px;border:1px solid var(--line2);font-size:10px;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:all .28s var(--spring)}
+.audsel button.on{background:var(--sky);color:#03202b;border-color:var(--sky)}
+/* roll call chips */
+.rollrow{display:flex;flex-wrap:wrap;gap:8px}
+.rollchip{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:980px;
+  border:1px solid var(--line2);background:rgba(255,255,255,.04);font-size:12px;font-weight:700;
+  color:var(--muted);transition:all .28s var(--spring)}
+.rollchip:active{transform:scale(.94)}
+.rollchip.on{background:rgba(22,227,127,.15);border-color:rgba(22,227,127,.42);color:var(--green)}
+.rollchip .n{min-width:20px;height:20px;padding:0 5px;border-radius:99px;display:grid;place-items:center;
+  font-size:10px;background:rgba(255,255,255,.1);font-family:var(--disp);font-weight:400}
+.rollchip.on .n{background:rgba(22,227,127,.28)}
+/* notice */
+.nt{border-left:3px solid var(--sky);padding:2px 0 2px 13px}
+.nt .ntt{font-weight:800;font-size:14px;letter-spacing:-.01em}
+.nt .ntb{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+.nt .ntm{font-size:9.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-top:7px}
+
 /* ================== FLUIDITY / MOTION LAYER ================== */
 :root{--spring:cubic-bezier(.22,1,.36,1);--ease:cubic-bezier(.4,0,.2,1)}
 
@@ -325,6 +368,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
 </div>
 <div class="amb"><i class="a"></i><i class="b"></i><i class="c"></i></div>
 <div class="app" id="app"></div>
+<div class="sheetwrap" id="sheet"><div class="sheetbg" data-act="closesheet"></div><div class="sheet"></div></div>
 <script>
 /* ============================ SEED DATA ============================ */
 const FRI = "Fri 18 Sep"; // "this Friday" in the demo
@@ -392,8 +436,22 @@ const FEE = 120;
 const LS="sonics_v1";
 let S = load();
 function load(){ try{const r=localStorage.getItem(LS); if(r) return JSON.parse(r);}catch(e){} return JSON.parse(JSON.stringify(SEED)); }
+/* fill in anything a saved copy predates */
+function migrate(){
+  const ATT=[8,7,6,8,5,7,8,4,6,8,7,3,8,8,6,7,5];
+  S.players.forEach((p,i)=>{
+    if(p.sess===undefined) p.sess=8;
+    if(p.att===undefined) p.att=ATT[i%ATT.length];
+    if(p.here===undefined) p.here=(p.avail==="in");
+    if(!p.phone) p.phone="04"+String(10+i).padStart(2,"0")+" "+String(100+i*37).slice(0,3)+" "+String(200+i*53).slice(0,3);
+  });
+  if(!S.notices) S.notices=[
+    {id:"n1",t:"Round 3 starts this Friday",b:"First tip-off 5:00pm at Bankstown. Be there 20 minutes early for warm-up.",aud:"Everyone",when:"2 days ago"},
+    {id:"n2",t:"Season fees due end of month",b:"Fees need to be settled before finals. You can pay straight from the app under Fees.",aud:"Parents",when:"5 days ago"}
+  ];
+}
 function save(){ try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){} }
-function reset(){ S=JSON.parse(JSON.stringify(SEED)); save(); }
+function reset(){ S=JSON.parse(JSON.stringify(SEED)); migrate(); save(); }
 
 let VIEW = { role:"admin", tab:"home", authed:false, regFilter:"all", moneyFilter:"owing", schedWk:0 };
 
@@ -437,8 +495,9 @@ function stats(){
   const outstanding=sum(P,p=>p.owe);
   const collected=sum(P,p=>FEE-p.owe>0?FEE-p.owe:0);
   const playing=P.filter(p=>p.avail==="in").length;
+  const attRate=Math.round(sum(P,p=>p.att)/Math.max(1,sum(P,p=>p.sess))*100);
   const noResp=P.filter(p=>p.avail==="unset").length;
-  return {total:P.length,registered,notReg,paid,outstanding,collected,playing,noResp};
+  return {total:P.length,registered,notReg,paid,outstanding,collected,playing,noResp,attRate};
 }
 function payTag(p){
   if(p.pay==="paid") return `<span class="tag ok"><span class="dot ok"></span>Paid</span>`;
@@ -454,6 +513,97 @@ function availTag(a){
   if(a==="in") return `<span class="tag ok">Playing</span>`;
   if(a==="out") return `<span class="tag bad">Out</span>`;
   return `<span class="tag mut">No reply</span>`;
+}
+
+/* ============================ SHEET / DETAIL ============================ */
+let SHEETPID=null;
+function sheetEl(){ return document.getElementById("sheet"); }
+function openSheet(html,pid){
+  SHEETPID=pid||null;
+  const w=sheetEl();
+  w.querySelector(".sheet").innerHTML='<div class="grab"></div>'+html;
+  w.classList.add("on");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>w.classList.add("in")));
+}
+function closeSheet(){
+  const w=sheetEl();
+  w.classList.remove("in"); SHEETPID=null;
+  setTimeout(()=>w.classList.remove("on"),420);
+}
+function refreshSheet(){
+  const w=sheetEl();
+  if(SHEETPID && w.classList.contains("on"))
+    w.querySelector(".sheet").innerHTML='<div class="grab"></div>'+playerSheet(SHEETPID);
+}
+
+function playerSheet(id){
+  const p=player(id); if(!p) return "";
+  const t=S.teams.find(x=>x.div===p.div)||{};
+  const rate=Math.round(p.att/Math.max(1,p.sess)*100);
+  const admin=VIEW.role==="admin";
+  return `
+  <div class="sh-head">
+    <div class="av" style="width:52px;height:52px;border-radius:15px;font-size:19px">${initials(p.name)}</div>
+    <div class="rmain">
+      <div class="sh-name">${p.name}</div>
+      <div class="avirow" style="margin-top:7px"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name||""}</span></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:14px">
+    ${regTag(p)} ${payTag(p)} ${availTag(p.avail)}
+    ${p.medical?'<span class="tag warn">Medical note</span>':''}
+  </div>
+
+  <div class="sh-grid">
+    <div class="sh-item"><div class="k">Attendance</div><div class="v b-green">${rate}%</div>
+      <div class="meter" style="margin-top:7px"><i style="width:${rate}%"></i></div>
+      <div class="small muted" style="margin-top:6px">${p.att} of ${p.sess} sessions</div></div>
+    <div class="sh-item"><div class="k">Fees</div>
+      <div class="v ${p.owe>0?'b-red':'b-green'}">${p.owe>0?money(p.owe)+" owing":"Paid up"}</div>
+      <div class="meter" style="margin-top:7px"><i style="width:${Math.round((FEE-p.owe)/FEE*100)}%"></i></div>
+      <div class="small muted" style="margin-top:6px">${money(FEE-p.owe)} of ${money(FEE)}</div></div>
+    <div class="sh-item"><div class="k">Guardian</div><div class="v">${p.guardian!=="—"?p.guardian:"Plays independently"}</div></div>
+    <div class="sh-item"><div class="k">Contact</div><div class="v">${admin||VIEW.role==="coach"?p.phone:"—"}</div></div>
+    <div class="sh-item sh-full"><div class="k">This Friday</div>
+      <div class="v">${t.time||""}pm · ${t.court||""} · ${t.type==="game"?"vs "+t.opp:"Training"}</div>
+      <div class="small muted" style="margin-top:5px">Coach ${t.coach||"—"}</div></div>
+  </div>
+
+  ${admin?`<div class="btnrow" style="margin-top:14px;flex-wrap:wrap">
+    ${p.reg!=="registered"?`<button class="btn" data-act="approve" data-id="${p.id}">Complete registration</button>`:''}
+    ${p.owe>0?`<button class="btn gold" data-act="remind" data-id="${p.id}">Send reminder</button>
+               <button class="btn gh" data-act="pay" data-id="${p.id}">Mark as paid</button>`:''}
+  </div>`:''}
+  <div class="btnrow"><button class="btn gh" data-act="closesheet">Close</button></div>`;
+}
+
+function noticeComposer(){
+  return `
+  <div class="kicker sky">New notice</div>
+  <div class="sh-name" style="margin-top:6px">Post to the club</div>
+  <div class="field" style="margin-top:14px"><label>Headline</label>
+    <input id="nt" class="fld" placeholder="e.g. No training this Friday"></div>
+  <div class="field"><label>Message</label>
+    <textarea id="nb" class="fld" rows="4" placeholder="What do they need to know?"></textarea></div>
+  <div class="field"><label>Who sees it</label>
+    <div class="audsel">
+      <button data-aud="Everyone" class="on">Everyone</button>
+      <button data-aud="Parents">Parents</button>
+      <button data-aud="Coaches">Coaches</button>
+      <button data-aud="Players">Players</button>
+    </div></div>
+  <div class="btnrow"><button class="btn" data-act="postnotice">Post notice</button></div>
+  <div class="btnrow" style="margin-top:8px"><button class="btn gh" data-act="closesheet">Cancel</button></div>`;
+}
+
+/* latest notice, shown on every home screen */
+function noticeBlock(){
+  const n=(S.notices||[])[0]; if(!n) return "";
+  return `<div class="h">Club notice</div>
+  <div class="card"><div class="nt">
+    <div class="ntt">${n.t}</div><div class="ntb">${n.b}</div>
+    <div class="ntm">${n.when} · ${n.aud}</div>
+  </div></div>`;
 }
 
 /* ============================ RENDER ENGINE ============================ */
@@ -661,6 +811,8 @@ function dHome(){
     <div class="kpi gold"><div class="v">${s.playing}</div><div class="l">Playing this Friday</div><div class="sub muted">${s.noResp} no reply</div></div>
     <div class="kpi red"><div class="v">${money(s.outstanding)}</div><div class="l">Fees outstanding</div><div class="sub b-gold">${money(s.collected)} collected</div></div>
     <div class="kpi blue"><div class="v">${openTasks}</div><div class="l">Open tasks</div><div class="sub muted">who does what</div></div>
+    <div class="kpi green"><div class="v">${s.attRate}<span style="font-size:15px;color:var(--muted)">%</span></div><div class="l">Attendance</div><div class="sub muted">season average</div></div>
+    <div class="kpi gold"><div class="v">${S.teams.length}</div><div class="l">Teams</div><div class="sub muted">U12 — U18</div></div>
   </div>
 
   <div class="h">Needs your attention</div>
@@ -676,6 +828,15 @@ function dHome(){
     ${S.roles.map((r,i)=>`<div class="row"><div class="av ${avClass(i)}">${initials(r.who)}</div>
       <div class="rmain"><div class="t">${r.who}</div><div class="m">${r.area}</div></div></div>`).join("")}
   </div>
+
+  <div class="h">Club notices <span class="pill small muted">${(S.notices||[]).length} posted</span></div>
+  <div class="card">
+    ${(S.notices||[]).slice(0,3).map(n=>`<div class="row" style="align-items:flex-start">
+      <div class="av soft">${I.bell}</div>
+      <div class="rmain"><div class="t">${n.t}</div><div class="m">${n.when} · seen by ${n.aud}</div></div></div>`).join("")
+      || '<div class="center muted small" style="padding:14px">Nothing posted yet.</div>'}
+  </div>
+  <div class="card"><button class="btn gh" data-act="notice">${I.plus} Post a notice</button></div>
 
   <div class="h">Shared task board <span class="pill small muted">${openTasks} open</span></div>
   <div class="card">
@@ -716,7 +877,7 @@ function dMoney(){
     <button data-mf="all" class="${VIEW.moneyFilter==="all"?'on':''}">Everyone (${s.total})</button>
   </div>
   <div class="card">
-    ${shown.map((p,i)=>`<div class="row">
+    ${shown.map((p,i)=>`<div class="row" data-act="pl" data-id="${p.id}">
       <div class="av ${avClass(i)}">${initials(p.name)}</div>
       <div class="rmain"><div class="t">${p.name}</div><div class="m"><span class="divchip">${p.div}</span> #${p.jersey} · ${p.guardian!=="—"?p.guardian:"self"}</div></div>
       <div class="rside">${payTag(p)}
@@ -740,7 +901,7 @@ function dReg(){
     ${groups.map(([k,l])=>`<button data-rf="${k}" class="${VIEW.regFilter===k?'on':''}">${l}</button>`).join("")}
   </div>
   <div class="card">
-    ${shown.map((p,i)=>`<div class="row">
+    ${shown.map((p,i)=>`<div class="row" data-act="pl" data-id="${p.id}">
       <div class="av ${avClass(i)}">${initials(p.name)}</div>
       <div class="rmain"><div class="t">${p.name} ${p.medical?'<span class="tag warn" style="margin-left:4px">medical</span>':''}</div>
         <div class="m"><span class="divchip">${p.div}</span> #${p.jersey} · guardian ${p.guardian}</div></div>
@@ -797,6 +958,13 @@ function coachView(){
       <div class="rmain"><div class="t">${p.name}</div><div class="m">${p.guardian}</div></div>
       <div class="rside">${availTag(p.avail)}</div></div>`).join("")}</div>
     <div class="card"><button class="btn" data-act="nudge">Nudge ${roster.filter(p=>p.avail==="unset").length} who haven't replied</button></div>
+
+    <div class="h">Roll call · ${FRI} <span class="pill small muted">${roster.filter(p=>p.here).length}/${roster.length} in</span></div>
+    <div class="card">
+      <div class="small muted" style="margin-bottom:11px">Tap a name as they arrive. It feeds the attendance record.</div>
+      <div class="rollrow">${roster.map(p=>`<button class="rollchip ${p.here?'on':''}" data-act="roll" data-id="${p.id}">
+        <span class="n">${p.jersey}</span>${p.name.split(" ")[0]}</button>`).join("")}</div>
+    </div>
     ${resetBtn()}`;
   }
   // home = my team
@@ -807,10 +975,11 @@ function coachView(){
     <div class="htitle">${t.name}</div>
     <div class="small muted" style="margin-top:8px">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div>
   </div>
+  ${noticeBlock()}
   <div class="h">Roster <span class="pill small muted">${roster.length} players</span></div>
-  <div class="card">${roster.map((p,i)=>`<div class="row">
+  <div class="card">${roster.map((p,i)=>`<div class="row" data-act="pl" data-id="${p.id}">
     <div class="av ${avClass(i)}">#${p.jersey}</div>
-    <div class="rmain"><div class="t">${p.name}</div><div class="m">${p.guardian}</div></div>
+    <div class="rmain"><div class="t">${p.name}</div><div class="m">${p.guardian} · ${Math.round(p.att/Math.max(1,p.sess)*100)}% attendance</div></div>
     <div class="rside">${availTag(p.avail)}</div></div>`).join("")}</div>
   <div class="card"><button class="btn gh" data-act="msg">${I.send} Message the team</button></div>
   ${resetBtn()}`;
@@ -856,6 +1025,7 @@ function parentView(){
     <div class="small muted" style="margin-top:10px">1 child linked · <span class="b-sky" data-act="addchild">＋ add another</span></div>
   </div>
 
+  ${noticeBlock()}
   <div class="h">Registration</div>
   <div class="banner ${reg?'yes':'no'}"><div class="ic">${reg?I.check:I.alert}</div>
     <div><div class="bt">${reg?first+" is registered":"Registration incomplete"}</div>
@@ -905,6 +1075,7 @@ function playerView(){
     <div class="avirow" style="margin-top:12px"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name}</span></div>
   </div>
 
+  ${noticeBlock()}
   <div class="h">Am I playing this Friday?</div>
   <div class="banner ${playing?'yes':'no'}"><div class="ic">${playing?I.ball:I.q}</div>
     <div><div class="bt">${playing?"Yes — you're in":"Not confirmed yet"}</div>
@@ -922,6 +1093,7 @@ function playerView(){
   <div class="card">
     <div class="row"><div class="av">${initials(p.name)}</div><div class="rmain"><div class="t">Registration</div><div class="m">Season 2026</div></div><div class="rside">${regTag(p)}</div></div>
     <div class="row"><div class="av soft">${I.money}</div><div class="rmain"><div class="t">Fees</div><div class="m">${p.owe>0?"A parent/guardian looks after this":"Season fee settled"}</div></div><div class="rside">${payTag(p)}</div></div>
+    <div class="row"><div class="av soft">${I.check}</div><div class="rmain"><div class="t">Attendance</div><div class="m">${p.att} of ${p.sess} sessions this season</div></div><div class="rside"><span class="tag ok">${Math.round(p.att/Math.max(1,p.sess)*100)}%</span></div></div>
   </div>
 
   <div class="h">My team</div>
@@ -970,7 +1142,7 @@ document.getElementById("roleswitch").addEventListener("click",e=>{
   const b=e.target.closest("button[data-role]"); if(!b)return;
   if(VIEW.role===b.dataset.role) return;
   VIEW.role=b.dataset.role; VIEW.tab="home";
-  render();
+  closeSheet(); render();
 });
 
 /* tap ripple on anything pressable */
@@ -995,14 +1167,31 @@ app.addEventListener("click",e=>{
     VIEW.tab=tabBtn.dataset.tab; render(); return;
   }
   const a=e.target.closest("[data-act]"); if(!a) return;
+  handleAct(a);
+});
+
+/* shared by the app and the detail sheet */
+function handleAct(a){
   const act=a.dataset.act, id=a.dataset.id;
+  if(act==="pl"){ openSheet(playerSheet(id),id); return; }
+  if(act==="closesheet"){ closeSheet(); return; }
+  if(act==="notice"){ openSheet(noticeComposer()); return; }
+  if(act==="postnotice"){
+    const w=sheetEl();
+    const t=(w.querySelector("#nt").value||"").trim()||"Club update";
+    const b=(w.querySelector("#nb").value||"").trim()||"—";
+    const sel=w.querySelector(".audsel button.on");
+    S.notices.unshift({id:"n"+Date.now(),t,b,aud:sel?sel.dataset.aud:"Everyone",when:"Just now"});
+    save(); closeSheet(); toast("Notice posted"); render(SOFT); return;
+  }
+  if(act==="roll"){ const p=player(id); p.here=!p.here; save(); render(SOFT); return; }
   if(act==="login"||act==="invite"){ VIEW.authed=true; VIEW.role="admin"; VIEW.tab="home"; MOUNTED=false;
     if(act==="invite"){ const d=S.directors.find(x=>x.id===a.dataset.who); if(d){d.activated=true;save();} toast("Welcome — password set"); }
     render(); return; }
   if(act==="task"){ const t=S.tasks.find(x=>x.id===id); t.done=!t.done; save(); render(SOFT); return; }
-  if(act==="remind"){ const p=player(id); S.feed.unshift({t:"Reminder sent to "+p.name,m:money(p.owe)+" · "+new Date().toLocaleDateString()}); save(); toast("Payment reminder sent"); render(SOFT); return; }
-  if(act==="approve"){ const p=player(id); p.reg="registered"; save(); toast(p.name+" registered"); render(SOFT); return; }
-  if(act==="pay"){ const p=player(id); p.owe=0; p.pay="paid"; save(); toast("Payment complete"); render(SOFT); return; }
+  if(act==="remind"){ const p=player(id); S.feed.unshift({t:"Reminder sent to "+p.name,m:money(p.owe)+" · "+new Date().toLocaleDateString()}); save(); toast("Payment reminder sent"); render(SOFT); refreshSheet(); return; }
+  if(act==="approve"){ const p=player(id); p.reg="registered"; save(); toast(p.name+" registered"); render(SOFT); refreshSheet(); return; }
+  if(act==="pay"){ const p=player(id); p.owe=0; p.pay="paid"; save(); toast("Payment complete"); render(SOFT); refreshSheet(); return; }
   if(act==="avail"){ const p=player(id); p.avail=a.dataset.v; save(); toast(a.dataset.v==="in"?"You're in for Friday":"Marked unavailable"); render(SOFT); return; }
   if(act==="nudge"){ toast("Nudge sent to players who haven't replied"); return; }
   if(act==="msg"){ toast("Team message sent"); return; }
@@ -1011,6 +1200,14 @@ app.addEventListener("click",e=>{
   if(act==="addchild"){ toast("Link another child — Phase 2"); return; }
   if(act==="edit"){ toast("Schedule editor — Phase 2"); return; }
   if(act==="reset"){ reset(); VIEW.tab="home"; toast("Demo data reset"); render(); return; }
+}
+
+/* the sheet lives outside the app frame — give it its own delegate */
+sheetEl().addEventListener("click",e=>{
+  const au=e.target.closest("[data-aud]");
+  if(au){ au.parentNode.querySelectorAll("[data-aud]").forEach(x=>x.classList.remove("on")); au.classList.add("on"); return; }
+  const a=e.target.closest("[data-act]"); if(!a) return;
+  handleAct(a);
 });
 
 /* segmented filters — swap in place so the pill slides */
@@ -1022,6 +1219,7 @@ app.addEventListener("click",e=>{
 
 window.addEventListener("resize",()=>{ syncNav(); const s=app.querySelector(".scroll"); if(s) syncSeg(s); });
 
+migrate(); save();
 render();
 </script>
 </body>
