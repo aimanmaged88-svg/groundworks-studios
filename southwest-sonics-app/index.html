@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0A0E14; --bg2:#070A0F;
@@ -355,98 +355,116 @@ input.fld:focus,textarea.fld:focus{outline:none;border-color:var(--sky)}
 .banner{transition:transform .4s var(--spring)}
 .banner:active{transform:scale(.99)}
 
-/* ==================== APPLE-GRADE TYPE + MATERIALS ==================== */
-/* On iPhone/Mac this resolves to real SF Pro. Inter is the fallback elsewhere. */
-:root{
-  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Inter","Segoe UI",Roboto,system-ui,sans-serif;
-  --disp:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",system-ui,sans-serif;
-  --rad:22px; --rad2:26px;
-}
-body{font-size:16px;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 
-/* headings: sentence case, tight tracking, heavy — the Apple signature */
-.h{font-family:var(--disp);font-weight:700;font-size:22px;line-height:1.14;letter-spacing:-.024em;
-   text-transform:none;color:var(--ink);margin:28px 2px 13px}
-.h .pill{font-weight:500;font-size:13.5px;letter-spacing:-.01em;text-transform:none;color:var(--dim)}
-.kicker{font-size:13.5px;font-weight:600;letter-spacing:-.012em;text-transform:none;color:var(--dim)}
+/* ==================== LOTG PREMIUM ==================== */
+:root{
+  --bg:#0B0B0D; --bg2:#050506;
+  --card:#161619; --card2:#1E1E22; --card3:#2A2A30;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.16);
+  --ink:#F5F5F7; --muted:#A1A1A6; --dim:#6E6E73;
+  --disp:'Archivo Black','Arial Black',system-ui,sans-serif;
+  --sans:'Inter',-apple-system,system-ui,sans-serif;
+  --rad:18px; --rad2:20px;
+  --skygrad:linear-gradient(180deg,#5AD4F7 0%,#2FB4E0 100%);
+  --shadow:0 20px 60px rgba(0,0,0,.5);
+}
+body{font-size:15px;letter-spacing:0;
+  background-image:radial-gradient(120% 55% at 50% -12%,rgba(63,197,236,.10),transparent 62%)}
+
+/* type — LOTG scale */
+.h{font-family:var(--disp);font-weight:400;font-size:26px;line-height:1.02;letter-spacing:.2px;
+   text-transform:uppercase;color:var(--ink);margin:30px 2px 13px}
+.h .pill{font-family:var(--sans);font-weight:700;font-size:10px;letter-spacing:.16em;
+   text-transform:uppercase;color:var(--dim)}
+.kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
 .kicker.sky{color:var(--sky)}
-.htitle{font-family:var(--disp);font-weight:800;font-size:35px;line-height:1.03;letter-spacing:-.038em;
-   text-transform:none;margin-top:7px}
+.htitle{font-family:var(--disp);font-weight:400;font-size:31px;line-height:1;letter-spacing:.2px;
+   text-transform:uppercase;margin-top:9px}
+
+/* photo hero — the LOTG signature */
+.phero{position:relative;border-radius:20px;overflow:hidden;background:#0d0d10;
+  border:1px solid var(--line);box-shadow:var(--shadow);aspect-ratio:3/4}
+.phero>img{width:100%;height:100%;object-fit:cover;display:block;
+  animation:kenburns 16s ease-in-out infinite alternate}
+@keyframes kenburns{from{transform:scale(1.06)}to{transform:scale(1)}}
+.phero .scrim{position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,5,7,.92) 0%,rgba(5,5,7,.34) 38%,transparent 64%)}
+.phero .ptxt{position:absolute;left:18px;right:18px;bottom:17px;z-index:2}
+.phero .a,.phero .b{font-family:var(--disp);font-weight:400;font-size:25px;line-height:1.03;
+  text-transform:uppercase;letter-spacing:.2px}
+.phero .a{color:#fff}
+.phero .b{color:rgba(255,255,255,.52)}
+.phero .c{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.62);margin-top:10px}
+.phero .badge{position:absolute;top:14px;left:14px;z-index:2;display:inline-flex;align-items:center;gap:7px;
+  padding:7px 12px;border-radius:980px;background:rgba(6,6,8,.6);border:1px solid rgba(255,255,255,.16);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  font-size:9.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#fff}
+.phero .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--sky);animation:pulse 2s ease-in-out infinite}
 
 /* stats */
-.kpi{border-radius:19px;padding:15px}
-.kpi .v{font-family:var(--disp);font-weight:800;font-size:31px;line-height:1;letter-spacing:-.035em}
-.kpi .l{font-size:13.5px;font-weight:500;letter-spacing:-.012em;text-transform:none;color:var(--muted);margin-top:7px}
-.kpi .sub{font-size:12.5px;font-weight:600;letter-spacing:-.01em;margin-top:4px}
+.kpi{border-radius:16px;padding:14px;background:var(--card)}
+.kpi .v{font-family:var(--disp);font-weight:400;font-size:30px;line-height:1;letter-spacing:.2px}
+.kpi .l{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.kpi .sub{font-size:11px;font-weight:700;letter-spacing:.02em;margin-top:5px}
 
-/* controls */
-.btn{font-weight:600;font-size:15.5px;letter-spacing:-.015em;text-transform:none;padding:15px 22px;border-radius:980px}
-.btn:after{display:none}
-.btn.sm{font-size:13.5px;letter-spacing:-.012em;padding:9px 16px}
-.segbar{border-radius:980px;padding:4px}
-.segbar button{font-size:13.5px;font-weight:600;letter-spacing:-.012em;text-transform:none;padding:9px 8px}
-.roleswitch button{font-size:13px;font-weight:600;letter-spacing:-.012em;padding:6px 11px}
-.audsel button{font-size:13px;font-weight:600;letter-spacing:-.01em;text-transform:none;padding:8px 14px}
-.rollchip{font-size:14px;font-weight:600;letter-spacing:-.012em;padding:9px 14px}
-.rollchip .n{font-family:var(--disp);font-weight:700;font-size:11px;letter-spacing:-.02em}
-
-/* chips + tags: sentence case, quiet */
-.tag{font-size:11.5px;font-weight:600;letter-spacing:-.006em;text-transform:none;padding:5px 11px;gap:6px}
-.divchip{font-family:var(--sans);font-size:12.5px;font-weight:600;letter-spacing:-.012em;text-transform:none;padding:5px 11px}
+/* controls — LOTG pills */
+.btn{font-family:var(--sans);font-weight:800;font-size:13.5px;letter-spacing:.04em;text-transform:uppercase;
+  padding:15px 22px;border-radius:980px;background:var(--skygrad);color:#042230}
+.btn.gh{background:rgba(255,255,255,.07);color:var(--ink);border:1px solid var(--line)}
+.btn.gold{background:linear-gradient(180deg,#FFD264,#F0A81E);color:#241a00}
+.btn.sm{font-size:11px;letter-spacing:.06em;padding:9px 15px}
+.segbar{border-radius:980px;padding:4px;background:var(--card2)}
+.segbar button{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:9px 6px}
+.roleswitch button{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.tag{font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px}
+.divchip{font-family:var(--disp);font-weight:400;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px}
 
 /* rows */
-.rmain .t{font-weight:600;font-size:15.5px;letter-spacing:-.018em}
-.rmain .m{font-size:13px;font-weight:400;letter-spacing:-.006em;margin-top:3px}
-.task .tt{font-size:15px;font-weight:500;letter-spacing:-.014em}
-.task .mm{font-size:12.5px;letter-spacing:-.005em;margin-top:3px}
+.rmain .t{font-weight:700;font-size:14.5px;letter-spacing:-.005em}
+.rmain .m{font-size:12px;font-weight:500;color:var(--muted);margin-top:3px}
+.card{background:var(--card);border-radius:var(--rad)}
+.av{border-radius:12px}
 
-/* brand + identity */
-.brandtxt .n{font-family:var(--disp);font-weight:700;font-size:17.5px;letter-spacing:-.028em;text-transform:none;line-height:1.05}
-.brandtxt .s{font-size:12.5px;font-weight:500;letter-spacing:-.008em;text-transform:none;color:var(--dim);margin-top:1px}
-.topbar .who .nm{font-size:14px;font-weight:600;letter-spacing:-.016em}
-.topbar .who .rl{font-size:12px;font-weight:500;letter-spacing:-.008em;text-transform:none;color:var(--sky);margin-top:1px}
+/* brand */
+.brandtxt .n{font-family:var(--disp);font-weight:400;font-size:15px;letter-spacing:.05em;text-transform:uppercase}
+.brandtxt .s{font-size:9.5px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+.topbar .who .nm{font-size:12.5px;font-weight:700}
+.topbar .who .rl{font-size:9.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--sky);margin-top:2px}
+.topbar{background:rgba(11,11,13,.78)}
 
-/* login */
-.login h1{font-family:var(--disp);font-weight:800;font-size:42px;letter-spacing:-.042em;text-transform:none;line-height:1}
-.login .sub{font-size:15px;font-weight:500;letter-spacing:-.012em;text-transform:none;color:var(--muted);margin-top:10px}
-.field label{font-size:13.5px;font-weight:500;letter-spacing:-.01em;text-transform:none;color:var(--muted);margin-bottom:8px}
-.field input{border-radius:14px;font-size:16px;letter-spacing:-.012em;padding:14px 15px}
+/* login — LOTG hero */
+.login h1{font-family:var(--disp);font-weight:400;font-size:40px;letter-spacing:.3px;text-transform:uppercase;line-height:.94}
+.login .sub{font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--dim);margin-top:11px}
+.field label{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
 
 /* schedule + banners */
-.slot{border-radius:18px;padding:14px}
-.slot .time{font-family:var(--disp);font-weight:700;font-size:18px;letter-spacing:-.028em}
-.slot .time span{font-size:11px;font-weight:500;letter-spacing:-.004em;text-transform:none;margin-top:2px}
-.slot .info .tt{font-family:var(--sans);font-weight:600;font-size:15.5px;letter-spacing:-.018em;text-transform:none}
-.slot .info .mm{font-size:13px;letter-spacing:-.006em}
-.banner{border-radius:20px;padding:17px 18px}
-.banner .bt{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:-.028em;text-transform:none;line-height:1.14}
-.banner .bm{font-size:13.5px;font-weight:400;letter-spacing:-.008em;margin-top:4px}
+.slot{border-radius:16px}
+.slot .time{font-family:var(--disp);font-weight:400;font-size:17px;letter-spacing:.2px}
+.slot .time span{font-size:8.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.slot .info .tt{font-family:var(--disp);font-weight:400;font-size:14px;letter-spacing:.02em;text-transform:uppercase}
+.banner{border-radius:18px}
+.banner .bt{font-family:var(--disp);font-weight:400;font-size:19px;letter-spacing:.2px;text-transform:uppercase;line-height:1.08}
+.banner .bm{font-size:12px;font-weight:500;margin-top:5px}
 
 /* sheet */
-.sheet{border-radius:30px 30px 0 0}
-.sh-name{font-family:var(--disp);font-weight:800;font-size:27px;letter-spacing:-.036em;text-transform:none;line-height:1.06}
-.sh-item{border-radius:17px;padding:13px 14px}
-.sh-item .k{font-size:12.5px;font-weight:500;letter-spacing:-.008em;text-transform:none;color:var(--dim)}
-.sh-item .v{font-size:15.5px;font-weight:600;letter-spacing:-.018em;margin-top:5px}
+.sheet{background:linear-gradient(180deg,#17171b,#0c0c0f);border-radius:26px 26px 0 0}
+.sh-name{font-family:var(--disp);font-weight:400;font-size:24px;letter-spacing:.2px;text-transform:uppercase;line-height:1.05}
+.sh-item{border-radius:15px;background:var(--card2)}
+.sh-item .k{font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.sh-item .v{font-size:14.5px;font-weight:700;margin-top:5px}
 
-/* notices */
-.nt .ntt{font-size:16px;font-weight:600;letter-spacing:-.018em}
-.nt .ntb{font-size:13.5px;letter-spacing:-.006em;margin-top:5px}
-.nt .ntm{font-size:12.5px;font-weight:500;letter-spacing:-.006em;text-transform:none;margin-top:8px}
-
-/* tab bar — iOS proportions */
-.nav button{font-size:10.5px;font-weight:500;letter-spacing:-.004em;text-transform:none;gap:5px}
-.nav button.on{font-weight:600}
-.demostrip .dt{font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:-.008em;text-transform:none}
-
-/* quieter ambient wash — Apple restraint */
-.amb i{opacity:.15;filter:blur(80px)}
-
-/* iOS-style scroll response */
-.topbar{transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease)}
-.topbar.scrolled{border-bottom-color:rgba(255,255,255,.14);box-shadow:0 10px 30px -18px rgba(0,0,0,.9)}
-.hero{will-change:transform,opacity}
-.card{border-radius:var(--rad)}
+/* notices + tab bar */
+.nt .ntt{font-size:14.5px;font-weight:700}
+.nt .ntb{font-size:12.5px;margin-top:5px}
+.nt .ntm{font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;margin-top:8px}
+.nav{background:rgba(11,11,13,.92)}
+.nav button{font-size:8.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;gap:4px}
+.demostrip{background:var(--bg2)}
+.demostrip .dt{font-family:var(--disp);font-weight:400;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.amb i{opacity:.2}
+.rollchip{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.audsel button{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
 </style>
 </head>
 <body>
@@ -689,6 +707,20 @@ function noticeComposer(){
   <div class="btnrow" style="margin-top:8px"><button class="btn gh" data-act="closesheet">Cancel</button></div>`;
 }
 
+/* LOTG-style photo hero */
+function photoHero(a,b,c,badge){
+  return `<div class="phero">
+    <img src="hero.jpg" alt="Sonics">
+    <div class="scrim"></div>
+    ${badge?`<div class="badge"><span class="dot"></span>${badge}</div>`:''}
+    <div class="ptxt">
+      <div class="a">${a}</div>
+      <div class="b">${b}</div>
+      <div class="c">${c}</div>
+    </div>
+  </div>`;
+}
+
 /* latest notice, shown on every home screen */
 function noticeBlock(){
   const n=(S.notices||[])[0]; if(!n) return "";
@@ -767,7 +799,7 @@ function bindScroll(){
       const y=s.scrollTop;
       const tb=app.querySelector(".topbar");
       if(tb) tb.classList.toggle("scrolled", y>6);
-      const hero=s.querySelector(".hero");
+      const hero=s.querySelector(".hero,.phero");
       if(hero){
         const k=Math.min(1,y/230);
         hero.style.transform=`translate3d(0,${y*0.24}px,0) scale(${1-k*0.035})`;
@@ -783,7 +815,7 @@ function afterPaint(s,soft){
   bindScroll();
   const tb=app.querySelector(".topbar"); if(tb && !soft) tb.classList.remove("scrolled");
   // hand the hero back to inline transforms once its entry animation is done
-  const hero=s.querySelector(".hero");
+  const hero=s.querySelector(".hero,.phero");
   if(hero){ hero.style.transform=""; hero.style.opacity="";
     setTimeout(()=>{ if(hero.isConnected) hero.style.animation="none"; }, soft?0:620); }
   // meters grow from zero
@@ -922,12 +954,7 @@ function dHome(){
   const s=stats();
   const openTasks=S.tasks.filter(t=>!t.done).length;
   return `
-  <div class="hero">
-    <div class="kicker sky">Admin Control Centre</div>
-    <div class="htitle">Friday <span class="grad">Juniors</span></div>
-    <div class="small muted" style="margin-top:8px">${FRI} · ${VENUE}</div>
-    <div class="small muted" style="margin-top:2px">${S.teams.length} teams · ${s.total} players</div>
-  </div>
+  ${photoHero("Friday juniors.","Round 3.",`${FRI} · ${VENUE}`,"Admin")}
   <div class="kpis" style="margin-top:12px">
     <div class="kpi green"><div class="v">${s.registered}<span style="font-size:15px;color:var(--muted)">/${s.total}</span></div><div class="l">Registered</div><div class="sub b-red">${s.notReg} need action</div></div>
     <div class="kpi gold"><div class="v">${s.playing}</div><div class="l">Playing this Friday</div><div class="sub muted">${s.noResp} no reply</div></div>
@@ -1092,11 +1119,7 @@ function coachView(){
   // home = my team
   const t=S.teams.find(x=>x.div===team);
   return `
-  <div class="hero">
-    <div class="kicker sky">My Team</div>
-    <div class="htitle">${t.name}</div>
-    <div class="small muted" style="margin-top:8px">${FRI} · ${t.time}pm · ${t.court} · ${t.type==="game"?"vs "+t.opp:"Training"}</div>
-  </div>
+  ${photoHero(t.name+".",t.type==="game"?"vs "+t.opp+".":"Training.",`${FRI} · ${t.time}pm · ${t.court}`,"Coach")}
   ${noticeBlock()}
   <div class="h">Roster <span class="pill small muted">${roster.length} players</span></div>
   <div class="card">${roster.map((p,i)=>`<div class="row" data-act="pl" data-id="${p.id}">
@@ -1140,12 +1163,10 @@ function parentView(){
   if(VIEW.tab==="pay") return feesView(p);
   const playing=p.avail==="in", reg=p.reg==="registered";
   return `
-  <div class="hero">
-    <div class="kicker sky">Parent Account</div>
-    <div class="htitle">Managing <span class="grad">${first}</span></div>
-    <div class="avirow" style="margin-top:12px"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name}</span></div>
-    <div class="small muted" style="margin-top:10px">1 child linked · <span class="b-sky" data-act="addchild">＋ add another</span></div>
-  </div>
+  ${photoHero(first+"'s season.",t.name+".",`${p.div} · #${p.jersey} · Coach ${t.coach}`,"Parent")}
+  <div class="card" style="margin-top:10px"><div class="row" style="border:none;padding:2px">
+    <div class="rmain"><div class="t">1 child linked</div><div class="m">${p.name} · ${t.name}</div></div>
+    <button class="btn gh sm" data-act="addchild">Add another</button></div></div>
 
   ${noticeBlock()}
   <div class="h">Registration</div>
@@ -1191,11 +1212,7 @@ function playerView(){
   if(VIEW.tab==="team") return rosterView(p,t);
   const playing=p.avail==="in";
   return `
-  <div class="hero">
-    <div class="kicker sky">Good Afternoon</div>
-    <div class="htitle">${first}'s <span class="grad">Week</span></div>
-    <div class="avirow" style="margin-top:12px"><span class="divchip">${p.div}</span> <span class="divchip">#${p.jersey}</span> <span class="divchip">${t.name}</span></div>
-  </div>
+  ${photoHero(first+"'s week.",t.name+".",`${p.div} · #${p.jersey} · Coach ${t.coach}`,"Player")}
 
   ${noticeBlock()}
   <div class="h">Am I playing this Friday?</div>
