@@ -499,6 +499,15 @@ body{font-size:15px;letter-spacing:0;
   border:2px solid var(--line2);color:transparent;transition:all .35s var(--spring)}
 .ck.on{background:var(--green);border-color:var(--green);color:#04160d}
 .ck svg{width:15px;height:15px}
+
+/* full-access hub */
+.chev{flex:0 0 auto;color:var(--dim);display:grid;place-items:center}
+.chev svg{width:15px;height:15px}
+.row[data-act]{cursor:pointer}
+.slot.nowrow{border-color:rgba(63,197,236,.45);
+  background:linear-gradient(135deg,rgba(63,197,236,.12),rgba(63,197,236,.02));
+  box-shadow:0 0 0 1px rgba(63,197,236,.12)}
+.sheet .row{padding:12px 2px}
 </style>
 </head>
 <body>
@@ -593,6 +602,7 @@ function migrate(){
     if(!p.phone) p.phone="04"+String(10+i).padStart(2,"0")+" "+String(100+i*37).slice(0,3)+" "+String(200+i*53).slice(0,3);
   });
   S.coaches.forEach((c,i)=>{ if(!c.phone) c.phone="04"+String(20+i).padStart(2,"0")+" "+String(300+i*41).slice(0,3)+" "+String(400+i*29).slice(0,3); });
+  if(!S.reports) S.reports=[];
   if(!S.notices) S.notices=[
     {id:"n1",t:"Round 3 starts this Friday",b:"First tip-off 5:00pm at Bankstown. Be there 20 minutes early for warm-up.",aud:"Everyone",when:"2 days ago"},
     {id:"n2",t:"Season fees due end of month",b:"Fees need to be settled before finals. You can pay straight from the app under Fees.",aud:"Parents",when:"5 days ago"}
@@ -601,7 +611,7 @@ function migrate(){
 function save(){ try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){} }
 function reset(){ S=JSON.parse(JSON.stringify(SEED)); migrate(); save(); }
 
-let VIEW = { role:"admin", tab:"home", authed:false, regFilter:"all", moneyFilter:"owing", schedWk:0 };
+let VIEW = { role:"admin", tab:"home", authed:false, regFilter:"all", moneyFilter:"owing", schedWk:0, seasonFilter:"all" };
 
 /* ============================ ICONS ============================ */
 const sv=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
@@ -624,6 +634,12 @@ const I={
   phone:sv('<path d="M20.5 16.9v2.6a1.7 1.7 0 0 1-1.9 1.7 17 17 0 0 1-7.4-2.6 16.7 16.7 0 0 1-5.1-5.1A17 17 0 0 1 3.5 6a1.7 1.7 0 0 1 1.7-1.9h2.6a1.7 1.7 0 0 1 1.7 1.5c.1.8.3 1.6.6 2.4a1.7 1.7 0 0 1-.4 1.8l-1.1 1.1a13.6 13.6 0 0 0 5.1 5.1l1.1-1.1a1.7 1.7 0 0 1 1.8-.4c.8.3 1.6.5 2.4.6a1.7 1.7 0 0 1 1.5 1.8z"/>'),
   map:sv('<path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>'),
   shirt:sv('<path d="M8.4 3.6 12 6l3.6-2.4 4.4 2.2-2 4-2-.8V20H6V9l-2 .8-2-4z"/>'),
+  more:sv('<circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/>'),
+  doc:sv('<path d="M14 3.2H7.2A1.8 1.8 0 0 0 5.4 5v14a1.8 1.8 0 0 0 1.8 1.8h9.6A1.8 1.8 0 0 0 18.6 19V7.8z"/><path d="M14 3.2v4.6h4.6"/><path d="M8.6 13h6.8M8.6 16.6h4.4"/>'),
+  shield:sv('<path d="M12 3.2 5 6v5.5c0 4.2 2.9 7.5 7 9.3 4.1-1.8 7-5.1 7-9.3V6z"/><path d="M9.2 12.2l2 2 3.6-3.9"/>'),
+  info:sv('<circle cx="12" cy="12" r="8.8"/><path d="M12 11v5.4"/><path d="M12 7.9v.1"/>'),
+  chat:sv('<path d="M20.4 13.2a7.4 7.4 0 0 1-8 7.3L6 21.4l1-4.2a7.4 7.4 0 1 1 13.4-4z"/>'),
+  chev:sv('<path d="M9.5 5.5 16 12l-6.5 6.5"/>'),
 };
 
 /* ============================ HELPERS ============================ */
@@ -755,6 +771,20 @@ function noticeComposer(){
 }
 
 function coachOf(div){ return S.coaches.find(c=>c.team===div)||{}; }
+const SEASON=[
+ {r:1, d:"Fri 1 Aug",  type:"game", opp:"Canterbury Cats",       res:"W", sc:"42–31"},
+ {r:2, d:"Fri 8 Aug",  type:"game", opp:"Holroyd Hornets",       res:"L", sc:"28–35"},
+ {r:3, d:"Fri 15 Aug", type:"train",opp:null},
+ {r:4, d:"Fri 22 Aug", type:"game", opp:"Campbelltown Crushers", res:"W", sc:"51–40"},
+ {r:5, d:"Fri 29 Aug", type:"game", opp:"Bankstown Bruins",      res:"W", sc:"47–44"},
+ {r:6, d:"Fri 5 Sep",  type:"train",opp:null},
+ {r:7, d:"Fri 12 Sep", type:"game", opp:"Fairfield Force",       res:"L", sc:"33–38"},
+ {r:8, d:"Fri 18 Sep", type:"game", opp:"Liverpool Lakers", now:true},
+ {r:9, d:"Fri 25 Sep", type:"train",opp:null},
+ {r:10,d:"Fri 2 Oct",  type:"game", opp:"Canterbury Cats"},
+ {r:11,d:"Fri 9 Oct",  type:"game", opp:"Holroyd Hornets"},
+ {r:12,d:"Fri 16 Oct", type:"game", opp:"Semi final", fin:true}
+];
 const OPPS=["Bankstown Bruins","Liverpool Lakers","Fairfield Force","Campbelltown Crushers","Canterbury Cats","Holroyd Hornets"];
 function fixturesFor(div){
   const t=S.teams.find(x=>x.div===div)||{};
@@ -982,7 +1012,7 @@ function bottomNav(){
     : VIEW.role==="coach"
     ? [["home",I.team,"Team"],["avail",I.check,"Availability"],["sched",I.sched,"Schedule"]]
     : VIEW.role==="parent"
-    ? [["home",I.home,"Home"],["sched",I.sched,"Schedule"],["team",I.team,"Team"],["pay",I.money,"Fees"]]
+    ? [["home",I.home,"Home"],["season",I.sched,"Season"],["team",I.team,"Team"],["pay",I.money,"Fees"],["more",I.more,"More"]]
     : [["home",I.home,"Home"],["sched",I.sched,"Schedule"],["team",I.team,"Team"]];
   return `<div class="nav">${items.map(([k,i,l])=>
     `<button data-tab="${k}" class="${VIEW.tab===k?'on':''}"><span class="i">${i}</span>${l}</button>`).join("")}</div>`;
@@ -1047,6 +1077,15 @@ function dHome(){
   <div class="card">
     ${S.roles.map((r,i)=>`<div class="row"><div class="av ${avClass(i)}">${initials(r.who)}</div>
       <div class="rmain"><div class="t">${r.who}</div><div class="m">${r.area}</div></div></div>`).join("")}
+  </div>
+
+  <div class="h">From parents <span class="pill small muted">${(S.reports||[]).filter(r=>r.status!=="Reviewed").length} new</span></div>
+  <div class="card">
+    ${(S.reports||[]).length ? (S.reports||[]).slice(0,4).map(r=>`<div class="row" data-act="viewrep" data-id="${r.id}">
+        <div class="av soft">${r.kind==="incident"?I.alert:r.kind==="complaint"?I.chat:I.doc}</div>
+        <div class="rmain"><div class="t">${r.subject}</div><div class="m">${r.kindLabel} · ${r.by} · ${r.when}</div></div>
+        <span class="tag ${r.status==="Reviewed"?'ok':'warn'}">${r.status}</span></div>`).join("")
+      : '<div class="center muted small" style="padding:14px">No incident reports, complaints or suggestions.</div>'}
   </div>
 
   <div class="h">Club notices <span class="pill small muted">${(S.notices||[]).length} posted</span></div>
@@ -1224,13 +1263,193 @@ function feesView(p){
   ${resetBtn()}`;
 }
 
+/* ---------- full season ---------- */
+function seasonView(p,t){
+  const f=VIEW.seasonFilter;
+  const played=SEASON.filter(x=>x.res);
+  const w=played.filter(x=>x.res==="W").length, l=played.length-w;
+  const rows = f==="results" ? SEASON.filter(x=>x.res)
+             : f==="upcoming"? SEASON.filter(x=>!x.res)
+             : SEASON;
+  return `
+  <div class="h">The season</div>
+  <div class="kpis">
+    <div class="kpi green"><div class="v">${w}<span style="font-size:15px;color:var(--muted)">–${l}</span></div>
+      <div class="l">Win–loss</div><div class="sub muted">${played.length} games played</div></div>
+    <div class="kpi gold"><div class="v">${SEASON.filter(x=>!x.res).length}</div>
+      <div class="l">Left to play</div><div class="sub muted">finals ${SEASON[SEASON.length-1].d}</div></div>
+  </div>
+  <div class="segbar" style="margin-top:14px">
+    <button data-sf="all" class="${f==="all"?'on':''}">All</button>
+    <button data-sf="results" class="${f==="results"?'on':''}">Results</button>
+    <button data-sf="upcoming" class="${f==="upcoming"?'on':''}">Upcoming</button>
+  </div>
+  <div class="card" style="background:transparent;border:none;padding:0;box-shadow:none">
+    ${rows.map(x=>`<div class="slot ${x.now?'nowrow':''}">
+      <div class="barleft ${x.type==="game"?"game":"train"}"></div>
+      <div class="time">R${x.r}<span>${x.d.replace("Fri ","")}</span></div>
+      <div class="info">
+        <div class="tt">${x.type==="game"?(x.fin?x.opp:"vs "+x.opp):"Training"}</div>
+        <div class="mm">${t.time}pm · ${t.court} · ${VENUE.split(" ")[0]}</div>
+      </div>
+      <div class="rside">${
+        x.res ? `<span class="tag ${x.res==="W"?'ok':'bad'}">${x.res==="W"?"Won":"Lost"} ${x.sc}</span>`
+        : x.now ? '<span class="tag info">This week</span>'
+        : x.type==="game" ? '<span class="tag warn">Game</span>' : '<span class="tag mut">Train</span>'}
+      </div>
+    </div>`).join("")}
+  </div>
+  <div class="note">Every round for the season. Results go up the morning after each game.</div>
+  ${resetBtn()}`;
+}
+
+/* ---------- full-access hub ---------- */
+function moreView(p,t){
+  const mine=(S.reports||[]).filter(r=>r.by===p.guardian);
+  const row=(icon,title,sub,act)=>`<div class="row" ${act}>
+    <div class="av soft">${icon}</div>
+    <div class="rmain"><div class="t">${title}</div><div class="m">${sub}</div></div>
+    <span class="chev">${I.chev}</span></div>`;
+  return `
+  <div class="h">Forms &amp; requests</div>
+  <div class="card">
+    ${row(I.alert,"Report an incident","Injury, accident or anything unsafe",'data-act="form" data-kind="incident"')}
+    ${row(I.chat,"Make a complaint","Raised privately with the directors",'data-act="form" data-kind="complaint"')}
+    ${row(I.plus,"Share a suggestion","Ideas to make the club better",'data-act="form" data-kind="suggestion"')}
+    ${row(I.sched,"Report an absence","Let the coach know in advance",'data-act="form" data-kind="absence"')}
+    ${row(I.doc,"Update medical info","Allergies, conditions, medication",'data-act="form" data-kind="medical"')}
+  </div>
+
+  <div class="h">Know before you go</div>
+  <div class="card">
+    ${row(I.shirt,"What to bring","Uniform, water, mouthguard",'data-act="info" data-kind="bring"')}
+    ${row(I.map,"Venue &amp; parking","Getting to Bankstown, where to park",'data-act="info" data-kind="venue"')}
+    ${row(I.shield,"Code of conduct","What we expect courtside",'data-act="info" data-kind="conduct"')}
+    ${row(I.money,"What fees cover","Where your "+money(FEE)+" goes",'data-act="info" data-kind="fees"')}
+    ${row(I.info,"Season dates","Terms, finals and breaks",'data-act="info" data-kind="dates"')}
+  </div>
+
+  <div class="h">Who to contact</div>
+  <div class="card">
+    <div class="row"><div class="av g2">${initials(t.coach||"")}</div>
+      <div class="rmain"><div class="t">${t.coach}</div><div class="m">Your coach · ${t.name}</div></div>
+      <button class="btn gh sm" data-act="callcoach">${I.phone} Call</button></div>
+    <div class="row"><div class="av g3">NK</div>
+      <div class="rmain"><div class="t">Nour Kabbara</div><div class="m">Club director · general enquiries</div></div>
+      <button class="btn gh sm" data-act="callclub">${I.phone} Call</button></div>
+  </div>
+
+  <div class="h">My submissions <span class="pill small muted">${mine.length}</span></div>
+  <div class="card">
+    ${mine.length ? mine.map(r=>`<div class="row" data-act="viewrep" data-id="${r.id}">
+        <div class="av soft">${I.doc}</div>
+        <div class="rmain"><div class="t">${r.subject}</div><div class="m">${r.kindLabel} · ${r.when}</div></div>
+        <span class="tag ${r.status==="Reviewed"?'ok':'warn'}">${r.status}</span></div>`).join("")
+      : '<div class="center muted small" style="padding:16px">Nothing submitted yet.</div>'}
+  </div>
+  ${resetBtn()}`;
+}
+
+/* ---------- forms + info sheets ---------- */
+const FORMS={
+  incident:{t:"Report an incident",k:"Incident report",s:"Injury, accident or anything unsafe",date:true,
+            ph:"What happened, where, and who was involved?"},
+  complaint:{t:"Make a complaint",k:"Complaint",s:"Goes privately to Nour and Abdulla",
+            ph:"Tell us what happened and what you'd like done about it."},
+  suggestion:{t:"Share a suggestion",k:"Suggestion",s:"We read every one",
+            ph:"What would make the club better?"},
+  absence:{t:"Report an absence",k:"Absence",s:"The coach is notified straight away",date:true,
+            ph:"Which session will they miss, and why?"},
+  medical:{t:"Update medical info",k:"Medical update",s:"Only the coach and directors can see this",
+            ph:"Allergies, conditions, medication, anything we should know."}
+};
+function formSheet(kind){
+  const f=FORMS[kind]; if(!f) return "";
+  return `
+  <div class="kicker sky">${f.s}</div>
+  <div class="sh-name" style="margin-top:7px">${f.t}</div>
+  <div class="field" style="margin-top:16px"><label>Subject</label>
+    <input id="fsub" class="fld" placeholder="One line summary"></div>
+  ${f.date?`<div class="field"><label>Date it relates to</label>
+    <input id="fdate" class="fld" placeholder="e.g. Fri 18 Sep"></div>`:''}
+  <div class="field"><label>Details</label>
+    <textarea id="fbody" class="fld" rows="5" placeholder="${f.ph}"></textarea></div>
+  <div class="note" style="margin-top:4px">Submitted straight to the club directors. You'll get a reply in the app.</div>
+  <div class="btnrow"><button class="btn" data-act="submitform" data-kind="${kind}">Submit</button></div>
+  <div class="btnrow" style="margin-top:8px"><button class="btn gh" data-act="closesheet">Cancel</button></div>`;
+}
+
+const INFO={
+ bring:{t:"What to bring",b:[
+   ["Sonics uniform","Singlet and shorts. Spares are at the canteen if one's in the wash."],
+   ["Water bottle","Named. There's a refill station by the change rooms."],
+   ["Mouthguard","Required for all games from U12 up."],
+   ["Court shoes","Non-marking soles only — venue rule."],
+   ["A snack","Games run close to dinner for the later grades."],
+   ["Arrive 20 minutes early","Warm-up starts before tip-off, not at it."]]},
+ venue:{t:"Venue & parking",b:[
+   ["Bankstown Basketball Stadium","All Friday junior games and training."],
+   ["Parking","Free on-site. It fills from 5:30pm — come early or park on the street."],
+   ["Entry","Through the main doors. Spectator entry is free for parents."],
+   ["Canteen","Open from 4:30pm, card and cash."],
+   ["Accessibility","Step-free entry and accessible bathrooms on the main level."]]},
+ conduct:{t:"Code of conduct",b:[
+   ["Let the coach coach","One voice from the sideline. Cheer, don't instruct."],
+   ["Respect the referees","Most are teenagers learning the game. No exceptions on this one."],
+   ["Support both teams","We clap good basketball whoever plays it."],
+   ["Kids play to have fun","Effort over scoreboard, every week."],
+   ["Zero tolerance","Abuse of officials, players or families means removal from the venue."]]},
+ fees:{t:"What fees cover",b:[
+   ["Court hire","Friday nights at Bankstown across the whole season."],
+   ["Referees","Every game is officiated."],
+   ["Insurance & registration","Association registration and player insurance."],
+   ["Coaching","Qualified, screened coaches for every team."],
+   ["Uniform","Singlet and shorts to keep."],
+   ["Payment plans","Struggling with the fee? Message a director — we'll sort something out, quietly."]]},
+ dates:{t:"Season dates",b:[
+   ["Round 1","Friday 1 August"],
+   ["Mid-season break","No games the Friday of the October long weekend."],
+   ["Final round","Friday 9 October"],
+   ["Semi finals","Friday 16 October"],
+   ["Grand final","Friday 23 October"],
+   ["Presentation night","To be confirmed — late October."]]}
+};
+function infoSheet(kind){
+  const d=INFO[kind]; if(!d) return "";
+  return `
+  <div class="kicker sky">Club info</div>
+  <div class="sh-name" style="margin-top:7px">${d.t}</div>
+  <div class="card" style="margin-top:14px;background:transparent;border:none;padding:0;box-shadow:none">
+    ${d.b.map(([k,v])=>`<div class="row" style="align-items:flex-start">
+      <div class="ck on" style="margin-top:2px">${I.check}</div>
+      <div class="rmain"><div class="t">${k}</div><div class="m">${v}</div></div></div>`).join("")}
+  </div>
+  <div class="btnrow"><button class="btn gh" data-act="closesheet">Close</button></div>`;
+}
+function reportSheet(id){
+  const r=(S.reports||[]).find(x=>x.id===id); if(!r) return "";
+  return `
+  <div class="kicker sky">${r.kindLabel}</div>
+  <div class="sh-name" style="margin-top:7px">${r.subject}</div>
+  <div class="sh-grid">
+    <div class="sh-item"><div class="k">From</div><div class="v">${r.by}</div></div>
+    <div class="sh-item"><div class="k">Submitted</div><div class="v">${r.when}</div></div>
+    ${r.date?`<div class="sh-item"><div class="k">Relates to</div><div class="v">${r.date}</div></div>`:''}
+    <div class="sh-item"><div class="k">Status</div><div class="v ${r.status==="Reviewed"?'b-green':'b-gold'}">${r.status}</div></div>
+    <div class="sh-item sh-full"><div class="k">Details</div><div class="v" style="font-weight:500;line-height:1.5">${r.body}</div></div>
+  </div>
+  ${VIEW.role==="admin"&&r.status!=="Reviewed"?`<div class="btnrow"><button class="btn" data-act="reviewrep" data-id="${r.id}">Mark reviewed</button></div>`:''}
+  <div class="btnrow"><button class="btn gh" data-act="closesheet">Close</button></div>`;
+}
+
 /* ============================ PARENT ============================ */
 function parentView(){
   const p=player(S.loginPlayer);
   const first=p.name.split(" ")[0];
   const t=S.teams.find(x=>x.div===p.div)||{};
   const c=coachOf(p.div);
-  if(VIEW.tab==="sched") return schedule(false,p.div);
+  if(VIEW.tab==="season"||VIEW.tab==="sched") return seasonView(p,t);
+  if(VIEW.tab==="more")  return moreView(p,t);
   if(VIEW.tab==="team")  return rosterView(p,t);
   if(VIEW.tab==="pay")   return feesView(p);
 
@@ -1317,7 +1536,7 @@ function parentView(){
 
   ${noticeBlock()}
 
-  <div class="h">Coming up</div>
+  <div class="h">Coming up <span class="pill small muted" data-tab="season" style="cursor:pointer">Full season ›</span></div>
   <div class="card" style="background:transparent;border:none;padding:0;box-shadow:none">
     ${fx.slice(1).map(f=>`<div class="slot">
       <div class="barleft ${f.type==="game"?"game":"train"}"></div>
@@ -1469,6 +1688,24 @@ function handleAct(a){
   if(act==="directions"){ toast("Opening directions to "+VENUE); return; }
   if(act==="calendar"){ toast("Added to your calendar"); return; }
   if(act==="callcoach"){ toast("Calling your coach"); return; }
+  if(act==="callclub"){ toast("Calling the club"); return; }
+  if(act==="form"){ openSheet(formSheet(a.dataset.kind)); return; }
+  if(act==="info"){ openSheet(infoSheet(a.dataset.kind)); return; }
+  if(act==="viewrep"){ openSheet(reportSheet(id)); return; }
+  if(act==="reviewrep"){ const r=S.reports.find(x=>x.id===id); if(r){r.status="Reviewed";save();}
+    closeSheet(); toast("Marked as reviewed"); render(SOFT); return; }
+  if(act==="submitform"){
+    const w=sheetEl(), kind=a.dataset.kind, f=FORMS[kind];
+    const subj=(w.querySelector("#fsub").value||"").trim();
+    const body=(w.querySelector("#fbody").value||"").trim();
+    const dEl=w.querySelector("#fdate");
+    if(!subj && !body){ toast("Add a subject or some detail first"); return; }
+    const kid=player(S.loginPlayer);
+    S.reports.unshift({id:"r"+Date.now(),kind,kindLabel:f.k,
+      subject:subj||f.k,body:body||"—",date:dEl?(dEl.value||"").trim():"",
+      by:kid.guardian,about:kid.name,when:"Just now",status:"Submitted"});
+    save(); closeSheet(); toast(f.k+" submitted"); render(SOFT); return;
+  }
   if(act==="edit"){ toast("Schedule editor — Phase 2"); return; }
   if(act==="reset"){ reset(); VIEW.tab="home"; toast("Demo data reset"); render(); return; }
 }
@@ -1486,6 +1723,7 @@ app.addEventListener("click",e=>{
   const mf=e.target.closest("[data-mf]"); if(mf){VIEW.moneyFilter=mf.dataset.mf;render(SOFT);return;}
   const rf=e.target.closest("[data-rf]"); if(rf){VIEW.regFilter=rf.dataset.rf;render(SOFT);return;}
   const wk=e.target.closest("[data-wk]"); if(wk){VIEW.schedWk=+wk.dataset.wk;render(SOFT);return;}
+  const sf=e.target.closest("[data-sf]"); if(sf){VIEW.seasonFilter=sf.dataset.sf;render(SOFT);return;}
 });
 
 window.addEventListener("resize",()=>{ syncNav(); const s=app.querySelector(".scroll"); if(s) syncSeg(s); });
