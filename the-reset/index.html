@@ -3,58 +3,68 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#0d9488" />
+<meta name="theme-color" content="#0e0f13" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="The Reset" />
-<meta name="description" content="The Reset — a calm place to reset when it's all too much. Simple daily support to recover from burnout: money, work, health, people, shopping, tasks and routines. One thing at a time." />
+<meta name="description" content="The Reset — a calm place to reset when it's all too much. Recover from burnout, one day at a time. Track your day, money, health, people and rest. Free to try, with an optional account to sync across devices." />
 
-<!-- Social preview (for when the link is shared) -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content="The Reset — recover from burnout, one day at a time" />
-<meta property="og:description" content="A calm, simple app to help you get through burnout. Track your day, money, health and rest — all in one gentle place. Day one starts here." />
+<meta property="og:description" content="A calm, premium app to help you get through burnout. Track your day, money, health and rest — free to try, optional account to sync. Day one starts here." />
 <meta name="twitter:card" content="summary" />
 
-<!-- Emoji favicon (leaf) -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230e0f13'/%3E%3Cpath d='M22 74c0-30 24-48 56-48 0 30-24 48-56 48z' fill='none' stroke='%23c8a45c' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E" />
 
 <title>The Reset — recover from burnout</title>
 
-<!-- Tailwind CSS (no build step needed) -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        fontFamily: {
-          sans: ['Nunito', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-        },
-      },
-    },
-  };
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','ui-sans-serif','system-ui','-apple-system','Segoe UI','sans-serif'] } } } };
 </script>
-
-<!-- Friendly rounded font (falls back to system font if offline) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-<!-- React (via CDN) -->
+<!-- Supabase (accounts + sync). If it fails to load, the app still works locally. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<!-- Babel lets us write JSX right here, no build tools -->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 <style>
   html, body { -webkit-tap-highlight-color: transparent; }
-  body { background:#f4f5f3; }
-  /* hide scrollbar on the tab strip but keep it scrollable */
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  body {
+    background: #0e0f13;
+    color: #e8e9ec;
+    background-image: radial-gradient(1100px 460px at 50% -8%, rgba(200,164,92,0.10), transparent 62%);
+    background-attachment: fixed;
+  }
+  .no-scrollbar::-webkit-scrollbar { display:none; }
+  .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
   input, textarea, select, button { font-family: inherit; }
+
+  .card { background:#16181e; border:1px solid #242832; border-radius:22px; }
+  .soft { background:#1b1e25; border:1px solid #262a33; border-radius:16px; }
+
+  .field { width:100%; background:#14161c; border:1px solid #2a2f39; color:#e8e9ec; border-radius:14px; padding:12px 14px; font-size:16px; }
+  .field::placeholder { color:#6b7079; }
+  .field:focus { outline:none; border-color:#c8a45c; box-shadow:0 0 0 3px rgba(200,164,92,.14); }
+  select.field { -webkit-appearance:none; appearance:none; }
+
+  .btn { border-radius:14px; font-weight:700; font-size:15px; padding:12px 16px; transition:.15s ease; user-select:none; }
+  .btn:disabled { opacity:.45; }
+  .btn-primary { background:#c8a45c; color:#141206; }
+  .btn-primary:active { background:#b8944c; }
+  .btn-ghost { background:#1c1f27; color:#d3d6dc; border:1px solid #2a2f39; }
+  .btn-ghost:active { background:#22262f; }
+  .btn-soft { background:rgba(200,164,92,.12); color:#d8b979; border:1px solid rgba(200,164,92,.26); }
+  .btn-danger { background:rgba(229,115,111,.12); color:#e5736f; border:1px solid rgba(229,115,111,.26); }
+  .btn-green { background:rgba(127,174,143,.14); color:#8fc0a1; border:1px solid rgba(127,174,143,.28); }
 </style>
 </head>
-<body class="font-sans text-slate-800">
+<body class="font-sans">
 <div id="root"></div>
 
 <script type="text/babel" data-presets="react">
@@ -62,14 +72,24 @@ const { useState, useEffect, useMemo, useRef } = React;
 
 /* =======================================================================
    The Reset — recover from burnout, one day at a time
-   A single-file React app. All data is saved locally in each person's
-   browser (localStorage). No login, no server, works offline once loaded.
-   Every person who opens the link gets their own private copy.
+   Free to try locally (no account). Optional account = cloud sync.
    ======================================================================= */
 
+const SUPABASE_URL = "https://vnfvyonlnlqfoocxmmlr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Ypgx9Bzt59ITvS8OLtm5ng_GvumN0BA";
+const FN_URL = SUPABASE_URL + "/functions/v1/reset-api";
 const STORE_KEY = "thereset.v1";
+const TRIAL_KEY = "thereset.trial";
 
-// Gentle daily affirmations — your own kind inner voice for hard days.
+// Set up the cloud client — but degrade gracefully to local-only if unavailable.
+let supabase = null;
+try { if (window.supabase) supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch (e) {}
+const cloudAvailable = !!supabase;
+
+const uid = () => Math.random().toString(36).slice(2, 9);
+const money = (n) => "$" + (Number(n) || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+function isoDate(o = 0) { const d = new Date(); d.setDate(d.getDate() + o); return d.toISOString().slice(0, 10); }
+
 const AFFIRMATIONS = [
   "You're going to get through this. One small step today.",
   "You don't have to do it all. Just the next thing.",
@@ -84,43 +104,25 @@ const AFFIRMATIONS = [
   "Breathe. You're allowed to take it easy.",
   "Healing isn't a straight line — and that's okay.",
 ];
-// Pick one affirmation that stays the same all day, then changes tomorrow.
-function affirmationForToday() {
-  const dayNumber = Math.floor(Date.now() / 86400000);
-  return AFFIRMATIONS[dayNumber % AFFIRMATIONS.length];
-}
-const uid = () => Math.random().toString(36).slice(2, 9);
-const money = (n) =>
-  "$" + (Number(n) || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+function affirmationForToday() { return AFFIRMATIONS[Math.floor(Date.now() / 86400000) % AFFIRMATIONS.length]; }
 
-// A date offset from today, as YYYY-MM-DD (used for sample data + inputs)
-function isoDate(offsetDays = 0) {
-  const d = new Date();
-  d.setDate(d.getDate() + offsetDays);
-  return d.toISOString().slice(0, 10);
-}
-
-/* ---------- The 8 sections of the app ---------- */
 const TABS = [
-  { id: "today",    label: "Today",  icon: "🌅" },
-  { id: "budget",   label: "Money",  icon: "💰" },
-  { id: "work",     label: "Work",   icon: "🧾" },
-  { id: "shopping", label: "Shop",   icon: "🛒" },
-  { id: "kids",     label: "People", icon: "💛" },
-  { id: "health",   label: "Health", icon: "🌿" },
-  { id: "tasks",    label: "Tasks",  icon: "✅" },
-  { id: "notes",    label: "Notes",  icon: "📝" },
+  { id: "today",    label: "Today",  icon: "today" },
+  { id: "budget",   label: "Money",  icon: "money" },
+  { id: "work",     label: "Work",   icon: "work" },
+  { id: "shopping", label: "Shop",   icon: "shop" },
+  { id: "kids",     label: "People", icon: "people" },
+  { id: "health",   label: "Health", icon: "health" },
+  { id: "tasks",    label: "Tasks",  icon: "tasks" },
+  { id: "notes",    label: "Notes",  icon: "notes" },
 ];
 
-/* =======================================================================
-   Sample data (loaded the first time you open the app)
-   ======================================================================= */
+/* ---------------- Sample data (gentle, universal) ---------------- */
 function sampleData() {
   return {
     version: 1,
     today: {
-      mood: "medium",              // low | medium | good
-      survivalMode: false,
+      mood: "medium", survivalMode: false,
       priorities: [
         "Drink some water and eat something",
         "Do one small thing I've been avoiding",
@@ -138,14 +140,7 @@ function sampleData() {
       { id: uid(), text: "Cancel a subscription I don't use", priority: "later", status: "not-started", due: "" },
     ],
     budget: {
-      available: 500,
-      incoming: 800,
-      rent: 400,
-      bills: 150,
-      food: 180,
-      fuel: 70,
-      medicine: 40,
-      debts: 100,
+      available: 500, incoming: 800, rent: 400, bills: 150, food: 180, fuel: 70, medicine: 40, debts: 100,
       doNotSpend: [
         { id: uid(), text: "Impulse online shopping" },
         { id: uid(), text: "Late-night takeaway" },
@@ -174,10 +169,7 @@ function sampleData() {
       { id: uid(), text: "10 minutes of proper attention with the kids", category: "Family", done: false },
     ],
     health: {
-      checklist: {
-        shower: true, eat: true, water: false, cleanRoom: false,
-        pray: false, walk: false, sleepPlan: false,
-      },
+      checklist: { shower: true, eat: true, water: false, cleanRoom: false, pray: false, walk: false, sleepPlan: false },
       meds: [
         { id: uid(), text: "Morning medication / vitamins", done: true },
         { id: uid(), text: "Evening medication", done: false },
@@ -185,7 +177,7 @@ function sampleData() {
       sleepNotes: "Aim for lights out by 10:30pm. Phone out of reach.",
       foodNotes: "More water, fewer energy drinks. Simple meals are enough.",
       exerciseNotes: "A gentle walk counts. Move a little, not a lot.",
-      resetNotes: "Box breathing (4 in, 4 hold, 4 out). Cold water on the face. Step outside for 5 minutes. Put one hand on your chest and slow down.",
+      resetNotes: "Box breathing (4 in, 4 hold, 4 out). Cold water on the face. Step outside for 5 minutes.",
     },
     notes: [
       { id: uid(), text: "Healing isn't a straight line. Some days are slow, and that's okay.", created: Date.now() - 86400000 },
@@ -193,132 +185,116 @@ function sampleData() {
     ],
   };
 }
-
-/* ---------- Load & save ---------- */
-function loadData() {
-  try {
-    const raw = localStorage.getItem(STORE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) {}
-  return null;
+function emptyData() {
+  return {
+    version: 1,
+    today: { mood: "medium", survivalMode: false, priorities: ["", "", ""], reminders: [] },
+    tasks: [],
+    budget: { available: "", incoming: "", rent: "", bills: "", food: "", fuel: "", medicine: "", debts: "", doNotSpend: [] },
+    shifts: [], shoppingBudget: "", shopping: [], kids: [],
+    health: { checklist: { shower: false, eat: false, water: false, cleanRoom: false, pray: false, walk: false, sleepPlan: false }, meds: [], sleepNotes: "", foodNotes: "", exerciseNotes: "", resetNotes: "" },
+    notes: [],
+  };
 }
-function saveData(data) {
-  try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
+
+/* ---------------- Local storage helpers ---------------- */
+function loadLocal() { try { const r = localStorage.getItem(STORE_KEY); if (r) return JSON.parse(r); } catch (e) {} return null; }
+function saveLocal(d) { try { localStorage.setItem(STORE_KEY, JSON.stringify(d)); } catch (e) {} }
+
+/* ---------------- Cloud helpers ---------------- */
+async function callFn(action, body, accessToken) {
+  const res = await fetch(FN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": "Bearer " + (accessToken || SUPABASE_KEY) },
+    body: JSON.stringify({ action, ...(body || {}) }),
+  });
+  let json = {}; try { json = await res.json(); } catch (e) {}
+  if (!res.ok || json.error) throw new Error(json.error || ("Something went wrong (" + res.status + ")"));
+  return json;
+}
+async function loadCloud(session) {
+  const { data, error } = await supabase.from("reset_users").select("data").eq("id", session.user.id).maybeSingle();
+  if (error) throw error;
+  return data && data.data && Object.keys(data.data).length ? data.data : null;
+}
+async function saveCloud(session, data) {
+  const { error } = await supabase.from("reset_users").upsert({ id: session.user.id, email: session.user.email, data });
+  if (error) throw error;
 }
 
 /* =======================================================================
-   Small reusable building blocks
+   Icons (inline SVG — premium line set)
    ======================================================================= */
-function Card({ children, className = "", ...rest }) {
+function Icon({ name, className = "w-5 h-5", stroke = 1.75 }) {
+  const P = {
+    today: <g><circle cx="12" cy="12" r="4" /><path d="M12 3v1.6M12 19.4V21M3 12h1.6M19.4 12H21M5.6 5.6l1.1 1.1M17.3 17.3l1.1 1.1M18.4 5.6l-1.1 1.1M6.7 17.3l-1.1 1.1" /></g>,
+    money: <g><rect x="2.5" y="6" width="19" height="12" rx="2.5" /><circle cx="12" cy="12" r="2.4" /></g>,
+    work: <g><rect x="3" y="7.5" width="18" height="12.5" rx="2.5" /><path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5" /><path d="M3 12.5h18" /></g>,
+    shop: <g><path d="M5.6 8h12.8l.8 11.1a1 1 0 0 1-1 1.1H5.8a1 1 0 0 1-1-1.1L5.6 8z" /><path d="M9 8a3 3 0 0 1 6 0" /></g>,
+    people: <path d="M12 20.3S4.5 16 4.5 10.4A3.6 3.6 0 0 1 12 8a3.6 3.6 0 0 1 7.5 2.4C19.5 16 12 20.3 12 20.3z" />,
+    health: <g><path d="M4.5 19.5c0-8 6.2-13 15-13 0 8.2-6.2 13-15 13z" /><path d="M4.8 19.2 12 12" /></g>,
+    tasks: <g><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" /><path d="M8 12.2l2.8 2.8L16 9" /></g>,
+    notes: <g><path d="M4 20h4L18.5 9.5l-4-4L4 16v4z" /><path d="M13.5 6.5l4 4" /></g>,
+    user: <g><circle cx="12" cy="8.5" r="4" /><path d="M4.6 20c0-4 3.6-6.5 7.4-6.5s7.4 2.5 7.4 6.5" /></g>,
+    lock: <g><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" /><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" /></g>,
+    cloud: <path d="M7 18a4 4 0 0 1 0-8 5.5 5.5 0 0 1 10.6 1.5A3.5 3.5 0 0 1 17 18H7z" />,
+    check: <path d="M5 12.5l4 4 10-10" />,
+    logout: <g><path d="M15 5h3.5a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H15" /><path d="M10 12h9" /><path d="M13 8l-3.5 4L13 16" /></g>,
+    plus: <path d="M12 5v14M5 12h14" />,
+    close: <path d="M6 6l12 12M18 6L6 18" />,
+    search: <g><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.8-3.8" /></g>,
+    spark: <path d="M12 3l1.7 5.1L19 10l-5.3 1.9L12 17l-1.7-5.1L5 10l5.3-1.9L12 3z" />,
+    back: <path d="M15 5l-7 7 7 7" />,
+    leaf: <g><path d="M4.5 19.5c0-8 6.2-13 15-13 0 8.2-6.2 13-15 13z" /><path d="M4.8 19.2 12 12" /></g>,
+    gear: <g><circle cx="12" cy="12" r="3.2" /><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18" /></g>,
+    key: <g><circle cx="8.5" cy="8.5" r="3.5" /><path d="M11 11l7 7M16 16l1.5-1.5M18 18l1.5-1.5" /></g>,
+  };
   return (
-    <div {...rest} className={"bg-white rounded-2xl border border-slate-100 shadow-sm p-4 " + className}>
-      {children}
-    </div>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" className={className}>
+      {P[name] || null}
+    </svg>
   );
 }
 
-function Btn({ variant = "primary", className = "", ...rest }) {
-  const styles = {
-    primary: "bg-teal-600 text-white active:bg-teal-700",
-    soft:    "bg-teal-50 text-teal-700 active:bg-teal-100",
-    ghost:   "bg-slate-100 text-slate-700 active:bg-slate-200",
-    danger:  "bg-rose-50 text-rose-600 active:bg-rose-100",
-  }[variant];
-  return (
-    <button
-      {...rest}
-      className={"rounded-xl font-bold text-[15px] px-4 py-3 transition select-none disabled:opacity-40 " + styles + " " + className}
-    />
-  );
+/* =======================================================================
+   UI primitives
+   ======================================================================= */
+function Card({ className = "", ...p }) { return <div {...p} className={"card p-4 " + className} />; }
+function Btn({ variant = "primary", className = "", ...p }) { return <button {...p} className={"btn btn-" + variant + " " + className} />; }
+function Input({ className = "", ...p }) { return <input {...p} className={"field " + className} />; }
+function TextArea({ className = "", ...p }) { return <textarea {...p} className={"field " + className} />; }
+function Select({ className = "", children, ...p }) { return <select {...p} className={"field " + className}>{children}</select>; }
+function Label({ children }) { return <label className="block text-[13px] font-bold text-[#8b909a] mb-1.5">{children}</label>; }
+function Empty({ children }) { return <div className="text-center text-[#6b7079] text-sm py-6">{children}</div>; }
+function Chip({ active, className = "", ...p }) {
+  return <button {...p} className={"px-3 py-2 rounded-full text-sm font-bold whitespace-nowrap transition " + (active ? "bg-[#c8a45c] text-[#141206]" : "bg-[#1a1d24] text-[#9aa0aa] border border-[#262a33] active:bg-[#20242c]") + " " + className} />;
 }
-
-function Input({ className = "", ...rest }) {
-  return (
-    <input
-      {...rest}
-      className={"w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-[16px] placeholder-slate-400 " +
-        "focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 " + className}
-    />
-  );
-}
-function TextArea({ className = "", ...rest }) {
-  return (
-    <textarea
-      {...rest}
-      className={"w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-[16px] placeholder-slate-400 " +
-        "focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 " + className}
-    />
-  );
-}
-function Select({ className = "", children, ...rest }) {
-  return (
-    <select
-      {...rest}
-      className={"w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-[16px] " +
-        "focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 " + className}
-    >
-      {children}
-    </select>
-  );
-}
-
-function Label({ children }) {
-  return <label className="block text-sm font-bold text-slate-500 mb-1">{children}</label>;
-}
-
-function Chip({ active, className = "", children, ...rest }) {
-  return (
-    <button
-      {...rest}
-      className={"px-3 py-2 rounded-full text-sm font-bold whitespace-nowrap transition select-none " +
-        (active ? "bg-teal-600 text-white" : "bg-white text-slate-600 border border-slate-200 active:bg-slate-50") +
-        " " + className}
-    >
-      {children}
-    </button>
-  );
-}
-
-// A round tick button used for checklists
 function Tick({ done, onClick }) {
   return (
-    <button
-      onClick={onClick}
-      aria-label={done ? "Done" : "Not done"}
-      className={"shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center text-white text-base transition " +
-        (done ? "bg-teal-600 border-teal-600" : "bg-white border-slate-300 active:border-teal-400")}
-    >
-      {done ? "✓" : ""}
+    <button onClick={onClick} aria-label={done ? "Done" : "Not done"}
+      className={"shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center transition " + (done ? "bg-[#7fae8f] border-[#7fae8f] text-[#12140f]" : "border-[#3a3f4a] text-transparent active:border-[#7fae8f]")}>
+      <Icon name="check" className="w-4 h-4" stroke={3} />
     </button>
   );
 }
-
 function SectionHeader({ icon, title, subtitle }) {
   return (
-    <div className="pt-1 pb-1">
-      <h2 className="text-2xl font-extrabold text-slate-800 flex items-center gap-2">
-        <span>{icon}</span> {title}
-      </h2>
-      {subtitle && <p className="text-slate-500 text-sm mt-0.5">{subtitle}</p>}
+    <div className="pt-1">
+      <div className="flex items-center gap-2.5">
+        <span className="w-9 h-9 rounded-xl bg-[#c8a45c]/12 text-[#d8b979] flex items-center justify-center"><Icon name={icon} /></span>
+        <h2 className="text-[26px] font-extrabold text-[#ececf0] tracking-tight">{title}</h2>
+      </div>
+      {subtitle && <p className="text-[#8b909a] text-sm mt-2">{subtitle}</p>}
     </div>
   );
 }
-
-function Empty({ children }) {
-  return (
-    <div className="text-center text-slate-400 text-sm py-6">{children}</div>
-  );
-}
-
 function Modal({ title, onClose, children }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 p-0 sm:p-4"
-         onClick={onClose}>
-      <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[88vh] overflow-y-auto"
-           onClick={(e) => e.stopPropagation()}>
-        <div className="sticky top-0 bg-white flex items-center justify-between px-5 py-4 border-b border-slate-100">
-          <h3 className="text-lg font-extrabold">{title}</h3>
-          <button onClick={onClose} className="w-9 h-9 rounded-full bg-slate-100 text-slate-600 text-lg active:bg-slate-200">✕</button>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-[#16181e] border border-[#242832] w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[88vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="sticky top-0 bg-[#16181e] flex items-center justify-between px-5 py-4 border-b border-[#242832]">
+          <h3 className="text-lg font-extrabold text-[#ececf0]">{title}</h3>
+          <button onClick={onClose} className="w-9 h-9 rounded-full bg-[#1c1f27] text-[#a7abb4] flex items-center justify-center"><Icon name="close" className="w-4 h-4" /></button>
         </div>
         <div className="p-5">{children}</div>
       </div>
@@ -327,347 +303,196 @@ function Modal({ title, onClose, children }) {
 }
 
 /* =======================================================================
-   Work helpers (hours, pay, weeks, invoice text)
+   Work helpers
    ======================================================================= */
-function shiftHours(s) {
-  if (!s.start || !s.end) return 0;
-  const [sh, sm] = s.start.split(":").map(Number);
-  const [eh, em] = s.end.split(":").map(Number);
-  let mins = eh * 60 + em - (sh * 60 + sm);
-  if (mins < 0) mins += 1440; // overnight shift
-  return mins / 60;
-}
-function shiftPay(s) {
-  return shiftHours(s) * (Number(s.rate) || 0);
-}
-function startOfWeek(date) {
-  const x = new Date(date);
-  const day = (x.getDay() + 6) % 7; // Monday = 0
-  x.setDate(x.getDate() - day);
-  x.setHours(0, 0, 0, 0);
-  return x;
-}
-function isThisWeek(dateStr) {
-  if (!dateStr) return false;
-  const start = startOfWeek(new Date());
-  const end = new Date(start); end.setDate(end.getDate() + 7);
-  const d = new Date(dateStr + "T00:00:00");
-  return d >= start && d < end;
-}
+function shiftHours(s) { if (!s.start || !s.end) return 0; const [sh, sm] = s.start.split(":").map(Number); const [eh, em] = s.end.split(":").map(Number); let m = eh * 60 + em - (sh * 60 + sm); if (m < 0) m += 1440; return m / 60; }
+function shiftPay(s) { return shiftHours(s) * (Number(s.rate) || 0); }
+function startOfWeek(date) { const x = new Date(date); const day = (x.getDay() + 6) % 7; x.setDate(x.getDate() - day); x.setHours(0, 0, 0, 0); return x; }
+function isThisWeek(ds) { if (!ds) return false; const s = startOfWeek(new Date()); const e = new Date(s); e.setDate(e.getDate() + 7); const d = new Date(ds + "T00:00:00"); return d >= s && d < e; }
 const STATUS_LABEL = { "not-sent": "Not sent", sent: "Sent", paid: "Paid" };
 function invoiceText(shifts) {
-  const byEmp = {};
-  shifts.forEach((s) => { (byEmp[s.employer || "Client"] = byEmp[s.employer || "Client"] || []).push(s); });
-  let out = "INVOICE SUMMARY\nGenerated: " + new Date().toLocaleDateString() + "\n";
-  let grand = 0;
-  Object.keys(byEmp).forEach((emp) => {
-    out += "\n" + emp + "\n";
-    byEmp[emp].forEach((s) => {
-      const pay = shiftPay(s); grand += pay;
-      out += "  " + s.date + "  " + s.start + "-" + s.end + "  " +
-             shiftHours(s).toFixed(2) + "h x $" + (Number(s.rate) || 0) + " = " +
-             money(pay) + "  [" + STATUS_LABEL[s.status] + "]\n";
-    });
-  });
-  out += "\nTOTAL: " + money(grand);
-  return out;
+  const byEmp = {}; shifts.forEach((s) => { (byEmp[s.employer || "Client"] = byEmp[s.employer || "Client"] || []).push(s); });
+  let out = "INVOICE SUMMARY\nGenerated: " + new Date().toLocaleDateString() + "\n"; let grand = 0;
+  Object.keys(byEmp).forEach((emp) => { out += "\n" + emp + "\n"; byEmp[emp].forEach((s) => { const pay = shiftPay(s); grand += pay; out += "  " + s.date + "  " + s.start + "-" + s.end + "  " + shiftHours(s).toFixed(2) + "h x $" + (Number(s.rate) || 0) + " = " + money(pay) + "  [" + STATUS_LABEL[s.status] + "]\n"; }); });
+  out += "\nTOTAL: " + money(grand); return out;
 }
 
 /* =======================================================================
-   1. TODAY DASHBOARD
+   1. TODAY
    ======================================================================= */
 function TodayView({ data, setKey, go }) {
   const today = data.today;
-  const now = new Date();
-  const dateStr = now.toLocaleDateString(undefined, {
-    weekday: "long", day: "numeric", month: "long",
-  });
-
+  const dateStr = new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
   const mustDo = data.tasks.filter((t) => t.priority === "urgent" && t.status !== "done");
   const b = data.budget;
-  const committed = ["rent", "bills", "food", "fuel", "medicine", "debts"]
-    .reduce((sum, k) => sum + (Number(b[k]) || 0), 0);
+  const committed = ["rent", "bills", "food", "fuel", "medicine", "debts"].reduce((s, k) => s + (Number(b[k]) || 0), 0);
   const leftover = (Number(b.available) || 0) + (Number(b.incoming) || 0) - committed;
   const shopLeft = data.shopping.filter((i) => !i.bought).length;
   const healthDone = Object.values(data.health.checklist).filter(Boolean).length;
   const healthTotal = Object.keys(data.health.checklist).length;
-
   const survival = today.survivalMode || today.mood === "low";
-
   const setToday = (patch) => setKey("today", (t) => ({ ...t, ...patch }));
-  const setPriority = (i, val) =>
-    setToday({ priorities: today.priorities.map((p, idx) => (idx === i ? val : p)) });
-
+  const setPriority = (i, v) => setToday({ priorities: today.priorities.map((p, idx) => (idx === i ? v : p)) });
   const [reminder, setReminder] = useState("");
-  const addReminder = () => {
-    if (!reminder.trim()) return;
-    setToday({ reminders: [...today.reminders, { id: uid(), text: reminder.trim(), done: false }] });
-    setReminder("");
-  };
-  const toggleReminder = (id) =>
-    setToday({ reminders: today.reminders.map((r) => (r.id === id ? { ...r, done: !r.done } : r)) });
-  const delReminder = (id) =>
-    setToday({ reminders: today.reminders.filter((r) => r.id !== id) });
-
-  const toggleTaskDone = (id) =>
-    setKey("tasks", (arr) => arr.map((t) => (t.id === id ? { ...t, status: t.status === "done" ? "not-started" : "done" } : t)));
-
+  const addReminder = () => { if (!reminder.trim()) return; setToday({ reminders: [...today.reminders, { id: uid(), text: reminder.trim(), done: false }] }); setReminder(""); };
+  const toggleReminder = (id) => setToday({ reminders: today.reminders.map((r) => (r.id === id ? { ...r, done: !r.done } : r)) });
+  const delReminder = (id) => setToday({ reminders: today.reminders.filter((r) => r.id !== id) });
+  const toggleTaskDone = (id) => setKey("tasks", (arr) => arr.map((t) => (t.id === id ? { ...t, status: t.status === "done" ? "not-started" : "done" } : t)));
   const moods = [
-    { id: "low",    label: "Low",    emoji: "😔", on: "bg-amber-100 border-amber-300 text-amber-700" },
-    { id: "medium", label: "Medium", emoji: "😐", on: "bg-sky-100 border-sky-300 text-sky-700" },
-    { id: "good",   label: "Good",   emoji: "🙂", on: "bg-emerald-100 border-emerald-300 text-emerald-700" },
+    { id: "low", label: "Low", dot: "#d8a657" },
+    { id: "medium", label: "Medium", dot: "#7fa6d8" },
+    { id: "good", label: "Good", dot: "#7fae8f" },
   ];
-
+  const stat = (label, value, tab, tone) => (
+    <button onClick={() => go(tab)} className="text-left">
+      <div className="card p-4 h-full">
+        <p className="text-[11px] font-bold uppercase tracking-wide text-[#71767f]">{label}</p>
+        <p className={"text-2xl font-extrabold mt-1 " + (tone || "text-[#ececf0]")}>{value}</p>
+      </div>
+    </button>
+  );
   return (
     <div className="space-y-4">
       <div>
-        <p className="text-slate-500 font-bold">{dateStr}</p>
-        <h1 className="text-3xl font-extrabold text-slate-800">Welcome back. Take it gently today.</h1>
+        <p className="text-[#8b909a] font-bold">{dateStr}</p>
+        <h1 className="text-[30px] leading-tight font-extrabold text-[#f2f2f4] tracking-tight">Welcome back.<br/>Take it gently today.</h1>
       </div>
 
-      {/* Daily affirmation — your kind inner voice */}
-      <Card className="bg-teal-600 border-teal-600">
-        <p className="text-white/70 text-xs font-extrabold uppercase tracking-wide">A note to you</p>
-        <p className="text-white text-xl font-extrabold mt-1 leading-snug">{affirmationForToday()}</p>
-      </Card>
+      <div className="card p-4 bg-gradient-to-br from-[#1c1a14] to-[#16181e] border-[#3a331f]">
+        <div className="flex items-center gap-2 text-[#d8b979] text-[11px] font-bold uppercase tracking-wide"><Icon name="spark" className="w-4 h-4" /> A note to you</div>
+        <p className="text-[#efe6d2] text-xl font-extrabold mt-2 leading-snug">{affirmationForToday()}</p>
+      </div>
 
-      {/* Mood / energy */}
       <Card>
         <Label>How's your energy right now?</Label>
-        <div className="grid grid-cols-3 gap-2 mt-1">
+        <div className="grid grid-cols-3 gap-2">
           {moods.map((m) => (
-            <button
-              key={m.id}
-              onClick={() => setToday({ mood: m.id })}
-              className={"py-3 rounded-xl border-2 font-bold text-sm flex flex-col items-center gap-1 transition " +
-                (today.mood === m.id ? m.on : "bg-white border-slate-200 text-slate-500")}
-            >
-              <span className="text-2xl">{m.emoji}</span>
-              {m.label}
+            <button key={m.id} onClick={() => setToday({ mood: m.id })}
+              className={"py-3 rounded-xl border font-bold text-sm flex items-center justify-center gap-2 transition " + (today.mood === m.id ? "bg-[#20242c] border-[#c8a45c] text-[#ececf0]" : "bg-[#14161c] border-[#262a33] text-[#8b909a]")}>
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: m.dot }} />{m.label}
             </button>
           ))}
         </div>
         {!survival && (
-          <button
-            onClick={() => setToday({ survivalMode: true })}
-            className="mt-3 w-full text-sm font-bold text-teal-700 bg-teal-50 rounded-xl py-2 active:bg-teal-100"
-          >
-            I'm tired / overwhelmed — show me survival mode
+          <button onClick={() => setToday({ survivalMode: true })} className="mt-3 w-full text-sm font-bold text-[#d8b979] bg-[#c8a45c]/10 rounded-xl py-2.5 border border-[#c8a45c]/20">
+            I'm tired / overwhelmed — show survival mode
           </button>
         )}
       </Card>
 
-      {/* Survival mode plan */}
       {survival && (
-        <Card className="bg-teal-50 border-teal-100">
+        <div className="card p-4 bg-[#141b17] border-[#274031]">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-extrabold text-teal-800">🫶 Survival mode</h3>
-            {today.survivalMode && (
-              <button onClick={() => setToday({ survivalMode: false })}
-                      className="text-xs font-bold text-teal-700 underline">turn off</button>
-            )}
+            <h3 className="text-lg font-extrabold text-[#9ed3b1]">Survival mode</h3>
+            {today.survivalMode && <button onClick={() => setToday({ survivalMode: false })} className="text-xs font-bold text-[#7fae8f] underline">turn off</button>}
           </div>
-          <p className="text-teal-800 text-sm mt-1">Keep it small today. Just these:</p>
-          <ul className="mt-2 space-y-1.5 text-teal-900 font-bold">
-            <li>💧 Drink a glass of water</li>
-            <li>🍞 Eat something simple</li>
-            <li>⭐ Do just one thing: <span className="font-extrabold">{today.priorities[0] || "your top priority"}</span></li>
-            <li>🌬️ Take 5 slow breaths</li>
+          <p className="text-[#9fb8a8] text-sm mt-1">Keep it small today. Just these:</p>
+          <ul className="mt-3 space-y-2 text-[#dbeee2] font-semibold">
+            <li>Drink a glass of water</li>
+            <li>Eat something simple</li>
+            <li>Do just one thing: <span className="font-extrabold text-white">{today.priorities[0] || "your top priority"}</span></li>
+            <li>Take five slow breaths</li>
           </ul>
-          <p className="text-teal-700 text-sm mt-3">Anything else today is a bonus. You're doing enough.</p>
-        </Card>
+          <p className="text-[#7fae8f] text-sm mt-3">Anything else today is a bonus. You're doing enough.</p>
+        </div>
       )}
 
-      {/* Top 3 priorities */}
       <Card>
         <Label>Top 3 things that matter today</Label>
-        <div className="space-y-2 mt-1">
+        <div className="space-y-2">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="flex items-center gap-2">
-              <span className="w-7 h-7 shrink-0 rounded-full bg-teal-600 text-white font-extrabold flex items-center justify-center">{i + 1}</span>
-              <Input
-                value={today.priorities[i] || ""}
-                onChange={(e) => setPriority(i, e.target.value)}
-                placeholder={"Priority " + (i + 1)}
-              />
+            <div key={i} className="flex items-center gap-2.5">
+              <span className="w-7 h-7 shrink-0 rounded-full bg-[#c8a45c]/15 text-[#d8b979] font-extrabold text-sm flex items-center justify-center">{i + 1}</span>
+              <Input value={today.priorities[i] || ""} onChange={(e) => setPriority(i, e.target.value)} placeholder={"Priority " + (i + 1)} />
             </div>
           ))}
         </div>
       </Card>
 
-      {/* Must-do tasks (urgent tasks) */}
       <Card>
-        <div className="flex items-center justify-between mb-1">
-          <Label>Must-do tasks</Label>
-          <button onClick={() => go("tasks")} className="text-xs font-bold text-teal-700">All tasks →</button>
-        </div>
-        {mustDo.length === 0 ? (
-          <Empty>No urgent tasks. Add urgent ones in Tasks.</Empty>
-        ) : (
-          <ul className="space-y-2">
-            {mustDo.map((t) => (
-              <li key={t.id} className="flex items-center gap-3">
-                <Tick done={t.status === "done"} onClick={() => toggleTaskDone(t.id)} />
-                <span className={t.status === "done" ? "line-through text-slate-400" : "font-bold"}>{t.text}</span>
-              </li>
-            ))}
-          </ul>
+        <div className="flex items-center justify-between mb-1"><Label>Must-do tasks</Label><button onClick={() => go("tasks")} className="text-xs font-bold text-[#d8b979]">All tasks →</button></div>
+        {mustDo.length === 0 ? <Empty>No urgent tasks. Mark tasks "Urgent" to see them here.</Empty> : (
+          <ul className="space-y-2.5">{mustDo.map((t) => (
+            <li key={t.id} className="flex items-center gap-3"><Tick done={t.status === "done"} onClick={() => toggleTaskDone(t.id)} /><span className={t.status === "done" ? "line-through text-[#6b7079]" : "font-semibold text-[#dfe1e6]"}>{t.text}</span></li>
+          ))}</ul>
         )}
       </Card>
 
-      {/* Reminders */}
       <Card>
         <Label>Reminders</Label>
-        <div className="flex gap-2 mt-1 mb-2">
-          <Input value={reminder} onChange={(e) => setReminder(e.target.value)}
-                 onKeyDown={(e) => e.key === "Enter" && addReminder()}
-                 placeholder="Add a reminder…" />
-          <Btn onClick={addReminder} className="shrink-0">Add</Btn>
+        <div className="flex gap-2 mb-2">
+          <Input value={reminder} onChange={(e) => setReminder(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addReminder()} placeholder="Add a reminder…" />
+          <Btn onClick={addReminder} className="shrink-0"><Icon name="plus" className="w-5 h-5" /></Btn>
         </div>
-        {today.reminders.length === 0 ? (
-          <Empty>Nothing to remember right now.</Empty>
-        ) : (
-          <ul className="space-y-2">
-            {today.reminders.map((r) => (
-              <li key={r.id} className="flex items-center gap-3">
-                <Tick done={r.done} onClick={() => toggleReminder(r.id)} />
-                <span className={"flex-1 " + (r.done ? "line-through text-slate-400" : "")}>{r.text}</span>
-                <button onClick={() => delReminder(r.id)} className="text-slate-300 text-lg px-1">✕</button>
-              </li>
-            ))}
-          </ul>
+        {today.reminders.length === 0 ? <Empty>Nothing to remember right now.</Empty> : (
+          <ul className="space-y-2.5">{today.reminders.map((r) => (
+            <li key={r.id} className="flex items-center gap-3"><Tick done={r.done} onClick={() => toggleReminder(r.id)} /><span className={"flex-1 " + (r.done ? "line-through text-[#6b7079]" : "text-[#dfe1e6]")}>{r.text}</span><button onClick={() => delReminder(r.id)} className="text-[#4a4f58]"><Icon name="close" className="w-4 h-4" /></button></li>
+          ))}</ul>
         )}
       </Card>
 
-      {/* Quick snapshots */}
       <div className="grid grid-cols-2 gap-3">
-        <button onClick={() => go("budget")} className="text-left">
-          <Card className="h-full">
-            <p className="text-xs font-bold text-slate-400">Left to spend</p>
-            <p className={"text-2xl font-extrabold " + (leftover < 0 ? "text-rose-600" : "text-emerald-600")}>{money(leftover)}</p>
-            <p className="text-xs text-slate-400 mt-1">Tap for Money →</p>
-          </Card>
-        </button>
-        <button onClick={() => go("work")} className="text-left">
-          <Card className="h-full">
-            <p className="text-xs font-bold text-slate-400">This week's pay</p>
-            <p className="text-2xl font-extrabold text-slate-800">
-              {money(data.shifts.filter((s) => isThisWeek(s.date)).reduce((sum, s) => sum + shiftPay(s), 0))}
-            </p>
-            <p className="text-xs text-slate-400 mt-1">Tap for Work →</p>
-          </Card>
-        </button>
-        <button onClick={() => go("shopping")} className="text-left">
-          <Card className="h-full">
-            <p className="text-xs font-bold text-slate-400">To buy</p>
-            <p className="text-2xl font-extrabold text-slate-800">{shopLeft} <span className="text-base font-bold text-slate-400">items</span></p>
-            <p className="text-xs text-slate-400 mt-1">Tap for Shop →</p>
-          </Card>
-        </button>
-        <button onClick={() => go("health")} className="text-left">
-          <Card className="h-full">
-            <p className="text-xs font-bold text-slate-400">Looking after me</p>
-            <p className="text-2xl font-extrabold text-slate-800">{healthDone}<span className="text-base font-bold text-slate-400">/{healthTotal}</span></p>
-            <p className="text-xs text-slate-400 mt-1">Tap for Health →</p>
-          </Card>
-        </button>
+        {stat("Left to spend", money(leftover), "budget", leftover < 0 ? "text-[#e5736f]" : "text-[#7fae8f]")}
+        {stat("This week's pay", money(data.shifts.filter((s) => isThisWeek(s.date)).reduce((a, s) => a + shiftPay(s), 0)), "work")}
+        {stat("To buy", shopLeft + " items", "shopping")}
+        {stat("Looking after me", healthDone + "/" + healthTotal, "health")}
       </div>
     </div>
   );
 }
 
 /* =======================================================================
-   2. BUDGET TRACKER
+   2. MONEY
    ======================================================================= */
 function BudgetView({ data, setKey }) {
   const b = data.budget;
-  const setBudget = (patch) => setKey("budget", (cur) => ({ ...cur, ...patch }));
-
+  const setBudget = (patch) => setKey("budget", (c) => ({ ...c, ...patch }));
   const rows = [
-    { key: "rent",     label: "Rent" },
-    { key: "bills",    label: "Bills & subscriptions" },
-    { key: "food",     label: "Food & groceries" },
-    { key: "fuel",     label: "Fuel / transport" },
-    { key: "medicine", label: "Medicine / health" },
-    { key: "debts",    label: "Debts / loans" },
+    { key: "rent", label: "Rent" }, { key: "bills", label: "Bills & subscriptions" },
+    { key: "food", label: "Food & groceries" }, { key: "fuel", label: "Fuel / transport" },
+    { key: "medicine", label: "Medicine / health" }, { key: "debts", label: "Debts / loans" },
   ];
-  const committed = rows.reduce((sum, r) => sum + (Number(b[r.key]) || 0), 0);
+  const committed = rows.reduce((s, r) => s + (Number(b[r.key]) || 0), 0);
   const totalIn = (Number(b.available) || 0) + (Number(b.incoming) || 0);
   const leftover = totalIn - committed;
-  const overspending = leftover < 0;
+  const over = leftover < 0;
   const usedPct = totalIn > 0 ? Math.min(100, (committed / totalIn) * 100) : 0;
-
   const [dns, setDns] = useState("");
-  const addDns = () => {
-    if (!dns.trim()) return;
-    setBudget({ doNotSpend: [...b.doNotSpend, { id: uid(), text: dns.trim() }] });
-    setDns("");
-  };
+  const addDns = () => { if (!dns.trim()) return; setBudget({ doNotSpend: [...b.doNotSpend, { id: uid(), text: dns.trim() }] }); setDns(""); };
   const delDns = (id) => setBudget({ doNotSpend: b.doNotSpend.filter((x) => x.id !== id) });
-
   const MoneyField = ({ k, label }) => (
     <div>
       <Label>{label}</Label>
-      <div className="relative">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
-        <Input type="number" inputMode="decimal" className="pl-8"
-               value={b[k] ?? ""} onChange={(e) => setBudget({ [k]: e.target.value })} placeholder="0" />
-      </div>
+      <div className="relative"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6b7079] font-bold">$</span>
+        <Input type="number" inputMode="decimal" className="pl-7" value={b[k] ?? ""} onChange={(e) => setBudget({ [k]: e.target.value })} placeholder="0" /></div>
     </div>
   );
-
   return (
     <div className="space-y-4">
-      <SectionHeader icon="💰" title="Money" subtitle="A calm, honest look at what's coming in and going out." />
-
-      {/* Big leftover number */}
-      <Card className={overspending ? "bg-rose-50 border-rose-100" : "bg-emerald-50 border-emerald-100"}>
-        <p className="font-bold text-slate-500">Leftover money (safe to spend)</p>
-        <p className={"text-4xl font-extrabold " + (overspending ? "text-rose-600" : "text-emerald-600")}>{money(leftover)}</p>
-        <div className="mt-3 h-2.5 rounded-full bg-white overflow-hidden">
-          <div className={"h-full " + (overspending ? "bg-rose-500" : "bg-emerald-500")} style={{ width: usedPct + "%" }} />
-        </div>
-        <p className="text-xs text-slate-500 mt-1">{money(committed)} committed of {money(totalIn)} available</p>
-        {overspending && (
-          <p className="mt-3 text-sm font-bold text-rose-700 bg-white rounded-xl p-3">
-            ⚠️ You're planning to spend more than you have. Try trimming food, fuel or bills, or move a debt payment to next week.
-          </p>
-        )}
-      </Card>
-
+      <SectionHeader icon="money" title="Money" subtitle="A calm, honest look at what's coming in and going out." />
+      <div className={"card p-5 " + (over ? "bg-[#1f1414] border-[#4a2a2a]" : "bg-[#141b17] border-[#274031]")}>
+        <p className="font-bold text-[#8b909a]">Leftover money — safe to spend</p>
+        <p className={"text-4xl font-extrabold mt-1 " + (over ? "text-[#e5736f]" : "text-[#8fc0a1]")}>{money(leftover)}</p>
+        <div className="mt-3 h-2.5 rounded-full bg-[#0e0f13] overflow-hidden"><div className={"h-full " + (over ? "bg-[#e5736f]" : "bg-[#7fae8f]")} style={{ width: usedPct + "%" }} /></div>
+        <p className="text-xs text-[#8b909a] mt-1.5">{money(committed)} committed of {money(totalIn)} available</p>
+        {over && <p className="mt-3 text-sm font-semibold text-[#f0a9a6] bg-[#e5736f]/10 rounded-xl p-3">You're planning to spend more than you have. Try trimming food, fuel or bills, or move a debt payment to next week.</p>}
+      </div>
       <div className="grid grid-cols-2 gap-3">
         <Card><MoneyField k="available" label="Money I have now" /></Card>
         <Card><MoneyField k="incoming" label="Money coming in" /></Card>
       </div>
-
       <Card>
         <Label>Where it's going</Label>
-        <div className="grid grid-cols-2 gap-3 mt-1">
-          {rows.map((r) => <MoneyField key={r.key} k={r.key} label={r.label} />)}
-        </div>
+        <div className="grid grid-cols-2 gap-3">{rows.map((r) => <MoneyField key={r.key} k={r.key} label={r.label} />)}</div>
       </Card>
-
-      {/* Do not spend list */}
       <Card>
-        <Label>🚫 Do NOT spend on</Label>
-        <p className="text-xs text-slate-400 mb-2">Your gentle reminders when you feel the urge.</p>
-        <div className="flex gap-2 mb-2">
-          <Input value={dns} onChange={(e) => setDns(e.target.value)}
-                 onKeyDown={(e) => e.key === "Enter" && addDns()}
-                 placeholder="e.g. Late-night takeaway" />
-          <Btn onClick={addDns} className="shrink-0">Add</Btn>
-        </div>
-        {b.doNotSpend.length === 0 ? (
-          <Empty>No items yet.</Empty>
-        ) : (
-          <ul className="space-y-2">
-            {b.doNotSpend.map((x) => (
-              <li key={x.id} className="flex items-center gap-2 bg-rose-50 rounded-xl px-3 py-2">
-                <span className="flex-1 font-bold text-rose-700">{x.text}</span>
-                <button onClick={() => delDns(x.id)} className="text-rose-300 text-lg">✕</button>
-              </li>
-            ))}
-          </ul>
+        <Label>Do NOT spend on</Label>
+        <p className="text-xs text-[#6b7079] mb-2">Your gentle reminders for when the urge hits.</p>
+        <div className="flex gap-2 mb-2"><Input value={dns} onChange={(e) => setDns(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addDns()} placeholder="e.g. Late-night takeaway" /><Btn onClick={addDns} className="shrink-0"><Icon name="plus" className="w-5 h-5" /></Btn></div>
+        {b.doNotSpend.length === 0 ? <Empty>No items yet.</Empty> : (
+          <ul className="space-y-2">{b.doNotSpend.map((x) => (
+            <li key={x.id} className="flex items-center gap-2 bg-[#e5736f]/8 border border-[#e5736f]/15 rounded-xl px-3 py-2.5"><span className="flex-1 font-semibold text-[#f0a9a6]">{x.text}</span><button onClick={() => delDns(x.id)} className="text-[#e5736f]/50"><Icon name="close" className="w-4 h-4" /></button></li>
+          ))}</ul>
         )}
       </Card>
     </div>
@@ -675,109 +500,59 @@ function BudgetView({ data, setKey }) {
 }
 
 /* =======================================================================
-   3. WORK & INVOICE TRACKER
+   3. WORK
    ======================================================================= */
 function WorkView({ data, setKey }) {
   const shifts = data.shifts;
   const setShifts = (fn) => setKey("shifts", fn);
-
   const blank = { employer: "", date: isoDate(0), start: "09:00", end: "17:00", rate: "" };
   const [form, setForm] = useState(blank);
-  const [invoice, setInvoice] = useState(null); // holds the generated text when modal open
-
-  const addShift = () => {
-    if (!form.employer.trim()) return;
-    setShifts((arr) => [{ id: uid(), status: "not-sent", ...form, rate: form.rate || 0 }, ...arr]);
-    setForm(blank);
-  };
-  const delShift = (id) => setShifts((arr) => arr.filter((s) => s.id !== id));
-  const cycleStatus = (id) =>
-    setShifts((arr) => arr.map((s) => {
-      if (s.id !== id) return s;
-      const order = ["not-sent", "sent", "paid"];
-      return { ...s, status: order[(order.indexOf(s.status) + 1) % 3] };
-    }));
-
-  const weekTotal = shifts.filter((s) => isThisWeek(s.date)).reduce((sum, s) => sum + shiftPay(s), 0);
-  const unpaidTotal = shifts.filter((s) => s.status !== "paid").reduce((sum, s) => sum + shiftPay(s), 0);
-
-  const statusStyle = {
-    "not-sent": "bg-slate-100 text-slate-600",
-    sent: "bg-sky-100 text-sky-700",
-    paid: "bg-emerald-100 text-emerald-700",
-  };
-
-  const copyInvoice = () => {
-    if (navigator.clipboard) navigator.clipboard.writeText(invoice).catch(() => {});
-  };
-
+  const [invoice, setInvoice] = useState(null);
+  const addShift = () => { if (!form.employer.trim()) return; setShifts((a) => [{ id: uid(), status: "not-sent", ...form, rate: form.rate || 0 }, ...a]); setForm(blank); };
+  const delShift = (id) => setShifts((a) => a.filter((s) => s.id !== id));
+  const cycle = (id) => setShifts((a) => a.map((s) => { if (s.id !== id) return s; const o = ["not-sent", "sent", "paid"]; return { ...s, status: o[(o.indexOf(s.status) + 1) % 3] }; }));
+  const weekTotal = shifts.filter((s) => isThisWeek(s.date)).reduce((a, s) => a + shiftPay(s), 0);
+  const unpaid = shifts.filter((s) => s.status !== "paid").reduce((a, s) => a + shiftPay(s), 0);
+  const sStyle = { "not-sent": "bg-[#22262f] text-[#a7abb4]", sent: "bg-[#7fa6d8]/15 text-[#9ec0ea]", paid: "bg-[#7fae8f]/15 text-[#8fc0a1]" };
+  const copyInvoice = () => { if (navigator.clipboard) navigator.clipboard.writeText(invoice).catch(() => {}); };
   return (
     <div className="space-y-4">
-      <SectionHeader icon="🧾" title="Work & Invoices" subtitle="Track shifts, pay and what's been invoiced." />
-
+      <SectionHeader icon="work" title="Work & Invoices" subtitle="Track shifts, pay and what's been invoiced." />
       <div className="grid grid-cols-2 gap-3">
-        <Card><p className="text-xs font-bold text-slate-400">This week's pay</p><p className="text-2xl font-extrabold text-slate-800">{money(weekTotal)}</p></Card>
-        <Card><p className="text-xs font-bold text-slate-400">Not yet paid</p><p className="text-2xl font-extrabold text-amber-600">{money(unpaidTotal)}</p></Card>
+        <Card><p className="text-[11px] font-bold uppercase tracking-wide text-[#71767f]">This week's pay</p><p className="text-2xl font-extrabold mt-1 text-[#ececf0]">{money(weekTotal)}</p></Card>
+        <Card><p className="text-[11px] font-bold uppercase tracking-wide text-[#71767f]">Not yet paid</p><p className="text-2xl font-extrabold mt-1 text-[#d8a657]">{money(unpaid)}</p></Card>
       </div>
-
-      {/* Add a shift */}
       <Card>
         <Label>Add a work shift</Label>
-        <div className="space-y-2 mt-1">
-          <Input placeholder="Employer / client name" value={form.employer}
-                 onChange={(e) => setForm({ ...form, employer: e.target.value })} />
+        <div className="space-y-2">
+          <Input placeholder="Employer / client name" value={form.employer} onChange={(e) => setForm({ ...form, employer: e.target.value })} />
           <Input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
           <div className="grid grid-cols-2 gap-2">
             <div><Label>Start</Label><Input type="time" value={form.start} onChange={(e) => setForm({ ...form, start: e.target.value })} /></div>
             <div><Label>End</Label><Input type="time" value={form.end} onChange={(e) => setForm({ ...form, end: e.target.value })} /></div>
           </div>
-          <div>
-            <Label>Hourly rate</Label>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
-              <Input type="number" inputMode="decimal" className="pl-8" placeholder="0"
-                     value={form.rate} onChange={(e) => setForm({ ...form, rate: e.target.value })} />
-            </div>
-          </div>
+          <div><Label>Hourly rate</Label><div className="relative"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6b7079] font-bold">$</span><Input type="number" inputMode="decimal" className="pl-7" placeholder="0" value={form.rate} onChange={(e) => setForm({ ...form, rate: e.target.value })} /></div></div>
           <Btn onClick={addShift} className="w-full">Add shift</Btn>
         </div>
       </Card>
-
-      {shifts.length > 0 && (
-        <Btn variant="soft" className="w-full" onClick={() => setInvoice(invoiceText(shifts))}>
-          🧾 Create invoice summary text
-        </Btn>
+      {shifts.length > 0 && <Btn variant="soft" className="w-full" onClick={() => setInvoice(invoiceText(shifts))}>Create invoice summary text</Btn>}
+      {shifts.length === 0 ? <Empty>No shifts yet. Add your first one above.</Empty> : (
+        <div className="space-y-3">{shifts.map((s) => (
+          <Card key={s.id}>
+            <div className="flex items-start justify-between">
+              <div><p className="font-extrabold text-[#ececf0]">{s.employer || "Client"}</p><p className="text-sm text-[#8b909a] mt-0.5">{s.date} · {s.start}–{s.end} · {shiftHours(s).toFixed(2)}h @ {money(s.rate)}/hr</p></div>
+              <button onClick={() => delShift(s.id)} className="text-[#4a4f58]"><Icon name="close" className="w-4 h-4" /></button>
+            </div>
+            <div className="flex items-center justify-between mt-3">
+              <p className="text-xl font-extrabold text-[#ececf0]">{money(shiftPay(s))}</p>
+              <button onClick={() => cycle(s.id)} className={"px-3 py-1.5 rounded-full text-sm font-bold " + sStyle[s.status]}>{STATUS_LABEL[s.status]} ⟳</button>
+            </div>
+          </Card>
+        ))}</div>
       )}
-
-      {/* Shift list */}
-      {shifts.length === 0 ? (
-        <Empty>No shifts yet. Add your first one above.</Empty>
-      ) : (
-        <div className="space-y-3">
-          {shifts.map((s) => (
-            <Card key={s.id}>
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="font-extrabold text-slate-800">{s.employer || "Client"}</p>
-                  <p className="text-sm text-slate-500">{s.date} · {s.start}–{s.end} · {shiftHours(s).toFixed(2)}h @ {money(s.rate)}/hr</p>
-                </div>
-                <button onClick={() => delShift(s.id)} className="text-slate-300 text-lg px-1">✕</button>
-              </div>
-              <div className="flex items-center justify-between mt-3">
-                <p className="text-xl font-extrabold text-slate-800">{money(shiftPay(s))}</p>
-                <button onClick={() => cycleStatus(s.id)}
-                        className={"px-3 py-1.5 rounded-full text-sm font-bold " + statusStyle[s.status]}>
-                  {STATUS_LABEL[s.status]} ⟳
-                </button>
-              </div>
-            </Card>
-          ))}
-        </div>
-      )}
-
       {invoice && (
         <Modal title="Invoice summary" onClose={() => setInvoice(null)}>
-          <p className="text-sm text-slate-500 mb-2">Copy this and paste it into a message or email.</p>
+          <p className="text-sm text-[#8b909a] mb-2">Copy this and paste it into a message or email.</p>
           <TextArea rows={12} value={invoice} readOnly className="font-mono text-sm" />
           <Btn className="w-full mt-3" onClick={copyInvoice}>Copy to clipboard</Btn>
         </Modal>
@@ -787,7 +562,7 @@ function WorkView({ data, setKey }) {
 }
 
 /* =======================================================================
-   4. SHOPPING LIST
+   4. SHOP
    ======================================================================= */
 const SHOP_CATS = ["Groceries", "House essentials", "Medicine", "Kids", "Work"];
 function ShoppingView({ data, setKey }) {
@@ -795,93 +570,49 @@ function ShoppingView({ data, setKey }) {
   const setItems = (fn) => setKey("shopping", fn);
   const [filter, setFilter] = useState("All");
   const [form, setForm] = useState({ name: "", category: "Groceries", price: "" });
-
-  const addItem = () => {
-    if (!form.name.trim()) return;
-    setItems((arr) => [...arr, { id: uid(), name: form.name.trim(), category: form.category, price: form.price || 0, bought: false }]);
-    setForm({ name: "", category: form.category, price: "" });
-  };
-  const toggle = (id) => setItems((arr) => arr.map((i) => (i.id === id ? { ...i, bought: !i.bought } : i)));
-  const del = (id) => setItems((arr) => arr.filter((i) => i.id !== id));
-
+  const addItem = () => { if (!form.name.trim()) return; setItems((a) => [...a, { id: uid(), name: form.name.trim(), category: form.category, price: form.price || 0, bought: false }]); setForm({ name: "", category: form.category, price: "" }); };
+  const toggle = (id) => setItems((a) => a.map((i) => (i.id === id ? { ...i, bought: !i.bought } : i)));
+  const del = (id) => setItems((a) => a.filter((i) => i.id !== id));
   const shown = items.filter((i) => filter === "All" || i.category === filter);
-  const stillToBuy = items.filter((i) => !i.bought);
-  const estTotal = stillToBuy.reduce((sum, i) => sum + (Number(i.price) || 0), 0);
+  const estTotal = items.filter((i) => !i.bought).reduce((s, i) => s + (Number(i.price) || 0), 0);
   const budget = Number(data.shoppingBudget) || 0;
-  const overBudget = budget > 0 && estTotal > budget;
-
+  const over = budget > 0 && estTotal > budget;
   return (
     <div className="space-y-4">
-      <SectionHeader icon="🛒" title="Shopping" subtitle="What you need — grouped and within budget." />
-
-      <Card className={overBudget ? "bg-rose-50 border-rose-100" : ""}>
+      <SectionHeader icon="shop" title="Shopping" subtitle="What you need — grouped and within budget." />
+      <div className={"card p-4 " + (over ? "bg-[#1f1414] border-[#4a2a2a]" : "")}>
         <div className="flex items-end justify-between gap-3">
-          <div className="flex-1">
-            <Label>Budget for this trip</Label>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
-              <Input type="number" inputMode="decimal" className="pl-8" placeholder="0"
-                     value={data.shoppingBudget ?? ""} onChange={(e) => setKey("shoppingBudget", e.target.value)} />
-            </div>
-          </div>
-          <div className="text-right">
-            <p className="text-xs font-bold text-slate-400">Estimated</p>
-            <p className={"text-2xl font-extrabold " + (overBudget ? "text-rose-600" : "text-slate-800")}>{money(estTotal)}</p>
-          </div>
+          <div className="flex-1"><Label>Budget for this trip</Label><div className="relative"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6b7079] font-bold">$</span><Input type="number" inputMode="decimal" className="pl-7" placeholder="0" value={data.shoppingBudget ?? ""} onChange={(e) => setKey("shoppingBudget", e.target.value)} /></div></div>
+          <div className="text-right"><p className="text-[11px] font-bold uppercase tracking-wide text-[#71767f]">Estimated</p><p className={"text-2xl font-extrabold " + (over ? "text-[#e5736f]" : "text-[#ececf0]")}>{money(estTotal)}</p></div>
         </div>
-        {overBudget && <p className="mt-2 text-sm font-bold text-rose-700">⚠️ Over budget by {money(estTotal - budget)}. Consider dropping a few items.</p>}
-      </Card>
-
-      {/* Add item */}
+        {over && <p className="mt-2 text-sm font-semibold text-[#f0a9a6]">Over budget by {money(estTotal - budget)}. Consider dropping a few items.</p>}
+      </div>
       <Card>
         <Label>Add item</Label>
-        <div className="space-y-2 mt-1">
-          <Input placeholder="Item name" value={form.name}
-                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                 onKeyDown={(e) => e.key === "Enter" && addItem()} />
+        <div className="space-y-2">
+          <Input placeholder="Item name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} onKeyDown={(e) => e.key === "Enter" && addItem()} />
           <div className="grid grid-cols-2 gap-2">
-            <Select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
-              {SHOP_CATS.map((c) => <option key={c}>{c}</option>)}
-            </Select>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
-              <Input type="number" inputMode="decimal" className="pl-8" placeholder="Price"
-                     value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
-            </div>
+            <Select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{SHOP_CATS.map((c) => <option key={c}>{c}</option>)}</Select>
+            <div className="relative"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6b7079] font-bold">$</span><Input type="number" inputMode="decimal" className="pl-7" placeholder="Price" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} /></div>
           </div>
           <Btn onClick={addItem} className="w-full">Add to list</Btn>
         </div>
       </Card>
-
-      {/* Filters */}
       <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
         <Chip active={filter === "All"} onClick={() => setFilter("All")}>All</Chip>
         {SHOP_CATS.map((c) => <Chip key={c} active={filter === c} onClick={() => setFilter(c)}>{c}</Chip>)}
       </div>
-
-      {shown.length === 0 ? (
-        <Empty>Nothing here yet.</Empty>
-      ) : (
-        <div className="space-y-2">
-          {shown.map((i) => (
-            <Card key={i.id} className="flex items-center gap-3 py-3">
-              <Tick done={i.bought} onClick={() => toggle(i.id)} />
-              <div className="flex-1">
-                <p className={i.bought ? "line-through text-slate-400 font-bold" : "font-bold"}>{i.name}</p>
-                <p className="text-xs text-slate-400">{i.category}</p>
-              </div>
-              <span className="font-bold text-slate-600">{money(i.price)}</span>
-              <button onClick={() => del(i.id)} className="text-slate-300 text-lg">✕</button>
-            </Card>
-          ))}
-        </div>
+      {shown.length === 0 ? <Empty>Nothing here yet.</Empty> : (
+        <div className="space-y-2">{shown.map((i) => (
+          <Card key={i.id} className="flex items-center gap-3 py-3"><Tick done={i.bought} onClick={() => toggle(i.id)} /><div className="flex-1"><p className={i.bought ? "line-through text-[#6b7079] font-semibold" : "font-semibold text-[#dfe1e6]"}>{i.name}</p><p className="text-xs text-[#71767f]">{i.category}</p></div><span className="font-bold text-[#a7abb4]">{money(i.price)}</span><button onClick={() => del(i.id)} className="text-[#4a4f58]"><Icon name="close" className="w-4 h-4" /></button></Card>
+        ))}</div>
       )}
     </div>
   );
 }
 
 /* =======================================================================
-   5. KIDS & FAMILY
+   5. PEOPLE
    ======================================================================= */
 const KID_CATS = ["Prepare", "Activity", "School", "Health", "Family", "Reminder"];
 function KidsView({ data, setKey }) {
@@ -889,147 +620,76 @@ function KidsView({ data, setKey }) {
   const setItems = (fn) => setKey("kids", fn);
   const [filter, setFilter] = useState("All");
   const [form, setForm] = useState({ text: "", category: "Prepare" });
-
-  const add = () => {
-    if (!form.text.trim()) return;
-    setItems((arr) => [...arr, { id: uid(), text: form.text.trim(), category: form.category, done: false }]);
-    setForm({ text: "", category: form.category });
-  };
-  const toggle = (id) => setItems((arr) => arr.map((i) => (i.id === id ? { ...i, done: !i.done } : i)));
-  const del = (id) => setItems((arr) => arr.filter((i) => i.id !== id));
-
-  const catStyle = {
-    Prepare: "bg-teal-100 text-teal-700", Activity: "bg-sky-100 text-sky-700",
-    School: "bg-indigo-100 text-indigo-700", Health: "bg-emerald-100 text-emerald-700",
-    Family: "bg-amber-100 text-amber-700", Reminder: "bg-rose-100 text-rose-700",
-  };
+  const add = () => { if (!form.text.trim()) return; setItems((a) => [...a, { id: uid(), text: form.text.trim(), category: form.category, done: false }]); setForm({ text: "", category: form.category }); };
+  const toggle = (id) => setItems((a) => a.map((i) => (i.id === id ? { ...i, done: !i.done } : i)));
+  const del = (id) => setItems((a) => a.filter((i) => i.id !== id));
+  const catStyle = { Prepare: "bg-[#c8a45c]/15 text-[#d8b979]", Activity: "bg-[#7fa6d8]/15 text-[#9ec0ea]", School: "bg-[#9b8fd8]/15 text-[#b9aeea]", Health: "bg-[#7fae8f]/15 text-[#8fc0a1]", Family: "bg-[#d8a657]/15 text-[#e0be7f]", Reminder: "bg-[#e5736f]/15 text-[#f0a9a6]" };
   const shown = items.filter((i) => filter === "All" || i.category === filter);
-
   return (
     <div className="space-y-4">
-      <SectionHeader icon="💛" title="People & Family" subtitle="The people who matter — kids, family, the ones you love." />
-
+      <SectionHeader icon="people" title="People & Family" subtitle="The people who matter — kids, family, the ones you love." />
       <Card>
         <Label>Add something</Label>
-        <div className="space-y-2 mt-1">
-          <Input placeholder="e.g. Pack swimming bag" value={form.text}
-                 onChange={(e) => setForm({ ...form, text: e.target.value })}
-                 onKeyDown={(e) => e.key === "Enter" && add()} />
-          <div className="grid grid-cols-[1fr_auto] gap-2">
-            <Select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
-              {KID_CATS.map((c) => <option key={c}>{c}</option>)}
-            </Select>
-            <Btn onClick={add}>Add</Btn>
-          </div>
+        <div className="space-y-2">
+          <Input placeholder="e.g. Pack the swimming bag" value={form.text} onChange={(e) => setForm({ ...form, text: e.target.value })} onKeyDown={(e) => e.key === "Enter" && add()} />
+          <div className="grid grid-cols-[1fr_auto] gap-2"><Select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{KID_CATS.map((c) => <option key={c}>{c}</option>)}</Select><Btn onClick={add}>Add</Btn></div>
         </div>
       </Card>
-
       <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
         <Chip active={filter === "All"} onClick={() => setFilter("All")}>All</Chip>
         {KID_CATS.map((c) => <Chip key={c} active={filter === c} onClick={() => setFilter(c)}>{c}</Chip>)}
       </div>
-
-      {shown.length === 0 ? (
-        <Empty>Nothing here yet.</Empty>
-      ) : (
-        <div className="space-y-2">
-          {shown.map((i) => (
-            <Card key={i.id} className="flex items-center gap-3 py-3">
-              <Tick done={i.done} onClick={() => toggle(i.id)} />
-              <div className="flex-1">
-                <p className={i.done ? "line-through text-slate-400 font-bold" : "font-bold"}>{i.text}</p>
-                <span className={"inline-block text-xs font-bold px-2 py-0.5 rounded-full mt-1 " + (catStyle[i.category] || "bg-slate-100 text-slate-600")}>{i.category}</span>
-              </div>
-              <button onClick={() => del(i.id)} className="text-slate-300 text-lg">✕</button>
-            </Card>
-          ))}
-        </div>
+      {shown.length === 0 ? <Empty>Nothing here yet.</Empty> : (
+        <div className="space-y-2">{shown.map((i) => (
+          <Card key={i.id} className="flex items-center gap-3 py-3"><Tick done={i.done} onClick={() => toggle(i.id)} /><div className="flex-1"><p className={i.done ? "line-through text-[#6b7079] font-semibold" : "font-semibold text-[#dfe1e6]"}>{i.text}</p><span className={"inline-block text-xs font-bold px-2 py-0.5 rounded-full mt-1 " + (catStyle[i.category] || "bg-[#22262f] text-[#a7abb4]")}>{i.category}</span></div><button onClick={() => del(i.id)} className="text-[#4a4f58]"><Icon name="close" className="w-4 h-4" /></button></Card>
+        ))}</div>
       )}
     </div>
   );
 }
 
 /* =======================================================================
-   6. HEALTH & ROUTINE
+   6. HEALTH
    ======================================================================= */
 const CHECK_ITEMS = [
-  { key: "shower", label: "Shower", emoji: "🚿" },
-  { key: "eat", label: "Eat", emoji: "🍽️" },
-  { key: "water", label: "Drink water", emoji: "💧" },
-  { key: "cleanRoom", label: "Clean room", emoji: "🧹" },
-  { key: "pray", label: "Pray", emoji: "🤲" },
-  { key: "walk", label: "Walk", emoji: "🚶" },
-  { key: "sleepPlan", label: "Sleep plan", emoji: "😴" },
+  { key: "shower", label: "Shower" }, { key: "eat", label: "Eat" }, { key: "water", label: "Drink water" },
+  { key: "cleanRoom", label: "Clean room" }, { key: "pray", label: "Pray" }, { key: "walk", label: "Walk" }, { key: "sleepPlan", label: "Sleep plan" },
 ];
 function HealthView({ data, setKey }) {
   const h = data.health;
-  const setHealth = (patch) => setKey("health", (cur) => ({ ...cur, ...patch }));
+  const setHealth = (patch) => setKey("health", (c) => ({ ...c, ...patch }));
   const toggleCheck = (k) => setHealth({ checklist: { ...h.checklist, [k]: !h.checklist[k] } });
-
   const [med, setMed] = useState("");
-  const addMed = () => {
-    if (!med.trim()) return;
-    setHealth({ meds: [...h.meds, { id: uid(), text: med.trim(), done: false }] });
-    setMed("");
-  };
+  const addMed = () => { if (!med.trim()) return; setHealth({ meds: [...h.meds, { id: uid(), text: med.trim(), done: false }] }); setMed(""); };
   const toggleMed = (id) => setHealth({ meds: h.meds.map((m) => (m.id === id ? { ...m, done: !m.done } : m)) });
   const delMed = (id) => setHealth({ meds: h.meds.filter((m) => m.id !== id) });
-
   const noteFields = [
-    { key: "sleepNotes", label: "Sleep notes", emoji: "😴" },
-    { key: "foodNotes", label: "Food notes", emoji: "🥗" },
-    { key: "exerciseNotes", label: "Exercise / basketball", emoji: "🏀" },
-    { key: "resetNotes", label: "Nervous system reset activities", emoji: "🌬️" },
+    { key: "sleepNotes", label: "Sleep notes" }, { key: "foodNotes", label: "Food notes" },
+    { key: "exerciseNotes", label: "Exercise / movement" }, { key: "resetNotes", label: "Nervous system reset activities" },
   ];
-
   return (
     <div className="space-y-4">
-      <SectionHeader icon="🌿" title="Health & Routine" subtitle="Small things that keep you steady." />
-
-      {/* Daily checklist */}
+      <SectionHeader icon="health" title="Health & Routine" subtitle="Small things that keep you steady." />
       <Card>
         <Label>Today's simple checklist</Label>
-        <div className="grid grid-cols-2 gap-2 mt-1">
-          {CHECK_ITEMS.map((c) => (
-            <button key={c.key} onClick={() => toggleCheck(c.key)}
-              className={"flex items-center gap-2 py-3 px-3 rounded-xl border-2 font-bold text-sm transition " +
-                (h.checklist[c.key] ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-white border-slate-200 text-slate-500")}>
-              <span className="text-xl">{c.emoji}</span>
-              <span className="flex-1 text-left">{c.label}</span>
-              {h.checklist[c.key] && <span>✓</span>}
-            </button>
-          ))}
-        </div>
+        <div className="grid grid-cols-2 gap-2">{CHECK_ITEMS.map((c) => (
+          <button key={c.key} onClick={() => toggleCheck(c.key)} className={"flex items-center gap-2.5 py-3 px-3 rounded-xl border font-bold text-sm transition " + (h.checklist[c.key] ? "bg-[#141b17] border-[#7fae8f]/40 text-[#8fc0a1]" : "bg-[#14161c] border-[#262a33] text-[#8b909a]")}>
+            <span className={"w-5 h-5 rounded-full border-2 flex items-center justify-center " + (h.checklist[c.key] ? "bg-[#7fae8f] border-[#7fae8f] text-[#12140f]" : "border-[#3a3f4a] text-transparent")}><Icon name="check" className="w-3 h-3" stroke={3} /></span>
+            <span className="flex-1 text-left">{c.label}</span>
+          </button>
+        ))}</div>
       </Card>
-
-      {/* Medication reminders */}
       <Card>
-        <Label>💊 Medication reminders</Label>
-        <div className="flex gap-2 mt-1 mb-2">
-          <Input value={med} onChange={(e) => setMed(e.target.value)}
-                 onKeyDown={(e) => e.key === "Enter" && addMed()} placeholder="e.g. Morning tablet" />
-          <Btn onClick={addMed} className="shrink-0">Add</Btn>
-        </div>
+        <Label>Medication reminders</Label>
+        <div className="flex gap-2 mb-2"><Input value={med} onChange={(e) => setMed(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addMed()} placeholder="e.g. Morning tablet" /><Btn onClick={addMed} className="shrink-0"><Icon name="plus" className="w-5 h-5" /></Btn></div>
         {h.meds.length === 0 ? <Empty>No medication reminders.</Empty> : (
-          <ul className="space-y-2">
-            {h.meds.map((m) => (
-              <li key={m.id} className="flex items-center gap-3">
-                <Tick done={m.done} onClick={() => toggleMed(m.id)} />
-                <span className={"flex-1 " + (m.done ? "line-through text-slate-400" : "")}>{m.text}</span>
-                <button onClick={() => delMed(m.id)} className="text-slate-300 text-lg">✕</button>
-              </li>
-            ))}
-          </ul>
+          <ul className="space-y-2.5">{h.meds.map((m) => (
+            <li key={m.id} className="flex items-center gap-3"><Tick done={m.done} onClick={() => toggleMed(m.id)} /><span className={"flex-1 " + (m.done ? "line-through text-[#6b7079]" : "text-[#dfe1e6]")}>{m.text}</span><button onClick={() => delMed(m.id)} className="text-[#4a4f58]"><Icon name="close" className="w-4 h-4" /></button></li>
+          ))}</ul>
         )}
       </Card>
-
-      {/* Notes */}
       {noteFields.map((f) => (
-        <Card key={f.key}>
-          <Label>{f.emoji} {f.label}</Label>
-          <TextArea rows={2} value={h[f.key]} onChange={(e) => setHealth({ [f.key]: e.target.value })}
-                    placeholder="Write anything that helps…" />
-        </Card>
+        <Card key={f.key}><Label>{f.label}</Label><TextArea rows={2} value={h[f.key]} onChange={(e) => setHealth({ [f.key]: e.target.value })} placeholder="Write anything that helps…" /></Card>
       ))}
     </div>
   );
@@ -1039,83 +699,49 @@ function HealthView({ data, setKey }) {
    7. TASKS
    ======================================================================= */
 const PRIORITIES = [
-  { id: "urgent", label: "Urgent", style: "bg-rose-100 text-rose-700" },
-  { id: "important", label: "Important", style: "bg-amber-100 text-amber-700" },
-  { id: "later", label: "Later", style: "bg-slate-100 text-slate-600" },
+  { id: "urgent", label: "Urgent", style: "bg-[#e5736f]/15 text-[#f0a9a6]" },
+  { id: "important", label: "Important", style: "bg-[#d8a657]/15 text-[#e0be7f]" },
+  { id: "later", label: "Later", style: "bg-[#22262f] text-[#a7abb4]" },
 ];
 const PRIORITY_ORDER = { urgent: 0, important: 1, later: 2 };
 function TasksView({ data, setKey }) {
   const tasks = data.tasks;
   const setTasks = (fn) => setKey("tasks", fn);
-  const [filter, setFilter] = useState("todo"); // todo | done | all
+  const [filter, setFilter] = useState("todo");
   const [form, setForm] = useState({ text: "", priority: "important", due: "" });
-
-  const add = () => {
-    if (!form.text.trim()) return;
-    setTasks((arr) => [...arr, { id: uid(), text: form.text.trim(), priority: form.priority, status: "not-started", due: form.due }]);
-    setForm({ text: "", priority: form.priority, due: "" });
-  };
-  const del = (id) => setTasks((arr) => arr.filter((t) => t.id !== id));
-  const cycleStatus = (id) =>
-    setTasks((arr) => arr.map((t) => {
-      if (t.id !== id) return t;
-      const order = ["not-started", "in-progress", "done"];
-      return { ...t, status: order[(order.indexOf(t.status) + 1) % 3] };
-    }));
-
-  const statusLabel = { "not-started": "Not started", "in-progress": "In progress", done: "Done" };
-  const statusStyle = { "not-started": "bg-slate-100 text-slate-600", "in-progress": "bg-sky-100 text-sky-700", done: "bg-emerald-100 text-emerald-700" };
-
-  const shown = tasks
-    .filter((t) => (filter === "all" ? true : filter === "done" ? t.status === "done" : t.status !== "done"))
-    .sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
-
+  const add = () => { if (!form.text.trim()) return; setTasks((a) => [...a, { id: uid(), text: form.text.trim(), priority: form.priority, status: "not-started", due: form.due }]); setForm({ text: "", priority: form.priority, due: "" }); };
+  const del = (id) => setTasks((a) => a.filter((t) => t.id !== id));
+  const cycle = (id) => setTasks((a) => a.map((t) => { if (t.id !== id) return t; const o = ["not-started", "in-progress", "done"]; return { ...t, status: o[(o.indexOf(t.status) + 1) % 3] }; }));
+  const sLabel = { "not-started": "Not started", "in-progress": "In progress", done: "Done" };
+  const sStyle = { "not-started": "bg-[#22262f] text-[#a7abb4]", "in-progress": "bg-[#7fa6d8]/15 text-[#9ec0ea]", done: "bg-[#7fae8f]/15 text-[#8fc0a1]" };
+  const shown = tasks.filter((t) => (filter === "all" ? true : filter === "done" ? t.status === "done" : t.status !== "done")).sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
   return (
     <div className="space-y-4">
-      <SectionHeader icon="✅" title="Tasks" subtitle="One clear list. Sorted by what matters most." />
-
+      <SectionHeader icon="tasks" title="Tasks" subtitle="One clear list. Sorted by what matters most." />
       <Card>
         <Label>Add a task</Label>
-        <div className="space-y-2 mt-1">
-          <Input placeholder="What needs doing?" value={form.text}
-                 onChange={(e) => setForm({ ...form, text: e.target.value })}
-                 onKeyDown={(e) => e.key === "Enter" && add()} />
-          <div className="grid grid-cols-2 gap-2">
-            <Select value={form.priority} onChange={(e) => setForm({ ...form, priority: e.target.value })}>
-              {PRIORITIES.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
-            </Select>
-            <Input type="date" value={form.due} onChange={(e) => setForm({ ...form, due: e.target.value })} />
-          </div>
+        <div className="space-y-2">
+          <Input placeholder="What needs doing?" value={form.text} onChange={(e) => setForm({ ...form, text: e.target.value })} onKeyDown={(e) => e.key === "Enter" && add()} />
+          <div className="grid grid-cols-2 gap-2"><Select value={form.priority} onChange={(e) => setForm({ ...form, priority: e.target.value })}>{PRIORITIES.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}</Select><Input type="date" value={form.due} onChange={(e) => setForm({ ...form, due: e.target.value })} /></div>
           <Btn onClick={add} className="w-full">Add task</Btn>
         </div>
       </Card>
-
-      <div className="flex gap-2">
-        <Chip active={filter === "todo"} onClick={() => setFilter("todo")}>To do</Chip>
-        <Chip active={filter === "done"} onClick={() => setFilter("done")}>Done</Chip>
-        <Chip active={filter === "all"} onClick={() => setFilter("all")}>All</Chip>
-      </div>
-
+      <div className="flex gap-2"><Chip active={filter === "todo"} onClick={() => setFilter("todo")}>To do</Chip><Chip active={filter === "done"} onClick={() => setFilter("done")}>Done</Chip><Chip active={filter === "all"} onClick={() => setFilter("all")}>All</Chip></div>
       {shown.length === 0 ? <Empty>Nothing here. Enjoy the breathing room.</Empty> : (
-        <div className="space-y-2">
-          {shown.map((t) => {
-            const pr = PRIORITIES.find((p) => p.id === t.priority);
-            return (
-              <Card key={t.id} className="flex items-start gap-3 py-3">
-                <Tick done={t.status === "done"} onClick={() => cycleStatus(t.id)} />
-                <div className="flex-1 min-w-0">
-                  <p className={t.status === "done" ? "line-through text-slate-400 font-bold" : "font-bold"}>{t.text}</p>
-                  <div className="flex flex-wrap items-center gap-1.5 mt-1">
-                    <span className={"text-xs font-bold px-2 py-0.5 rounded-full " + pr.style}>{pr.label}</span>
-                    <button onClick={() => cycleStatus(t.id)} className={"text-xs font-bold px-2 py-0.5 rounded-full " + statusStyle[t.status]}>{statusLabel[t.status]} ⟳</button>
-                    {t.due && <span className="text-xs font-bold text-slate-400">📅 {t.due}</span>}
-                  </div>
-                </div>
-                <button onClick={() => del(t.id)} className="text-slate-300 text-lg">✕</button>
-              </Card>
-            );
-          })}
-        </div>
+        <div className="space-y-2">{shown.map((t) => { const pr = PRIORITIES.find((p) => p.id === t.priority); return (
+          <Card key={t.id} className="flex items-start gap-3 py-3">
+            <Tick done={t.status === "done"} onClick={() => cycle(t.id)} />
+            <div className="flex-1 min-w-0">
+              <p className={t.status === "done" ? "line-through text-[#6b7079] font-semibold" : "font-semibold text-[#dfe1e6]"}>{t.text}</p>
+              <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                <span className={"text-xs font-bold px-2 py-0.5 rounded-full " + pr.style}>{pr.label}</span>
+                <button onClick={() => cycle(t.id)} className={"text-xs font-bold px-2 py-0.5 rounded-full " + sStyle[t.status]}>{sLabel[t.status]} ⟳</button>
+                {t.due && <span className="text-xs font-bold text-[#71767f]">Due {t.due}</span>}
+              </div>
+            </div>
+            <button onClick={() => del(t.id)} className="text-[#4a4f58]"><Icon name="close" className="w-4 h-4" /></button>
+          </Card>
+        ); })}</div>
       )}
     </div>
   );
@@ -1131,99 +757,177 @@ function NotesView({ data, setKey }) {
   const [search, setSearch] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
-
-  const add = () => {
-    if (!text.trim()) return;
-    setNotes((arr) => [{ id: uid(), text: text.trim(), created: Date.now() }, ...arr]);
-    setText("");
-  };
-  const del = (id) => setNotes((arr) => arr.filter((n) => n.id !== id));
+  const add = () => { if (!text.trim()) return; setNotes((a) => [{ id: uid(), text: text.trim(), created: Date.now() }, ...a]); setText(""); };
+  const del = (id) => setNotes((a) => a.filter((n) => n.id !== id));
   const startEdit = (n) => { setEditingId(n.id); setEditText(n.text); };
-  const saveEdit = () => {
-    setNotes((arr) => arr.map((n) => (n.id === editingId ? { ...n, text: editText } : n)));
-    setEditingId(null); setEditText("");
-  };
-
+  const saveEdit = () => { setNotes((a) => a.map((n) => (n.id === editingId ? { ...n, text: editText } : n))); setEditingId(null); setEditText(""); };
   const shown = notes.filter((n) => n.text.toLowerCase().includes(search.toLowerCase()));
-
   return (
     <div className="space-y-4">
-      <SectionHeader icon="📝" title="Notes" subtitle="A quick place to dump anything on your mind." />
-
-      <Card>
-        <TextArea rows={3} value={text} onChange={(e) => setText(e.target.value)}
-                  placeholder="Type a quick note… (like a voice note, but text)" />
-        <Btn onClick={add} className="w-full mt-2">Save note</Btn>
-      </Card>
-
-      <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="🔍 Search notes" />
-
+      <SectionHeader icon="notes" title="Notes" subtitle="A quiet place to dump anything on your mind." />
+      <Card><TextArea rows={3} value={text} onChange={(e) => setText(e.target.value)} placeholder="Type a quick note…" /><Btn onClick={add} className="w-full mt-2">Save note</Btn></Card>
+      <div className="relative"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6b7079]"><Icon name="search" className="w-4 h-4" /></span><Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search notes" className="pl-10" /></div>
       {shown.length === 0 ? <Empty>{notes.length === 0 ? "No notes yet." : "No notes match your search."}</Empty> : (
-        <div className="space-y-2">
-          {shown.map((n) => (
-            <Card key={n.id}>
-              {editingId === n.id ? (
-                <div>
-                  <TextArea rows={3} value={editText} onChange={(e) => setEditText(e.target.value)} />
-                  <div className="flex gap-2 mt-2">
-                    <Btn onClick={saveEdit} className="flex-1">Save</Btn>
-                    <Btn variant="ghost" onClick={() => setEditingId(null)} className="flex-1">Cancel</Btn>
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <p className="whitespace-pre-wrap">{n.text}</p>
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="text-xs text-slate-400">{new Date(n.created).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span>
-                    <div className="flex gap-3">
-                      <button onClick={() => startEdit(n)} className="text-xs font-bold text-teal-700">Edit</button>
-                      <button onClick={() => del(n.id)} className="text-xs font-bold text-rose-500">Delete</button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </Card>
-          ))}
-        </div>
+        <div className="space-y-2">{shown.map((n) => (
+          <Card key={n.id}>
+            {editingId === n.id ? (
+              <div><TextArea rows={3} value={editText} onChange={(e) => setEditText(e.target.value)} /><div className="flex gap-2 mt-2"><Btn onClick={saveEdit} className="flex-1">Save</Btn><Btn variant="ghost" onClick={() => setEditingId(null)} className="flex-1">Cancel</Btn></div></div>
+            ) : (
+              <div><p className="whitespace-pre-wrap text-[#dfe1e6]">{n.text}</p><div className="flex items-center justify-between mt-2"><span className="text-xs text-[#71767f]">{new Date(n.created).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span><div className="flex gap-3"><button onClick={() => startEdit(n)} className="text-xs font-bold text-[#d8b979]">Edit</button><button onClick={() => del(n.id)} className="text-xs font-bold text-[#e5736f]">Delete</button></div></div></div>
+            )}
+          </Card>
+        ))}</div>
       )}
     </div>
   );
 }
 
 /* =======================================================================
-   Settings (reset sample data, start fresh, backup / restore)
+   Auth screens
    ======================================================================= */
-function SettingsModal({ data, setData, onClose }) {
-  const [restoreText, setRestoreText] = useState("");
-  const backup = JSON.stringify(data);
+function Logo({ size = "w-12 h-12" }) {
+  return <span className={size + " rounded-2xl bg-[#c8a45c]/12 border border-[#c8a45c]/25 text-[#d8b979] flex items-center justify-center"}><Icon name="leaf" className="w-6 h-6" /></span>;
+}
 
-  const copyBackup = () => { if (navigator.clipboard) navigator.clipboard.writeText(backup).catch(() => {}); };
-  const doRestore = () => {
-    try {
-      const parsed = JSON.parse(restoreText);
-      if (parsed && typeof parsed === "object") { setData(parsed); onClose(); }
-    } catch (e) { alert("That doesn't look like valid backup text."); }
-  };
+function AuthScreen({ view, setView, onTryFree, onLogin, onSignup, onForgot }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const [msg, setMsg] = useState("");
+  const run = async (fn) => { setErr(""); setMsg(""); setBusy(true); try { await fn(); } catch (e) { setErr(e.message || "Something went wrong."); } setBusy(false); };
+
+  const Field = (label, type, val, set, ph) => (
+    <div><Label>{label}</Label><Input type={type} value={val} onChange={(e) => set(e.target.value)} placeholder={ph} autoCapitalize="none" autoCorrect="off" /></div>
+  );
 
   return (
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-10 max-w-[440px] mx-auto">
+      <div className="w-full">
+        {view === "welcome" && (
+          <div className="text-center">
+            <div className="flex justify-center mb-5"><Logo size="w-16 h-16" /></div>
+            <h1 className="text-4xl font-extrabold text-[#f2f2f4] tracking-tight">The Reset</h1>
+            <p className="text-[#9aa0aa] mt-3 text-[15px] leading-relaxed">A calm place to reset when it's all too much.<br />Recover from burnout, one day at a time.</p>
+            <div className="mt-8 space-y-2.5">
+              <Btn className="w-full text-base py-3.5" onClick={onTryFree}>Try it free — no account needed</Btn>
+              <Btn variant="ghost" className="w-full text-base py-3.5" onClick={() => setView("signup")}>Create an account to sync</Btn>
+              <button onClick={() => setView("login")} className="w-full text-sm font-bold text-[#9aa0aa] pt-2">Already have an account? <span className="text-[#d8b979]">Log in</span></button>
+            </div>
+            <p className="text-xs text-[#5f646d] mt-8 leading-relaxed">Free version saves privately on your device. An account lets you sync across your phone and laptop.</p>
+          </div>
+        )}
+
+        {view === "signup" && (
+          <div>
+            <button onClick={() => setView("welcome")} className="flex items-center gap-1 text-[#9aa0aa] text-sm font-bold mb-6"><Icon name="back" className="w-4 h-4" /> Back</button>
+            <h1 className="text-2xl font-extrabold text-[#f2f2f4]">Create your account</h1>
+            <p className="text-[#8b909a] text-sm mt-1 mb-5">Sync your progress across devices. Any trial data you've added comes with you.</p>
+            <div className="space-y-3">
+              {Field("Email", "email", email, setEmail, "you@email.com")}
+              {Field("Password", "password", password, setPassword, "At least 6 characters")}
+              {err && <p className="text-sm text-[#f0a9a6] bg-[#e5736f]/10 rounded-xl px-3 py-2">{err}</p>}
+              <Btn className="w-full py-3.5" disabled={busy} onClick={() => run(() => onSignup(email.trim(), password))}>{busy ? "Creating…" : "Create account"}</Btn>
+              <button onClick={() => setView("login")} className="w-full text-sm font-bold text-[#9aa0aa] pt-1">Already have an account? <span className="text-[#d8b979]">Log in</span></button>
+            </div>
+          </div>
+        )}
+
+        {view === "login" && (
+          <div>
+            <button onClick={() => setView("welcome")} className="flex items-center gap-1 text-[#9aa0aa] text-sm font-bold mb-6"><Icon name="back" className="w-4 h-4" /> Back</button>
+            <h1 className="text-2xl font-extrabold text-[#f2f2f4]">Welcome back</h1>
+            <p className="text-[#8b909a] text-sm mt-1 mb-5">Log in to pick up where you left off.</p>
+            <div className="space-y-3">
+              {Field("Email", "email", email, setEmail, "you@email.com")}
+              {Field("Password", "password", password, setPassword, "Your password")}
+              {err && <p className="text-sm text-[#f0a9a6] bg-[#e5736f]/10 rounded-xl px-3 py-2">{err}</p>}
+              <Btn className="w-full py-3.5" disabled={busy} onClick={() => run(() => onLogin(email.trim(), password))}>{busy ? "Logging in…" : "Log in"}</Btn>
+              <button onClick={() => setView("forgot")} className="w-full text-sm font-bold text-[#d8b979] pt-1">Forgot password?</button>
+            </div>
+          </div>
+        )}
+
+        {view === "forgot" && (
+          <div>
+            <button onClick={() => setView("login")} className="flex items-center gap-1 text-[#9aa0aa] text-sm font-bold mb-6"><Icon name="back" className="w-4 h-4" /> Back</button>
+            <h1 className="text-2xl font-extrabold text-[#f2f2f4]">Reset your password</h1>
+            <p className="text-[#8b909a] text-sm mt-1 mb-5">Enter your email and we'll send a reset link. If it doesn't arrive, contact the person who shared this app with you.</p>
+            <div className="space-y-3">
+              {Field("Email", "email", email, setEmail, "you@email.com")}
+              {err && <p className="text-sm text-[#f0a9a6] bg-[#e5736f]/10 rounded-xl px-3 py-2">{err}</p>}
+              {msg && <p className="text-sm text-[#8fc0a1] bg-[#7fae8f]/10 rounded-xl px-3 py-2">{msg}</p>}
+              <Btn className="w-full py-3.5" disabled={busy} onClick={() => run(async () => { await onForgot(email.trim()); setMsg("If that email has an account, a reset link is on its way."); })}>{busy ? "Sending…" : "Send reset link"}</Btn>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function RecoveryScreen({ onSetPassword }) {
+  const [pw, setPw] = useState(""); const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-10 max-w-[440px] mx-auto">
+      <div className="w-full text-center">
+        <div className="flex justify-center mb-5"><span className="w-14 h-14 rounded-2xl bg-[#c8a45c]/12 border border-[#c8a45c]/25 text-[#d8b979] flex items-center justify-center"><Icon name="key" className="w-6 h-6" /></span></div>
+        <h1 className="text-2xl font-extrabold text-[#f2f2f4]">Set a new password</h1>
+        <p className="text-[#8b909a] text-sm mt-1 mb-5">Choose a new password for your account.</p>
+        <div className="space-y-3 text-left">
+          <div><Label>New password</Label><Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="At least 6 characters" /></div>
+          {err && <p className="text-sm text-[#f0a9a6] bg-[#e5736f]/10 rounded-xl px-3 py-2">{err}</p>}
+          <Btn className="w-full py-3.5" disabled={busy} onClick={async () => { setErr(""); setBusy(true); try { await onSetPassword(pw); } catch (e) { setErr(e.message || "Could not update password."); } setBusy(false); }}>{busy ? "Saving…" : "Save new password"}</Btn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =======================================================================
+   Settings sheet (account + data)
+   ======================================================================= */
+function SettingsModal({ data, setData, session, mode, onClose, onLogout, onGoSignup, onChangePassword }) {
+  const [restoreText, setRestoreText] = useState("");
+  const [pw, setPw] = useState(""); const [pwMsg, setPwMsg] = useState("");
+  const backup = JSON.stringify(data);
+  const copyBackup = () => { if (navigator.clipboard) navigator.clipboard.writeText(backup).catch(() => {}); };
+  const doRestore = () => { try { const p = JSON.parse(restoreText); if (p && typeof p === "object") { setData(p); onClose(); } } catch (e) { alert("That doesn't look like valid backup text."); } };
+  const changePw = async () => { setPwMsg(""); try { await onChangePassword(pw); setPwMsg("Password updated."); setPw(""); } catch (e) { setPwMsg(e.message || "Could not update."); } };
+  return (
     <Modal title="Settings" onClose={onClose}>
-      <div className="space-y-3">
-        <p className="text-sm text-slate-500">Your data is saved on this device only. Back it up here if you want to keep it safe.</p>
+      <div className="space-y-4">
+        {mode === "cloud" ? (
+          <div className="soft p-4">
+            <p className="text-[11px] font-bold uppercase tracking-wide text-[#71767f]">Signed in as</p>
+            <p className="font-bold text-[#ececf0] mt-0.5 break-all">{session && session.user.email}</p>
+            <div className="mt-3 space-y-2">
+              <Label>Change password</Label>
+              <div className="flex gap-2"><Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="New password (6+)" /><Btn variant="ghost" onClick={changePw} disabled={pw.length < 6}>Save</Btn></div>
+              {pwMsg && <p className="text-xs text-[#8fc0a1]">{pwMsg}</p>}
+              <Btn variant="danger" className="w-full flex items-center justify-center gap-2" onClick={onLogout}><Icon name="logout" className="w-4 h-4" /> Log out</Btn>
+            </div>
+          </div>
+        ) : (
+          <div className="soft p-4 text-center">
+            <div className="flex justify-center mb-2"><span className="w-11 h-11 rounded-xl bg-[#c8a45c]/12 text-[#d8b979] flex items-center justify-center"><Icon name="cloud" className="w-5 h-5" /></span></div>
+            <p className="font-bold text-[#ececf0]">You're using the free version</p>
+            <p className="text-sm text-[#8b909a] mt-1 mb-3">Saved on this device only. Create an account to sync across your phone and laptop.</p>
+            <Btn className="w-full" onClick={onGoSignup} disabled={!cloudAvailable}>Create an account to sync</Btn>
+          </div>
+        )}
 
-        <Btn variant="ghost" className="w-full" onClick={() => { if (confirm("Reload the example data? This replaces what's here.")) { setData(sampleData()); onClose(); } }}>
-          Reload example data
-        </Btn>
-        <Btn variant="danger" className="w-full" onClick={() => { if (confirm("Start completely fresh? This erases everything.")) { setData(emptyData()); onClose(); } }}>
-          Start fresh (erase everything)
-        </Btn>
+        <div className="pt-1">
+          <Btn variant="ghost" className="w-full" onClick={() => { if (confirm("Reload the example data? This replaces what's here.")) { setData(sampleData()); onClose(); } }}>Reload example data</Btn>
+        </div>
+        <Btn variant="danger" className="w-full" onClick={() => { if (confirm("Clear everything on this screen? This can't be undone.")) { setData(emptyData()); onClose(); } }}>Start fresh (clear everything)</Btn>
 
-        <div className="pt-2 border-t border-slate-100">
+        <div className="pt-2 border-t border-[#242832]">
           <Label>Back up my data</Label>
           <TextArea rows={3} readOnly value={backup} className="font-mono text-xs" />
           <Btn variant="soft" className="w-full mt-2" onClick={copyBackup}>Copy backup text</Btn>
         </div>
-
-        <div className="pt-2 border-t border-slate-100">
+        <div className="pt-2 border-t border-[#242832]">
           <Label>Restore from backup</Label>
           <TextArea rows={3} value={restoreText} onChange={(e) => setRestoreText(e.target.value)} placeholder="Paste your backup text here…" className="font-mono text-xs" />
           <Btn className="w-full mt-2" onClick={doRestore} disabled={!restoreText.trim()}>Restore</Btn>
@@ -1233,43 +937,99 @@ function SettingsModal({ data, setData, onClose }) {
   );
 }
 
-// A blank slate (used by "Start fresh")
-function emptyData() {
-  return {
-    version: 1,
-    today: { mood: "medium", survivalMode: false, priorities: ["", "", ""], reminders: [] },
-    tasks: [],
-    budget: { available: "", incoming: "", rent: "", bills: "", food: "", fuel: "", medicine: "", debts: "", doNotSpend: [] },
-    shifts: [],
-    shoppingBudget: "",
-    shopping: [],
-    kids: [],
-    health: {
-      checklist: { shower: false, eat: false, water: false, cleanRoom: false, pray: false, walk: false, sleepPlan: false },
-      meds: [], sleepNotes: "", foodNotes: "", exerciseNotes: "", resetNotes: "",
-    },
-    notes: [],
-  };
+/* =======================================================================
+   App shell
+   ======================================================================= */
+function SyncBadge({ mode, sync }) {
+  let dot = "#71767f", label = "On this device";
+  if (mode === "cloud") {
+    if (sync === "saving") { dot = "#d8a657"; label = "Saving…"; }
+    else if (sync === "error") { dot = "#e5736f"; label = "Not saved"; }
+    else { dot = "#7fae8f"; label = "Synced"; }
+  }
+  return <span className="flex items-center gap-1.5 text-[11px] font-bold text-[#8b909a]"><span className="w-1.5 h-1.5 rounded-full" style={{ background: dot }} />{label}</span>;
 }
 
-/* =======================================================================
-   The App shell — header, tab strip, and the active section
-   ======================================================================= */
 function App() {
-  const [data, setData] = useState(() => loadData() || sampleData());
+  const [booting, setBooting] = useState(true);
+  const [session, setSession] = useState(null);
+  const [mode, setMode] = useState("welcome");   // welcome | local | cloud
+  const [authView, setAuthView] = useState("welcome");
+  const [recovery, setRecovery] = useState(false);
+  const [data, setData] = useState(() => loadLocal() || sampleData());
   const [tab, setTab] = useState("today");
   const [showSettings, setShowSettings] = useState(false);
+  const [sync, setSync] = useState("saved");
   const mainRef = useRef(null);
+  const lastSaved = useRef("");
 
-  // Save to localStorage whenever data changes
-  useEffect(() => { saveData(data); }, [data]);
+  const setKey = (key, val) => setData((d) => ({ ...d, [key]: typeof val === "function" ? val(d[key]) : val }));
 
-  // Scroll to top when switching sections
+  async function enterCloud(sess) {
+    setSession(sess);
+    let cloud = null;
+    try { cloud = await loadCloud(sess); } catch (e) {}
+    let d;
+    if (cloud) d = cloud;
+    else { d = loadLocal() || sampleData(); try { await saveCloud(sess, d); } catch (e) {} }
+    lastSaved.current = JSON.stringify(d);
+    setData(d); setMode("cloud"); setSync("saved");
+    try { localStorage.removeItem(TRIAL_KEY); } catch (e) {}
+    setBooting(false);
+  }
+
+  useEffect(() => {
+    let subscription;
+    (async () => {
+      if (!cloudAvailable) { setMode("local"); setBooting(false); return; }
+      try {
+        const isRecovery = (window.location.hash || "").indexOf("type=recovery") !== -1;
+        const { data: { session: sess } } = await supabase.auth.getSession();
+        if (sess) { await enterCloud(sess); }
+        else if (isRecovery) { setRecovery(true); setBooting(false); }
+        else if (localStorage.getItem(TRIAL_KEY) === "1") { setMode("local"); setBooting(false); }
+        else { setMode("welcome"); setBooting(false); }
+        const res = supabase.auth.onAuthStateChange((event, s) => {
+          if (event === "PASSWORD_RECOVERY") { setRecovery(true); setBooting(false); }
+          else if (event === "SIGNED_OUT") { setSession(null); setMode("welcome"); setAuthView("welcome"); }
+        });
+        subscription = res.data ? res.data.subscription : null;
+      } catch (e) { setMode("welcome"); setBooting(false); }
+    })();
+    return () => { try { subscription && subscription.unsubscribe(); } catch (e) {} };
+  }, []);
+
+  // Persist: always mirror locally; if cloud, debounce-save to the server.
+  useEffect(() => {
+    saveLocal(data);
+    if (mode !== "cloud" || !session) return;
+    const json = JSON.stringify(data);
+    if (json === lastSaved.current) return;
+    setSync("saving");
+    const t = setTimeout(async () => {
+      try { await saveCloud(session, data); lastSaved.current = json; setSync("saved"); }
+      catch (e) { setSync("error"); }
+    }, 800);
+    return () => clearTimeout(t);
+  }, [data, mode, session]);
+
   useEffect(() => { if (mainRef.current) mainRef.current.scrollTop = 0; window.scrollTo(0, 0); }, [tab]);
 
-  // Update one top-level slice of the data (value can be a value or an updater fn)
-  const setKey = (key, val) =>
-    setData((d) => ({ ...d, [key]: typeof val === "function" ? val(d[key]) : val }));
+  // ---- auth actions ----
+  const onTryFree = () => { try { localStorage.setItem(TRIAL_KEY, "1"); } catch (e) {} setData(loadLocal() || sampleData()); setMode("local"); };
+  const onLogin = async (email, password) => { const { data: d, error } = await supabase.auth.signInWithPassword({ email, password }); if (error) throw new Error(error.message === "Invalid login credentials" ? "Email or password is incorrect." : error.message); await enterCloud(d.session); };
+  const onSignup = async (email, password) => { await callFn("signup", { email, password, initialData: loadLocal() || sampleData() }); await onLogin(email, password); };
+  const onForgot = async (email) => { await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin }); };
+  const onSetPassword = async (pw) => { if (!pw || pw.length < 6) throw new Error("Password must be at least 6 characters."); const { error } = await supabase.auth.updateUser({ password: pw }); if (error) throw new Error(error.message); const { data: { session: s } } = await supabase.auth.getSession(); try { history.replaceState(null, "", window.location.pathname); } catch (e) {} window.location.hash = ""; await enterCloud(s); setRecovery(false); };
+  const onLogout = async () => { try { await supabase.auth.signOut(); } catch (e) {} try { localStorage.removeItem(STORE_KEY); localStorage.removeItem(TRIAL_KEY); } catch (e) {} setSession(null); setData(sampleData()); setMode("welcome"); setAuthView("welcome"); setShowSettings(false); };
+  const onChangePassword = async (pw) => { if (!pw || pw.length < 6) throw new Error("At least 6 characters."); const { error } = await supabase.auth.updateUser({ password: pw }); if (error) throw new Error(error.message); };
+  const goSignup = () => { setShowSettings(false); setAuthView("signup"); setMode("welcome"); };
+
+  if (booting) {
+    return <div className="min-h-screen flex flex-col items-center justify-center gap-4"><Logo size="w-14 h-14" /><p className="text-[#8b909a] font-bold">The Reset</p></div>;
+  }
+  if (recovery) return <RecoveryScreen onSetPassword={onSetPassword} />;
+  if (mode === "welcome") return <AuthScreen view={authView} setView={setAuthView} onTryFree={onTryFree} onLogin={onLogin} onSignup={onSignup} onForgot={onForgot} />;
 
   const views = {
     today: <TodayView data={data} setKey={setKey} go={setTab} />,
@@ -1283,41 +1043,36 @@ function App() {
   };
 
   return (
-    <div className="max-w-[480px] mx-auto min-h-screen bg-[#f4f5f3] flex flex-col">
-      {/* Header + tab strip (sticky) */}
-      <div className="sticky top-0 z-30 bg-[#f4f5f3]/95 backdrop-blur border-b border-slate-200/70">
-        <div className="flex items-center justify-between px-4 pt-3 pb-2">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center text-lg">🌿</div>
+    <div className="max-w-[480px] mx-auto min-h-screen flex flex-col">
+      <div className="sticky top-0 z-30 bg-[#0e0f13]/90 backdrop-blur-md border-b border-[#1c1f27]">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2.5">
+          <div className="flex items-center gap-2.5">
+            <Logo size="w-10 h-10" />
             <div>
-              <p className="font-extrabold leading-none text-slate-800">The Reset</p>
-              <p className="text-xs text-slate-400 leading-none mt-0.5">One thing at a time</p>
+              <p className="font-extrabold leading-none text-[#f2f2f4] text-[17px]">The Reset</p>
+              <div className="mt-1"><SyncBadge mode={mode} sync={sync} /></div>
             </div>
           </div>
-          <button onClick={() => setShowSettings(true)}
-                  className="w-9 h-9 rounded-full bg-white border border-slate-200 text-slate-500 active:bg-slate-100">⚙️</button>
+          <button onClick={() => setShowSettings(true)} className="w-10 h-10 rounded-full bg-[#16181e] border border-[#242832] text-[#a7abb4] flex items-center justify-center"><Icon name="user" className="w-5 h-5" /></button>
         </div>
-
-        <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 pb-2">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 pb-2.5">
           {TABS.map((t) => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={"flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition " +
-                (tab === t.id ? "bg-teal-600 text-white" : "bg-white text-slate-600 border border-slate-200 active:bg-slate-50")}>
-              <span>{t.icon}</span>{t.label}
+              className={"flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition " + (tab === t.id ? "bg-[#c8a45c] text-[#141206]" : "bg-[#16181e] text-[#a7abb4] border border-[#242832]")}>
+              <Icon name={t.icon} className="w-4 h-4" />{t.label}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Active section */}
-      <main ref={mainRef} className="flex-1 p-4 pb-10">
+      <main ref={mainRef} className="flex-1 p-4 pb-12">
         {views[tab]}
-        <p className="text-center text-xs text-slate-400 mt-8">
-          Saved on your device only · The Reset · Be gentle with yourself 🌿
-        </p>
+        <p className="text-center text-xs text-[#5f646d] mt-8">{mode === "cloud" ? "Synced to your account" : "Saved on this device"} · The Reset · Be gentle with yourself</p>
       </main>
 
-      {showSettings && <SettingsModal data={data} setData={setData} onClose={() => setShowSettings(false)} />}
+      {showSettings && (
+        <SettingsModal data={data} setData={setData} session={session} mode={mode} onClose={() => setShowSettings(false)} onLogout={onLogout} onGoSignup={goSignup} onChangePassword={onChangePassword} />
+      )}
     </div>
   );
 }

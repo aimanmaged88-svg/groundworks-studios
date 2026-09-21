@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0e0f13" />
+<meta name="robots" content="noindex, nofollow" />
+<title>The Reset · Admin</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','ui-sans-serif','system-ui','-apple-system','Segoe UI','sans-serif'] } } } };</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230e0f13'/%3E%3Cpath d='M22 74c0-30 24-48 56-48 0 30-24 48-56 48z' fill='none' stroke='%23c8a45c' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<style>
+  html, body { -webkit-tap-highlight-color: transparent; }
+  body { background:#0e0f13; color:#e8e9ec; background-image: radial-gradient(1100px 460px at 50% -8%, rgba(200,164,92,0.09), transparent 62%); background-attachment: fixed; }
+  input, button, textarea { font-family: inherit; }
+  .card { background:#16181e; border:1px solid #242832; border-radius:20px; }
+  .field { width:100%; background:#14161c; border:1px solid #2a2f39; color:#e8e9ec; border-radius:14px; padding:12px 14px; font-size:16px; }
+  .field::placeholder { color:#6b7079; }
+  .field:focus { outline:none; border-color:#c8a45c; box-shadow:0 0 0 3px rgba(200,164,92,.14); }
+  .btn { border-radius:14px; font-weight:700; font-size:15px; padding:11px 15px; transition:.15s ease; }
+  .btn:disabled { opacity:.45; }
+  .btn-primary { background:#c8a45c; color:#141206; }
+  .btn-ghost { background:#1c1f27; color:#d3d6dc; border:1px solid #2a2f39; }
+  .btn-soft { background:rgba(200,164,92,.12); color:#d8b979; border:1px solid rgba(200,164,92,.26); }
+  .btn-danger { background:rgba(229,115,111,.12); color:#e5736f; border:1px solid rgba(229,115,111,.26); }
+</style>
+</head>
+<body class="font-sans">
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect } = React;
+
+const SUPABASE_URL = "https://vnfvyonlnlqfoocxmmlr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Ypgx9Bzt59ITvS8OLtm5ng_GvumN0BA";
+const FN_URL = SUPABASE_URL + "/functions/v1/reset-api";
+const APP_URL = "https://the-reset-app.netlify.app";
+
+let supabase = null;
+try { if (window.supabase) supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch (e) {}
+
+async function adminCall(action, body) {
+  const { data: { session } } = await supabase.auth.getSession();
+  const token = session && session.access_token;
+  const res = await fetch(FN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": "Bearer " + (token || SUPABASE_KEY) },
+    body: JSON.stringify({ action, ...(body || {}) }),
+  });
+  let json = {}; try { json = await res.json(); } catch (e) {}
+  if (!res.ok || json.error) throw new Error(json.error || ("Error " + res.status));
+  return json;
+}
+function randomPassword() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+  let s = ""; for (let i = 0; i < 10; i++) s += chars[Math.floor(Math.random() * chars.length)];
+  return "Reset-" + s;
+}
+function fmtDate(x) { try { return new Date(x).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }); } catch (e) { return x; } }
+
+function Icon({ name, className = "w-5 h-5", stroke = 1.75 }) {
+  const P = {
+    leaf: <g><path d="M4.5 19.5c0-8 6.2-13 15-13 0 8.2-6.2 13-15 13z" /><path d="M4.8 19.2 12 12" /></g>,
+    close: <path d="M6 6l12 12M18 6L6 18" />,
+    search: <g><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.8-3.8" /></g>,
+    key: <g><circle cx="8.5" cy="8.5" r="3.5" /><path d="M11 11l7 7M16 16l1.5-1.5M18 18l1.5-1.5" /></g>,
+    mail: <g><rect x="3" y="5.5" width="18" height="13" rx="2.5" /><path d="M4 7l8 5.5L20 7" /></g>,
+    trash: <g><path d="M4 7h16M9 7V5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5v2M6 7l1 12.5A1.5 1.5 0 0 0 8.5 21h7a1.5 1.5 0 0 0 1.5-1.5L18 7" /></g>,
+    logout: <g><path d="M15 5h3.5a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H15" /><path d="M10 12h9" /><path d="M13 8l-3.5 4L13 16" /></g>,
+    refresh: <g><path d="M20 11a8 8 0 0 0-14-4.5L4 8" /><path d="M4 4v4h4" /><path d="M4 13a8 8 0 0 0 14 4.5L20 16" /><path d="M20 20v-4h-4" /></g>,
+  };
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" className={className}>{P[name] || null}</svg>;
+}
+function Modal({ title, onClose, children }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-[#16181e] border border-[#242832] w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[88vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="sticky top-0 bg-[#16181e] flex items-center justify-between px-5 py-4 border-b border-[#242832]">
+          <h3 className="text-lg font-extrabold text-[#ececf0]">{title}</h3>
+          <button onClick={onClose} className="w-9 h-9 rounded-full bg-[#1c1f27] text-[#a7abb4] flex items-center justify-center"><Icon name="close" className="w-4 h-4" /></button>
+        </div>
+        <div className="p-5">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function Login({ onDone }) {
+  const [email, setEmail] = useState(""); const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
+  const submit = async () => {
+    setErr(""); setBusy(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      if (error) throw new Error(error.message === "Invalid login credentials" ? "Email or password is incorrect." : error.message);
+      // Verify admin by trying an admin-only action
+      await adminCall("admin_list");
+      onDone();
+    } catch (e) {
+      if (/admins only/i.test(e.message)) { setErr("This account is not an admin."); try { await supabase.auth.signOut(); } catch (x) {} }
+      else setErr(e.message);
+    }
+    setBusy(false);
+  };
+  return (
+    <div className="min-h-screen flex items-center justify-center px-6 max-w-[420px] mx-auto">
+      <div className="w-full">
+        <div className="flex items-center gap-2.5 justify-center mb-6">
+          <span className="w-12 h-12 rounded-2xl bg-[#c8a45c]/12 border border-[#c8a45c]/25 text-[#d8b979] flex items-center justify-center"><Icon name="leaf" className="w-6 h-6" /></span>
+        </div>
+        <h1 className="text-2xl font-extrabold text-center text-[#f2f2f4]">The Reset · Admin</h1>
+        <p className="text-[#8b909a] text-sm text-center mt-1 mb-6">Admin access only.</p>
+        <div className="space-y-3">
+          <input className="field" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Admin email" autoCapitalize="none" />
+          <input className="field" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" onKeyDown={(e) => e.key === "Enter" && submit()} />
+          {err && <p className="text-sm text-[#f0a9a6] bg-[#e5736f]/10 rounded-xl px-3 py-2">{err}</p>}
+          <button className="btn btn-primary w-full py-3.5" disabled={busy} onClick={submit}>{busy ? "Checking…" : "Log in"}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Dashboard({ onLogout }) {
+  const [users, setUsers] = useState([]); const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState(""); const [me, setMe] = useState("");
+  const [pwUser, setPwUser] = useState(null); const [newPw, setNewPw] = useState("");
+  const [linkModal, setLinkModal] = useState(null); const [toast, setToast] = useState("");
+
+  const load = async () => {
+    setLoading(true);
+    try { const r = await adminCall("admin_list"); setUsers(r.users || []); } catch (e) { setToast(e.message); }
+    setLoading(false);
+  };
+  useEffect(() => { load(); (async () => { const { data: { session } } = await supabase.auth.getSession(); setMe(session && session.user.email); })(); }, []);
+  const flash = (m) => { setToast(m); setTimeout(() => setToast(""), 2500); };
+
+  const openReset = (u) => { setPwUser(u); setNewPw(randomPassword()); };
+  const doSetPassword = async () => {
+    try { await adminCall("admin_set_password", { userId: pwUser.id, password: newPw }); flash("Password updated for " + pwUser.email); setPwUser(null); }
+    catch (e) { flash(e.message); }
+  };
+  const sendLink = async (u) => {
+    try { const r = await adminCall("admin_send_reset", { email: u.email, redirectTo: APP_URL }); setLinkModal({ email: u.email, link: r.link || "" }); }
+    catch (e) { flash(e.message); }
+  };
+  const del = async (u) => {
+    if (!confirm("Delete " + u.email + "? This permanently removes their account and data.")) return;
+    try { await adminCall("admin_delete", { userId: u.id }); setUsers((a) => a.filter((x) => x.id !== u.id)); flash("Deleted " + u.email); }
+    catch (e) { flash(e.message); }
+  };
+  const copy = (t) => { if (navigator.clipboard) navigator.clipboard.writeText(t).catch(() => {}); flash("Copied"); };
+
+  const shown = users.filter((u) => (u.email || "").toLowerCase().includes(search.toLowerCase()));
+
+  return (
+    <div className="max-w-[560px] mx-auto min-h-screen">
+      <div className="sticky top-0 z-20 bg-[#0e0f13]/90 backdrop-blur-md border-b border-[#1c1f27] px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <span className="w-9 h-9 rounded-xl bg-[#c8a45c]/12 border border-[#c8a45c]/25 text-[#d8b979] flex items-center justify-center"><Icon name="leaf" className="w-5 h-5" /></span>
+          <div><p className="font-extrabold text-[#f2f2f4] leading-none">The Reset · Admin</p><p className="text-[11px] text-[#71767f] mt-1 break-all">{me}</p></div>
+        </div>
+        <button onClick={onLogout} className="btn btn-ghost flex items-center gap-1.5"><Icon name="logout" className="w-4 h-4" /> Log out</button>
+      </div>
+
+      <div className="p-4 space-y-3">
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6b7079]"><Icon name="search" className="w-4 h-4" /></span><input className="field pl-10" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by email" /></div>
+          <button onClick={load} className="btn btn-ghost flex items-center gap-1.5"><Icon name="refresh" className="w-4 h-4" /></button>
+        </div>
+        <p className="text-sm text-[#8b909a] font-bold">{loading ? "Loading…" : (users.length + " " + (users.length === 1 ? "member" : "members"))}</p>
+
+        {!loading && shown.length === 0 && <p className="text-center text-[#6b7079] text-sm py-10">{users.length === 0 ? "No members yet. They'll appear here when people create accounts." : "No members match your search."}</p>}
+
+        <div className="space-y-2.5">
+          {shown.map((u) => (
+            <div key={u.id} className="card p-4">
+              <p className="font-bold text-[#ececf0] break-all">{u.email}</p>
+              <p className="text-xs text-[#71767f] mt-0.5">Joined {fmtDate(u.created_at)} · Last active {fmtDate(u.updated_at)}</p>
+              <div className="flex flex-wrap gap-2 mt-3">
+                <button onClick={() => openReset(u)} className="btn btn-soft flex items-center gap-1.5"><Icon name="key" className="w-4 h-4" /> Set password</button>
+                <button onClick={() => sendLink(u)} className="btn btn-ghost flex items-center gap-1.5"><Icon name="mail" className="w-4 h-4" /> Reset link</button>
+                <button onClick={() => del(u)} className="btn btn-danger flex items-center gap-1.5"><Icon name="trash" className="w-4 h-4" /> Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-center text-xs text-[#5f646d] pt-4">Setting a temporary password is the most reliable way to help someone back in. Tell them the new password privately, and ask them to change it in Settings once they're in.</p>
+      </div>
+
+      {pwUser && (
+        <Modal title="Set a temporary password" onClose={() => setPwUser(null)}>
+          <p className="text-sm text-[#8b909a] mb-3 break-all">For <span className="text-[#ececf0] font-bold">{pwUser.email}</span></p>
+          <label className="block text-[13px] font-bold text-[#8b909a] mb-1.5">New password</label>
+          <input className="field" value={newPw} onChange={(e) => setNewPw(e.target.value)} />
+          <div className="flex gap-2 mt-2">
+            <button className="btn btn-ghost flex-1" onClick={() => setNewPw(randomPassword())}>Generate</button>
+            <button className="btn btn-ghost flex-1" onClick={() => copy(newPw)}>Copy</button>
+          </div>
+          <button className="btn btn-primary w-full mt-3" disabled={newPw.length < 6} onClick={doSetPassword}>Set password</button>
+          <p className="text-xs text-[#6b7079] mt-3">Send this password to the person privately. They can change it under Settings once logged in.</p>
+        </Modal>
+      )}
+
+      {linkModal && (
+        <Modal title="Password reset link" onClose={() => setLinkModal(null)}>
+          <p className="text-sm text-[#8b909a] mb-2 break-all">For <span className="text-[#ececf0] font-bold">{linkModal.email}</span></p>
+          {linkModal.link ? (
+            <div>
+              <textarea readOnly className="field font-mono text-xs" rows={4} value={linkModal.link} />
+              <button className="btn btn-primary w-full mt-2" onClick={() => copy(linkModal.link)}>Copy link</button>
+              <p className="text-xs text-[#6b7079] mt-3">Send this link to the person. It lets them set a new password. If the link's redirect is blocked, use "Set password" instead — that always works.</p>
+            </div>
+          ) : <p className="text-sm text-[#8b909a]">A reset email was requested. If email delivery isn't set up yet, use "Set password" instead.</p>}
+        </Modal>
+      )}
+
+      {toast && <div className="fixed bottom-5 left-1/2 -translate-x-1/2 bg-[#1c1f27] border border-[#2a2f39] text-[#ececf0] text-sm font-bold px-4 py-2.5 rounded-full shadow-lg z-50">{toast}</div>}
+    </div>
+  );
+}
+
+function App() {
+  const [ready, setReady] = useState(false);
+  const [authed, setAuthed] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      if (!supabase) { setReady(true); return; }
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) { try { await adminCall("admin_list"); setAuthed(true); } catch (e) {} }
+      } catch (e) {}
+      setReady(true);
+    })();
+  }, []);
+
+  const logout = async () => { try { await supabase.auth.signOut(); } catch (e) {} setAuthed(false); };
+
+  if (!supabase) return <div className="min-h-screen flex items-center justify-center px-6 text-center text-[#8b909a]">Admin needs an internet connection to load. Please refresh.</div>;
+  if (!ready) return <div className="min-h-screen flex items-center justify-center"><span className="w-12 h-12 rounded-2xl bg-[#c8a45c]/12 border border-[#c8a45c]/25 text-[#d8b979] flex items-center justify-center"><Icon name="leaf" className="w-6 h-6" /></span></div>;
+  return authed ? <Dashboard onLogout={logout} /> : <Login onDone={() => setAuthed(true)} />;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

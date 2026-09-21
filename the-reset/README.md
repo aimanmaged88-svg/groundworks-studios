@@ -1,49 +1,54 @@
 # The Reset 🌿
 
-**A calm place to reset when it's all too much.**
+**A calm place to reset when it's all too much.** A premium, dark, mobile-first app for people recovering from burnout — one gentle place for their day, money, work, shopping, people, health, tasks and notes.
 
-The Reset is a simple, gentle app for people recovering from burnout. It gives you one quiet place to keep track of everything — your day, your money, your health, your people, and your rest — without pressure or clutter.
+Made to be shared: put the link in your Instagram bio. People can **try it free with no account** (saved privately on their own device), or **create an account to sync** their progress across phone and laptop.
 
-Made to be shared: put the link in your Instagram bio and anyone who opens it gets their **own private copy** on their own phone. No login, no account, nothing to sign up for. Day one starts the moment they open it.
+- **App:** https://the-reset-app.netlify.app
+- **Admin (owner only):** https://the-reset-app.netlify.app/admin.html
 
-> "You're going to get through this. One small step today."
+## How accounts work
 
-## What's inside (8 gentle sections)
+- **Free / no account** — everything saves in the browser (localStorage) on that device. Perfect for trying it.
+- **Account** — sign up with an email + password. Data syncs to the cloud so it follows the person across devices. Any trial data they'd already added is carried into the new account.
+- **Instant sign-up** — no confirmation email required to start (kept simple on purpose).
+- **Password reset** — a "Forgot password?" link, plus the owner can reset any member's password from the admin page.
 
-1. **Today** — the date, a daily affirmation (your kind inner voice), your top 3 priorities, must-do tasks, reminders, a mood/energy check (Low / Medium / Good), and a **Survival mode** plan for the hardest days.
-2. **Money** — money in and out, rent, bills, food, fuel, medicine, debts, leftover (safe-to-spend), an overspending warning, and a **do-not-spend** list for stress spending.
-3. **Work & Invoices** — track shifts (employer, times, hourly rate), auto pay totals, invoice status (Not sent / Sent / Paid), weekly total, and a one-tap **invoice summary** to copy.
-4. **Shopping** — items by category, tick off what you've bought, a trip budget with an estimated total and over-budget warning.
-5. **People & Family** — the people who matter: kids, family, checking in on loved ones, asking for help.
-6. **Health & Routine** — a simple daily checklist (shower, eat, water, tidy, pray, walk, sleep), medication reminders, and notes for sleep, food, movement and **nervous-system reset**.
-7. **Tasks** — one list sorted by what matters (Urgent / Important / Later), with status and due dates.
-8. **Notes** — a quiet place to dump anything on your mind, with search.
+## Admin page
 
-Everything is editable, and it comes pre-filled with gentle example content so it makes sense the moment you open it.
+`/admin.html` is a separate, login-gated page for the owner. Only accounts on the server-side admin allowlist can use it (right now: the owner's email). From there you can:
 
-## How each person's data is stored
+- See everyone who has made an account (email, joined date, last active).
+- **Set a temporary password** for a member (the reliable way to get someone back in — tell them privately, they change it in Settings).
+- **Generate a password reset link** to send them.
+- **Delete** a member's account and data.
 
-Everything is saved **locally in the browser** (localStorage) on the device it's used on. No login, no server — it works offline once loaded, and each person's notes stay private to them.
+> To use the admin page, the owner first signs up in the app with the admin email, then logs in at `/admin.html`.
 
-There's a **⚙️ Settings** button (top right) to reload the example content, start fresh, and **back up / restore** your data (copy the text somewhere safe — clearing your browser would otherwise erase it).
+## Architecture (v2)
 
-## How to run / share it
+- **Frontend** — a single `index.html` (plus `admin.html`), React + Tailwind via CDN, no build step. Dark premium theme, inline SVG icons.
+- **Backend** — Supabase (in the shared "Get The Kids Fit" project, namespaced `reset_*`):
+  - `reset_users` — one row per person: `{ id, email, data (jsonb), timestamps }`. **Row-Level Security** means each person can only ever read/write their own row.
+  - `reset_admins` — server-only admin allowlist (RLS on, no policies → not readable by any client).
+  - Edge function `reset-api` — handles public sign-up (creates a confirmed account) and admin actions. The **service-role key lives only in this function**, never in the app. Every admin action verifies the caller is a signed-in admin.
+- The app degrades gracefully to **local-only** if the backend can't be reached.
 
-It's a single file — nothing to install, no build step.
+## Two manual steps to finish (owner)
 
-- **Try it locally:** double-click `index.html`.
-- **Put it online (for your Instagram):** drag the `the-reset` folder onto [app.netlify.com/drop](https://app.netlify.com/drop) to get a link, then paste that link in your bio. (This app is already deployed — ask to redeploy after any change.)
-- **On a phone:** open the link → browser menu → **Add to Home Screen** so it becomes an app icon.
+Some Supabase project settings can't be changed from here — do these once in the Supabase dashboard for the smoothest experience:
 
-## Tech
+1. **Self-service password reset redirect** — Auth → URL Configuration → add `https://the-reset-app.netlify.app/**` to *Redirect URLs*. (Owner-set temporary passwords already work without this.)
+2. **Reliable email at scale** — Auth → set up a custom SMTP provider (e.g. Resend, free tier) before a big Instagram push. The built-in email is heavily rate-limited.
 
-- **React 18** and **Tailwind CSS**, both from a CDN — no npm, no build tools.
-- One `index.html`, organised into simple, clearly-named components (`TodayView`, `BudgetView`, `WorkView`, `ShoppingView`, `KidsView`, `HealthView`, `TasksView`, `NotesView`).
+## How to run locally
 
-## Next 5 upgrades
+Single files, nothing to install: double-click `index.html`. (Accounts/sync need the internet; the app still works offline in local mode.)
 
-1. **Calendar view** — see shifts, bills and activities on a monthly calendar.
-2. **Export to PDF** — turn invoices (or a weekly plan) into a shareable PDF.
-3. **Cloud sync** — optional accounts so data follows people across devices.
-4. **Gentle streaks & check-ins** — celebrate showing up, without pressure.
-5. **AI companion** — a kind assistant that helps plan the day and reset when it's all too much.
+## Next upgrades
+
+1. Move to a dedicated Supabase project (clean separation from other apps).
+2. Custom email (Resend) + branded reset emails.
+3. Calendar view; export to PDF.
+4. Gentle streaks and check-ins.
+5. A kind in-app AI companion to help plan the day.
