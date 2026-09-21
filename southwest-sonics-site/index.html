@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#09090B">
-<title>South West Sonics — Junior Basketball</title>
-<meta name="description" content="Junior basketball in South West Sydney. Boys and girls 10–17, all skill levels, out of Bankstown Basketball Stadium. Summer Comp tryouts Saturday 3 October.">
+<title>South West Sonics — Junior &amp; Senior Basketball</title>
+<meta name="description" content="Junior basketball in South West Sydney. Boys and girls 10–17 on Friday nights at Bankstown Basketball Stadium, plus Under 21s and a senior UBL side on Saturdays. Summer Comp tryouts Saturday 3 October.">
 <meta property="og:title" content="South West Sonics">
-<meta property="og:description" content="Junior basketball in the south west. Ages 10–17, all skill levels. Tryouts Saturday 3 October.">
+<meta property="og:description" content="Junior basketball in the south west. Ages 10–17 on Fridays, U21s and UBL on Saturdays. Tryouts Saturday 3 October.">
 <meta property="og:image" content="hero.jpg">
 <link rel="icon" href="logo.png" type="image/png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -214,11 +214,32 @@ section h2{font-size:clamp(31px,8.6vw,41px);margin:18px 0 24px}
 .photo .cap span{font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;
   color:rgba(242,239,230,.6);display:block;margin-top:8px}
 
+/* pathway */
+.path{display:flex;margin-top:28px;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  background:linear-gradient(180deg,var(--card-2),var(--card))}
+.path .p{flex:1;padding:17px 6px;text-align:center;position:relative;
+  transition:background .4s var(--ease)}
+.path .p + .p{border-left:1px solid var(--line)}
+.path .p b{font-family:var(--disp);font-weight:900;font-size:16px;display:block;letter-spacing:-.04em}
+.path .p span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);margin-top:7px}
+.path .p.on{background:linear-gradient(180deg,rgba(63,197,236,.17),rgba(63,197,236,.03))}
+.path .p.on b{color:var(--accent)}
+.path .p.on span{color:rgba(63,197,236,.8)}
+.note{margin-top:20px;font-size:14.5px;color:var(--dim);line-height:1.6}
+.note b{color:var(--muted);font-weight:600}
+.note a{border-bottom:1px solid rgba(63,197,236,.45);transition:color .3s}
+.note a:hover b{color:var(--accent)}
+
 /* sponsors + contact */
 .sp{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
-.sp div{padding:15px 19px;border-radius:13px;background:var(--card);border:1px solid var(--line);
-  font-size:14.5px;font-weight:600;color:var(--muted);transition:border-color .35s,color .35s}
+.sp a,.sp div{display:inline-flex;align-items:center;gap:9px;padding:15px 19px;border-radius:13px;
+  background:var(--card);border:1px solid var(--line);font-size:14.5px;font-weight:600;color:var(--muted);
+  transition:border-color .35s,color .35s,transform .35s var(--ease)}
+.sp a:hover{border-color:rgba(63,197,236,.45);color:var(--ink);transform:translateY(-2px)}
 .sp div:hover{border-color:var(--line-2);color:var(--ink)}
+.sp a i{font-style:normal;font-size:12px;color:var(--dim);transition:color .35s,transform .3s var(--ease)}
+.sp a:hover i{color:var(--accent);transform:translate(2px,-2px)}
 .clist{display:flex;flex-direction:column;gap:11px;margin-top:28px}
 .cr{display:flex;align-items:center;gap:15px;padding:19px;border-radius:15px;
   background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--line);
@@ -279,6 +300,7 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
 .rail figure:hover{transform:translateY(-4px);border-color:var(--line-2)}
 .rail figure img{width:100%;height:100%;object-fit:cover;object-position:center 32%;transition:transform 1.2s var(--ease)}
 .rail figure:hover img{transform:scale(1.05)}
+.rail figure[data-f] img{object-position:center var(--f)}
 .rail figcaption{position:absolute;left:0;right:0;bottom:0;padding:44px 18px 17px;z-index:2;
   background:linear-gradient(to top,rgba(5,5,7,.94),transparent);
   font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
@@ -314,10 +336,12 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
   .c{padding:30px 28px} .c h3{font-size:24px} .c p{font-size:16.5px}
 
   /* tryouts — editorial split */
-  #tryouts .wrap{display:grid;grid-template-columns:1fr minmax(0,430px);gap:70px;
+  .duo .wrap{display:grid;grid-template-columns:1fr minmax(0,430px);gap:70px;
     align-items:center;justify-content:space-between}
-  #tryouts .photo{margin-top:0;aspect-ratio:4/5}
-  #tryouts .hbtns{margin-top:30px} #tryouts .hbtns .btn{min-width:0}
+  .duo .photo{margin-top:0;aspect-ratio:4/5}
+  .duo .hbtns{margin-top:30px} .duo .hbtns .btn{min-width:0}
+  .duo.flip .photo{order:-1}
+  .path .p b{font-size:19px} .path .p span{font-size:10px}
   .tryout{padding:26px} .tryout .d b{font-size:50px} .tryout .t{font-size:20px}
   .stats{gap:14px;margin-top:32px}
   .st{padding:22px 10px} .st b{font-size:25px} .st span{font-size:10px}
@@ -399,7 +423,7 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
   </div>
   <div class="kick">Bankstown · Est. 2024</div>
   <h1>Junior basketball with a <span class="accent">home</span>.</h1>
-  <p>Boys and girls, 10 to 17. Every skill level. Friday nights at Bankstown Basketball Stadium.</p>
+  <p>Boys and girls, 10 to 17, Friday nights at Bankstown Basketball Stadium. Under 21s and UBL on Saturdays.</p>
   <div class="hbtns">
     <a class="btn p" href="https://sonics-register.netlify.app">Register for tryouts</a>
     <a class="btn g" href="#who">See who we are</a>
@@ -425,7 +449,7 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
 <section id="who" class="rv"><div class="wrap">
   <div class="kick">Who we are</div>
   <h2>A club built around the <span class="accent">juniors</span>.</h2>
-  <p class="body">South West Sonics started in 2024 and grew quickly, because there wasn't enough of this out here. We're a <b>junior club first</b> — most of our kids come from right around Bankstown, and plenty walk in having never played a real game.</p>
+  <p class="body">South West Sonics started in 2024 and grew quickly, because there wasn't enough of this out here. We're a <b>junior club first</b> — most of our kids come from right around Bankstown, and plenty walk in having never played a real game. We run seniors too, but Friday nights belong to the juniors.</p>
   <p class="body">We keep it simple. Every coach is screened. Nobody gets cut for turning up new. And if the fee is ever the thing stopping a kid playing, you talk to us quietly and we sort it out. <b>Your kid, our club.</b></p>
 
   <div class="cards">
@@ -460,7 +484,7 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
 </div></section>
 
 <!-- TRYOUTS -->
-<section id="tryouts" class="rv"><div class="wrap">
+<section id="tryouts" class="rv duo"><div class="wrap">
   <div class="tcol">
     <div class="kick">Summer Comp</div>
     <h2>Tryouts are <span class="accent">open</span>.</h2>
@@ -487,9 +511,9 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
 
 <!-- SQUADS -->
 <section id="squads" class="rv"><div class="wrap">
-  <div class="kick">Find your colour</div>
+  <div class="kick">Juniors · find your colour</div>
   <h2>The <span class="accent">squads</span>.</h2>
-  <p class="body">Junior teams run by age and colour. Where your kid lands comes down to tryouts — and we'll always talk it through with you first.</p>
+  <p class="body">Our junior teams run by age and colour, Friday nights at Bankstown. Where your kid lands comes down to tryouts — and we'll always talk it through with you first.</p>
   <div class="squads">
     <div class="sq"><div class="sw" style="background:linear-gradient(150deg,#2ecc71,#16a34a)"></div>
       <h4>Sonics Green</h4><span>Under 14s</span></div>
@@ -502,6 +526,28 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
   </div>
 </div></section>
 
+<!-- SENIORS -->
+<section id="seniors" class="rv duo flip"><div class="wrap">
+  <div class="tcol">
+    <div class="kick">Saturdays · Seniors</div>
+    <h2>It doesn't stop at <span class="accent">eighteen</span>.</h2>
+    <p class="body">Juniors are the heart of this club and always will be. But plenty of clubs hand a kid their last jersey at eighteen, and we didn't want to be one of them.</p>
+    <p class="body">Sonics run <b>Under 21s</b> and a senior side in the <b>UBL</b> on Saturdays. Same club, same coaches, same gym — so the ten-year-old who walks in this October has somewhere to keep playing.</p>
+    <div class="path">
+      <div class="p"><b>U12–14</b><span>Fri</span></div>
+      <div class="p"><b>U16–18</b><span>Fri</span></div>
+      <div class="p"><b>U21</b><span>Sat</span></div>
+      <div class="p on"><b>UBL</b><span>Sat</span></div>
+    </div>
+    <p class="note">Playing seniors, or after a run in the UBL? <a href="sms:0414145332"><b>Text the club</b></a> and we'll point you the right way.</p>
+  </div>
+  <div class="photo">
+    <img src="seniors.jpg" alt="A South West Sonics senior player during a UBL game">
+    <div class="sc"></div>
+    <div class="cap"><b>Saturday nights.</b><span>The senior side · UBL</span></div>
+  </div>
+</div></section>
+
 <!-- SEASON RAIL -->
 <section id="season" class="rv"><div class="wrap">
   <div class="kick">The season so far</div>
@@ -509,8 +555,8 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
   <p class="body">Finals nights, tours, the walk off the court together. Every one of these is somebody's kid having the best week of their year.</p>
   <div class="rail">
     <figure><img src="huddle.jpg" alt="Sonics juniors celebrating after a win"><figcaption>The final buzzer</figcaption></figure>
-    <figure><img src="squad.jpg" alt="A South West Sonics junior squad on tour in Japan"><figcaption>On tour · Japan</figcaption></figure>
-    <figure><img src="semis.jpg" alt="Semi-final fixtures for the Sonics junior teams"><figcaption>Semi-finals</figcaption></figure>
+    <figure data-f style="--f:44%"><img src="squad.jpg" alt="A South West Sonics junior squad on tour in Japan"><figcaption>On tour · Japan</figcaption></figure>
+    <figure data-f style="--f:14%"><img src="semis.jpg" alt="Semi-final fixtures for the Sonics junior teams"><figcaption>Semi-finals</figcaption></figure>
   </div>
   <div class="railhint"><i></i>Swipe through</div>
 </div></section>
@@ -520,7 +566,12 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
   <div class="kick">Local business</div>
   <h2>The people who <span class="accent">back</span> us.</h2>
   <p class="body">Sponsorship keeps our fees low and our juniors on the court. If that sounds like your business, come and talk to us.</p>
-  <div class="sp"><div>MaxAbility Services</div><div>Tradies Only</div><div>Boss Man</div></div>
+  <div class="sp">
+    <a href="https://maxabilityservices.com.au/" target="_blank" rel="noopener">MaxAbility Services <i>↗</i></a>
+    <a href="https://www.instagram.com/bossmansydney/" target="_blank" rel="noopener">Bossman Barbers <i>↗</i></a>
+    <div>Tradies Only</div>
+    <div>Real Estate Creators</div>
+  </div>
 </div></section>
 
 <!-- CONTACT -->
@@ -543,7 +594,7 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
     <div class="disc"><img src="logo.png" alt="South West Sonics"><div class="gloss"></div></div></div>
   <div class="fn">South West Sonics</div>
   <div class="fs">Bankstown Basketball Stadium · Est. 2024</div>
-  <div class="fg gradt">Junior basketball, south west Sydney</div>
+  <div class="fg gradt">Juniors Friday · Seniors Saturday</div>
 </footer>
 
 <a class="fab" id="fab" href="https://sonics-register.netlify.app">Register →</a>
