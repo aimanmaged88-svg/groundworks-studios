@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0D">
+<title>South West Sonics — Junior Basketball, Bankstown</title>
+<meta name="description" content="Junior basketball in South West Sydney. Boys and girls 10–17, all skill levels, playing out of Bankstown Basketball Stadium. Summer Comp tryouts Saturday 3 October.">
+<meta property="og:title" content="South West Sonics — Junior Basketball">
+<meta property="og:description" content="Boys and girls 10–17, all skill levels. Bankstown Basketball Stadium. Summer Comp tryouts Saturday 3 October.">
+<meta property="og:image" content="hero.jpg">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0B0D; --bg2:#08080A; --card:#141417; --card2:#1C1C20;
+  --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.17);
+  --ink:#F5F5F7; --muted:#A1A1A6; --dim:#6E6E73;
+  --sky:#3FC5EC; --skygrad:linear-gradient(180deg,#5AD4F7,#2FB4E0);
+  --grad:linear-gradient(120deg,#E7369B,#F5821F,#FCC21A);
+  --disp:'Archivo Black','Arial Black',system-ui,sans-serif;
+  --sans:'Inter',-apple-system,system-ui,sans-serif;
+  --spring:cubic-bezier(.22,1,.36,1);
+  --max:1120px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:16px;line-height:1.6;
+  overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:80;transition:background .3s,border-color .3s,backdrop-filter .3s;
+  border-bottom:1px solid transparent}
+nav.on{background:rgba(11,11,13,.82);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  border-bottom-color:var(--line)}
+nav .in{max-width:var(--max);margin:0 auto;padding:13px 22px;display:flex;align-items:center;gap:13px}
+nav img{width:42px;height:42px;border-radius:50%}
+nav .nm{font-family:var(--disp);font-weight:400;font-size:15px;letter-spacing:.05em;text-transform:uppercase;line-height:1}
+nav .sb{font-size:9px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+nav .links{margin-left:auto;display:flex;align-items:center;gap:26px}
+nav .links a{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  transition:color .25s}
+nav .links a:hover{color:var(--ink)}
+nav .links a.cta{padding:11px 19px;border-radius:980px;background:var(--skygrad);color:#042230;
+  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;
+  transition:transform .15s var(--spring)}
+nav .links a.cta:hover{transform:translateY(-1px);color:#042230}
+@media(max-width:820px){nav .links a:not(.cta){display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;
+  animation:kb 22s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1.08)}to{transform:scale(1)}}
+.hero .scrim{position:absolute;inset:0;
+  background:linear-gradient(to top,#0B0B0D 6%,rgba(11,11,13,.55) 46%,rgba(11,11,13,.25) 100%)}
+.hero .in{position:relative;z-index:2;width:100%;padding:0 0 74px}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:980px;
+  background:rgba(63,197,236,.13);border:1px solid rgba(63,197,236,.32);
+  font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--sky);margin-bottom:22px}
+.hero .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--sky);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{font-family:var(--disp);font-weight:400;font-size:clamp(40px,8.6vw,84px);line-height:.94;
+  letter-spacing:.3px;text-transform:uppercase;max-width:15ch}
+.hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:clamp(15px,2vw,19px);color:#d5d5da;margin-top:22px;max-width:46ch}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:17px 28px;border-radius:980px;
+  font-size:13px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  transition:transform .15s var(--spring),box-shadow .25s}
+.btn.p{background:var(--skygrad);color:#042230;box-shadow:0 16px 40px -14px rgba(63,197,236,.7)}
+.btn.g{background:rgba(255,255,255,.07);color:var(--ink);border:1px solid var(--line2);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn:hover{transform:translateY(-2px)}
+
+/* ---------- tryout strip ---------- */
+.strip{background:linear-gradient(100deg,#1a2b33,#0e1a20);border-top:1px solid rgba(63,197,236,.25);
+  border-bottom:1px solid rgba(63,197,236,.25)}
+.strip .in{display:flex;align-items:center;gap:22px;padding:26px 22px;max-width:var(--max);margin:0 auto;flex-wrap:wrap}
+.strip .date{text-align:center;flex:0 0 auto}
+.strip .date b{font-family:var(--disp);font-weight:400;font-size:44px;color:var(--sky);display:block;line-height:.9}
+.strip .date span{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.strip .txt{flex:1 1 280px}
+.strip .txt b{font-family:var(--disp);font-weight:400;font-size:21px;text-transform:uppercase;letter-spacing:.2px;display:block}
+.strip .txt span{color:var(--muted);font-size:14.5px;display:block;margin-top:5px}
+
+/* ---------- sections ---------- */
+section{padding:96px 0}
+.kick{font-size:10.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--sky);margin-bottom:16px}
+h2{font-family:var(--disp);font-weight:400;font-size:clamp(30px,5.2vw,52px);line-height:1.02;
+  letter-spacing:.25px;text-transform:uppercase}
+h2 .d{color:var(--dim)}
+.lead{color:var(--muted);font-size:17px;margin-top:20px;max-width:56ch}
+
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:58px;align-items:center}
+@media(max-width:860px){.split{grid-template-columns:1fr;gap:38px}}
+.shot{border-radius:22px;overflow:hidden;border:1px solid var(--line);position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.shot img{width:100%;aspect-ratio:4/5;object-fit:cover;transition:transform .8s var(--spring)}
+.shot:hover img{transform:scale(1.04)}
+.shot .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 22px 20px;
+  background:linear-gradient(to top,rgba(5,5,7,.92),transparent)}
+.shot .cap b{font-family:var(--disp);font-weight:400;font-size:19px;text-transform:uppercase;letter-spacing:.2px;display:block}
+.shot .cap span{font-size:12px;color:#bdbdc4;display:block;margin-top:5px}
+
+/* feature list */
+.feats{display:grid;gap:14px;margin-top:34px}
+.feat{display:flex;gap:16px;align-items:flex-start;padding:19px 20px;border-radius:18px;
+  background:var(--card);border:1px solid var(--line);transition:border-color .3s,transform .3s var(--spring)}
+.feat:hover{border-color:var(--line2);transform:translateX(4px)}
+.feat .ic{width:42px;height:42px;border-radius:13px;flex:0 0 auto;display:grid;place-items:center;
+  background:rgba(63,197,236,.12);border:1px solid rgba(63,197,236,.22);color:var(--sky)}
+.feat .ic svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round}
+.feat b{font-size:16px;font-weight:700;display:block}
+.feat span{color:var(--muted);font-size:14px;display:block;margin-top:4px}
+
+/* teams */
+.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:44px}
+.team{padding:26px 22px;border-radius:20px;background:var(--card);border:1px solid var(--line);
+  position:relative;overflow:hidden;transition:transform .35s var(--spring),border-color .3s}
+.team:hover{transform:translateY(-5px);border-color:var(--line2)}
+.team .dot{width:34px;height:34px;border-radius:11px;margin-bottom:16px}
+.team b{font-family:var(--disp);font-weight:400;font-size:20px;text-transform:uppercase;letter-spacing:.2px;display:block}
+.team span{color:var(--muted);font-size:13px;display:block;margin-top:6px}
+
+/* stats */
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:44px}
+.num{padding:28px 22px;border-radius:20px;background:var(--card);border:1px solid var(--line);text-align:center}
+.num b{font-family:var(--disp);font-weight:400;font-size:40px;line-height:1;display:block;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.num span{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
+  display:block;margin-top:13px}
+
+/* gallery */
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:44px}
+.gal img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:16px;border:1px solid var(--line);
+  transition:transform .5s var(--spring),filter .4s;filter:grayscale(.25)}
+.gal img:hover{transform:scale(1.03);filter:grayscale(0)}
+
+/* sponsors */
+.sp{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.sp div{padding:17px 26px;border-radius:15px;background:var(--card);border:1px solid var(--line);
+  font-weight:700;font-size:15px;color:#d5d5da}
+
+/* cta band */
+.band{position:relative;border-radius:28px;overflow:hidden;border:1px solid var(--line2);margin:0 22px}
+.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.32}
+.band .sc{position:absolute;inset:0;background:linear-gradient(120deg,rgba(6,6,8,.93),rgba(6,6,8,.6))}
+.band .in{position:relative;z-index:2;padding:72px 42px;text-align:center}
+@media(max-width:600px){.band .in{padding:54px 24px}}
+.band h2{max-width:18ch;margin:0 auto}
+.band p{color:#d0d0d6;margin-top:18px;max-width:46ch;margin-inline:auto}
+.band .btns{justify-content:center}
+
+/* footer */
+footer{border-top:1px solid var(--line);margin-top:96px;padding:52px 0 40px;background:var(--bg2)}
+.fgrid{display:flex;gap:30px;flex-wrap:wrap;align-items:center}
+footer img{width:52px;height:52px;border-radius:50%}
+footer .fn{font-family:var(--disp);font-weight:400;font-size:17px;text-transform:uppercase;letter-spacing:.05em}
+footer .fs{font-size:12.5px;color:var(--muted);margin-top:5px}
+footer .fl{margin-left:auto;display:flex;gap:26px;flex-wrap:wrap}
+footer .fl a{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+footer .fl a:hover{color:var(--sky)}
+.copy{margin-top:34px;padding-top:24px;border-top:1px solid var(--line);
+  font-size:11.5px;color:var(--dim);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.copy .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .75s var(--spring),transform .75s var(--spring)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav id="nav"><div class="in">
+  <img src="logo.png" alt="South West Sonics">
+  <div><div class="nm">Sonics</div><div class="sb">South West Sydney</div></div>
+  <div class="links">
+    <a href="#juniors">Juniors</a>
+    <a href="#teams">Teams</a>
+    <a href="#japan">Tours</a>
+    <a href="#join">Contact</a>
+    <a class="cta" href="https://sonics-register.netlify.app">Register</a>
+  </div>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero">
+  <img src="hero.jpg" alt="A South West Sonics junior rising for a layup">
+  <div class="scrim"></div>
+  <div class="in"><div class="wrap">
+    <div class="eyebrow"><i></i>Tryouts Saturday 3 October</div>
+    <h1>Junior basketball<br>in the <span class="g">south west</span></h1>
+    <p>Boys and girls, 10 to 17. Every skill level, from first-ever dribble to rep level. Fridays at Bankstown Basketball Stadium.</p>
+    <div class="btns">
+      <a class="btn p" href="https://sonics-register.netlify.app">Register for tryouts</a>
+      <a class="btn g" href="#juniors">See what we're about</a>
+    </div>
+  </div></div>
+</header>
+
+<!-- TRYOUT STRIP -->
+<div class="strip"><div class="in">
+  <div class="date"><b>3</b><span>October</span></div>
+  <div class="txt">
+    <b>Summer Comp tryouts &amp; registration</b>
+    <span>Saturday, 2:00pm at Bankstown Basketball Stadium · Ages 10–17 · All skill levels welcome</span>
+  </div>
+  <a class="btn p" href="https://sonics-register.netlify.app">Sign up</a>
+</div></div>
+
+<!-- JUNIORS -->
+<section id="juniors"><div class="wrap">
+  <div class="split">
+    <div class="rv">
+      <div class="kick">Built around the juniors</div>
+      <h2>Kids first.<br><span class="d">Everything else after.</span></h2>
+      <p class="lead">We're a junior club before we're anything else. Most of our kids come from right here in the south west, and plenty walk in having never played a competitive game. That's the point.</p>
+      <div class="feats">
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M3.2 12h17.6M12 3.2v17.6"/><path d="M5.8 5.8c3.6 2.9 3.6 9.5 0 12.4M18.2 5.8c-3.6 2.9-3.6 9.5 0 12.4"/></svg></div>
+          <div><b>All skill levels</b><span>Beginners sit alongside rep players. Nobody gets turned away for being new.</span></div></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="7.6" r="3.4"/><path d="M4 20c0-3.7 2.9-5.8 6.5-5.8 1.2 0 2.3.2 3.2.7"/><path d="M15.4 17.6l1.9 1.9 3.6-3.9"/></svg></div>
+          <div><b>Screened, qualified coaches</b><span>Every coach holds a current Working With Children Check. No exceptions.</span></div></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3.2" y="5.2" width="17.6" height="15.6" rx="2.6"/><path d="M3.2 10.2h17.6"/><path d="M8.2 3.2v4M15.8 3.2v4"/></svg></div>
+          <div><b>One night a week</b><span>Friday nights at Bankstown. Easy to plan a family around.</span></div></div>
+        <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></div>
+          <div><b>Local, properly</b><span>Bankstown is home. Your kid plays with the kids they go to school with.</span></div></div>
+      </div>
+    </div>
+    <div class="shot rv">
+      <img src="huddle.jpg" alt="Sonics juniors in a team huddle">
+      <div class="cap"><b>One team, one huddle</b><span>Where it actually happens</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- TEAMS -->
+<section id="teams" style="background:var(--bg2);border-block:1px solid var(--line)"><div class="wrap">
+  <div class="rv">
+    <div class="kick">Our squads</div>
+    <h2>Find your <span class="d">colour</span></h2>
+    <p class="lead">Junior teams run by age group and colour. Where your child lands comes down to age and what we see at tryouts — and we'll always talk it through with you.</p>
+  </div>
+  <div class="teams rv">
+    <div class="team"><div class="dot" style="background:linear-gradient(150deg,#2ecc71,#16a34a)"></div>
+      <b>Sonics Green</b><span>Under 14s</span></div>
+    <div class="team"><div class="dot" style="background:linear-gradient(150deg,#ff6b6b,#dc2626)"></div>
+      <b>Sonics Red</b><span>Under 16s</span></div>
+    <div class="team"><div class="dot" style="background:linear-gradient(150deg,#FFD264,#F0A81E)"></div>
+      <b>Sonics Gold</b><span>Under 16s</span></div>
+    <div class="team"><div class="dot" style="background:linear-gradient(150deg,#b8bec9,#6b7280)"></div>
+      <b>Sonics Grey</b><span>Under 18s</span></div>
+  </div>
+  <div class="nums rv">
+    <div class="num"><b>10–17</b><span>Age range</span></div>
+    <div class="num"><b>4+</b><span>Junior squads</span></div>
+    <div class="num"><b>Fri</b><span>Game night</span></div>
+    <div class="num"><b>2024</b><span>Established</span></div>
+  </div>
+</div></section>
+
+<!-- JAPAN -->
+<section id="japan"><div class="wrap">
+  <div class="split">
+    <div class="shot rv" style="order:-1">
+      <img src="kid.jpg" alt="A young Sonics player in a gym in Japan">
+      <div class="cap"><b>Basketball took me to Japan</b><span>Sonics juniors on tour</span></div>
+    </div>
+    <div class="rv">
+      <div class="kick">Where it can take them</div>
+      <h2>Further than<br><span class="d">Bankstown.</span></h2>
+      <p class="lead">Our juniors have played in Japan. New Zealand is next, in 2027. We've got a sister club in Hong Kong. For a kid from the south west, that's a passport, a plane and a story they'll tell for the rest of their life.</p>
+      <p class="lead" style="margin-top:14px">It starts on a Friday night at Bankstown.</p>
+      <div class="btns"><a class="btn g" href="https://www.instagram.com/swsonics/">Follow the tours</a></div>
+    </div>
+  </div>
+  <div class="gal rv">
+    <img src="squad.jpg" alt="Sonics junior squad photo on tour">
+    <img src="lineup.jpg" alt="Sonics juniors lining up before a game">
+    <img src="hero.jpg" alt="A Sonics junior driving to the basket">
+    <img src="huddle.jpg" alt="Sonics juniors celebrating together">
+  </div>
+</div></section>
+
+<!-- PARENTS / APP -->
+<section style="background:var(--bg2);border-block:1px solid var(--line)"><div class="wrap">
+  <div class="rv" style="text-align:center;max-width:720px;margin:0 auto">
+    <div class="kick">For parents</div>
+    <h2>Never wonder<br><span class="d">what's on this week.</span></h2>
+    <p class="lead" style="margin-inline:auto">Every Sonics family gets the club app. The schedule, the roster, what's owing, what to bring, and a way to tell the coach your kid can't make it — all in one place, on your phone.</p>
+    <div class="btns" style="justify-content:center">
+      <a class="btn g" href="https://southwest-sonics-app.netlify.app">Take a look at the app</a>
+    </div>
+  </div>
+  <div class="feats rv" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:44px">
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3.2" y="5.2" width="17.6" height="15.6" rx="2.6"/><path d="M3.2 10.2h17.6"/><path d="M8.2 3.2v4M15.8 3.2v4"/></svg></div>
+      <div><b>The whole season</b><span>Every round, result and start time.</span></div></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><rect x="2.6" y="5.4" width="18.8" height="13.2" rx="2.6"/><path d="M2.6 10.2h18.8"/></svg></div>
+      <div><b>Fees, clearly</b><span>What's paid, what's owing, no chasing.</span></div></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M6.2 9.6a5.8 5.8 0 1 1 11.6 0c0 3.9 1.5 5.4 1.5 5.4H4.7s1.5-1.5 1.5-5.4z"/><path d="M10 18.6a2 2 0 0 0 4 0"/></svg></div>
+      <div><b>Straight from the club</b><span>Notices land on your phone, not in a group chat.</span></div></div>
+  </div>
+</div></section>
+
+<!-- SPONSORS -->
+<section><div class="wrap">
+  <div class="rv">
+    <div class="kick">Backed by</div>
+    <h2>Local businesses<br><span class="d">who back local kids.</span></h2>
+    <p class="lead">Sponsorship keeps our fees low and our juniors on the court. If that sounds like your business, we've got packages — come talk to us.</p>
+    <div class="sp">
+      <div>MaxAbility Services</div>
+      <div>Tradies Only</div>
+      <div>Boss Man</div>
+    </div>
+    <div class="btns"><a class="btn g" href="#join">Become a sponsor</a></div>
+  </div>
+</div></section>
+
+<!-- JOIN -->
+<section id="join" style="padding-bottom:0">
+  <div class="band rv">
+    <img src="lineup.jpg" alt="">
+    <div class="sc"></div>
+    <div class="in">
+      <div class="kick" style="color:var(--sky)">Saturday 3 October · 2:00pm</div>
+      <h2>Come down<br><span class="d">and have a go.</span></h2>
+      <p>Tryouts and registration at Bankstown Basketball Stadium. Ages 10–17, every skill level. Register first and you're signed in before you walk through the door.</p>
+      <div class="btns">
+        <a class="btn p" href="https://sonics-register.netlify.app">Register now</a>
+        <a class="btn g" href="sms:0414145332">Text 0414 145 332</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <div class="fgrid">
+    <img src="logo.png" alt="South West Sonics">
+    <div><div class="fn">South West Sonics</div>
+      <div class="fs">Bankstown Basketball Stadium · Est. 2024</div></div>
+    <div class="fl">
+      <a href="https://www.instagram.com/swsonics/">Instagram</a>
+      <a href="sms:0414145332">0414 145 332</a>
+      <a href="https://sonics-register.netlify.app">Register</a>
+      <a href="https://southwest-sonics-app.netlify.app">Club app</a>
+    </div>
+  </div>
+  <div class="copy">
+    <span>© <span id="yr">2026</span> South West Sonics Basketball</span>
+    <span class="g">Junior basketball, south west Sydney</span>
+  </div>
+</div></footer>
+
+<script>
+document.getElementById('yr').textContent=new Date().getFullYear();
+const nav=document.getElementById('nav');
+const onScroll=()=>nav.classList.toggle('on',window.scrollY>24);
+onScroll(); addEventListener('scroll',onScroll,{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+}),{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

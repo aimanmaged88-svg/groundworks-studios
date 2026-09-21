@@ -4,5 +4,5 @@
 #   southwest-sonics-register -> sonics-register.netlify.app       (public rego form)
 #   southwest-sonics-inbox    -> sonics-inbox.netlify.app          (private inbox + functions)
 [build]
-  publish = "southwest-sonics-app"
+  publish = "southwest-sonics-site"
   command = ""
