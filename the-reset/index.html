@@ -82,9 +82,10 @@ const STORE_KEY = "thereset.v1";
 const TRIAL_KEY = "thereset.trial";
 
 // Set up the cloud client — but degrade gracefully to local-only if unavailable.
-let supabase = null;
-try { if (window.supabase) supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch (e) {}
-const cloudAvailable = !!supabase;
+// NB: the Supabase CDN owns the global name `supabase`, so ours must be `sb`.
+let sb = null;
+try { if (window.supabase) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch (e) {}
+const cloudAvailable = !!sb;
 
 const uid = () => Math.random().toString(36).slice(2, 9);
 const money = (n) => "$" + (Number(n) || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
@@ -213,12 +214,12 @@ async function callFn(action, body, accessToken) {
   return json;
 }
 async function loadCloud(session) {
-  const { data, error } = await supabase.from("reset_users").select("data").eq("id", session.user.id).maybeSingle();
+  const { data, error } = await sb.from("reset_users").select("data").eq("id", session.user.id).maybeSingle();
   if (error) throw error;
   return data && data.data && Object.keys(data.data).length ? data.data : null;
 }
 async function saveCloud(session, data) {
-  const { error } = await supabase.from("reset_users").upsert({ id: session.user.id, email: session.user.email, data });
+  const { error } = await sb.from("reset_users").upsert({ id: session.user.id, email: session.user.email, data });
   if (error) throw error;
 }
 
@@ -984,12 +985,12 @@ function App() {
       if (!cloudAvailable) { setMode("local"); setBooting(false); return; }
       try {
         const isRecovery = (window.location.hash || "").indexOf("type=recovery") !== -1;
-        const { data: { session: sess } } = await supabase.auth.getSession();
+        const { data: { session: sess } } = await sb.auth.getSession();
         if (sess) { await enterCloud(sess); }
         else if (isRecovery) { setRecovery(true); setBooting(false); }
         else if (localStorage.getItem(TRIAL_KEY) === "1") { setMode("local"); setBooting(false); }
         else { setMode("welcome"); setBooting(false); }
-        const res = supabase.auth.onAuthStateChange((event, s) => {
+        const res = sb.auth.onAuthStateChange((event, s) => {
           if (event === "PASSWORD_RECOVERY") { setRecovery(true); setBooting(false); }
           else if (event === "SIGNED_OUT") { setSession(null); setMode("welcome"); setAuthView("welcome"); }
         });
@@ -1017,12 +1018,12 @@ function App() {
 
   // ---- auth actions ----
   const onTryFree = () => { try { localStorage.setItem(TRIAL_KEY, "1"); } catch (e) {} setData(loadLocal() || sampleData()); setMode("local"); };
-  const onLogin = async (email, password) => { const { data: d, error } = await supabase.auth.signInWithPassword({ email, password }); if (error) throw new Error(error.message === "Invalid login credentials" ? "Email or password is incorrect." : error.message); await enterCloud(d.session); };
+  const onLogin = async (email, password) => { const { data: d, error } = await sb.auth.signInWithPassword({ email, password }); if (error) throw new Error(error.message === "Invalid login credentials" ? "Email or password is incorrect." : error.message); await enterCloud(d.session); };
   const onSignup = async (email, password) => { await callFn("signup", { email, password, initialData: loadLocal() || sampleData() }); await onLogin(email, password); };
-  const onForgot = async (email) => { await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin }); };
-  const onSetPassword = async (pw) => { if (!pw || pw.length < 6) throw new Error("Password must be at least 6 characters."); const { error } = await supabase.auth.updateUser({ password: pw }); if (error) throw new Error(error.message); const { data: { session: s } } = await supabase.auth.getSession(); try { history.replaceState(null, "", window.location.pathname); } catch (e) {} window.location.hash = ""; await enterCloud(s); setRecovery(false); };
-  const onLogout = async () => { try { await supabase.auth.signOut(); } catch (e) {} try { localStorage.removeItem(STORE_KEY); localStorage.removeItem(TRIAL_KEY); } catch (e) {} setSession(null); setData(sampleData()); setMode("welcome"); setAuthView("welcome"); setShowSettings(false); };
-  const onChangePassword = async (pw) => { if (!pw || pw.length < 6) throw new Error("At least 6 characters."); const { error } = await supabase.auth.updateUser({ password: pw }); if (error) throw new Error(error.message); };
+  const onForgot = async (email) => { await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin }); };
+  const onSetPassword = async (pw) => { if (!pw || pw.length < 6) throw new Error("Password must be at least 6 characters."); const { error } = await sb.auth.updateUser({ password: pw }); if (error) throw new Error(error.message); const { data: { session: s } } = await sb.auth.getSession(); try { history.replaceState(null, "", window.location.pathname); } catch (e) {} window.location.hash = ""; await enterCloud(s); setRecovery(false); };
+  const onLogout = async () => { try { await sb.auth.signOut(); } catch (e) {} try { localStorage.removeItem(STORE_KEY); localStorage.removeItem(TRIAL_KEY); } catch (e) {} setSession(null); setData(sampleData()); setMode("welcome"); setAuthView("welcome"); setShowSettings(false); };
+  const onChangePassword = async (pw) => { if (!pw || pw.length < 6) throw new Error("At least 6 characters."); const { error } = await sb.auth.updateUser({ password: pw }); if (error) throw new Error(error.message); };
   const goSignup = () => { setShowSettings(false); setAuthView("signup"); setMode("welcome"); };
 
   if (booting) {

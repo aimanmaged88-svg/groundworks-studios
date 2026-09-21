@@ -46,11 +46,11 @@ const SUPABASE_KEY = "sb_publishable_Ypgx9Bzt59ITvS8OLtm5ng_GvumN0BA";
 const FN_URL = SUPABASE_URL + "/functions/v1/reset-api";
 const APP_URL = "https://the-reset-app.netlify.app";
 
-let supabase = null;
-try { if (window.supabase) supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch (e) {}
+let sb = null;
+try { if (window.supabase) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch (e) {}
 
 async function adminCall(action, body) {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await sb.auth.getSession();
   const token = session && session.access_token;
   const res = await fetch(FN_URL, {
     method: "POST",
@@ -101,13 +101,13 @@ function Login({ onDone }) {
   const submit = async () => {
     setErr(""); setBusy(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      const { error } = await sb.auth.signInWithPassword({ email: email.trim(), password });
       if (error) throw new Error(error.message === "Invalid login credentials" ? "Email or password is incorrect." : error.message);
       // Verify admin by trying an admin-only action
       await adminCall("admin_list");
       onDone();
     } catch (e) {
-      if (/admins only/i.test(e.message)) { setErr("This account is not an admin."); try { await supabase.auth.signOut(); } catch (x) {} }
+      if (/admins only/i.test(e.message)) { setErr("This account is not an admin."); try { await sb.auth.signOut(); } catch (x) {} }
       else setErr(e.message);
     }
     setBusy(false);
@@ -142,7 +142,7 @@ function Dashboard({ onLogout }) {
     try { const r = await adminCall("admin_list"); setUsers(r.users || []); } catch (e) { setToast(e.message); }
     setLoading(false);
   };
-  useEffect(() => { load(); (async () => { const { data: { session } } = await supabase.auth.getSession(); setMe(session && session.user.email); })(); }, []);
+  useEffect(() => { load(); (async () => { const { data: { session } } = await sb.auth.getSession(); setMe(session && session.user.email); })(); }, []);
   const flash = (m) => { setToast(m); setTimeout(() => setToast(""), 2500); };
 
   const openReset = (u) => { setPwUser(u); setNewPw(randomPassword()); };
@@ -236,18 +236,18 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      if (!supabase) { setReady(true); return; }
+      if (!sb) { setReady(true); return; }
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session } } = await sb.auth.getSession();
         if (session) { try { await adminCall("admin_list"); setAuthed(true); } catch (e) {} }
       } catch (e) {}
       setReady(true);
     })();
   }, []);
 
-  const logout = async () => { try { await supabase.auth.signOut(); } catch (e) {} setAuthed(false); };
+  const logout = async () => { try { await sb.auth.signOut(); } catch (e) {} setAuthed(false); };
 
-  if (!supabase) return <div className="min-h-screen flex items-center justify-center px-6 text-center text-[#8b909a]">Admin needs an internet connection to load. Please refresh.</div>;
+  if (!sb) return <div className="min-h-screen flex items-center justify-center px-6 text-center text-[#8b909a]">Admin needs an internet connection to load. Please refresh.</div>;
   if (!ready) return <div className="min-h-screen flex items-center justify-center"><span className="w-12 h-12 rounded-2xl bg-[#c8a45c]/12 border border-[#c8a45c]/25 text-[#d8b979] flex items-center justify-center"><Icon name="leaf" className="w-6 h-6" /></span></div>;
   return authed ? <Dashboard onLogout={logout} /> : <Login onDone={() => setAuthed(true)} />;
 }
