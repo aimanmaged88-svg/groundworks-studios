@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hi Quality Mechanical Repairs | Sefton Mechanics — All Makes & Models</title>
+<meta name="description" content="Hi Quality Mechanical Repairs — family-owned Sefton mechanics servicing all makes & models including European cars for 35+ years. Logbook servicing, pink slips, brakes, suspension & more. Book online or call (02) 9645 4210.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1466c4; --blue2:#0e4f9c; --bluesoft:rgba(20,102,196,.10);
+  --accent:#ff7a18; --accent2:#e8650b; --accentsoft:rgba(255,122,24,.12);
+  --navy:#0c1b30; --navy2:#081321;
+  --ink:#131b26; --muted:#5d6b7e; --line:#e4e9f1; --bg:#f4f7fc; --white:#fff;
+  --ok:#12a150; --star:#f5b301;
+  --shadow:0 10px 30px rgba(15,30,55,.09); --shadow2:0 22px 50px rgba(15,30,55,.16);
+  --r:16px;
+  --head:'Oswald',Impact,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+.btn{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#fff;border:none;padding:14px 26px;border-radius:999px;font-weight:800;font-size:15px;cursor:pointer;transition:.2s;letter-spacing:.2px;font-family:inherit}
+.btn:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 12px 24px rgba(255,122,24,.35)}
+.btn.blue{background:var(--blue)}.btn.blue:hover{background:var(--blue2);box-shadow:0 12px 24px rgba(20,102,196,.32)}
+.btn.ghost{background:transparent;border:2px solid rgba(255,255,255,.5);color:#fff}
+.btn.ghost:hover{background:rgba(255,255,255,.12);box-shadow:none}
+.btn.dark{background:var(--navy)}.btn.dark:hover{background:var(--navy2);box-shadow:0 12px 24px rgba(12,27,48,.3)}
+.btn.sm{padding:9px 17px;font-size:13.5px}
+.btn.block{width:100%;justify-content:center}
+.pill{display:inline-block;background:var(--bluesoft);color:var(--blue);font-weight:800;font-size:12px;letter-spacing:1.6px;padding:7px 15px;border-radius:999px;text-transform:uppercase}
+
+/* ===== LOGO ===== */
+.logo{display:flex;align-items:center;gap:11px;cursor:pointer}
+.logo .mk{width:44px;height:44px;flex:0 0 auto}
+.logo .wm{display:flex;flex-direction:column;line-height:1}
+.logo .wm .t{font-family:var(--head);font-weight:700;font-size:19px;letter-spacing:.5px;color:var(--navy);text-transform:uppercase}
+.logo .wm .b{font-family:var(--head);font-weight:500;font-size:11px;letter-spacing:3.4px;color:var(--blue);text-transform:uppercase}
+footer .logo .wm .t,.login-box .logo .wm .t{color:#fff}
+
+/* ===== NAV ===== */
+.topbar{background:var(--navy2);color:#c9d6e6;font-size:13px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:38px;gap:16px}
+.topbar a{color:#c9d6e6;font-weight:600}
+.topbar .tb-r{display:flex;gap:20px;align-items:center}
+.topbar strong{color:#fff}
+header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+.navlinks{display:flex;align-items:center;gap:26px}
+.navlinks a{font-weight:600;font-size:15px;color:var(--ink);cursor:pointer;transition:.15s}
+.navlinks a:hover{color:var(--blue)}
+.navcta{display:flex;align-items:center;gap:14px}
+.phone{font-weight:800;color:var(--ink);font-size:16px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.phone svg{color:var(--accent)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px}
+.burger span{width:26px;height:3px;background:var(--ink);border-radius:2px}
+
+/* PAGE system */
+.page{display:none}.page.active{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===== HERO ===== */
+.hero{position:relative;background:linear-gradient(135deg,var(--navy) 0%,#123055 60%,var(--navy2) 100%);color:#fff;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 84% 16%,rgba(20,102,196,.4),transparent 46%),radial-gradient(circle at 6% 90%,rgba(255,122,24,.18),transparent 44%)}
+.hero::after{content:"";position:absolute;inset:0;opacity:.5;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:linear-gradient(180deg,#000,transparent 75%);mask-image:linear-gradient(180deg,#000,transparent 75%)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.08fr .92fr;gap:44px;align-items:center;padding:66px 22px 78px}
+.hero .pill{background:rgba(255,255,255,.1);color:#dbe7f6}
+.hero h1{font-family:var(--head);font-size:56px;line-height:1.04;font-weight:700;letter-spacing:.3px;margin:18px 0;text-transform:uppercase}
+.hero h1 .o{color:var(--accent)}
+.hero p.lead{font-size:18.5px;color:#c6d3e4;max-width:520px;margin-bottom:26px}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+.trust{display:flex;gap:14px 26px;margin-top:32px;flex-wrap:wrap}
+.trust .t{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;color:#dbe6f3}
+.trust .t i{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.1);display:grid;place-items:center;color:var(--accent);font-style:normal}
+/* hero estimate card */
+.hero-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:22px;padding:26px;backdrop-filter:blur(6px);box-shadow:var(--shadow2)}
+.hero-card .hc-top{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.hero-card .hc-top .dot{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(18,161,80,.2)}
+.hero-card h3{font-size:21px;font-family:var(--head);font-weight:600;letter-spacing:.4px}
+.hero-card p.sub{color:#c1cfe0;font-size:13.5px;margin-bottom:18px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px;color:#d4dEeb;letter-spacing:.3px}
+.hero-card .field label{color:#d4deeb}
+.field input,.field select,.field textarea{width:100%;padding:12px 14px;border-radius:11px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.09);color:#fff;font-size:14.5px;font-family:inherit;outline:none;transition:.15s}
+.field input::placeholder,.field textarea::placeholder{color:#93a3b6}
+.field select option{color:#131b26}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:rgba(255,255,255,.14)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hero-price{display:none;margin:14px 0;padding:15px;background:rgba(255,122,24,.16);border:1px solid rgba(255,122,24,.4);border-radius:12px;text-align:center}
+.hero-price .lab{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#ffd3ad;font-weight:700}
+.hero-price .amt{font-family:var(--head);font-size:38px;font-weight:700;line-height:1.1}
+.hero-price .note{font-size:11.5px;color:#c1cfe0;margin-top:2px}
+
+/* ===== STATS ===== */
+.statband{background:var(--white);border-bottom:1px solid var(--line)}
+.statband .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:34px 22px}
+.stat{text-align:center;padding:6px}
+.stat .n{font-family:var(--head);font-size:44px;font-weight:700;color:var(--blue);line-height:1}
+.stat .l{font-size:13.5px;color:var(--muted);font-weight:600;margin-top:4px}
+
+/* ===== SECTIONS ===== */
+section.blk{padding:74px 0}
+.eyebrow{text-align:center;margin-bottom:12px}
+.h2{font-family:var(--head);text-align:center;font-size:42px;font-weight:700;letter-spacing:.4px;margin-bottom:14px;text-transform:uppercase}
+.h2 .o{color:var(--accent)}
+.subt{text-align:center;color:var(--muted);font-size:17px;max-width:660px;margin:0 auto 48px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px;transition:.25s;box-shadow:var(--shadow)}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow2);border-color:#d3ddeb}
+.svc .ic{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--blue),#2c86e0);display:grid;place-items:center;margin-bottom:16px;color:#fff}
+.svc h3{font-size:18.5px;margin-bottom:8px;font-weight:800}
+.svc p{color:var(--muted);font-size:14.5px;margin-bottom:14px}
+.svc .from{font-weight:800;color:var(--accent2);font-size:14px}
+.svc .from span{color:var(--muted);font-weight:600;font-size:12.5px}
+
+/* WHY */
+.why{background:var(--navy);color:#fff;position:relative;overflow:hidden}
+.why::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 10%,rgba(20,102,196,.3),transparent 45%)}
+.why .wrap{position:relative}
+.why .h2{color:#fff}.why .subt{color:#c2cfe0}
+.why .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff}
+.why .card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)}
+.why .card .ic{width:50px;height:50px;border-radius:12px;background:rgba(255,122,24,.18);display:grid;place-items:center;color:var(--accent);margin-bottom:14px}
+.why .card h3{font-size:18px;margin-bottom:7px;font-weight:800}
+.why .card p{color:#bccbdc;font-size:14.5px}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.step{text-align:center;padding:10px;position:relative}
+.step .n{width:60px;height:60px;margin:0 auto 15px;border-radius:50%;background:#fff;border:2px solid var(--bluesoft);display:grid;place-items:center;font-family:var(--head);font-weight:700;font-size:24px;color:var(--blue);box-shadow:var(--shadow)}
+.step h4{margin-bottom:6px;font-size:17px}.step p{color:var(--muted);font-size:14px}
+
+/* TESTIMONIALS */
+.testi .card .stars{color:var(--star);font-size:16px;margin-bottom:10px;letter-spacing:2px}
+.testi .card p{font-size:15px;color:#2e3d4f;margin-bottom:16px;font-style:italic}
+.testi .who{display:flex;align-items:center;gap:12px}
+.testi .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800;font-size:16px}
+.testi .who b{display:block;font-size:14.5px}.testi .who span{font-size:12.5px;color:var(--muted)}
+
+/* BRANDS */
+.brands{background:#eef3fa}
+.brandrow{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:8px}
+.brandrow span{background:#fff;border:1px solid var(--line);color:#41536a;font-weight:700;font-size:14px;padding:10px 18px;border-radius:999px;font-family:var(--head);letter-spacing:.6px}
+
+/* CTA BAND */
+.ctaband{background:linear-gradient(120deg,var(--blue),var(--blue2));color:#fff;border-radius:22px;padding:44px;text-align:center;box-shadow:var(--shadow2);position:relative;overflow:hidden}
+.ctaband::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 20%,rgba(255,255,255,.16),transparent 40%)}
+.ctaband h2{position:relative;font-family:var(--head);font-size:36px;font-weight:700;text-transform:uppercase;margin-bottom:10px}
+.ctaband p{position:relative;color:#dce9f8;margin-bottom:22px;font-size:17px}
+.ctaband .cta{position:relative;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ===== PAGE HEADERS (inner pages) ===== */
+.pghead{background:linear-gradient(135deg,var(--navy),#123055);color:#fff;padding:52px 0 46px;text-align:center}
+.pghead h1{font-family:var(--head);font-size:44px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.pghead p{color:#c6d3e4;font-size:17px;margin-top:8px}
+
+/* ===== BOOKING ===== */
+.booklayout{display:grid;grid-template-columns:1.35fr .85fr;gap:30px;align-items:start}
+.formcard{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:30px;box-shadow:var(--shadow)}
+.formcard h3{font-family:var(--head);font-size:23px;font-weight:600;margin-bottom:4px;letter-spacing:.4px}
+.formcard>p.lead{color:var(--muted);font-size:14.5px;margin-bottom:22px}
+.formcard .field label{color:var(--ink)}
+.formcard .field input,.formcard .field select,.formcard .field textarea{background:#f7f9fd;border:1px solid var(--line);color:var(--ink)}
+.formcard .field input::placeholder,.formcard .field textarea::placeholder{color:#9aa7b8}
+.formcard .field input:focus,.formcard .field select:focus,.formcard .field textarea:focus{border-color:var(--blue);background:#fff}
+.formsec{font-family:var(--head);font-weight:600;letter-spacing:1px;text-transform:uppercase;font-size:13px;color:var(--blue);margin:22px 0 12px;padding-top:14px;border-top:1px dashed var(--line)}
+.formsec:first-of-type{border-top:none;padding-top:0;margin-top:0}
+.est{position:sticky;top:96px;background:var(--navy);color:#fff;border-radius:var(--r);padding:26px;box-shadow:var(--shadow2)}
+.est h4{font-family:var(--head);font-weight:600;letter-spacing:.5px;font-size:20px;margin-bottom:4px}
+.est .big{font-family:var(--head);font-size:46px;font-weight:700;color:var(--accent);line-height:1.1;margin:12px 0 2px}
+.est .rng{color:#c2cfe0;font-size:13.5px;margin-bottom:18px}
+.est ul{list-style:none;margin-top:8px;display:none}
+.est ul li{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:14px;color:#dbe6f3}
+.est ul li:last-child{border-bottom:none;font-weight:800;color:#fff}
+.est .disc{font-size:11.5px;color:#93a3b6;margin-top:14px;line-height:1.5}
+.ok-banner{display:none;background:#eafaf0;border:1px solid #b6e7c9;color:#116a35;border-radius:14px;padding:24px;text-align:center;margin-bottom:8px}
+.ok-banner .tick{width:54px;height:54px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;margin:0 auto 12px;font-size:28px}
+.ok-banner h3{font-family:var(--head);font-size:24px;color:#0d5228;margin-bottom:6px}
+.ok-banner p{color:#2a7d4c;font-size:15px}
+.ok-banner .ref{display:inline-block;margin-top:10px;background:#fff;border:1px dashed var(--ok);padding:8px 16px;border-radius:10px;font-weight:800;color:#0d5228}
+
+/* ===== PORTAL ===== */
+.lookup{max-width:520px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:30px;box-shadow:var(--shadow);text-align:center}
+.lookup h3{font-family:var(--head);font-size:24px;font-weight:600;margin-bottom:6px}
+.lookup p.h{color:var(--muted);font-size:14px;margin-bottom:18px}
+.lookup .field input{background:#f7f9fd;border:1px solid var(--line);color:var(--ink);text-align:center}
+.lookup .hint{font-size:12.5px;color:var(--muted);margin-top:12px}
+.lookup .hint a{color:var(--blue);cursor:pointer;font-weight:700}
+.portal-out{max-width:760px;margin:28px auto 0}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);margin-bottom:18px}
+.pcard .phd{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.pcard .phd b{font-family:var(--head);font-size:20px;letter-spacing:.3px}
+.badge{display:inline-block;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.4px}
+.badge.book{background:#e7f0fd;color:var(--blue)}
+.badge.prog{background:#fff2e2;color:var(--accent2)}
+.badge.done{background:#eafaf0;color:var(--ok)}
+.badge.due{background:#fdeaea;color:#c0392b}
+.prow{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.prow:last-child{border-bottom:none}.prow span:first-child{color:var(--muted)}
+.prow b{font-weight:700}
+
+/* ===== ADMIN ===== */
+.login-screen{min-height:60vh;display:grid;place-items:center;padding:40px 22px;background:linear-gradient(135deg,var(--navy),#123055)}
+.login-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:34px;width:100%;max-width:400px;text-align:center;box-shadow:var(--shadow2)}
+.login-box .logo{justify-content:center;margin-bottom:16px}
+.login-box h3{color:#fff;font-family:var(--head);font-weight:600;font-size:22px;margin-bottom:4px}
+.login-box p.h{color:#bccbdc;font-size:13.5px;margin-bottom:20px}
+.login-box .field{text-align:left}
+.login-box .field label{color:#d4deeb}
+.dash{display:none;background:var(--bg)}
+.dash.active{display:block}
+.dashbar{background:var(--navy);color:#fff;padding:16px 0}
+.dashbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.dashbar .who{font-size:13.5px;color:#bccbdc}
+.dashbar .who b{color:#fff}
+.dashwrap{padding:26px 0 70px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.mini{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+.mini .l{font-size:12.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.mini .v{font-family:var(--head);font-size:30px;font-weight:700;color:var(--ink);margin-top:4px}
+.mini .v.blue{color:var(--blue)}.mini .v.acc{color:var(--accent2)}.mini .v.ok{color:var(--ok)}
+.tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.tabs button{background:#fff;border:1px solid var(--line);padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;color:var(--muted);font-family:inherit;transition:.15s}
+.tabs button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.subtab{display:none}.subtab.on{display:block;animation:fade .3s ease}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:12px 12px;border-bottom:2px solid var(--line)}
+td{padding:13px 12px;border-bottom:1px solid var(--line)}
+tr:hover td{background:#f7f9fd}
+td .car{font-weight:700}td .sub{color:var(--muted);font-size:12.5px}
+/* AI */
+.ai-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px}
+.ai-out{background:#f7f9fd;border:1px solid var(--line);border-radius:14px;padding:20px;min-height:230px;font-size:14.5px;white-space:pre-wrap;line-height:1.6}
+.ai-out.empty{color:#9aa7b8;display:grid;place-items:center;text-align:center;font-style:italic}
+.leadscore{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+.leadscore .bar{height:8px;background:#eef2f8;border-radius:99px;overflow:hidden;flex:1;margin:0 14px}
+.leadscore .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--accent))}
+.leadscore b{font-size:13.5px}
+.insights{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.barchart{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.barrow{display:grid;grid-template-columns:150px 1fr 54px;align-items:center;gap:12px;font-size:13.5px}
+.barrow .track{height:22px;background:#eef2f8;border-radius:8px;overflow:hidden}
+.barrow .track i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#2c86e0);border-radius:8px}
+
+/* ===== FOOTER ===== */
+footer{background:var(--navy2);color:#c1cfe0;padding:56px 0 26px}
+.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:30px}
+footer h4{font-family:var(--head);color:#fff;font-size:16px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;font-weight:600}
+footer p,footer li{font-size:14px;line-height:1.9;color:#a9bacd}
+footer ul{list-style:none}
+footer li a{cursor:pointer}footer li a:hover{color:#fff}
+footer .foot-logo{margin-bottom:14px}
+.fcontact{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;font-size:14px}
+.fcontact svg{color:var(--accent);flex:0 0 auto;margin-top:3px}
+.fbar{border-top:1px solid rgba(255,255,255,.1);margin-top:36px;padding-top:20px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12.5px;color:#8496ab}
+
+/* ===== DEMO RIBBON ===== */
+.demobar{background:var(--accent);color:#fff;font-size:13px;font-weight:700;text-align:center;padding:8px 44px 8px 16px;position:relative;letter-spacing:.2px}
+.demobar a{text-decoration:underline}
+.demobar .x{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;background:rgba(255,255,255,.2);border:none;color:#fff;width:24px;height:24px;border-radius:50%;font-weight:800;line-height:1}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:960px){
+  .hero .wrap{grid-template-columns:1fr;gap:34px;padding:48px 22px 60px}
+  .hero h1{font-size:44px}
+  .booklayout{grid-template-columns:1fr}
+  .est{position:static}
+  .ai-grid,.insights{grid-template-columns:1fr}
+  .statband .wrap{grid-template-columns:repeat(2,1fr);gap:24px 16px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:820px){
+  .topbar{display:none}
+  .navlinks{position:absolute;top:76px;left:0;right:0;background:#fff;flex-direction:column;align-items:stretch;padding:10px 22px 18px;gap:2px;border-bottom:1px solid var(--line);box-shadow:var(--shadow);display:none}
+  .navlinks.open{display:flex}
+  .navlinks a{padding:12px 4px;border-bottom:1px solid var(--line)}
+  .navcta .phone{display:none}
+  .burger{display:flex}
+  .grid4,.grid3,.steps{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .hero h1{font-size:36px}
+  .h2{font-size:32px}.pghead h1{font-size:32px}
+  .grid4,.grid3,.steps,.statband .wrap,.stats,.fgrid,.brandrow{grid-template-columns:1fr}
+  .brandrow{display:flex}
+  .row2{grid-template-columns:1fr}
+  .ctaband{padding:30px 22px}.ctaband h2{font-size:27px}
+  section.blk{padding:52px 0}
+  .stat .n{font-size:38px}
+}
+</style>
+</head>
+<body>
+
+<!-- ======= DEMO RIBBON ======= -->
+<div class="demobar" id="demobar">
+  ⚡ Concept website prepared by <strong>Groundworks Studios</strong> for Hi Quality Mechanical Repairs — a design preview, not the official live site.
+  <button class="x" onclick="document.getElementById('demobar').style.display='none'">×</button>
+</div>
+
+<!-- ======= TOP BAR ======= -->
+<div class="topbar">
+  <div class="wrap">
+    <div>📍 Waldron Rd (cnr Hector St), Sefton NSW 2162</div>
+    <div class="tb-r">
+      <span>Mon–Fri 7:30am–5:00pm · Sat 8am–12pm</span>
+      <a href="tel:0296454210"><strong>☎ (02) 9645 4210</strong></a>
+    </div>
+  </div>
+</div>
+
+<!-- ======= HEADER ======= -->
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo" onclick="go('home')">
+        <svg class="mk" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <rect width="48" height="48" rx="11" fill="#0c1b30"/>
+          <path d="M24 11.5a12.5 12.5 0 1 0 0 25 12.5 12.5 0 0 0 0-25Zm0 4.2 1.5 2.6 3-.3.9 2.9 2.6 1.5-.3 3 2 2.3-1.4 2.6.9 2.9-2.6 1.5-1.3 2.7-3-.3L24 32.8l-2.4-1.1-3 .3-1.3-2.7-2.6-1.5.9-2.9-1.4-2.6 2-2.3-.3-3 2.6-1.5.9-2.9 3 .3L24 15.7Z" fill="#1466c4"/>
+          <circle cx="24" cy="24" r="4.6" fill="#ff7a18"/>
+        </svg>
+        <div class="wm"><span class="t">Hi Quality</span><span class="b">Mechanical Repairs</span></div>
+      </div>
+      <div class="navlinks" id="navlinks">
+        <a onclick="go('home')">Home</a>
+        <a onclick="go('home');scrollTo2('services')">Services</a>
+        <a onclick="go('home');scrollTo2('why')">Why Us</a>
+        <a onclick="go('book')">Book a Service</a>
+        <a onclick="go('portal')">My Vehicle</a>
+        <a onclick="go('admin')">Staff</a>
+      </div>
+      <div class="navcta">
+        <a class="phone" href="tel:0296454210"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z"/></svg>(02) 9645 4210</a>
+        <button class="btn sm" onclick="go('book')">Book Now</button>
+        <button class="burger" onclick="document.getElementById('navlinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HOME ============ -->
+<div class="page active" id="page-home">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="pill">35+ years in Sefton · Family owned</span>
+        <h1>Sydney's trusted mechanics for <span class="o">every make & model.</span></h1>
+        <p class="lead">A family-run workshop servicing South West Sydney for over three decades — from a quick logbook service to European specialists and full mechanical repairs. Honest advice, quality parts, done right the first time.</p>
+        <div class="cta">
+          <button class="btn" onclick="go('book')">Book a Service →</button>
+          <a class="btn ghost" href="tel:0296454210">☎ Call the workshop</a>
+        </div>
+        <div class="trust">
+          <div class="t"><i>✓</i> Licensed NSW workshop</div>
+          <div class="t"><i>★</i> All makes &amp; European cars</div>
+          <div class="t"><i>◈</i> e-Safety (pink slip) station</div>
+          <div class="t"><i>$</i> Upfront, honest pricing</div>
+        </div>
+      </div>
+      <!-- ESTIMATE CARD -->
+      <div class="hero-card">
+        <div class="hc-top"><span class="dot"></span><h3>Instant service estimate</h3></div>
+        <p class="sub">Pick a service and your car type for a ballpark price — no obligation.</p>
+        <div class="field">
+          <label>What do you need?</label>
+          <select id="h-svc" onchange="heroCalc()">
+            <option value="">Select a service…</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Vehicle type</label>
+          <select id="h-veh" onchange="heroCalc()">
+            <option value="">Select vehicle…</option>
+          </select>
+        </div>
+        <div class="hero-price" id="h-price">
+          <div class="lab">Estimated from</div>
+          <div class="amt" id="h-amt">$—</div>
+          <div class="note" id="h-note">Indicative only — confirmed on inspection</div>
+        </div>
+        <button class="btn block" onclick="fromHero()">Book This Service →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="statband">
+    <div class="wrap">
+      <div class="stat"><div class="n">35</div><div class="l">Years serving Sydney</div></div>
+      <div class="stat"><div class="n">7,000+</div><div class="l">Happy local drivers</div></div>
+      <div class="stat"><div class="n">10,000+</div><div class="l">Cars repaired</div></div>
+      <div class="stat"><div class="n">4.8★</div><div class="l">Word-of-mouth rating</div></div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="blk" id="services">
+    <div class="wrap">
+      <div class="eyebrow"><span class="pill">What we do</span></div>
+      <h2 class="h2">Full workshop, <span class="o">one stop shop</span></h2>
+      <p class="subt">From your next logbook service to major repairs and rego inspections — we look after every part of your car under one roof.</p>
+      <div class="grid4" id="svc-grid"></div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="blk why" id="why">
+    <div class="wrap">
+      <div class="eyebrow"><span class="pill">Why Hi Quality</span></div>
+      <h2 class="h2">Three decades of <span class="o">doing it right</span></h2>
+      <p class="subt">We treat your car the way we'd treat our own — and most of our customers have been coming to us for years.</p>
+      <div class="grid3">
+        <div class="card"><div class="ic">👨‍🔧</div><h3>Family owned since 1990</h3><p>Vince, Cosmo and the team have built the workshop on trust and repeat business — not upselling. You deal with the owners directly.</p></div>
+        <div class="card"><div class="ic">🌍</div><h3>European specialists</h3><p>Confident on all makes and models, including European and prestige cars that other workshops turn away. The right tools, the right diagnostics.</p></div>
+        <div class="card"><div class="ic">🛡️</div><h3>Logbook that protects your warranty</h3><p>We stamp your logbook and use genuine or quality-matched parts, so your new-car warranty stays valid.</p></div>
+        <div class="card"><div class="ic">💬</div><h3>Honest, upfront quotes</h3><p>We call before we touch anything extra. No surprises, no jargon — just a clear explanation of what your car actually needs.</p></div>
+        <div class="card"><div class="ic">📋</div><h3>Pink &amp; blue slip station</h3><p>Authorised for e-Safety (pink slip) and blue slip inspections, plus authorised child restraint fitting — sorted while you're here.</p></div>
+        <div class="card"><div class="ic">📍</div><h3>Easy Sefton location</h3><p>On Waldron Rd at the corner of Hector St — handy drop-off, minutes from the M5, serving all of South West Sydney.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="blk">
+    <div class="wrap">
+      <div class="eyebrow"><span class="pill">How it works</span></div>
+      <h2 class="h2">Booked in <span class="o">four easy steps</span></h2>
+      <p class="subt">Getting your car looked after has never been simpler.</p>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><h4>Book online or call</h4><p>Choose a service and a day that suits you — takes under a minute.</p></div>
+        <div class="step"><div class="n">2</div><h4>Drop off your car</h4><p>Leave the keys with the team. Waiting-room or drop-and-go, your choice.</p></div>
+        <div class="step"><div class="n">3</div><h4>We inspect &amp; quote</h4><p>We check it over and call you before any extra work — never a surprise bill.</p></div>
+        <div class="step"><div class="n">4</div><h4>Drive away confident</h4><p>Job done right, logbook stamped, and a reminder when your next service is due.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="blk" style="background:#eef3fa">
+    <div class="wrap">
+      <div class="eyebrow"><span class="pill">Reviews</span></div>
+      <h2 class="h2">Loved by <span class="o">South West Sydney</span></h2>
+      <p class="subt">Real families who've trusted us with their cars for years.</p>
+      <div class="grid3 testi">
+        <div class="card"><div class="stars">★★★★★</div><p>"They have taken care of mine and my kids' cars for the past five years, from minor services to major repairs. Vince and Cosmo are honest and never overcharge."</p><div class="who"><div class="av">S</div><div><b>Stephanie</b><span>Regents Park · 5 years a customer</span></div></div></div>
+        <div class="card"><div class="stars">★★★★★</div><p>"Took my BMW here after the dealer quoted me a fortune. Same job, genuine parts, half the price and the logbook stamped. Won't go anywhere else now."</p><div class="who"><div class="av">M</div><div><b>Michael T.</b><span>Bankstown · European owner</span></div></div></div>
+        <div class="card"><div class="stars">★★★★★</div><p>"Needed a pink slip and a service in a hurry. In and out the same day, explained everything clearly. Genuinely nice, no-nonsense guys."</p><div class="who"><div class="av">A</div><div><b>Aisha R.</b><span>Sefton · Local regular</span></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRANDS -->
+  <section class="blk brands">
+    <div class="wrap">
+      <h2 class="h2">We service <span class="o">all makes &amp; models</span></h2>
+      <p class="subt">Australian, Asian and European — if it drives, we can look after it.</p>
+      <div class="brandrow">
+        <span>Toyota</span><span>Mazda</span><span>Ford</span><span>Holden</span><span>Hyundai</span><span>Kia</span><span>Mitsubishi</span><span>Nissan</span><span>BMW</span><span>Mercedes-Benz</span><span>Audi</span><span>Volkswagen</span><span>Subaru</span><span>Honda</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="blk" style="padding-top:0">
+    <div class="wrap">
+      <div class="ctaband">
+        <h2>Book your car in today</h2>
+        <p>Same-week appointments available. Get an instant estimate online or talk to the workshop directly.</p>
+        <div class="cta">
+          <button class="btn dark" style="background:#fff;color:var(--blue)" onclick="go('book')">Book a Service →</button>
+          <a class="btn ghost" href="tel:0296454210">☎ (02) 9645 4210</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ BOOK ============ -->
+<div class="page" id="page-book">
+  <div class="pghead">
+    <h1>Book a service</h1>
+    <p>Tell us about your car — get an instant estimate and lock in a time.</p>
+  </div>
+  <section class="blk" style="padding-top:44px">
+    <div class="wrap">
+      <div class="ok-banner" id="ok-banner">
+        <div class="tick">✓</div>
+        <h3>Booking request received!</h3>
+        <p id="ok-msg">Thanks — the team will call you shortly to confirm your time.</p>
+        <div class="ref" id="ok-ref">REF —</div>
+        <div style="margin-top:16px"><button class="btn blue sm" onclick="go('portal')">Track it in My Vehicle →</button></div>
+      </div>
+
+      <div class="booklayout" id="book-layout">
+        <div class="formcard">
+          <h3>Your booking details</h3>
+          <p class="lead">Fields marked * are required. No payment needed to book.</p>
+
+          <div class="formsec">Your details</div>
+          <div class="row2">
+            <div class="field"><label>Full name *</label><input id="b-name" placeholder="e.g. Jordan Smith"></div>
+            <div class="field"><label>Mobile *</label><input id="b-phone" placeholder="0400 000 000"></div>
+          </div>
+          <div class="field"><label>Email</label><input id="b-email" placeholder="you@email.com"></div>
+
+          <div class="formsec">Your vehicle</div>
+          <div class="row2">
+            <div class="field"><label>Make &amp; model *</label><input id="b-car" placeholder="e.g. Toyota Corolla"></div>
+            <div class="field"><label>Year</label><input id="b-year" placeholder="e.g. 2018"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Rego plate</label><input id="b-rego" placeholder="e.g. ABC12D"></div>
+            <div class="field"><label>Vehicle type *</label><select id="b-veh" onchange="bookCalc()"><option value="">Select…</option></select></div>
+          </div>
+
+          <div class="formsec">The service</div>
+          <div class="field"><label>What do you need? *</label><select id="b-svc" onchange="bookCalc()"><option value="">Select a service…</option></select></div>
+          <div class="row2">
+            <div class="field"><label>Preferred date</label><input id="b-date" type="date"></div>
+            <div class="field"><label>Drop-off or wait?</label><select id="b-wait"><option>Drop off &amp; go</option><option>Wait at workshop</option><option>Need a courtesy lift</option></select></div>
+          </div>
+          <div class="field"><label>Anything else we should know?</label><textarea id="b-notes" rows="3" placeholder="e.g. warning light on the dash, noise when braking, service overdue…"></textarea></div>
+
+          <button class="btn block" style="margin-top:10px" onclick="submitBooking()">Request My Booking →</button>
+          <p style="text-align:center;font-size:12.5px;color:var(--muted);margin-top:10px">Or call the workshop on <a href="tel:0296454210" style="color:var(--blue);font-weight:700">(02) 9645 4210</a></p>
+        </div>
+
+        <!-- ESTIMATE -->
+        <div class="est">
+          <h4>Your estimate</h4>
+          <div class="big" id="e-amt">$—</div>
+          <div class="rng" id="e-rng">Choose a service &amp; vehicle to see your price.</div>
+          <ul id="e-break">
+            <li><span>Base rate</span><span id="e-base">$0</span></li>
+            <li><span id="e-vehlab">Vehicle factor</span><span id="e-veh">×1.0</span></li>
+            <li><span>Estimated from</span><span id="e-total">$0</span></li>
+          </ul>
+          <div class="disc">Estimates are a guide based on typical jobs. Government-set inspection fees (pink/blue slip) are fixed. Your final price is confirmed after we inspect the car — and we always call before doing any extra work.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ PORTAL (My Vehicle) ============ -->
+<div class="page" id="page-portal">
+  <div class="pghead">
+    <h1>My vehicle</h1>
+    <p>Check your booking status, service history and when your next service is due.</p>
+  </div>
+  <section class="blk" style="padding-top:44px">
+    <div class="wrap">
+      <div class="lookup">
+        <h3>Find my vehicle</h3>
+        <p class="h">Enter the mobile or email you booked with.</p>
+        <div class="field"><input id="portal-key" placeholder="Mobile or email…" onkeydown="if(event.key==='Enter')portalLookup()"></div>
+        <button class="btn blue block" onclick="portalLookup()">View My Vehicle →</button>
+        <p class="hint">Just browsing? <a onclick="portalDemo()">Open a demo account</a></p>
+      </div>
+      <div class="portal-out" id="portal-out"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ ADMIN (Staff) ============ -->
+<div class="page" id="page-admin">
+  <!-- LOGIN -->
+  <div class="login-screen" id="admin-login">
+    <div class="login-box">
+      <div class="logo"><svg class="mk" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="11" fill="#123055"/><path d="M24 11.5a12.5 12.5 0 1 0 0 25 12.5 12.5 0 0 0 0-25Zm0 4.2 1.5 2.6 3-.3.9 2.9 2.6 1.5-.3 3 2 2.3-1.4 2.6.9 2.9-2.6 1.5-1.3 2.7-3-.3L24 32.8l-2.4-1.1-3 .3-1.3-2.7-2.6-1.5.9-2.9-1.4-2.6 2-2.3-.3-3 2.6-1.5.9-2.9 3 .3L24 15.7Z" fill="#1466c4"/><circle cx="24" cy="24" r="4.6" fill="#ff7a18"/></svg><div class="wm"><span class="t">Hi Quality</span><span class="b" style="color:#8fb6e8">Staff Portal</span></div></div>
+      <h3>Workshop sign-in</h3>
+      <p class="h">Bookings, reminders &amp; the AI service advisor.</p>
+      <div class="field"><label>Email</label><input id="ad-email" value="office@hiqualitymechanical.com.au"></div>
+      <div class="field"><label>Password</label><input id="ad-pass" type="password" placeholder="••••••••" value="demo1234" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+      <button class="btn block" onclick="adminLogin()">Sign In →</button>
+      <p class="h" style="margin-top:14px">Demo login is pre-filled — just hit sign in.</p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dash" id="admin-dash">
+    <div class="dashbar">
+      <div class="wrap">
+        <div class="logo" onclick="go('home')"><svg class="mk" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="11" fill="#1466c4"/><path d="M24 11.5a12.5 12.5 0 1 0 0 25 12.5 12.5 0 0 0 0-25Zm0 4.2 1.5 2.6 3-.3.9 2.9 2.6 1.5-.3 3 2 2.3-1.4 2.6.9 2.9-2.6 1.5-1.3 2.7-3-.3L24 32.8l-2.4-1.1-3 .3-1.3-2.7-2.6-1.5.9-2.9-1.4-2.6 2-2.3-.3-3 2.6-1.5.9-2.9 3 .3L24 15.7Z" fill="#fff"/><circle cx="24" cy="24" r="4.6" fill="#ff7a18"/></svg><div class="wm"><span class="t" style="color:#fff">Hi Quality</span><span class="b" style="color:#8fb6e8">Workshop Dashboard</span></div></div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <span class="who">Signed in as <b>Office</b></span>
+          <button class="btn sm ghost" style="border-color:rgba(255,255,255,.4)" onclick="adminLogout()">Log out</button>
+        </div>
+      </div>
+    </div>
+    <div class="dashwrap">
+      <div class="wrap">
+        <div class="stats" id="ad-stats"></div>
+        <div class="tabs">
+          <button class="on" onclick="subtab(this,'t-book')">📋 Bookings</button>
+          <button onclick="subtab(this,'t-ai')">🤖 AI Service Advisor</button>
+          <button onclick="subtab(this,'t-ins')">📈 Insights</button>
+        </div>
+
+        <div class="subtab on" id="t-book">
+          <div class="panel">
+            <div class="tablewrap">
+              <table>
+                <thead><tr><th>Customer</th><th>Vehicle</th><th>Service</th><th>Date</th><th>Est.</th><th>Status</th></tr></thead>
+                <tbody id="ad-rows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="subtab" id="t-ai">
+          <div class="panel">
+            <div class="ai-grid">
+              <div>
+                <h3 style="font-family:var(--head);font-weight:600;letter-spacing:.4px;margin-bottom:6px">Generate a customer message</h3>
+                <p style="color:var(--muted);font-size:14px;margin-bottom:16px">Draft a friendly SMS or email — service reminders, quote follow-ups or "car's ready" — in seconds.</p>
+                <div class="field"><label style="color:var(--ink)">Choose a customer</label><select id="ai-lead" class="lead-sel"></select></div>
+                <div class="field"><label style="color:var(--ink)">Message type</label>
+                  <select id="ai-kind">
+                    <option value="reminder">Service due reminder</option>
+                    <option value="ready">Car is ready for pick-up</option>
+                    <option value="quote">Quote follow-up</option>
+                    <option value="review">Ask for a review</option>
+                  </select>
+                </div>
+                <div class="field"><label style="color:var(--ink)">Tone</label>
+                  <select id="ai-tone"><option>Warm &amp; friendly</option><option>Short &amp; professional</option><option>Casual local</option></select>
+                </div>
+                <button class="btn blue block" onclick="aiWrite()">✨ Generate Message</button>
+              </div>
+              <div>
+                <label style="display:block;font-size:12.5px;font-weight:700;margin-bottom:6px;color:var(--ink)">Draft message</label>
+                <div class="ai-out empty" id="ai-out">Your AI-drafted message will appear here…</div>
+                <div style="display:flex;gap:10px;margin-top:12px">
+                  <button class="btn sm" onclick="aiCopy()" id="ai-copy" disabled style="opacity:.5">📋 Copy</button>
+                  <button class="btn sm blue" onclick="aiWrite()" id="ai-again" disabled style="opacity:.5">↻ Rewrite</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subtab" id="t-ins">
+          <div class="insights">
+            <div class="panel">
+              <h3 style="font-family:var(--head);font-weight:600;letter-spacing:.4px;margin-bottom:4px">Bookings by service</h3>
+              <p style="color:var(--muted);font-size:13.5px;margin-bottom:8px">This month</p>
+              <div class="barchart" id="ins-bars"></div>
+            </div>
+            <div class="panel">
+              <h3 style="font-family:var(--head);font-weight:600;letter-spacing:.4px;margin-bottom:14px">At a glance</h3>
+              <div class="prow"><span>Estimated pipeline value</span><b id="ins-pipe">$0</b></div>
+              <div class="prow"><span>Avg. estimate per job</span><b id="ins-avg">$0</b></div>
+              <div class="prow"><span>Services due for reminder</span><b id="ins-due">0</b></div>
+              <div class="prow"><span>Conversion (booked → completed)</span><b>82%</b></div>
+              <div style="margin-top:18px;background:var(--accentsoft);border:1px solid rgba(255,122,24,.3);border-radius:12px;padding:14px 16px;font-size:13.5px;color:#8a4a10">
+                💡 <b>12 customers</b> are due or overdue for a service. Head to the AI Service Advisor to send reminders in a couple of clicks.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <div class="logo foot-logo" onclick="go('home')"><svg class="mk" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="11" fill="#123055"/><path d="M24 11.5a12.5 12.5 0 1 0 0 25 12.5 12.5 0 0 0 0-25Zm0 4.2 1.5 2.6 3-.3.9 2.9 2.6 1.5-.3 3 2 2.3-1.4 2.6.9 2.9-2.6 1.5-1.3 2.7-3-.3L24 32.8l-2.4-1.1-3 .3-1.3-2.7-2.6-1.5.9-2.9-1.4-2.6 2-2.3-.3-3 2.6-1.5.9-2.9 3 .3L24 15.7Z" fill="#1466c4"/><circle cx="24" cy="24" r="4.6" fill="#ff7a18"/></svg><div class="wm"><span class="t">Hi Quality</span><span class="b">Mechanical Repairs</span></div></div>
+        <p>Family-owned Sefton mechanics servicing all makes and models — including European cars — across South West Sydney for over 35 years.</p>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a onclick="go('home');scrollTo2('services')">Logbook servicing</a></li>
+          <li><a onclick="go('home');scrollTo2('services')">Brakes &amp; suspension</a></li>
+          <li><a onclick="go('home');scrollTo2('services')">Pink &amp; blue slips</a></li>
+          <li><a onclick="go('home');scrollTo2('services')">Engine diagnostics</a></li>
+          <li><a onclick="go('home');scrollTo2('services')">European specialists</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a onclick="go('book')">Book a service</a></li>
+          <li><a onclick="go('portal')">My vehicle</a></li>
+          <li><a onclick="go('home');scrollTo2('why')">Why choose us</a></li>
+          <li><a onclick="go('admin')">Staff portal</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Visit the workshop</h4>
+        <div class="fcontact"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/></svg><span>Waldron Rd (cnr Hector St)<br>Sefton NSW 2162</span></div>
+        <div class="fcontact"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z"/></svg><span><a href="tel:0296454210">(02) 9645 4210</a></span></div>
+        <div class="fcontact"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 4v10h16V8l-8 5-8-5Zm.4-2 7.6 4.7L19.6 6H4.4Z"/></svg><span><a href="mailto:hqmr13b@hotmail.com">hqmr13b@hotmail.com</a></span></div>
+        <div class="fcontact"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 10.4 4 2.3-1 1.7-5-2.9V6h2v6.4Z"/></svg><span>Mon–Fri 7:30am–5:00pm<br>Sat 8:00am–12:00pm · Sun closed</span></div>
+      </div>
+    </div>
+    <div class="fbar">
+      <div>© <span id="yr"></span> Hi Quality Mechanical Repairs Pty Ltd. All rights reserved.</div>
+      <div>Concept website by <a href="#" style="color:#a9bacd">Groundworks Studios</a> · Not the official live site</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===================== DATA ===================== */
+const SERVICES = {
+  minor:     {label:'Minor / Interim Service',      base:189, mult:true,  from:189, icon:'🛢️', desc:'Oil & filter change, fluid top-ups and a 30-point safety check.'},
+  major:     {label:'Major / Logbook Service',      base:349, mult:true,  from:349, icon:'📘', desc:'Full manufacturer logbook service with genuine parts and a stamp.'},
+  brakes:    {label:'Brake Service (front)',        base:289, mult:true,  from:289, icon:'🛑', desc:'Pads and/or rotors, brake fluid check and road test.'},
+  suspension:{label:'Suspension Repair',            base:459, mult:true,  from:459, icon:'🔧', desc:'Shocks, struts, bushes and steering — bring back the smooth ride.'},
+  clutch:    {label:'Clutch Replacement',           base:890, mult:true,  from:890, icon:'⚙️', desc:'Clutch kit replacement and gearbox check for manual vehicles.'},
+  aircon:    {label:'Air-Conditioning Re-Gas',      base:169, mult:true,  from:169, icon:'❄️', desc:'Re-gas, leak check and cabin filter — cold air for summer.'},
+  diag:      {label:'Engine Diagnostic Scan',       base:99,  mult:true,  from:99,  icon:'💡', desc:'Warning light on? Full computer scan and a plain-English report.'},
+  pinkslip:  {label:'Pink Slip (eSafety Inspection)',base:47,  mult:false, from:47,  icon:'📋', desc:'NSW e-Safety rego inspection for vehicles over 5 years old.'},
+  blueslip:  {label:'Blue Slip Inspection',         base:68,  mult:false, from:68,  icon:'🔵', desc:'Unregistered / interstate vehicle inspection and report.'},
+  restraint: {label:'Child Restraint Fitting',      base:50,  mult:false, from:50,  icon:'🧒', desc:'Authorised fitting and safety check of baby & child car seats.'},
+  repair:    {label:'General Mechanical Repair',    base:0,   quote:true, from:0,   icon:'🚗', desc:'Something not right? Tell us what it’s doing and we’ll diagnose it.'}
+};
+const VEHICLES = {
+  small:{label:'Hatch / Small car', m:1.0},
+  sedan:{label:'Sedan / Wagon',     m:1.1},
+  suv:  {label:'SUV / 4WD',         m:1.28},
+  euro: {label:'European / Prestige',m:1.5},
+  truck:{label:'Van / Light truck', m:1.35}
+};
+const money = n => '$' + Math.round(n).toLocaleString('en-AU');
+
+/* seed bookings for the admin dashboard */
+let BOOKINGS = [
+  {ref:'HQ-4821', name:'Stephanie Nguyen', car:'Mazda CX-5', veh:'suv',  svc:'major',     date:'2026-09-22', est:447, status:'prog'},
+  {ref:'HQ-4820', name:'Michael Tran',     car:'BMW 320i',   veh:'euro', svc:'minor',     date:'2026-09-22', est:284, status:'book'},
+  {ref:'HQ-4819', name:'Aisha Rahman',     car:'Toyota Corolla', veh:'small', svc:'pinkslip', date:'2026-09-21', est:47, status:'done'},
+  {ref:'HQ-4818', name:'David Papadopoulos',car:'VW Golf GTI',veh:'euro', svc:'brakes',    date:'2026-09-23', est:434, status:'book'},
+  {ref:'HQ-4817', name:'Lena Hoang',       car:'Hyundai i30', veh:'small', svc:'aircon',   date:'2026-09-23', est:169, status:'book'},
+  {ref:'HQ-4816', name:'Sam Wilson',       car:'Ford Ranger', veh:'truck', svc:'suspension',date:'2026-09-20', est:620, status:'done'}
+];
+
+/* demo portal account */
+const PORTAL_DEMO = {
+  name:'Stephanie Nguyen', car:'Mazda CX-5 (2019)', rego:'DKR 47Q',
+  booking:{ref:'HQ-4821', svc:'Major / Logbook Service', date:'22 Sep 2026', status:'prog', statusLabel:'In progress'},
+  nextDue:'12 Mar 2027 or 90,000 km',
+  history:[
+    {date:'22 Sep 2026', svc:'Major / Logbook Service', total:447, status:'prog'},
+    {date:'18 Mar 2026', svc:'Minor Service + Pink Slip', total:236, status:'done'},
+    {date:'02 Sep 2025', svc:'Front brake pads & rotors', total:389, status:'done'},
+    {date:'14 Mar 2025', svc:'Major / Logbook Service', total:432, status:'done'}
+  ]
+};
+
+/* ===================== NAV / ROUTING ===================== */
+function go(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById('page-'+page);
+  if(el) el.classList.add('active');
+  document.getElementById('navlinks').classList.remove('open');
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+  if(page==='admin' && sessionStorage.getItem('hq_admin')==='1') showDash();
+}
+function scrollTo2(id){ setTimeout(()=>{const t=document.getElementById(id); if(t) t.scrollIntoView({behavior:'smooth'});},60); }
+
+/* ===================== POPULATE SELECTS ===================== */
+function fillSelects(){
+  const svcOpts = Object.entries(SERVICES).map(([k,s])=>`<option value="${k}">${s.label}</option>`).join('');
+  const vehOpts = Object.entries(VEHICLES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+  ['h-svc','b-svc'].forEach(id=>{const el=document.getElementById(id); if(el) el.insertAdjacentHTML('beforeend',svcOpts);});
+  ['h-veh','b-veh'].forEach(id=>{const el=document.getElementById(id); if(el) el.insertAdjacentHTML('beforeend',vehOpts);});
+}
+/* services grid */
+function buildServices(){
+  const feat=['minor','major','brakes','suspension','diag','clutch','pinkslip','restraint'];
+  document.getElementById('svc-grid').innerHTML = feat.map(k=>{
+    const s=SERVICES[k];
+    const price = s.quote ? 'Custom quote' : (s.mult ? `from ${money(s.from)}` : `${money(s.from)} <span>fixed</span>`);
+    return `<div class="card svc"><div class="ic">${s.icon}</div><h3>${s.label}</h3><p>${s.desc}</p><div class="from">${price}</div></div>`;
+  }).join('');
+}
+
+/* ===================== ESTIMATES ===================== */
+function calc(svcKey, vehKey){
+  if(!svcKey) return null;
+  const s=SERVICES[svcKey];
+  if(s.quote) return {quote:true};
+  if(!s.mult) return {base:s.base, m:1, total:s.base, fixed:true};
+  if(!vehKey) return {needVeh:true, base:s.base};
+  const m=VEHICLES[vehKey].m;
+  return {base:s.base, m, total:s.base*m};
+}
+function heroCalc(){
+  const r=calc(document.getElementById('h-svc').value, document.getElementById('h-veh').value);
+  const box=document.getElementById('h-price'), amt=document.getElementById('h-amt'), note=document.getElementById('h-note');
+  if(!r){box.style.display='none';return;}
+  box.style.display='block';
+  if(r.quote){amt.textContent='Custom'; note.textContent='Tell us the symptoms — we’ll diagnose & quote'; return;}
+  if(r.fixed){amt.textContent=money(r.total); note.textContent='Government-set fixed inspection fee'; return;}
+  if(r.needVeh){amt.textContent='from '+money(r.base); note.textContent='Pick a vehicle type for a sharper price'; return;}
+  amt.textContent='from '+money(r.total); note.textContent='Indicative only — confirmed on inspection';
+}
+function fromHero(){
+  const sv=document.getElementById('h-svc').value, ve=document.getElementById('h-veh').value;
+  go('book');
+  if(sv){document.getElementById('b-svc').value=sv;}
+  if(ve){document.getElementById('b-veh').value=ve;}
+  bookCalc();
+}
+function bookCalc(){
+  const r=calc(document.getElementById('b-svc').value, document.getElementById('b-veh').value);
+  const amt=document.getElementById('e-amt'), rng=document.getElementById('e-rng'), ul=document.getElementById('e-break');
+  if(!r){amt.textContent='$—'; rng.textContent='Choose a service & vehicle to see your price.'; ul.style.display='none'; return;}
+  if(r.quote){amt.textContent='Custom'; rng.textContent='We’ll diagnose the issue and give you a firm quote — no obligation.'; ul.style.display='none'; return;}
+  if(r.needVeh){amt.textContent='from '+money(r.base); rng.textContent='Select your vehicle type to refine the estimate.'; ul.style.display='none'; return;}
+  ul.style.display='block';
+  document.getElementById('e-base').textContent=money(r.base);
+  if(r.fixed){
+    document.getElementById('e-vehlab').textContent='Inspection type';
+    document.getElementById('e-veh').textContent='Fixed fee';
+    rng.textContent='Government-regulated fee — no vehicle loading applies.';
+  }else{
+    document.getElementById('e-vehlab').textContent='Vehicle factor';
+    document.getElementById('e-veh').textContent='×'+r.m.toFixed(2);
+    rng.textContent='A guide price for a standard job on your vehicle type.';
+  }
+  document.getElementById('e-total').textContent=money(r.total);
+  amt.textContent=(r.fixed?'':'from ')+money(r.total);
+}
+
+/* ===================== BOOKING SUBMIT ===================== */
+function submitBooking(){
+  const name=document.getElementById('b-name').value.trim();
+  const phone=document.getElementById('b-phone').value.trim();
+  const car=document.getElementById('b-car').value.trim();
+  const veh=document.getElementById('b-veh').value;
+  const svc=document.getElementById('b-svc').value;
+  if(!name||!phone||!car||!veh||!svc){
+    alert('Please fill in your name, mobile, vehicle, vehicle type and the service you need.');
+    return;
+  }
+  const r=calc(svc,veh);
+  const est = r && r.total ? Math.round(r.total) : 0;
+  const ref='HQ-'+Math.floor(4822+Math.random()*160);
+  const date=document.getElementById('b-date').value || '2026-09-24';
+  BOOKINGS.unshift({ref,name,car,veh,svc,date,est,status:'book'});
+  // store last booking for portal
+  sessionStorage.setItem('hq_lastbooking', JSON.stringify({ref,name,phone,car,svc:SERVICES[svc].label,date,est,
+    email:document.getElementById('b-email').value.trim()}));
+  document.getElementById('book-layout').style.display='none';
+  const ok=document.getElementById('ok-banner'); ok.style.display='block';
+  document.getElementById('ok-ref').textContent='REF '+ref;
+  document.getElementById('ok-msg').innerHTML=`Thanks ${name.split(' ')[0]} — we’ll call you on <b>${phone}</b> shortly to confirm your time for the <b>${SERVICES[svc].label}</b>.`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ===================== PORTAL ===================== */
+function portalLookup(){
+  const key=document.getElementById('portal-key').value.trim();
+  if(!key){alert('Enter the mobile or email you booked with.');return;}
+  const last=JSON.parse(sessionStorage.getItem('hq_lastbooking')||'null');
+  if(last && (key===last.phone || (last.email && key.toLowerCase()===last.email.toLowerCase()))){
+    renderPortalCustom(last); return;
+  }
+  // fall back to demo for any input, but hint it's a demo match
+  renderPortal(PORTAL_DEMO, true);
+}
+function portalDemo(){ document.getElementById('portal-key').value='0412 345 678'; renderPortal(PORTAL_DEMO,false); }
+function badge(st){
+  const map={book:['book','Booked'],prog:['prog','In progress'],done:['done','Completed'],due:['due','Service due']};
+  const [c,l]=map[st]||['book',st]; return `<span class="badge ${c}">${l}</span>`;
+}
+function renderPortalCustom(b){
+  document.getElementById('portal-out').innerHTML = `
+    <div class="pcard">
+      <div class="phd"><b>Your booking · ${b.car}</b>${badge('book')}</div>
+      <div class="prow"><span>Reference</span><b>${b.ref}</b></div>
+      <div class="prow"><span>Service</span><b>${b.svc}</b></div>
+      <div class="prow"><span>Preferred date</span><b>${b.date}</b></div>
+      <div class="prow"><span>Estimate</span><b>${b.est?money(b.est):'On inspection'}</b></div>
+      <div class="prow"><span>Status</span><b>Awaiting confirmation call</b></div>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:13.5px">The workshop will call ${b.phone} to confirm your time.</p>`;
+}
+function renderPortal(d, isDemoMatch){
+  const hist=d.history.map(h=>`<div class="prow"><span>${h.date} · ${h.svc}</span><b>${money(h.total)} ${badge(h.status)}</b></div>`).join('');
+  document.getElementById('portal-out').innerHTML = `
+    ${isDemoMatch?'<p style="text-align:center;color:var(--muted);font-size:13px;margin-bottom:14px">No exact match found — showing a sample account so you can see how it looks.</p>':''}
+    <div class="pcard">
+      <div class="phd"><b>Current booking · ${d.car}</b>${badge(d.booking.status)}</div>
+      <div class="prow"><span>Reference</span><b>${d.booking.ref}</b></div>
+      <div class="prow"><span>Service</span><b>${d.booking.svc}</b></div>
+      <div class="prow"><span>Booked for</span><b>${d.booking.date}</b></div>
+      <div class="prow"><span>Rego</span><b>${d.rego}</b></div>
+    </div>
+    <div class="pcard" style="background:linear-gradient(135deg,#eef3fa,#fff);border-color:#d3ddeb">
+      <div class="phd"><b>Next service due</b>${badge('due')}</div>
+      <div class="prow"><span>Recommended</span><b>${d.nextDue}</b></div>
+      <div style="margin-top:12px"><button class="btn blue sm" onclick="go('book')">Pre-book now →</button></div>
+    </div>
+    <div class="pcard">
+      <div class="phd"><b>Service history</b></div>
+      ${hist}
+    </div>`;
+}
+
+/* ===================== ADMIN ===================== */
+function adminLogin(){
+  sessionStorage.setItem('hq_admin','1');
+  showDash();
+}
+function adminLogout(){ sessionStorage.removeItem('hq_admin'); document.getElementById('admin-login').style.display='grid'; document.getElementById('admin-dash').classList.remove('active'); }
+function showDash(){
+  document.getElementById('admin-login').style.display='none';
+  document.getElementById('admin-dash').classList.add('active');
+  renderDash();
+}
+function subtab(btn,id){
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('#admin-dash .subtab').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+function renderDash(){
+  // stats
+  const today = BOOKINGS.length;
+  const pipeline = BOOKINGS.reduce((a,b)=>a+(b.est||0),0);
+  const open = BOOKINGS.filter(b=>b.status!=='done').length;
+  document.getElementById('ad-stats').innerHTML = `
+    <div class="mini"><div class="l">Bookings</div><div class="v blue">${today}</div></div>
+    <div class="mini"><div class="l">Open jobs</div><div class="v acc">${open}</div></div>
+    <div class="mini"><div class="l">Pipeline value</div><div class="v">${money(pipeline)}</div></div>
+    <div class="mini"><div class="l">Due for reminder</div><div class="v ok">12</div></div>`;
+  // rows
+  document.getElementById('ad-rows').innerHTML = BOOKINGS.map(b=>{
+    const s=SERVICES[b.svc], v=VEHICLES[b.veh];
+    return `<tr>
+      <td><div class="car">${b.name}</div><div class="sub">${b.ref}</div></td>
+      <td><div class="car">${b.car}</div><div class="sub">${v?v.label:''}</div></td>
+      <td>${s?s.label:b.svc}</td>
+      <td>${fmtDate(b.date)}</td>
+      <td><b>${b.est?money(b.est):'—'}</b></td>
+      <td>${badge(b.status)}</td>
+    </tr>`;
+  }).join('');
+  // ai lead select
+  document.getElementById('ai-lead').innerHTML = BOOKINGS.map((b,i)=>`<option value="${i}">${b.name} · ${b.car}</option>`).join('');
+  // insights bars
+  const counts={}; BOOKINGS.forEach(b=>{counts[b.svc]=(counts[b.svc]||0)+1;});
+  const extra={minor:9,major:14,pinkslip:11,brakes:6,aircon:5};
+  Object.keys(extra).forEach(k=>counts[k]=(counts[k]||0)+extra[k]);
+  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const max=Math.max(...entries.map(e=>e[1]));
+  document.getElementById('ins-bars').innerHTML = entries.map(([k,n])=>`
+    <div class="barrow"><span>${SERVICES[k]?SERVICES[k].label.split(' (')[0]:k}</span>
+    <div class="track"><i style="width:${Math.round(n/max*100)}%"></i></div><b style="text-align:right">${n}</b></div>`).join('');
+  document.getElementById('ins-pipe').textContent=money(pipeline);
+  document.getElementById('ins-avg').textContent=money(pipeline/Math.max(BOOKINGS.filter(b=>b.est).length,1));
+  document.getElementById('ins-due').textContent='12';
+}
+function fmtDate(d){
+  try{const dt=new Date(d+'T00:00:00'); return dt.toLocaleDateString('en-AU',{day:'numeric',month:'short'});}catch(e){return d;}
+}
+
+/* ===================== AI ADVISOR ===================== */
+function aiWrite(){
+  const b=BOOKINGS[document.getElementById('ai-lead').value||0];
+  const kind=document.getElementById('ai-kind').value;
+  const tone=document.getElementById('ai-tone').value;
+  const first=b.name.split(' ')[0];
+  const svc=SERVICES[b.svc]?SERVICES[b.svc].label.split(' (')[0]:'service';
+  let msg='';
+  const sign = tone==='Casual local' ? '– the team at Hi Quality 👍'
+            : tone==='Short & professional' ? 'Hi Quality Mechanical Repairs · (02) 9645 4210'
+            : 'Cheers,\nVince & the team at Hi Quality Mechanical Repairs';
+  if(kind==='reminder'){
+    msg = tone==='Short & professional'
+      ? `Hi ${first}, our records show your ${b.car} is due for its ${svc}. Reply or call (02) 9645 4210 to book a time that suits you.\n\n${sign}`
+      : `Hi ${first}! 👋 It’s been a little while and your ${b.car} is about due for its next ${svc}. We’d love to keep it running sweet — want us to pencil you in this week? Just reply here or give the workshop a call on (02) 9645 4210.\n\n${sign}`;
+  }else if(kind==='ready'){
+    msg = `Hi ${first}, good news — your ${b.car} is all done and ready to pick up! 🚗 The ${svc} is complete and we’ve given everything a once-over. We’re open till 5pm today. See you soon!\n\n${sign}`;
+  }else if(kind==='quote'){
+    msg = `Hi ${first}, just following up on the quote for your ${b.car} (${svc})${b.est?` — approx ${money(b.est)}`:''}. Happy to talk it through, and we can usually get you in this week. Reply here or call (02) 9645 4210.\n\n${sign}`;
+  }else{
+    msg = `Hi ${first}, thanks for trusting us with your ${b.car}! 🙏 If we did a good job, a quick Google review really helps a small family workshop like ours. No worries if not — we appreciate you either way!\n\n${sign}`;
+  }
+  const out=document.getElementById('ai-out');
+  out.classList.remove('empty'); out.textContent='';
+  // typewriter-ish reveal
+  let i=0; const speed=8;
+  (function type(){ out.textContent=msg.slice(0,i); i+=6; if(i<=msg.length){setTimeout(type,speed);} else {out.textContent=msg;} })();
+  const cp=document.getElementById('ai-copy'), ag=document.getElementById('ai-again');
+  cp.disabled=false; cp.style.opacity=1; ag.disabled=false; ag.style.opacity=1;
+  window._aiMsg=msg;
+}
+function aiCopy(){
+  if(!window._aiMsg) return;
+  navigator.clipboard?.writeText(window._aiMsg).then(()=>{
+    const b=document.getElementById('ai-copy'); const t=b.textContent; b.textContent='✓ Copied'; setTimeout(()=>b.textContent=t,1400);
+  }).catch(()=>{});
+}
+
+/* ===================== INIT ===================== */
+fillSelects();
+buildServices();
+document.getElementById('yr').textContent=new Date().getFullYear();
+// set default booking date to tomorrow
+(function(){const d=new Date(); d.setDate(d.getDate()+1); const el=document.getElementById('b-date'); if(el) el.value=d.toISOString().slice(0,10);})();
+</script>
+</body>
+</html>
