@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0D">
+<meta name="robots" content="noindex, nofollow">
+<title>Registrations — South West Sonics</title>
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0B0D; --card:#161619; --card2:#1E1E22;
+  --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.17);
+  --ink:#F5F5F7; --muted:#A1A1A6; --dim:#6E6E73;
+  --sky:#3FC5EC; --skygrad:linear-gradient(180deg,#5AD4F7,#2FB4E0);
+  --grad:linear-gradient(120deg,#E7369B,#F5821F,#FCC21A);
+  --green:#16E37F; --gold:#FFC63D; --red:#FF5D5D;
+  --disp:'Archivo Black','Arial Black',system-ui,sans-serif;
+  --sans:'Inter',-apple-system,system-ui,sans-serif;
+  --spring:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;
+  background-image:radial-gradient(120% 45% at 50% -8%,rgba(63,197,236,.11),transparent 60%)}
+img{display:block;max-width:100%}
+.wrap{max-width:620px;margin:0 auto;padding:0 16px 60px}
+
+.top{display:flex;align-items:center;gap:12px;padding:16px;position:sticky;top:0;z-index:20;
+  background:rgba(11,11,13,.82);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line)}
+.top img{width:42px;height:42px;border-radius:50%}
+.top .n{font-family:var(--disp);font-weight:400;font-size:15px;letter-spacing:.05em;text-transform:uppercase}
+.top .s{font-size:9.5px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+.top .rf{margin-left:auto;padding:9px 15px;border-radius:980px;border:1px solid var(--line2);
+  background:rgba(255,255,255,.05);color:var(--ink);font-family:var(--sans);font-weight:800;
+  font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.top .rf:active{transform:scale(.95)}
+
+h1{font-family:var(--disp);font-weight:400;font-size:30px;text-transform:uppercase;letter-spacing:.25px;
+  margin:26px 0 5px;line-height:1.02}
+.lead{font-size:13.5px;color:var(--muted);margin-bottom:20px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.st .v{font-family:var(--disp);font-weight:400;font-size:27px;line-height:1;letter-spacing:.2px}
+.st .l{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.st.sky .v{color:var(--sky)} .st.green .v{color:var(--green)} .st.gold .v{color:var(--gold)}
+
+.search{width:100%;padding:14px 16px;border-radius:14px;background:var(--card2);border:1px solid var(--line2);
+  color:var(--ink);font-family:var(--sans);font-size:16px;margin-bottom:14px}
+.search:focus{outline:none;border-color:var(--sky)}
+
+.row{display:flex;align-items:center;gap:13px;padding:14px 4px;border-bottom:1px solid var(--line);cursor:pointer;
+  transition:transform .18s var(--spring)}
+.row:last-child{border-bottom:none}
+.row:active{transform:scale(.99)}
+.av{width:42px;height:42px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;
+  font-family:var(--disp);font-weight:400;font-size:15px;color:#042230;
+  background:linear-gradient(150deg,#5AD4F7,#2FB4E0)}
+.av.g2{background:linear-gradient(150deg,#FFD264,#F0A81E);color:#241a00}
+.av.g3{background:linear-gradient(150deg,#7FE7B4,#16E37F);color:#04160d}
+.av.g4{background:linear-gradient(150deg,#F58BC2,#E7369B);color:#2a0418}
+.rm{flex:1 1 auto;min-width:0}
+.rm .t{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rm .m{font-size:12.5px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tag{flex:0 0 auto;font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 10px;border-radius:980px;background:rgba(63,197,236,.15);color:var(--sky)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.note{background:rgba(63,197,236,.08);border:1px solid rgba(63,197,236,.22);border-radius:16px;
+  padding:15px 16px;font-size:13px;color:#bcd8f5;line-height:1.6}
+.note b{color:#fff}
+.note code{background:rgba(0,0,0,.4);padding:2px 7px;border-radius:6px;font-size:12px;
+  font-family:ui-monospace,Menlo,monospace;color:var(--sky)}
+.note ol{margin:10px 0 0 18px} .note li{margin-bottom:7px}
+.center{text-align:center;color:var(--muted);padding:34px 16px;font-size:14px}
+
+/* detail sheet */
+.sw{position:fixed;inset:0;z-index:200;display:none}
+.sw.on{display:block}
+.sbg{position:absolute;inset:0;background:rgba(3,5,8,.66);-webkit-backdrop-filter:blur(7px);
+  backdrop-filter:blur(7px);opacity:0;transition:opacity .3s}
+.sw.in .sbg{opacity:1}
+.sh{position:absolute;left:0;right:0;bottom:0;max-width:620px;margin:0 auto;max-height:90%;overflow-y:auto;
+  background:linear-gradient(180deg,#17171b,#0c0c0f);border-top:1px solid var(--line2);
+  border-radius:26px 26px 0 0;padding:10px 16px calc(26px + env(safe-area-inset-bottom));
+  transform:translateY(102%);transition:transform .45s var(--spring)}
+.sw.in .sh{transform:none}
+.grab{width:44px;height:4px;border-radius:99px;background:rgba(255,255,255,.2);margin:4px auto 16px}
+.sh h2{font-family:var(--disp);font-weight:400;font-size:25px;text-transform:uppercase;letter-spacing:.2px;line-height:1.05}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}
+.kv .i{background:var(--card2);border:1px solid var(--line);border-radius:15px;padding:12px 13px}
+.kv .i.full{grid-column:1/-1}
+.kv .k{font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.kv .v{font-size:14.5px;font-weight:700;margin-top:6px;word-break:break-word}
+.kv .v.sm{font-weight:500;font-size:13.5px;line-height:1.5}
+.acts{display:flex;gap:9px;margin-top:18px}
+.acts a,.acts button{flex:1;text-align:center;text-decoration:none;padding:14px;border-radius:980px;border:none;
+  font-family:var(--sans);font-weight:800;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.acts .p{background:var(--skygrad);color:#042230}
+.acts .g{background:rgba(255,255,255,.07);color:var(--ink);border:1px solid var(--line2)}
+footer{text-align:center;padding:30px 0 6px;color:var(--dim);font-size:10px;font-weight:800;
+  letter-spacing:.15em;text-transform:uppercase}
+footer .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <img src="logo.png" alt="Sonics">
+  <div><div class="n">Sonics</div><div class="s">Registrations</div></div>
+  <button class="rf" id="refresh">Refresh</button>
+</div>
+
+<div class="wrap">
+  <h1>Summer Comp<br>sign-ups</h1>
+  <p class="lead">Everyone who's registered for tryouts on Saturday 3 October. Tap any name for their full details.</p>
+  <div id="body"><div class="center">Loading…</div></div>
+  <footer>South West <span class="g">Sonics</span> · Private</footer>
+</div>
+
+<div class="sw" id="sheet"><div class="sbg" data-close></div><div class="sh"></div></div>
+
+<script>
+const $=s=>document.querySelector(s);
+let ROWS=[], Q="";
+
+const esc=t=>String(t==null?"":t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const initials=n=>String(n||"?").trim().split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();
+const when=iso=>{ if(!iso) return ""; const d=new Date(iso);
+  return d.toLocaleDateString("en-AU",{day:"numeric",month:"short"})+" · "+
+         d.toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"}); };
+
+async function load(){
+  $("#body").innerHTML='<div class="center">Loading…</div>';
+  let r;
+  try{ r=await (await fetch("/.netlify/functions/registrations",{cache:"no-store"})).json(); }
+  catch(e){ r={ok:false,reason:"fetch_failed"}; }
+
+  if(!r.ok && r.reason==="not_configured") return setup();
+  if(!r.ok) return $("#body").innerHTML=
+    '<div class="card"><div class="note"><b>Couldn\'t load registrations.</b><br>'+
+    'The inbox is connected but Netlify returned an error ('+esc(r.reason||"unknown")+'). Try Refresh in a moment.</div></div>';
+
+  ROWS=(r.rows||[]).filter(x=>!/^TEST/i.test(x.data["Player name"]||""));
+  render();
+}
+
+function setup(){
+  $("#body").innerHTML=`
+  <div class="card"><div class="note">
+    <b>Almost there — one connection step.</b><br>
+    Registrations are being captured already. To show them here, this page needs read access to the form.
+    <ol>
+      <li>In Netlify, go to <b>User settings → Applications → Personal access tokens</b> and create one.</li>
+      <li>Send it to Aiman, or paste it into this site's environment variables as <code>NETLIFY_API_TOKEN</code>.</li>
+      <li>Add <code>SONICS_FORM_ID</code> as well — Aiman has the value.</li>
+    </ol>
+    Until then, every registration is safe in Netlify under <b>sonics-register → Forms</b>.
+  </div></div>`;
+}
+
+function render(){
+  const q=Q.toLowerCase().trim();
+  const rows=!q?ROWS:ROWS.filter(x=>JSON.stringify(x.data).toLowerCase().includes(q));
+  const ages=ROWS.map(x=>+x.data["Age"]).filter(n=>!isNaN(n));
+  const photos=ROWS.filter(x=>x.data["Consent - photos"]).length;
+
+  $("#body").innerHTML=`
+  <div class="stats">
+    <div class="st sky"><div class="v">${ROWS.length}</div><div class="l">Registered</div></div>
+    <div class="st green"><div class="v">${ages.length?Math.min(...ages)+"–"+Math.max(...ages):"—"}</div><div class="l">Age range</div></div>
+    <div class="st gold"><div class="v">${photos}</div><div class="l">Photo OK</div></div>
+  </div>
+  <input class="search" id="q" placeholder="Search name, parent, school…" value="${esc(Q)}">
+  <div class="card">
+    ${rows.length?rows.map((x,i)=>{
+      const d=x.data, nm=d["Player name"]||"—";
+      return `<div class="row" data-i="${ROWS.indexOf(x)}">
+        <div class="av ${["","g2","g3","g4"][i%4]}">${esc(initials(nm))}</div>
+        <div class="rm"><div class="t">${esc(nm)}</div>
+          <div class="m">${esc(d["Parent name"]||"")} · ${esc(d["Parent mobile"]||"")}</div></div>
+        <span class="tag">${esc(d["Age"]||"?")}yo</span></div>`;
+    }).join(""):'<div class="center">'+(ROWS.length?"Nothing matches that search.":"No registrations yet. They'll appear here the moment someone signs up.")+'</div>'}
+  </div>
+  ${ROWS.length?'<div style="margin-top:16px"><button class="rf" id="csv" style="width:100%;padding:14px">Download all as CSV</button></div>':''}`;
+
+  const q2=$("#q");
+  if(q2){ q2.oninput=e=>{Q=e.target.value; render(); const n=$("#q"); n.focus(); n.setSelectionRange(n.value.length,n.value.length);} }
+  document.querySelectorAll(".row").forEach(el=>el.onclick=()=>open(+el.dataset.i));
+  const c=$("#csv"); if(c) c.onclick=csv;
+}
+
+function open(i){
+  const x=ROWS[i]; if(!x) return; const d=x.data;
+  const item=(k,v,cls="")=>v?`<div class="i ${cls}"><div class="k">${esc(k)}</div><div class="v ${cls?'sm':''}">${esc(v)}</div></div>`:"";
+  const tel=String(d["Parent mobile"]||"").replace(/\s/g,"");
+  $("#sheet .sh").innerHTML=`
+    <div class="grab"></div>
+    <h2>${esc(d["Player name"]||"—")}</h2>
+    <div class="kv">
+      ${item("Age",(d["Age"]||"")+" years old")}
+      ${item("Date of birth",d["Date of birth"])}
+      ${item("Gender",d["Gender"])}
+      ${item("Uniform",d["Uniform size"])}
+      ${item("School",d["School"])}
+      ${item("Experience",d["Experience"])}
+      ${item("Parent / guardian",(d["Parent name"]||"")+(d["Relationship"]?" ("+d["Relationship"]+")":""),"full")}
+      ${item("Mobile",d["Parent mobile"])}
+      ${item("Email",d["Parent email"])}
+      ${item("Emergency",(d["Emergency contact"]||"")+" "+(d["Emergency phone"]||""),"full")}
+      ${item("Medical",d["Medical"],"full")}
+      ${item("Ambulance cover",d["Ambulance cover"])}
+      ${item("Photo consent",d["Consent - photos"]?"Yes":"No")}
+      ${item("Notes",d["Notes"],"full")}
+      ${item("Heard about us",d["How did you hear"])}
+      ${item("Registered",when(x.at))}
+    </div>
+    <div class="acts">
+      ${tel?`<a class="p" href="tel:${esc(tel)}">Call</a><a class="g" href="sms:${esc(tel)}">Text</a>`:""}
+      <button class="g" data-close>Close</button>
+    </div>`;
+  const w=$("#sheet"); w.classList.add("on");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>w.classList.add("in")));
+}
+function close(){ const w=$("#sheet"); w.classList.remove("in"); setTimeout(()=>w.classList.remove("on"),400); }
+document.addEventListener("click",e=>{ if(e.target.closest("[data-close]")) close(); });
+
+function csv(){
+  const keys=["Player name","Age","Date of birth","Gender","Uniform size","School","Experience",
+    "Parent name","Relationship","Parent mobile","Parent email","Emergency contact","Emergency phone",
+    "Medical","Ambulance cover","Consent - medical","Consent - conduct","Consent - photos","Notes","How did you hear"];
+  const cell=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"';
+  const out=[keys.map(cell).join(",")].concat(
+    ROWS.map(x=>keys.map(k=>cell(x.data[k])).join(","))).join("\n");
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([out],{type:"text/csv"}));
+  a.download="sonics-registrations.csv"; a.click();
+}
+
+$("#refresh").onclick=load;
+load();
+</script>
+</body>
+</html>

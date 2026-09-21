@@ -1,5 +1,8 @@
-# Netlify config for deploying the Southwest Sonics app from this monorepo.
-# The app is a static single-page site; publish only its folder as the site root.
+# Netlify config for this monorepo.
+# Each Sonics site deploys from its own folder; swap `publish` before deploying:
+#   southwest-sonics-app      -> southwest-sonics-app.netlify.app  (the club app)
+#   southwest-sonics-register -> sonics-register.netlify.app       (public rego form)
+#   southwest-sonics-inbox    -> sonics-inbox.netlify.app          (private inbox + functions)
 [build]
   publish = "southwest-sonics-app"
   command = ""

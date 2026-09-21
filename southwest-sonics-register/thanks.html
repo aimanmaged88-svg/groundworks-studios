@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0D">
+<title>You're in — South West Sonics</title>
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B0B0D;--card:#161619;--line:rgba(255,255,255,.09);--ink:#F5F5F7;--muted:#A1A1A6;--dim:#6E6E73;
+  --sky:#3FC5EC;--green:#16E37F;--grad:linear-gradient(120deg,#E7369B,#F5821F,#FCC21A);
+  --disp:'Archivo Black','Arial Black',sans-serif;--sans:'Inter',-apple-system,system-ui,sans-serif;
+  --spring:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100vh;display:grid;
+  place-items:center;padding:32px 20px;line-height:1.55;
+  background-image:radial-gradient(110% 50% at 50% 0%,rgba(22,227,127,.13),transparent 62%)}
+.box{max-width:440px;width:100%;text-align:center;animation:up .55s var(--spring) both}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.tick{width:84px;height:84px;border-radius:50%;margin:0 auto 24px;display:grid;place-items:center;
+  background:rgba(22,227,127,.14);border:2px solid rgba(22,227,127,.45);
+  animation:pop .5s var(--spring) .15s both}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.tick svg{width:40px;height:40px;stroke:var(--green);stroke-width:2.6;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
+h1{font-family:var(--disp);font-weight:400;font-size:33px;text-transform:uppercase;letter-spacing:.3px;line-height:1.02}
+.sub{color:var(--muted);font-size:15px;margin-top:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:26px;text-align:left}
+.k{font-size:9.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:13px}
+.step{display:flex;gap:13px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+.step:last-child{border-bottom:none}
+.n{width:25px;height:25px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  background:rgba(63,197,236,.15);color:var(--sky);font-family:var(--disp);font-size:12px}
+.step .t{font-weight:700;font-size:14px}
+.step .m{font-size:12.5px;color:var(--muted);margin-top:3px}
+.logo{width:56px;height:56px;border-radius:50%;margin:30px auto 0;display:block;opacity:.9}
+.ft{margin-top:14px;font-size:10.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.ft .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+a.again{display:inline-block;margin-top:22px;font-size:13px;font-weight:700;color:var(--sky);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="tick"><svg viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7"/></svg></div>
+  <h1>You're registered</h1>
+  <div class="sub">We've got it. Welcome to the Sonics family.</div>
+
+  <div class="card">
+    <div class="k">What happens next</div>
+    <div class="step"><div class="n">1</div><div>
+      <div class="t">We confirm your spot</div>
+      <div class="m">A text or email from us before Saturday 3 October.</div></div></div>
+    <div class="step"><div class="n">2</div><div>
+      <div class="t">Tryouts</div>
+      <div class="m">Saturday 3 October, 2:00pm at Bankstown Basketball Stadium. Arrive 15 minutes early.</div></div></div>
+    <div class="step"><div class="n">3</div><div>
+      <div class="t">Team placement</div>
+      <div class="m">We'll place your child in a team after tryouts and confirm fees then.</div></div></div>
+    <div class="step"><div class="n">4</div><div>
+      <div class="t">What to bring</div>
+      <div class="m">Basketball shoes, a water bottle, and someone to cheer them on.</div></div></div>
+  </div>
+
+  <a class="again" href="/">Register another child →</a><div class="ft" style="margin-top:18px;letter-spacing:.06em;text-transform:none;font-weight:600;font-size:12px;color:#A1A1A6">Questions? Text 0414 145 332</div>
+  <img class="logo" src="logo.png" alt="South West Sonics">
+  <div class="ft">South West <span class="g">Sonics</span></div>
+</div>
+</body>
+</html>

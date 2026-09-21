@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0D">
+<title>Summer Comp Tryouts — South West Sonics</title>
+<meta name="description" content="South West Sonics Summer Comp tryouts and registration. Saturday 3 October, 2pm at Bankstown Basketball Stadium. Ages 10-17, all skill levels welcome.">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0B0D; --card:#161619; --card2:#1E1E22;
+  --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.17);
+  --ink:#F5F5F7; --muted:#A1A1A6; --dim:#6E6E73;
+  --sky:#3FC5EC; --skygrad:linear-gradient(180deg,#5AD4F7,#2FB4E0);
+  --grad:linear-gradient(120deg,#E7369B,#F5821F,#FCC21A);
+  --green:#16E37F; --red:#FF5D5D; --gold:#FFC63D;
+  --disp:'Archivo Black','Arial Black',system-ui,sans-serif;
+  --sans:'Inter',-apple-system,system-ui,sans-serif;
+  --spring:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;
+  background-image:radial-gradient(120% 50% at 50% -8%,rgba(63,197,236,.12),transparent 60%)}
+img{max-width:100%;display:block}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px 60px}
+
+/* hero */
+.hero{position:relative;border-radius:0 0 26px 26px;overflow:hidden;margin:0 -18px 22px;
+  border-bottom:1px solid var(--line)}
+.hero img.bg{width:100%;height:340px;object-fit:cover;opacity:.55}
+.hero .scrim{position:absolute;inset:0;background:linear-gradient(to top,#0B0B0D 4%,rgba(11,11,13,.45) 55%,transparent)}
+.hero .inner{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:center;text-align:center;padding:0 22px 24px}
+.hero .logo{width:78px;height:78px;border-radius:50%;margin-bottom:14px;
+  box-shadow:0 14px 40px rgba(0,0,0,.6)}
+.hero h1{font-family:var(--disp);font-weight:400;font-size:31px;line-height:1;letter-spacing:.3px;
+  text-transform:uppercase}
+.hero .sub{font-size:10.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);margin-top:11px}
+
+/* open banner */
+.open{display:flex;align-items:center;gap:12px;padding:15px 17px;border-radius:18px;
+  background:linear-gradient(135deg,rgba(63,197,236,.15),rgba(63,197,236,.03));
+  border:1px solid rgba(63,197,236,.3);margin-bottom:22px}
+.open .d{width:52px;flex:0 0 auto;text-align:center}
+.open .d b{font-family:var(--disp);font-weight:400;font-size:25px;display:block;line-height:1;color:var(--sky)}
+.open .d span{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.open .t{font-family:var(--disp);font-weight:400;font-size:15px;text-transform:uppercase;letter-spacing:.2px}
+.open .m{font-size:12.5px;color:var(--muted);margin-top:4px}
+
+/* info strip */
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:26px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 14px}
+.fact .k{font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.fact .v{font-family:var(--disp);font-weight:400;font-size:16px;margin-top:7px;letter-spacing:.2px;text-transform:uppercase}
+.fact .s{font-size:11.5px;color:var(--muted);margin-top:4px}
+
+h2{font-family:var(--disp);font-weight:400;font-size:23px;text-transform:uppercase;letter-spacing:.2px;
+  margin:30px 0 4px}
+.lead{font-size:13.5px;color:var(--muted);margin-bottom:16px}
+
+/* form */
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.f{margin-bottom:15px}
+.f:last-child{margin-bottom:0}
+label{display:block;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:8px}
+label .req{color:var(--sky)}
+input[type=text],input[type=tel],input[type=email],input[type=date],select,textarea{
+  width:100%;padding:14px 15px;border-radius:14px;background:var(--card2);border:1px solid var(--line2);
+  color:var(--ink);font-family:var(--sans);font-size:16px;resize:none;appearance:none}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sky);background:#22222a}
+select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E6E73' stroke-width='2' stroke-linecap='round'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat;background-position:right 14px center;background-size:20px;padding-right:44px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hint{font-size:11.5px;color:var(--dim);margin-top:7px}
+
+/* checkbox */
+.cb{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;
+  background:var(--card2);border:1px solid var(--line);margin-bottom:10px;cursor:pointer;
+  transition:border-color .25s var(--spring),background .25s var(--spring)}
+.cb:has(input:checked){border-color:rgba(22,227,127,.45);background:rgba(22,227,127,.07)}
+.cb input{appearance:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line2);
+  flex:0 0 auto;margin-top:1px;position:relative;cursor:pointer;transition:all .25s var(--spring)}
+.cb input:checked{background:var(--green);border-color:var(--green)}
+.cb input:checked::after{content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;
+  border:solid #04160d;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.cb .t{font-size:13.5px;font-weight:600}
+.cb .m{font-size:12px;color:var(--muted);margin-top:3px}
+
+/* fee */
+.fee{display:flex;align-items:center;gap:14px;padding:16px 17px;border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,198,61,.12),rgba(255,198,61,.02));
+  border:1px solid rgba(255,198,61,.28);margin:22px 0}
+.fee .amt{font-family:var(--disp);font-weight:400;font-size:29px;color:var(--gold);line-height:1}
+.fee .t{font-size:13px;font-weight:700}
+.fee .m{font-size:12px;color:var(--muted);margin-top:3px}
+
+button.sub{width:100%;margin-top:22px;padding:18px 22px;border:none;border-radius:980px;
+  background:var(--skygrad);color:#042230;font-family:var(--sans);font-weight:800;font-size:15px;
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer;
+  transition:transform .14s var(--spring);box-shadow:0 14px 34px -12px rgba(63,197,236,.65)}
+button.sub:active{transform:scale(.97)}
+.smallprint{font-size:11.5px;color:var(--dim);text-align:center;margin-top:16px;line-height:1.6}
+.hp{position:absolute;left:-9999px}
+footer{text-align:center;padding:34px 0 10px;color:var(--dim);font-size:11px;
+  font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+footer .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <img class="bg" src="hero.jpg" alt="">
+  <div class="scrim"></div>
+  <div class="inner">
+    <img class="logo" src="logo.png" alt="South West Sonics">
+    <h1>Summer Comp</h1>
+    <div class="sub">Tryouts &amp; Registration</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="open">
+    <div class="d"><b>3</b><span>Oct</span></div>
+    <div>
+      <div class="t">Saturday, 2:00pm</div>
+      <div class="m">Tryouts and registration at Bankstown Basketball Stadium. Fill this in now and you're signed in before you walk through the door.</div>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="fact"><div class="k">Ages</div><div class="v">10 — 17</div><div class="s">Boys and girls</div></div>
+    <div class="fact"><div class="k">When</div><div class="v">Sat 3 Oct</div><div class="s">2:00pm start</div></div>
+    <div class="fact"><div class="k">Where</div><div class="v">Bankstown</div><div class="s">Basketball Stadium</div></div>
+    <div class="fact"><div class="k">Skill level</div><div class="v">All welcome</div><div class="s">Beginners included</div></div>
+  </div>
+
+  <h2>Register your child</h2>
+  <p class="lead">Takes about three minutes. One form per child — if you've got more than one trying out, just fill it in again.</p>
+
+  <form name="registration" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html">
+    <input type="hidden" name="form-name" value="registration">
+    <p class="hp"><label>Leave this empty: <input name="bot-field"></label></p>
+
+    <div class="card">
+      <div class="f"><label>Player's full name <span class="req">*</span></label>
+        <input type="text" name="Player name" required placeholder="First and last name"></div>
+      <div class="two">
+        <div class="f"><label>Date of birth <span class="req">*</span></label>
+          <input type="date" name="Date of birth" required></div>
+        <div class="f"><label>Age on 3 Oct <span class="req">*</span></label>
+          <select name="Age" required>
+            <option value="">Select</option>
+            <option>10</option><option>11</option><option>12</option><option>13</option>
+            <option>14</option><option>15</option><option>16</option><option>17</option>
+          </select></div>
+      </div>
+      <div class="two">
+        <div class="f"><label>Gender</label>
+          <select name="Gender"><option value="">Prefer not to say</option><option>Boy</option><option>Girl</option><option>Other</option></select></div>
+        <div class="f"><label>Uniform size</label>
+          <select name="Uniform size"><option value="">Select</option><option>Youth S</option><option>Youth M</option><option>Youth L</option><option>Adult S</option><option>Adult M</option><option>Adult L</option><option>Adult XL</option></select></div>
+      </div>
+      <div class="f"><label>School</label>
+        <input type="text" name="School" placeholder="Which school do they go to?"></div>
+      <div class="f"><label>Basketball experience</label>
+        <select name="Experience">
+          <option value="">Select</option>
+          <option>Brand new to basketball</option>
+          <option>Played a season or two</option>
+          <option>Plays representative / club elsewhere</option>
+        </select>
+        <div class="hint">All skill levels are welcome — beginners included.</div></div>
+    </div>
+
+    <h2>Parent or guardian</h2>
+    <p class="lead">This is who we contact, and who gets the app login.</p>
+    <div class="card">
+      <div class="f"><label>Your full name <span class="req">*</span></label>
+        <input type="text" name="Parent name" required placeholder="First and last name"></div>
+      <div class="two">
+        <div class="f"><label>Mobile <span class="req">*</span></label>
+          <input type="tel" name="Parent mobile" required placeholder="04__ ___ ___"></div>
+        <div class="f"><label>Relationship</label>
+          <select name="Relationship"><option value="">Select</option><option>Mother</option><option>Father</option><option>Guardian</option><option>Other</option></select></div>
+      </div>
+      <div class="f"><label>Email <span class="req">*</span></label>
+        <input type="email" name="Parent email" required placeholder="you@email.com">
+        <div class="hint">This is where we'll confirm your child's spot.</div></div>
+      <div class="two">
+        <div class="f"><label>Emergency contact</label>
+          <input type="text" name="Emergency contact" placeholder="Name"></div>
+        <div class="f"><label>Their phone</label>
+          <input type="tel" name="Emergency phone" placeholder="04__ ___ ___"></div>
+      </div>
+    </div>
+
+    <h2>Medical</h2>
+    <p class="lead">Only the coach and club directors ever see this. If there's nothing, write "None".</p>
+    <div class="card">
+      <div class="f"><label>Conditions, allergies or medication <span class="req">*</span></label>
+        <textarea name="Medical" rows="4" required placeholder="Asthma, allergies, epilepsy, medication they carry, anything we should know on the night."></textarea></div>
+      <div class="f"><label>Ambulance cover</label>
+        <select name="Ambulance cover"><option value="">Select</option><option>Yes</option><option>No</option><option>Not sure</option></select></div>
+      <div class="f"><label>Anything else we should know</label>
+        <textarea name="Notes" rows="3" placeholder="Friend they'd like to play with, days they can't make, anything at all."></textarea></div>
+    </div>
+
+    <h2>Consent</h2>
+    <p class="lead">Required before your child can take the court.</p>
+    <div style="margin-top:6px">
+      <label class="cb"><input type="checkbox" name="Consent - medical" value="Yes" required>
+        <span><span class="t">Medical treatment consent <span class="req">*</span></span>
+        <span class="m">If we can't reach you, I consent to the club arranging medical treatment for my child.</span></span></label>
+      <label class="cb"><input type="checkbox" name="Consent - conduct" value="Yes" required>
+        <span><span class="t">Code of conduct <span class="req">*</span></span>
+        <span class="m">My child and I will respect the referees, coaches, players and the venue.</span></span></label>
+      <label class="cb"><input type="checkbox" name="Consent - photos" value="Yes">
+        <span><span class="t">Photos and video</span>
+        <span class="m">Happy for the club to use team photos and game footage on our socials. Optional — leave unticked to opt out.</span></span></label>
+    </div>
+
+    <div class="fee">
+      <div class="amt">$0</div>
+      <div>
+        <div class="t">Nothing to pay right now</div>
+        <div class="m">Season fees are confirmed at tryouts on the day. If money is ever the reason a kid can't play, talk to us — we'll sort something out quietly.</div>
+      </div>
+    </div>
+
+    <div class="f"><label>How did you hear about us?</label>
+      <select name="How did you hear"><option value="">Select</option><option>Word of mouth</option><option>Instagram</option><option>School</option><option>Saw a game</option><option>Already with the club</option><option>Other</option></select></div>
+
+    <button class="sub" type="submit">Submit registration</button>
+    <div class="smallprint">We'll confirm your spot by text or email before Saturday 3 October.<br>
+      Questions? Text <b>0414 145 332</b> or DM <b>@swsonics</b>.</div>
+  </form>
+
+  <footer>South West <span class="g">Sonics</span> · Bankstown</footer>
+</div>
+
+</body>
+</html>
