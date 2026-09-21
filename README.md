@@ -50,6 +50,7 @@ The home for all Groundworks Studios projects. Each project lives in its own fol
 |---------|--------|-----------|
 | Life HQ — Your Command Center | [`life-hq-aiman/`](life-hq-aiman/) | [life-hq-aiman.netlify.app](https://life-hq-aiman.netlify.app) |
 | Life OS | [`life-os-live/`](life-os-live/) | [life-os-live.netlify.app](https://life-os-live.netlify.app) |
+| Life OS — Version 1 (local, no login) | [`life-os-v1/`](life-os-v1/) | not deployed yet |
 | Daybook (journal) | [`splendorous-baklava-e84915/`](splendorous-baklava-e84915/) | [splendorous-baklava-e84915.netlify.app](https://splendorous-baklava-e84915.netlify.app) |
 
 ## Client Demos (2026)

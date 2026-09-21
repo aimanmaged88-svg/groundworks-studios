@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0d9488" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Life OS" />
+<meta name="description" content="Life OS — a calm, simple place to run your day: money, work, health, kids, shopping, tasks and routines." />
+<title>Life OS</title>
+
+<!-- Tailwind CSS (no build step needed) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Nunito', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<!-- Friendly rounded font (falls back to system font if offline) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- React (via CDN) -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<!-- Babel lets us write JSX right here, no build tools -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<style>
+  html, body { -webkit-tap-highlight-color: transparent; }
+  body { background:#f4f5f3; }
+  /* hide scrollbar on the tab strip but keep it scrollable */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  input, textarea, select, button { font-family: inherit; }
+</style>
+</head>
+<body class="font-sans text-slate-800">
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useMemo, useRef } = React;
+
+/* =======================================================================
+   Life OS — Version 1
+   A single-file React app. All data is saved locally in your browser
+   (localStorage). No login, no server, works fully offline once loaded.
+   ======================================================================= */
+
+const STORE_KEY = "lifeos.v1";
+const uid = () => Math.random().toString(36).slice(2, 9);
+const money = (n) =>
+  "$" + (Number(n) || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+
+// A date offset from today, as YYYY-MM-DD (used for sample data + inputs)
+function isoDate(offsetDays = 0) {
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  return d.toISOString().slice(0, 10);
+}
+
+/* ---------- The 8 sections of the app ---------- */
+const TABS = [
+  { id: "today",    label: "Today",  icon: "🌅" },
+  { id: "budget",   label: "Money",  icon: "💰" },
+  { id: "work",     label: "Work",   icon: "🧾" },
+  { id: "shopping", label: "Shop",   icon: "🛒" },
+  { id: "kids",     label: "Kids",   icon: "🧸" },
+  { id: "health",   label: "Health", icon: "🌿" },
+  { id: "tasks",    label: "Tasks",  icon: "✅" },
+  { id: "notes",    label: "Notes",  icon: "📝" },
+];
+
+/* =======================================================================
+   Sample data (loaded the first time you open the app)
+   ======================================================================= */
+function sampleData() {
+  return {
+    version: 1,
+    today: {
+      mood: "medium",              // low | medium | good
+      survivalMode: false,
+      priorities: [
+        "Pay the rent before Friday",
+        "Send last week's invoice",
+        "Get the girls' lunch boxes ready tonight",
+      ],
+      reminders: [
+        { id: uid(), text: "Move the car for street cleaning", done: false },
+        { id: uid(), text: "Text mum back", done: false },
+      ],
+    },
+    tasks: [
+      { id: uid(), text: "Pay rent", priority: "urgent", status: "not-started", due: isoDate(2) },
+      { id: uid(), text: "Send warehouse invoice", priority: "important", status: "in-progress", due: isoDate(1) },
+      { id: uid(), text: "Book the car in for a service", priority: "later", status: "not-started", due: "" },
+      { id: uid(), text: "Fix the leaking kitchen tap", priority: "later", status: "not-started", due: "" },
+    ],
+    budget: {
+      available: 850,
+      incoming: 1200,
+      rent: 520,
+      bills: 180,
+      food: 200,
+      fuel: 90,
+      medicine: 60,
+      debts: 150,
+      doNotSpend: [
+        { id: uid(), text: "Takeaway coffee runs" },
+        { id: uid(), text: "Late-night online shopping" },
+        { id: uid(), text: "New basketball shoes (I already have some)" },
+      ],
+    },
+    shifts: [
+      { id: uid(), employer: "Warehouse", date: isoDate(-2), start: "06:00", end: "14:00", rate: 32, status: "sent" },
+      { id: uid(), employer: "Warehouse", date: isoDate(-1), start: "06:00", end: "12:00", rate: 32, status: "not-sent" },
+      { id: uid(), employer: "Local Removalist", date: isoDate(0), start: "09:00", end: "15:30", rate: 40, status: "not-sent" },
+    ],
+    shoppingBudget: 120,
+    shopping: [
+      { id: uid(), name: "Milk", category: "Groceries", price: 4.5, bought: false },
+      { id: uid(), name: "Bread", category: "Groceries", price: 3.2, bought: false },
+      { id: uid(), name: "Eggs", category: "Groceries", price: 6.5, bought: false },
+      { id: uid(), name: "Dishwashing liquid", category: "House essentials", price: 4, bought: true },
+      { id: uid(), name: "Panadol", category: "Medicine", price: 8, bought: false },
+      { id: uid(), name: "School glue sticks", category: "Kids", price: 5, bought: false },
+      { id: uid(), name: "Work gloves", category: "Work", price: 12, bought: false },
+    ],
+    kids: [
+      { id: uid(), text: "Pack library books", category: "School", done: false },
+      { id: uid(), text: "Buy new school shoes", category: "Prepare", done: false },
+      { id: uid(), text: "Book the dentist check-up", category: "Health", done: false },
+      { id: uid(), text: "Saturday morning swimming", category: "Activity", done: false },
+    ],
+    health: {
+      checklist: {
+        shower: true, eat: true, water: false, cleanRoom: false,
+        pray: false, walk: false, sleepPlan: false,
+      },
+      meds: [
+        { id: uid(), text: "Morning vitamins", done: true },
+        { id: uid(), text: "Evening tablet", done: false },
+      ],
+      sleepNotes: "Aim for lights out by 10:30pm. Phone out of the bedroom.",
+      foodNotes: "More water, fewer energy drinks. Simple meals are fine.",
+      exerciseNotes: "Basketball on Wednesday night. Short walk on other days.",
+      resetNotes: "Box breathing (4 in, 4 hold, 4 out). Cold water on the face. Step outside for 5 minutes.",
+    },
+    notes: [
+      { id: uid(), text: "Idea: batch cook on Sundays to save money and stress during the week.", created: Date.now() - 86400000 },
+      { id: uid(), text: "The rent assistance form is in the top drawer.", created: Date.now() - 3600000 },
+    ],
+  };
+}
+
+/* ---------- Load & save ---------- */
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return null;
+}
+function saveData(data) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
+}
+
+/* =======================================================================
+   Small reusable building blocks
+   ======================================================================= */
+function Card({ children, className = "", ...rest }) {
+  return (
+    <div {...rest} className={"bg-white rounded-2xl border border-slate-100 shadow-sm p-4 " + className}>
+      {children}
+    </div>
+  );
+}
+
+function Btn({ variant = "primary", className = "", ...rest }) {
+  const styles = {
+    primary: "bg-teal-600 text-white active:bg-teal-700",
+    soft:    "bg-teal-50 text-teal-700 active:bg-teal-100",
+    ghost:   "bg-slate-100 text-slate-700 active:bg-slate-200",
+    danger:  "bg-rose-50 text-rose-600 active:bg-rose-100",
+  }[variant];
+  return (
+    <button
+      {...rest}
+      className={"rounded-xl font-bold text-[15px] px-4 py-3 transition select-none disabled:opacity-40 " + styles + " " + className}
+    />
+  );
+}
+
+function Input({ className = "", ...rest }) {
+  return (
+    <input
+      {...rest}
+      className={"w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-[16px] placeholder-slate-400 " +
+        "focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 " + className}
+    />
+  );
+}
+function TextArea({ className = "", ...rest }) {
+  return (
+    <textarea
+      {...rest}
+      className={"w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-[16px] placeholder-slate-400 " +
+        "focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 " + className}
+    />
+  );
+}
+function Select({ className = "", children, ...rest }) {
+  return (
+    <select
+      {...rest}
+      className={"w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-[16px] " +
+        "focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 " + className}
+    >
+      {children}
+    </select>
+  );
+}
+
+function Label({ children }) {
+  return <label className="block text-sm font-bold text-slate-500 mb-1">{children}</label>;
+}
+
+function Chip({ active, className = "", children, ...rest }) {
+  return (
+    <button
+      {...rest}
+      className={"px-3 py-2 rounded-full text-sm font-bold whitespace-nowrap transition select-none " +
+        (active ? "bg-teal-600 text-white" : "bg-white text-slate-600 border border-slate-200 active:bg-slate-50") +
+        " " + className}
+    >
+      {children}
+    </button>
+  );
+}
+
+// A round tick button used for checklists
+function Tick({ done, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={done ? "Done" : "Not done"}
+      className={"shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center text-white text-base transition " +
+        (done ? "bg-teal-600 border-teal-600" : "bg-white border-slate-300 active:border-teal-400")}
+    >
+      {done ? "✓" : ""}
+    </button>
+  );
+}
+
+function SectionHeader({ icon, title, subtitle }) {
+  return (
+    <div className="pt-1 pb-1">
+      <h2 className="text-2xl font-extrabold text-slate-800 flex items-center gap-2">
+        <span>{icon}</span> {title}
+      </h2>
+      {subtitle && <p className="text-slate-500 text-sm mt-0.5">{subtitle}</p>}
+    </div>
+  );
+}
+
+function Empty({ children }) {
+  return (
+    <div className="text-center text-slate-400 text-sm py-6">{children}</div>
+  );
+}
+
+function Modal({ title, onClose, children }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 p-0 sm:p-4"
+         onClick={onClose}>
+      <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[88vh] overflow-y-auto"
+           onClick={(e) => e.stopPropagation()}>
+        <div className="sticky top-0 bg-white flex items-center justify-between px-5 py-4 border-b border-slate-100">
+          <h3 className="text-lg font-extrabold">{title}</h3>
+          <button onClick={onClose} className="w-9 h-9 rounded-full bg-slate-100 text-slate-600 text-lg active:bg-slate-200">✕</button>
+        </div>
+        <div className="p-5">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+/* =======================================================================
+   Work helpers (hours, pay, weeks, invoice text)
+   ======================================================================= */
+function shiftHours(s) {
+  if (!s.start || !s.end) return 0;
+  const [sh, sm] = s.start.split(":").map(Number);
+  const [eh, em] = s.end.split(":").map(Number);
+  let mins = eh * 60 + em - (sh * 60 + sm);
+  if (mins < 0) mins += 1440; // overnight shift
+  return mins / 60;
+}
+function shiftPay(s) {
+  return shiftHours(s) * (Number(s.rate) || 0);
+}
+function startOfWeek(date) {
+  const x = new Date(date);
+  const day = (x.getDay() + 6) % 7; // Monday = 0
+  x.setDate(x.getDate() - day);
+  x.setHours(0, 0, 0, 0);
+  return x;
+}
+function isThisWeek(dateStr) {
+  if (!dateStr) return false;
+  const start = startOfWeek(new Date());
+  const end = new Date(start); end.setDate(end.getDate() + 7);
+  const d = new Date(dateStr + "T00:00:00");
+  return d >= start && d < end;
+}
+const STATUS_LABEL = { "not-sent": "Not sent", sent: "Sent", paid: "Paid" };
+function invoiceText(shifts) {
+  const byEmp = {};
+  shifts.forEach((s) => { (byEmp[s.employer || "Client"] = byEmp[s.employer || "Client"] || []).push(s); });
+  let out = "INVOICE SUMMARY\nGenerated: " + new Date().toLocaleDateString() + "\n";
+  let grand = 0;
+  Object.keys(byEmp).forEach((emp) => {
+    out += "\n" + emp + "\n";
+    byEmp[emp].forEach((s) => {
+      const pay = shiftPay(s); grand += pay;
+      out += "  " + s.date + "  " + s.start + "-" + s.end + "  " +
+             shiftHours(s).toFixed(2) + "h x $" + (Number(s.rate) || 0) + " = " +
+             money(pay) + "  [" + STATUS_LABEL[s.status] + "]\n";
+    });
+  });
+  out += "\nTOTAL: " + money(grand);
+  return out;
+}
+
+/* =======================================================================
+   1. TODAY DASHBOARD
+   ======================================================================= */
+function TodayView({ data, setKey, go }) {
+  const today = data.today;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString(undefined, {
+    weekday: "long", day: "numeric", month: "long",
+  });
+
+  const mustDo = data.tasks.filter((t) => t.priority === "urgent" && t.status !== "done");
+  const b = data.budget;
+  const committed = ["rent", "bills", "food", "fuel", "medicine", "debts"]
+    .reduce((sum, k) => sum + (Number(b[k]) || 0), 0);
+  const leftover = (Number(b.available) || 0) + (Number(b.incoming) || 0) - committed;
+  const shopLeft = data.shopping.filter((i) => !i.bought).length;
+  const healthDone = Object.values(data.health.checklist).filter(Boolean).length;
+  const healthTotal = Object.keys(data.health.checklist).length;
+
+  const survival = today.survivalMode || today.mood === "low";
+
+  const setToday = (patch) => setKey("today", (t) => ({ ...t, ...patch }));
+  const setPriority = (i, val) =>
+    setToday({ priorities: today.priorities.map((p, idx) => (idx === i ? val : p)) });
+
+  const [reminder, setReminder] = useState("");
+  const addReminder = () => {
+    if (!reminder.trim()) return;
+    setToday({ reminders: [...today.reminders, { id: uid(), text: reminder.trim(), done: false }] });
+    setReminder("");
+  };
+  const toggleReminder = (id) =>
+    setToday({ reminders: today.reminders.map((r) => (r.id === id ? { ...r, done: !r.done } : r)) });
+  const delReminder = (id) =>
+    setToday({ reminders: today.reminders.filter((r) => r.id !== id) });
+
+  const toggleTaskDone = (id) =>
+    setKey("tasks", (arr) => arr.map((t) => (t.id === id ? { ...t, status: t.status === "done" ? "not-started" : "done" } : t)));
+
+  const moods = [
+    { id: "low",    label: "Low",    emoji: "😔", on: "bg-amber-100 border-amber-300 text-amber-700" },
+    { id: "medium", label: "Medium", emoji: "😐", on: "bg-sky-100 border-sky-300 text-sky-700" },
+    { id: "good",   label: "Good",   emoji: "🙂", on: "bg-emerald-100 border-emerald-300 text-emerald-700" },
+  ];
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <p className="text-slate-500 font-bold">{dateStr}</p>
+        <h1 className="text-3xl font-extrabold text-slate-800">Good day. You've got this.</h1>
+      </div>
+
+      {/* Mood / energy */}
+      <Card>
+        <Label>How's your energy right now?</Label>
+        <div className="grid grid-cols-3 gap-2 mt-1">
+          {moods.map((m) => (
+            <button
+              key={m.id}
+              onClick={() => setToday({ mood: m.id })}
+              className={"py-3 rounded-xl border-2 font-bold text-sm flex flex-col items-center gap-1 transition " +
+                (today.mood === m.id ? m.on : "bg-white border-slate-200 text-slate-500")}
+            >
+              <span className="text-2xl">{m.emoji}</span>
+              {m.label}
+            </button>
+          ))}
+        </div>
+        {!survival && (
+          <button
+            onClick={() => setToday({ survivalMode: true })}
+            className="mt-3 w-full text-sm font-bold text-teal-700 bg-teal-50 rounded-xl py-2 active:bg-teal-100"
+          >
+            I'm tired / overwhelmed — show me survival mode
+          </button>
+        )}
+      </Card>
+
+      {/* Survival mode plan */}
+      {survival && (
+        <Card className="bg-teal-50 border-teal-100">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-extrabold text-teal-800">🫶 Survival mode</h3>
+            {today.survivalMode && (
+              <button onClick={() => setToday({ survivalMode: false })}
+                      className="text-xs font-bold text-teal-700 underline">turn off</button>
+            )}
+          </div>
+          <p className="text-teal-800 text-sm mt-1">Keep it small today. Just these:</p>
+          <ul className="mt-2 space-y-1.5 text-teal-900 font-bold">
+            <li>💧 Drink a glass of water</li>
+            <li>🍞 Eat something simple</li>
+            <li>⭐ Do just one thing: <span className="font-extrabold">{today.priorities[0] || "your top priority"}</span></li>
+            <li>🌬️ Take 5 slow breaths</li>
+          </ul>
+          <p className="text-teal-700 text-sm mt-3">Anything else today is a bonus. You're doing enough.</p>
+        </Card>
+      )}
+
+      {/* Top 3 priorities */}
+      <Card>
+        <Label>Top 3 things that matter today</Label>
+        <div className="space-y-2 mt-1">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="flex items-center gap-2">
+              <span className="w-7 h-7 shrink-0 rounded-full bg-teal-600 text-white font-extrabold flex items-center justify-center">{i + 1}</span>
+              <Input
+                value={today.priorities[i] || ""}
+                onChange={(e) => setPriority(i, e.target.value)}
+                placeholder={"Priority " + (i + 1)}
+              />
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Must-do tasks (urgent tasks) */}
+      <Card>
+        <div className="flex items-center justify-between mb-1">
+          <Label>Must-do tasks</Label>
+          <button onClick={() => go("tasks")} className="text-xs font-bold text-teal-700">All tasks →</button>
+        </div>
+        {mustDo.length === 0 ? (
+          <Empty>No urgent tasks. Add urgent ones in Tasks.</Empty>
+        ) : (
+          <ul className="space-y-2">
+            {mustDo.map((t) => (
+              <li key={t.id} className="flex items-center gap-3">
+                <Tick done={t.status === "done"} onClick={() => toggleTaskDone(t.id)} />
+                <span className={t.status === "done" ? "line-through text-slate-400" : "font-bold"}>{t.text}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+
+      {/* Reminders */}
+      <Card>
+        <Label>Reminders</Label>
+        <div className="flex gap-2 mt-1 mb-2">
+          <Input value={reminder} onChange={(e) => setReminder(e.target.value)}
+                 onKeyDown={(e) => e.key === "Enter" && addReminder()}
+                 placeholder="Add a reminder…" />
+          <Btn onClick={addReminder} className="shrink-0">Add</Btn>
+        </div>
+        {today.reminders.length === 0 ? (
+          <Empty>Nothing to remember right now.</Empty>
+        ) : (
+          <ul className="space-y-2">
+            {today.reminders.map((r) => (
+              <li key={r.id} className="flex items-center gap-3">
+                <Tick done={r.done} onClick={() => toggleReminder(r.id)} />
+                <span className={"flex-1 " + (r.done ? "line-through text-slate-400" : "")}>{r.text}</span>
+                <button onClick={() => delReminder(r.id)} className="text-slate-300 text-lg px-1">✕</button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+
+      {/* Quick snapshots */}
+      <div className="grid grid-cols-2 gap-3">
+        <button onClick={() => go("budget")} className="text-left">
+          <Card className="h-full">
+            <p className="text-xs font-bold text-slate-400">Left to spend</p>
+            <p className={"text-2xl font-extrabold " + (leftover < 0 ? "text-rose-600" : "text-emerald-600")}>{money(leftover)}</p>
+            <p className="text-xs text-slate-400 mt-1">Tap for Money →</p>
+          </Card>
+        </button>
+        <button onClick={() => go("work")} className="text-left">
+          <Card className="h-full">
+            <p className="text-xs font-bold text-slate-400">This week's pay</p>
+            <p className="text-2xl font-extrabold text-slate-800">
+              {money(data.shifts.filter((s) => isThisWeek(s.date)).reduce((sum, s) => sum + shiftPay(s), 0))}
+            </p>
+            <p className="text-xs text-slate-400 mt-1">Tap for Work →</p>
+          </Card>
+        </button>
+        <button onClick={() => go("shopping")} className="text-left">
+          <Card className="h-full">
+            <p className="text-xs font-bold text-slate-400">To buy</p>
+            <p className="text-2xl font-extrabold text-slate-800">{shopLeft} <span className="text-base font-bold text-slate-400">items</span></p>
+            <p className="text-xs text-slate-400 mt-1">Tap for Shop →</p>
+          </Card>
+        </button>
+        <button onClick={() => go("health")} className="text-left">
+          <Card className="h-full">
+            <p className="text-xs font-bold text-slate-400">Looking after me</p>
+            <p className="text-2xl font-extrabold text-slate-800">{healthDone}<span className="text-base font-bold text-slate-400">/{healthTotal}</span></p>
+            <p className="text-xs text-slate-400 mt-1">Tap for Health →</p>
+          </Card>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* =======================================================================
+   2. BUDGET TRACKER
+   ======================================================================= */
+function BudgetView({ data, setKey }) {
+  const b = data.budget;
+  const setBudget = (patch) => setKey("budget", (cur) => ({ ...cur, ...patch }));
+
+  const rows = [
+    { key: "rent",     label: "Rent" },
+    { key: "bills",    label: "Bills & subscriptions" },
+    { key: "food",     label: "Food & groceries" },
+    { key: "fuel",     label: "Fuel / transport" },
+    { key: "medicine", label: "Medicine / health" },
+    { key: "debts",    label: "Debts / loans" },
+  ];
+  const committed = rows.reduce((sum, r) => sum + (Number(b[r.key]) || 0), 0);
+  const totalIn = (Number(b.available) || 0) + (Number(b.incoming) || 0);
+  const leftover = totalIn - committed;
+  const overspending = leftover < 0;
+  const usedPct = totalIn > 0 ? Math.min(100, (committed / totalIn) * 100) : 0;
+
+  const [dns, setDns] = useState("");
+  const addDns = () => {
+    if (!dns.trim()) return;
+    setBudget({ doNotSpend: [...b.doNotSpend, { id: uid(), text: dns.trim() }] });
+    setDns("");
+  };
+  const delDns = (id) => setBudget({ doNotSpend: b.doNotSpend.filter((x) => x.id !== id) });
+
+  const MoneyField = ({ k, label }) => (
+    <div>
+      <Label>{label}</Label>
+      <div className="relative">
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+        <Input type="number" inputMode="decimal" className="pl-8"
+               value={b[k] ?? ""} onChange={(e) => setBudget({ [k]: e.target.value })} placeholder="0" />
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="space-y-4">
+      <SectionHeader icon="💰" title="Money" subtitle="A calm, honest look at what's coming in and going out." />
+
+      {/* Big leftover number */}
+      <Card className={overspending ? "bg-rose-50 border-rose-100" : "bg-emerald-50 border-emerald-100"}>
+        <p className="font-bold text-slate-500">Leftover money (safe to spend)</p>
+        <p className={"text-4xl font-extrabold " + (overspending ? "text-rose-600" : "text-emerald-600")}>{money(leftover)}</p>
+        <div className="mt-3 h-2.5 rounded-full bg-white overflow-hidden">
+          <div className={"h-full " + (overspending ? "bg-rose-500" : "bg-emerald-500")} style={{ width: usedPct + "%" }} />
+        </div>
+        <p className="text-xs text-slate-500 mt-1">{money(committed)} committed of {money(totalIn)} available</p>
+        {overspending && (
+          <p className="mt-3 text-sm font-bold text-rose-700 bg-white rounded-xl p-3">
+            ⚠️ You're planning to spend more than you have. Try trimming food, fuel or bills, or move a debt payment to next week.
+          </p>
+        )}
+      </Card>
+
+      <div className="grid grid-cols-2 gap-3">
+        <Card><MoneyField k="available" label="Money I have now" /></Card>
+        <Card><MoneyField k="incoming" label="Money coming in" /></Card>
+      </div>
+
+      <Card>
+        <Label>Where it's going</Label>
+        <div className="grid grid-cols-2 gap-3 mt-1">
+          {rows.map((r) => <MoneyField key={r.key} k={r.key} label={r.label} />)}
+        </div>
+      </Card>
+
+      {/* Do not spend list */}
+      <Card>
+        <Label>🚫 Do NOT spend on</Label>
+        <p className="text-xs text-slate-400 mb-2">Your gentle reminders when you feel the urge.</p>
+        <div className="flex gap-2 mb-2">
+          <Input value={dns} onChange={(e) => setDns(e.target.value)}
+                 onKeyDown={(e) => e.key === "Enter" && addDns()}
+                 placeholder="e.g. Late-night takeaway" />
+          <Btn onClick={addDns} className="shrink-0">Add</Btn>
+        </div>
+        {b.doNotSpend.length === 0 ? (
+          <Empty>No items yet.</Empty>
+        ) : (
+          <ul className="space-y-2">
+            {b.doNotSpend.map((x) => (
+              <li key={x.id} className="flex items-center gap-2 bg-rose-50 rounded-xl px-3 py-2">
+                <span className="flex-1 font-bold text-rose-700">{x.text}</span>
+                <button onClick={() => delDns(x.id)} className="text-rose-300 text-lg">✕</button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+    </div>
+  );
+}
+
+/* =======================================================================
+   3. WORK & INVOICE TRACKER
+   ======================================================================= */
+function WorkView({ data, setKey }) {
+  const shifts = data.shifts;
+  const setShifts = (fn) => setKey("shifts", fn);
+
+  const blank = { employer: "", date: isoDate(0), start: "09:00", end: "17:00", rate: "" };
+  const [form, setForm] = useState(blank);
+  const [invoice, setInvoice] = useState(null); // holds the generated text when modal open
+
+  const addShift = () => {
+    if (!form.employer.trim()) return;
+    setShifts((arr) => [{ id: uid(), status: "not-sent", ...form, rate: form.rate || 0 }, ...arr]);
+    setForm(blank);
+  };
+  const delShift = (id) => setShifts((arr) => arr.filter((s) => s.id !== id));
+  const cycleStatus = (id) =>
+    setShifts((arr) => arr.map((s) => {
+      if (s.id !== id) return s;
+      const order = ["not-sent", "sent", "paid"];
+      return { ...s, status: order[(order.indexOf(s.status) + 1) % 3] };
+    }));
+
+  const weekTotal = shifts.filter((s) => isThisWeek(s.date)).reduce((sum, s) => sum + shiftPay(s), 0);
+  const unpaidTotal = shifts.filter((s) => s.status !== "paid").reduce((sum, s) => sum + shiftPay(s), 0);
+
+  const statusStyle = {
+    "not-sent": "bg-slate-100 text-slate-600",
+    sent: "bg-sky-100 text-sky-700",
+    paid: "bg-emerald-100 text-emerald-700",
+  };
+
+  const copyInvoice = () => {
+    if (navigator.clipboard) navigator.clipboard.writeText(invoice).catch(() => {});
+  };
+
+  return (
+    <div className="space-y-4">
+      <SectionHeader icon="🧾" title="Work & Invoices" subtitle="Track shifts, pay and what's been invoiced." />
+
+      <div className="grid grid-cols-2 gap-3">
+        <Card><p className="text-xs font-bold text-slate-400">This week's pay</p><p className="text-2xl font-extrabold text-slate-800">{money(weekTotal)}</p></Card>
+        <Card><p className="text-xs font-bold text-slate-400">Not yet paid</p><p className="text-2xl font-extrabold text-amber-600">{money(unpaidTotal)}</p></Card>
+      </div>
+
+      {/* Add a shift */}
+      <Card>
+        <Label>Add a work shift</Label>
+        <div className="space-y-2 mt-1">
+          <Input placeholder="Employer / client name" value={form.employer}
+                 onChange={(e) => setForm({ ...form, employer: e.target.value })} />
+          <Input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
+          <div className="grid grid-cols-2 gap-2">
+            <div><Label>Start</Label><Input type="time" value={form.start} onChange={(e) => setForm({ ...form, start: e.target.value })} /></div>
+            <div><Label>End</Label><Input type="time" value={form.end} onChange={(e) => setForm({ ...form, end: e.target.value })} /></div>
+          </div>
+          <div>
+            <Label>Hourly rate</Label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+              <Input type="number" inputMode="decimal" className="pl-8" placeholder="0"
+                     value={form.rate} onChange={(e) => setForm({ ...form, rate: e.target.value })} />
+            </div>
+          </div>
+          <Btn onClick={addShift} className="w-full">Add shift</Btn>
+        </div>
+      </Card>
+
+      {shifts.length > 0 && (
+        <Btn variant="soft" className="w-full" onClick={() => setInvoice(invoiceText(shifts))}>
+          🧾 Create invoice summary text
+        </Btn>
+      )}
+
+      {/* Shift list */}
+      {shifts.length === 0 ? (
+        <Empty>No shifts yet. Add your first one above.</Empty>
+      ) : (
+        <div className="space-y-3">
+          {shifts.map((s) => (
+            <Card key={s.id}>
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="font-extrabold text-slate-800">{s.employer || "Client"}</p>
+                  <p className="text-sm text-slate-500">{s.date} · {s.start}–{s.end} · {shiftHours(s).toFixed(2)}h @ {money(s.rate)}/hr</p>
+                </div>
+                <button onClick={() => delShift(s.id)} className="text-slate-300 text-lg px-1">✕</button>
+              </div>
+              <div className="flex items-center justify-between mt-3">
+                <p className="text-xl font-extrabold text-slate-800">{money(shiftPay(s))}</p>
+                <button onClick={() => cycleStatus(s.id)}
+                        className={"px-3 py-1.5 rounded-full text-sm font-bold " + statusStyle[s.status]}>
+                  {STATUS_LABEL[s.status]} ⟳
+                </button>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {invoice && (
+        <Modal title="Invoice summary" onClose={() => setInvoice(null)}>
+          <p className="text-sm text-slate-500 mb-2">Copy this and paste it into a message or email.</p>
+          <TextArea rows={12} value={invoice} readOnly className="font-mono text-sm" />
+          <Btn className="w-full mt-3" onClick={copyInvoice}>Copy to clipboard</Btn>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+/* =======================================================================
+   4. SHOPPING LIST
+   ======================================================================= */
+const SHOP_CATS = ["Groceries", "House essentials", "Medicine", "Kids", "Work"];
+function ShoppingView({ data, setKey }) {
+  const items = data.shopping;
+  const setItems = (fn) => setKey("shopping", fn);
+  const [filter, setFilter] = useState("All");
+  const [form, setForm] = useState({ name: "", category: "Groceries", price: "" });
+
+  const addItem = () => {
+    if (!form.name.trim()) return;
+    setItems((arr) => [...arr, { id: uid(), name: form.name.trim(), category: form.category, price: form.price || 0, bought: false }]);
+    setForm({ name: "", category: form.category, price: "" });
+  };
+  const toggle = (id) => setItems((arr) => arr.map((i) => (i.id === id ? { ...i, bought: !i.bought } : i)));
+  const del = (id) => setItems((arr) => arr.filter((i) => i.id !== id));
+
+  const shown = items.filter((i) => filter === "All" || i.category === filter);
+  const stillToBuy = items.filter((i) => !i.bought);
+  const estTotal = stillToBuy.reduce((sum, i) => sum + (Number(i.price) || 0), 0);
+  const budget = Number(data.shoppingBudget) || 0;
+  const overBudget = budget > 0 && estTotal > budget;
+
+  return (
+    <div className="space-y-4">
+      <SectionHeader icon="🛒" title="Shopping" subtitle="What you need — grouped and within budget." />
+
+      <Card className={overBudget ? "bg-rose-50 border-rose-100" : ""}>
+        <div className="flex items-end justify-between gap-3">
+          <div className="flex-1">
+            <Label>Budget for this trip</Label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+              <Input type="number" inputMode="decimal" className="pl-8" placeholder="0"
+                     value={data.shoppingBudget ?? ""} onChange={(e) => setKey("shoppingBudget", e.target.value)} />
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-xs font-bold text-slate-400">Estimated</p>
+            <p className={"text-2xl font-extrabold " + (overBudget ? "text-rose-600" : "text-slate-800")}>{money(estTotal)}</p>
+          </div>
+        </div>
+        {overBudget && <p className="mt-2 text-sm font-bold text-rose-700">⚠️ Over budget by {money(estTotal - budget)}. Consider dropping a few items.</p>}
+      </Card>
+
+      {/* Add item */}
+      <Card>
+        <Label>Add item</Label>
+        <div className="space-y-2 mt-1">
+          <Input placeholder="Item name" value={form.name}
+                 onChange={(e) => setForm({ ...form, name: e.target.value })}
+                 onKeyDown={(e) => e.key === "Enter" && addItem()} />
+          <div className="grid grid-cols-2 gap-2">
+            <Select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
+              {SHOP_CATS.map((c) => <option key={c}>{c}</option>)}
+            </Select>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+              <Input type="number" inputMode="decimal" className="pl-8" placeholder="Price"
+                     value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
+            </div>
+          </div>
+          <Btn onClick={addItem} className="w-full">Add to list</Btn>
+        </div>
+      </Card>
+
+      {/* Filters */}
+      <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+        <Chip active={filter === "All"} onClick={() => setFilter("All")}>All</Chip>
+        {SHOP_CATS.map((c) => <Chip key={c} active={filter === c} onClick={() => setFilter(c)}>{c}</Chip>)}
+      </div>
+
+      {shown.length === 0 ? (
+        <Empty>Nothing here yet.</Empty>
+      ) : (
+        <div className="space-y-2">
+          {shown.map((i) => (
+            <Card key={i.id} className="flex items-center gap-3 py-3">
+              <Tick done={i.bought} onClick={() => toggle(i.id)} />
+              <div className="flex-1">
+                <p className={i.bought ? "line-through text-slate-400 font-bold" : "font-bold"}>{i.name}</p>
+                <p className="text-xs text-slate-400">{i.category}</p>
+              </div>
+              <span className="font-bold text-slate-600">{money(i.price)}</span>
+              <button onClick={() => del(i.id)} className="text-slate-300 text-lg">✕</button>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* =======================================================================
+   5. KIDS & FAMILY
+   ======================================================================= */
+const KID_CATS = ["Prepare", "Activity", "School", "Health", "Family", "Reminder"];
+function KidsView({ data, setKey }) {
+  const items = data.kids;
+  const setItems = (fn) => setKey("kids", fn);
+  const [filter, setFilter] = useState("All");
+  const [form, setForm] = useState({ text: "", category: "Prepare" });
+
+  const add = () => {
+    if (!form.text.trim()) return;
+    setItems((arr) => [...arr, { id: uid(), text: form.text.trim(), category: form.category, done: false }]);
+    setForm({ text: "", category: form.category });
+  };
+  const toggle = (id) => setItems((arr) => arr.map((i) => (i.id === id ? { ...i, done: !i.done } : i)));
+  const del = (id) => setItems((arr) => arr.filter((i) => i.id !== id));
+
+  const catStyle = {
+    Prepare: "bg-teal-100 text-teal-700", Activity: "bg-sky-100 text-sky-700",
+    School: "bg-indigo-100 text-indigo-700", Health: "bg-emerald-100 text-emerald-700",
+    Family: "bg-amber-100 text-amber-700", Reminder: "bg-rose-100 text-rose-700",
+  };
+  const shown = items.filter((i) => filter === "All" || i.category === filter);
+
+  return (
+    <div className="space-y-4">
+      <SectionHeader icon="🧸" title="Kids & Family" subtitle="Everything to prepare and remember for the girls." />
+
+      <Card>
+        <Label>Add something</Label>
+        <div className="space-y-2 mt-1">
+          <Input placeholder="e.g. Pack swimming bag" value={form.text}
+                 onChange={(e) => setForm({ ...form, text: e.target.value })}
+                 onKeyDown={(e) => e.key === "Enter" && add()} />
+          <div className="grid grid-cols-[1fr_auto] gap-2">
+            <Select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
+              {KID_CATS.map((c) => <option key={c}>{c}</option>)}
+            </Select>
+            <Btn onClick={add}>Add</Btn>
+          </div>
+        </div>
+      </Card>
+
+      <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+        <Chip active={filter === "All"} onClick={() => setFilter("All")}>All</Chip>
+        {KID_CATS.map((c) => <Chip key={c} active={filter === c} onClick={() => setFilter(c)}>{c}</Chip>)}
+      </div>
+
+      {shown.length === 0 ? (
+        <Empty>Nothing here yet.</Empty>
+      ) : (
+        <div className="space-y-2">
+          {shown.map((i) => (
+            <Card key={i.id} className="flex items-center gap-3 py-3">
+              <Tick done={i.done} onClick={() => toggle(i.id)} />
+              <div className="flex-1">
+                <p className={i.done ? "line-through text-slate-400 font-bold" : "font-bold"}>{i.text}</p>
+                <span className={"inline-block text-xs font-bold px-2 py-0.5 rounded-full mt-1 " + (catStyle[i.category] || "bg-slate-100 text-slate-600")}>{i.category}</span>
+              </div>
+              <button onClick={() => del(i.id)} className="text-slate-300 text-lg">✕</button>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* =======================================================================
+   6. HEALTH & ROUTINE
+   ======================================================================= */
+const CHECK_ITEMS = [
+  { key: "shower", label: "Shower", emoji: "🚿" },
+  { key: "eat", label: "Eat", emoji: "🍽️" },
+  { key: "water", label: "Drink water", emoji: "💧" },
+  { key: "cleanRoom", label: "Clean room", emoji: "🧹" },
+  { key: "pray", label: "Pray", emoji: "🤲" },
+  { key: "walk", label: "Walk", emoji: "🚶" },
+  { key: "sleepPlan", label: "Sleep plan", emoji: "😴" },
+];
+function HealthView({ data, setKey }) {
+  const h = data.health;
+  const setHealth = (patch) => setKey("health", (cur) => ({ ...cur, ...patch }));
+  const toggleCheck = (k) => setHealth({ checklist: { ...h.checklist, [k]: !h.checklist[k] } });
+
+  const [med, setMed] = useState("");
+  const addMed = () => {
+    if (!med.trim()) return;
+    setHealth({ meds: [...h.meds, { id: uid(), text: med.trim(), done: false }] });
+    setMed("");
+  };
+  const toggleMed = (id) => setHealth({ meds: h.meds.map((m) => (m.id === id ? { ...m, done: !m.done } : m)) });
+  const delMed = (id) => setHealth({ meds: h.meds.filter((m) => m.id !== id) });
+
+  const noteFields = [
+    { key: "sleepNotes", label: "Sleep notes", emoji: "😴" },
+    { key: "foodNotes", label: "Food notes", emoji: "🥗" },
+    { key: "exerciseNotes", label: "Exercise / basketball", emoji: "🏀" },
+    { key: "resetNotes", label: "Nervous system reset activities", emoji: "🌬️" },
+  ];
+
+  return (
+    <div className="space-y-4">
+      <SectionHeader icon="🌿" title="Health & Routine" subtitle="Small things that keep you steady." />
+
+      {/* Daily checklist */}
+      <Card>
+        <Label>Today's simple checklist</Label>
+        <div className="grid grid-cols-2 gap-2 mt-1">
+          {CHECK_ITEMS.map((c) => (
+            <button key={c.key} onClick={() => toggleCheck(c.key)}
+              className={"flex items-center gap-2 py-3 px-3 rounded-xl border-2 font-bold text-sm transition " +
+                (h.checklist[c.key] ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-white border-slate-200 text-slate-500")}>
+              <span className="text-xl">{c.emoji}</span>
+              <span className="flex-1 text-left">{c.label}</span>
+              {h.checklist[c.key] && <span>✓</span>}
+            </button>
+          ))}
+        </div>
+      </Card>
+
+      {/* Medication reminders */}
+      <Card>
+        <Label>💊 Medication reminders</Label>
+        <div className="flex gap-2 mt-1 mb-2">
+          <Input value={med} onChange={(e) => setMed(e.target.value)}
+                 onKeyDown={(e) => e.key === "Enter" && addMed()} placeholder="e.g. Morning tablet" />
+          <Btn onClick={addMed} className="shrink-0">Add</Btn>
+        </div>
+        {h.meds.length === 0 ? <Empty>No medication reminders.</Empty> : (
+          <ul className="space-y-2">
+            {h.meds.map((m) => (
+              <li key={m.id} className="flex items-center gap-3">
+                <Tick done={m.done} onClick={() => toggleMed(m.id)} />
+                <span className={"flex-1 " + (m.done ? "line-through text-slate-400" : "")}>{m.text}</span>
+                <button onClick={() => delMed(m.id)} className="text-slate-300 text-lg">✕</button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+
+      {/* Notes */}
+      {noteFields.map((f) => (
+        <Card key={f.key}>
+          <Label>{f.emoji} {f.label}</Label>
+          <TextArea rows={2} value={h[f.key]} onChange={(e) => setHealth({ [f.key]: e.target.value })}
+                    placeholder="Write anything that helps…" />
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+/* =======================================================================
+   7. TASKS
+   ======================================================================= */
+const PRIORITIES = [
+  { id: "urgent", label: "Urgent", style: "bg-rose-100 text-rose-700" },
+  { id: "important", label: "Important", style: "bg-amber-100 text-amber-700" },
+  { id: "later", label: "Later", style: "bg-slate-100 text-slate-600" },
+];
+const PRIORITY_ORDER = { urgent: 0, important: 1, later: 2 };
+function TasksView({ data, setKey }) {
+  const tasks = data.tasks;
+  const setTasks = (fn) => setKey("tasks", fn);
+  const [filter, setFilter] = useState("todo"); // todo | done | all
+  const [form, setForm] = useState({ text: "", priority: "important", due: "" });
+
+  const add = () => {
+    if (!form.text.trim()) return;
+    setTasks((arr) => [...arr, { id: uid(), text: form.text.trim(), priority: form.priority, status: "not-started", due: form.due }]);
+    setForm({ text: "", priority: form.priority, due: "" });
+  };
+  const del = (id) => setTasks((arr) => arr.filter((t) => t.id !== id));
+  const cycleStatus = (id) =>
+    setTasks((arr) => arr.map((t) => {
+      if (t.id !== id) return t;
+      const order = ["not-started", "in-progress", "done"];
+      return { ...t, status: order[(order.indexOf(t.status) + 1) % 3] };
+    }));
+
+  const statusLabel = { "not-started": "Not started", "in-progress": "In progress", done: "Done" };
+  const statusStyle = { "not-started": "bg-slate-100 text-slate-600", "in-progress": "bg-sky-100 text-sky-700", done: "bg-emerald-100 text-emerald-700" };
+
+  const shown = tasks
+    .filter((t) => (filter === "all" ? true : filter === "done" ? t.status === "done" : t.status !== "done"))
+    .sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
+
+  return (
+    <div className="space-y-4">
+      <SectionHeader icon="✅" title="Tasks" subtitle="One clear list. Sorted by what matters most." />
+
+      <Card>
+        <Label>Add a task</Label>
+        <div className="space-y-2 mt-1">
+          <Input placeholder="What needs doing?" value={form.text}
+                 onChange={(e) => setForm({ ...form, text: e.target.value })}
+                 onKeyDown={(e) => e.key === "Enter" && add()} />
+          <div className="grid grid-cols-2 gap-2">
+            <Select value={form.priority} onChange={(e) => setForm({ ...form, priority: e.target.value })}>
+              {PRIORITIES.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
+            </Select>
+            <Input type="date" value={form.due} onChange={(e) => setForm({ ...form, due: e.target.value })} />
+          </div>
+          <Btn onClick={add} className="w-full">Add task</Btn>
+        </div>
+      </Card>
+
+      <div className="flex gap-2">
+        <Chip active={filter === "todo"} onClick={() => setFilter("todo")}>To do</Chip>
+        <Chip active={filter === "done"} onClick={() => setFilter("done")}>Done</Chip>
+        <Chip active={filter === "all"} onClick={() => setFilter("all")}>All</Chip>
+      </div>
+
+      {shown.length === 0 ? <Empty>Nothing here. Enjoy the breathing room.</Empty> : (
+        <div className="space-y-2">
+          {shown.map((t) => {
+            const pr = PRIORITIES.find((p) => p.id === t.priority);
+            return (
+              <Card key={t.id} className="flex items-start gap-3 py-3">
+                <Tick done={t.status === "done"} onClick={() => cycleStatus(t.id)} />
+                <div className="flex-1 min-w-0">
+                  <p className={t.status === "done" ? "line-through text-slate-400 font-bold" : "font-bold"}>{t.text}</p>
+                  <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                    <span className={"text-xs font-bold px-2 py-0.5 rounded-full " + pr.style}>{pr.label}</span>
+                    <button onClick={() => cycleStatus(t.id)} className={"text-xs font-bold px-2 py-0.5 rounded-full " + statusStyle[t.status]}>{statusLabel[t.status]} ⟳</button>
+                    {t.due && <span className="text-xs font-bold text-slate-400">📅 {t.due}</span>}
+                  </div>
+                </div>
+                <button onClick={() => del(t.id)} className="text-slate-300 text-lg">✕</button>
+              </Card>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* =======================================================================
+   8. NOTES
+   ======================================================================= */
+function NotesView({ data, setKey }) {
+  const notes = data.notes;
+  const setNotes = (fn) => setKey("notes", fn);
+  const [text, setText] = useState("");
+  const [search, setSearch] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState("");
+
+  const add = () => {
+    if (!text.trim()) return;
+    setNotes((arr) => [{ id: uid(), text: text.trim(), created: Date.now() }, ...arr]);
+    setText("");
+  };
+  const del = (id) => setNotes((arr) => arr.filter((n) => n.id !== id));
+  const startEdit = (n) => { setEditingId(n.id); setEditText(n.text); };
+  const saveEdit = () => {
+    setNotes((arr) => arr.map((n) => (n.id === editingId ? { ...n, text: editText } : n)));
+    setEditingId(null); setEditText("");
+  };
+
+  const shown = notes.filter((n) => n.text.toLowerCase().includes(search.toLowerCase()));
+
+  return (
+    <div className="space-y-4">
+      <SectionHeader icon="📝" title="Notes" subtitle="A quick place to dump anything on your mind." />
+
+      <Card>
+        <TextArea rows={3} value={text} onChange={(e) => setText(e.target.value)}
+                  placeholder="Type a quick note… (like a voice note, but text)" />
+        <Btn onClick={add} className="w-full mt-2">Save note</Btn>
+      </Card>
+
+      <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="🔍 Search notes" />
+
+      {shown.length === 0 ? <Empty>{notes.length === 0 ? "No notes yet." : "No notes match your search."}</Empty> : (
+        <div className="space-y-2">
+          {shown.map((n) => (
+            <Card key={n.id}>
+              {editingId === n.id ? (
+                <div>
+                  <TextArea rows={3} value={editText} onChange={(e) => setEditText(e.target.value)} />
+                  <div className="flex gap-2 mt-2">
+                    <Btn onClick={saveEdit} className="flex-1">Save</Btn>
+                    <Btn variant="ghost" onClick={() => setEditingId(null)} className="flex-1">Cancel</Btn>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <p className="whitespace-pre-wrap">{n.text}</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <span className="text-xs text-slate-400">{new Date(n.created).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span>
+                    <div className="flex gap-3">
+                      <button onClick={() => startEdit(n)} className="text-xs font-bold text-teal-700">Edit</button>
+                      <button onClick={() => del(n.id)} className="text-xs font-bold text-rose-500">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* =======================================================================
+   Settings (reset sample data, start fresh, backup / restore)
+   ======================================================================= */
+function SettingsModal({ data, setData, onClose }) {
+  const [restoreText, setRestoreText] = useState("");
+  const backup = JSON.stringify(data);
+
+  const copyBackup = () => { if (navigator.clipboard) navigator.clipboard.writeText(backup).catch(() => {}); };
+  const doRestore = () => {
+    try {
+      const parsed = JSON.parse(restoreText);
+      if (parsed && typeof parsed === "object") { setData(parsed); onClose(); }
+    } catch (e) { alert("That doesn't look like valid backup text."); }
+  };
+
+  return (
+    <Modal title="Settings" onClose={onClose}>
+      <div className="space-y-3">
+        <p className="text-sm text-slate-500">Your data is saved on this device only. Back it up here if you want to keep it safe.</p>
+
+        <Btn variant="ghost" className="w-full" onClick={() => { if (confirm("Reload the example data? This replaces what's here.")) { setData(sampleData()); onClose(); } }}>
+          Reload example data
+        </Btn>
+        <Btn variant="danger" className="w-full" onClick={() => { if (confirm("Start completely fresh? This erases everything.")) { setData(emptyData()); onClose(); } }}>
+          Start fresh (erase everything)
+        </Btn>
+
+        <div className="pt-2 border-t border-slate-100">
+          <Label>Back up my data</Label>
+          <TextArea rows={3} readOnly value={backup} className="font-mono text-xs" />
+          <Btn variant="soft" className="w-full mt-2" onClick={copyBackup}>Copy backup text</Btn>
+        </div>
+
+        <div className="pt-2 border-t border-slate-100">
+          <Label>Restore from backup</Label>
+          <TextArea rows={3} value={restoreText} onChange={(e) => setRestoreText(e.target.value)} placeholder="Paste your backup text here…" className="font-mono text-xs" />
+          <Btn className="w-full mt-2" onClick={doRestore} disabled={!restoreText.trim()}>Restore</Btn>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+// A blank slate (used by "Start fresh")
+function emptyData() {
+  return {
+    version: 1,
+    today: { mood: "medium", survivalMode: false, priorities: ["", "", ""], reminders: [] },
+    tasks: [],
+    budget: { available: "", incoming: "", rent: "", bills: "", food: "", fuel: "", medicine: "", debts: "", doNotSpend: [] },
+    shifts: [],
+    shoppingBudget: "",
+    shopping: [],
+    kids: [],
+    health: {
+      checklist: { shower: false, eat: false, water: false, cleanRoom: false, pray: false, walk: false, sleepPlan: false },
+      meds: [], sleepNotes: "", foodNotes: "", exerciseNotes: "", resetNotes: "",
+    },
+    notes: [],
+  };
+}
+
+/* =======================================================================
+   The App shell — header, tab strip, and the active section
+   ======================================================================= */
+function App() {
+  const [data, setData] = useState(() => loadData() || sampleData());
+  const [tab, setTab] = useState("today");
+  const [showSettings, setShowSettings] = useState(false);
+  const mainRef = useRef(null);
+
+  // Save to localStorage whenever data changes
+  useEffect(() => { saveData(data); }, [data]);
+
+  // Scroll to top when switching sections
+  useEffect(() => { if (mainRef.current) mainRef.current.scrollTop = 0; window.scrollTo(0, 0); }, [tab]);
+
+  // Update one top-level slice of the data (value can be a value or an updater fn)
+  const setKey = (key, val) =>
+    setData((d) => ({ ...d, [key]: typeof val === "function" ? val(d[key]) : val }));
+
+  const views = {
+    today: <TodayView data={data} setKey={setKey} go={setTab} />,
+    budget: <BudgetView data={data} setKey={setKey} />,
+    work: <WorkView data={data} setKey={setKey} />,
+    shopping: <ShoppingView data={data} setKey={setKey} />,
+    kids: <KidsView data={data} setKey={setKey} />,
+    health: <HealthView data={data} setKey={setKey} />,
+    tasks: <TasksView data={data} setKey={setKey} />,
+    notes: <NotesView data={data} setKey={setKey} />,
+  };
+
+  return (
+    <div className="max-w-[480px] mx-auto min-h-screen bg-[#f4f5f3] flex flex-col">
+      {/* Header + tab strip (sticky) */}
+      <div className="sticky top-0 z-30 bg-[#f4f5f3]/95 backdrop-blur border-b border-slate-200/70">
+        <div className="flex items-center justify-between px-4 pt-3 pb-2">
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center text-lg font-extrabold">L</div>
+            <div>
+              <p className="font-extrabold leading-none text-slate-800">Life OS</p>
+              <p className="text-xs text-slate-400 leading-none mt-0.5">Your day, made simple</p>
+            </div>
+          </div>
+          <button onClick={() => setShowSettings(true)}
+                  className="w-9 h-9 rounded-full bg-white border border-slate-200 text-slate-500 active:bg-slate-100">⚙️</button>
+        </div>
+
+        <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 pb-2">
+          {TABS.map((t) => (
+            <button key={t.id} onClick={() => setTab(t.id)}
+              className={"flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition " +
+                (tab === t.id ? "bg-teal-600 text-white" : "bg-white text-slate-600 border border-slate-200 active:bg-slate-50")}>
+              <span>{t.icon}</span>{t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Active section */}
+      <main ref={mainRef} className="flex-1 p-4 pb-10">
+        {views[tab]}
+        <p className="text-center text-xs text-slate-400 mt-8">
+          Saved on this device only · Life OS v1
+        </p>
+      </main>
+
+      {showSettings && <SettingsModal data={data} setData={setData} onClose={() => setShowSettings(false)} />}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
