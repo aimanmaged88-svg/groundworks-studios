@@ -1,0 +1,169 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Hanken+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+#st{position:relative;width:1080px;height:1920px;background:#08080A;overflow:hidden;
+  font-family:'Hanken Grotesk',system-ui,sans-serif;color:#F2EFE6}
+.L{position:absolute;inset:0;will-change:transform,opacity}
+.mid{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 90px}
+.disp{font-family:'Archivo',Arial,sans-serif;font-weight:900;letter-spacing:-.035em;line-height:.93}
+.kick{font-size:30px;font-weight:800;letter-spacing:.30em;text-transform:uppercase;color:#3FC5EC}
+.sub{font-size:34px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(242,239,230,.62)}
+img.ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,7,.96) 8%,rgba(5,5,7,.35) 48%,rgba(5,5,7,.72) 100%)}
+.vig{position:absolute;inset:0;background:radial-gradient(120% 78% at 50% 46%,transparent 40%,rgba(0,0,0,.72) 100%)}
+.grain{position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#mark{position:absolute;left:50%;top:50%;width:420px;height:420px;margin:-210px 0 0 -210px}
+#mark .halo{position:absolute;inset:-26%;border-radius:50%;filter:blur(64px);
+  background:conic-gradient(from 0deg,#3FC5EC,#7FE0F7,#1C9BC6,#5BD2F0,#3FC5EC);opacity:.72}
+#mark .disc{position:absolute;inset:0;border-radius:50%;overflow:hidden;
+  box-shadow:0 46px 120px rgba(0,0,0,.8),0 0 0 2px rgba(242,239,230,.09)}
+#mark .disc img{width:100%;height:100%;display:block}
+#flash{position:absolute;inset:0;background:#3FC5EC;opacity:0;mix-blend-mode:screen}
+#bar{position:absolute;left:0;bottom:0;height:10px;background:linear-gradient(90deg,#3FC5EC,#7FE0F7);width:0}
+.card{background:linear-gradient(165deg,rgba(255,255,255,.075),rgba(255,255,255,.02));
+  border:2px solid rgba(63,197,236,.34);border-radius:44px;padding:76px 44px;backdrop-filter:blur(8px)}
+.tag{display:inline-block;padding:16px 36px;border-radius:999px;background:#3FC5EC;color:#04202b;
+  font-weight:800;font-size:30px;letter-spacing:.16em;text-transform:uppercase}
+</style></head><body><div id="st">
+
+  <!-- 1. logo ignition -->
+  <div class="L mid" id="s1">
+    <div id="mark"><div class="halo"></div><div class="disc"><img src="logo.png"></div></div>
+    <div id="s1t" style="position:absolute;left:0;right:0;top:1230px">
+      <div class="sub" style="font-size:38px">South West Sonics</div>
+      <div class="kick" style="margin-top:26px;font-size:26px">Bankstown · Est. 2024</div>
+    </div>
+  </div>
+
+  <!-- 2. countdown -->
+  <div class="L mid" id="s2">
+    <div class="kick" id="s2k">Summer Comp Tryouts</div>
+    <div class="disp" id="num" style="font-size:600px;margin:26px 0 0">11</div>
+    <div class="sub" id="s2d" style="margin-top:6px">Days to go</div>
+  </div>
+
+  <!-- 3. photo beat one -->
+  <div class="L" id="s3">
+    <img class="ph" id="p3" src="lineup.jpg"><div class="scrim"></div><div class="vig"></div>
+    <div style="position:absolute;left:90px;right:90px;bottom:300px">
+      <div class="disp" id="l3a" style="font-size:112px">Friday nights<br>at Bankstown.</div>
+      <div class="sub" id="l3b" style="margin-top:44px;font-size:40px">Ages 10 – 17</div>
+    </div>
+  </div>
+
+  <!-- 4. photo beat two -->
+  <div class="L" id="s4">
+    <img class="ph" id="p4" src="huddle.jpg"><div class="scrim"></div><div class="vig"></div>
+    <div style="position:absolute;left:90px;right:90px;bottom:300px">
+      <div class="sub" id="l4a" style="font-size:40px;color:#3FC5EC">Every skill level</div>
+      <div class="disp" id="l4b" style="font-size:106px;margin-top:34px">Nobody gets cut<br>for turning up<br>new.</div>
+    </div>
+  </div>
+
+  <!-- 5. the details -->
+  <div class="L mid" id="s5">
+    <div class="card" style="width:100%">
+      <div class="kick" style="font-size:28px">Tryouts &amp; registration</div>
+      <div class="disp" id="d1" style="font-size:150px;margin:34px 0 0;white-space:nowrap">SAT 3 OCT</div>
+      <div class="disp" id="d2" style="font-size:132px;color:#3FC5EC;margin-top:14px">2:00PM</div>
+      <div class="sub" id="d3" style="font-size:33px;margin-top:40px;line-height:1.45">Bankstown<br>Basketball Stadium</div>
+    </div>
+  </div>
+
+  <!-- 6. call to action -->
+  <div class="L mid" id="s6">
+    <div id="m6" style="width:250px;height:250px;border-radius:50%;overflow:hidden;
+      box-shadow:0 30px 90px rgba(0,0,0,.8),0 0 0 2px rgba(242,239,230,.1)">
+      <img src="logo.png" style="width:100%;height:100%;display:block"></div>
+    <div class="disp" id="c1" style="font-size:96px;margin-top:66px">Come down<br>and have a run.</div>
+    <div id="c2" style="margin-top:56px"><span class="tag">Text 0414 145 332</span></div>
+    <div class="sub" id="c3" style="font-size:30px;margin-top:44px">southwestsonics.netlify.app</div>
+  </div>
+
+  <div class="grain"></div>
+  <div id="flash"></div>
+  <div id="bar"></div>
+</div>
+
+<script>
+window.DAYS = window.DAYS || 11;   /* the renderer sets this from today's date */
+const E=document.getElementById.bind(document);
+const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+const k=(t,a,b)=>cl((t-a)/(b-a),0,1);
+const oe=x=>1-Math.pow(1-x,3);            /* out-cubic  */
+const oq=x=>1-Math.pow(1-x,5);            /* out-quint  */
+const io=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3);
+const SC=[[0,1.30],[1.30,3.70],[3.70,6.30],[6.30,8.90],[8.90,11.50],[11.50,15.00]];
+const DUR=15.0;
+
+function show(el,on,fade,t,a,b){            /* crossfade layers */
+  const i=k(t,a,a+fade), o=1-k(t,b-fade,b);
+  el.style.opacity = on ? Math.min(i,o) : 0;
+}
+function paint(t){
+  for(let i=1;i<=6;i++){
+    const el=E('s'+i), [a,b]=SC[i-1];
+    const live = t>=a-0.35 && t<=b+0.35;
+    el.style.display = live?'':'none';
+    if(live) show(el,true,0.34,t,a,b);
+  }
+  /* 1 — logo ignition */
+  {const [a,b]=SC[0], p=k(t,a,a+0.95), e=oq(p);
+   E('mark').style.transform=`scale(${0.62+0.38*e}) rotate(${(1-e)*-14}deg)`;
+   E('mark').style.opacity=String(cl(p*2.2,0,1));
+   E('s1t').style.opacity=String(k(t,a+0.42,a+1.0));
+   E('s1t').style.transform=`translateY(${(1-oe(k(t,a+0.42,a+1.0)))*40}px)`;}
+
+  /* 2 — the number lands */
+  {const [a,b]=SC[1];
+   const D=window.DAYS, hi=Math.max(D+19,30);
+   const run=k(t,a+0.10,a+1.15), val=Math.round(hi-(hi-D)*oq(run));
+   E('num').textContent=String(val);
+   const pop=k(t,a+1.05,a+1.42);
+   const s=1+0.16*Math.sin(Math.PI*pop);
+   E('num').style.transform=`scale(${s})`;
+   E('num').style.color = run<1 ? '#F2EFE6' : '#3FC5EC';
+   E('s2k').style.opacity=String(k(t,a+0.05,a+0.5));
+   E('s2d').style.opacity=String(k(t,a+1.15,a+1.5));
+   E('flash').style.opacity=String(0.30*(1-k(t,a+1.05,a+1.40))*(t>a+1.0?1:0));}
+
+  /* 3 & 4 — slow push on the photos, lines slam in */
+  {const [a,b]=SC[2], p=k(t,a,b);
+   E('p3').style.transform=`scale(${1.06+0.10*p})`;
+   E('l3a').style.opacity=String(k(t,a+0.28,a+0.72));
+   E('l3a').style.transform=`translateY(${(1-oq(k(t,a+0.28,a+0.85)))*64}px)`;
+   E('l3b').style.opacity=String(k(t,a+0.95,a+1.35));
+   E('l3b').style.transform=`translateY(${(1-oq(k(t,a+0.95,a+1.4)))*40}px)`;}
+  {const [a,b]=SC[3], p=k(t,a,b);
+   E('p4').style.transform=`scale(${1.14-0.09*p})`;
+   E('l4a').style.opacity=String(k(t,a+0.22,a+0.6));
+   E('l4b').style.opacity=String(k(t,a+0.55,a+1.05));
+   E('l4b').style.transform=`translateY(${(1-oq(k(t,a+0.55,a+1.15)))*70}px)`;}
+
+  /* 5 — the detail card */
+  {const [a,b]=SC[4];
+   E('d1').style.opacity=String(k(t,a+0.22,a+0.62));
+   E('d1').style.transform=`scale(${0.9+0.1*oq(k(t,a+0.22,a+0.75))})`;
+   E('d2').style.opacity=String(k(t,a+0.62,a+0.98));
+   E('d3').style.opacity=String(k(t,a+0.95,a+1.3));}
+
+  /* 6 — the ask */
+  {const [a,b]=SC[5];
+   E('m6').style.opacity=String(k(t,a+0.1,a+0.5));
+   E('m6').style.transform=`scale(${0.78+0.22*oq(k(t,a+0.1,a+0.7))})`;
+   E('c1').style.opacity=String(k(t,a+0.45,a+0.9));
+   E('c1').style.transform=`translateY(${(1-oq(k(t,a+0.45,a+1.0)))*48}px)`;
+   const cp=k(t,a+0.95,a+1.35);
+   E('c2').style.opacity=String(cp);
+   E('c2').style.transform=`scale(${0.84+0.16*oq(cp)})`;
+   E('c3').style.opacity=String(k(t,a+1.35,a+1.75));}
+
+  E('bar').style.width=(t/DUR*1080)+'px';
+}
+window.__paint=paint; paint(0);
+</script></body></html>
