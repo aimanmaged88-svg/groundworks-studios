@@ -116,19 +116,19 @@ const oc=x=>1-Math.pow(1-x,3);
 const ob=x=>{const c=1.70158,c3=c+1;return 1+c3*Math.pow(x-1,3)+c*Math.pow(x-1,2);}; /* back-out */
 /* scene, start, end, zoom mode: 1 = punch IN (big->settle), -1 = pull OUT (small->settle) */
 const SC=[
- [1, 0.00, 1.60,  1],
- [2, 1.60, 3.70,  1],
- [3, 3.70, 4.95, -1],
- [4, 4.95, 6.65,  1],
- [5, 6.65, 8.25, -1],
- [6, 8.25, 9.85,  1],
- [7, 9.85,11.75, -1],
- [8,11.75,13.55,  1],
- [9,13.55,15.75, -1],
- [10,15.75,17.15, 1],
- [11,17.15,20.00,-1],
+ [1, 0.00, 2.30,  1],
+ [2, 2.30, 5.30,  1],
+ [3, 5.30, 7.30, -1],
+ [4, 7.30, 9.90,  1],
+ [5, 9.90,12.50, -1],
+ [6,12.50,15.00,  1],
+ [7,15.00,17.90, -1],
+ [8,17.90,20.60,  1],
+ [9,20.60,23.70, -1],
+ [10,23.70,26.00, 1],
+ [11,26.00,29.00,-1],
 ];
-const DUR=20.0;
+const DUR=29.0;
 const BLUE=[3,4,7];                 /* scenes 3,5,8 run on a blue field (index+1) */
 const isBlue=n=>n===3||n===5||n===8;
 function paint(t){
@@ -148,30 +148,30 @@ function paint(t){
     const el=E('s'+m); const live = t>=s-0.30 && t<=e+0.20;
     el.style.display=live?'flex':'none';
     if(!live) continue;
-    const inP=k(t,s,s+0.42), outP=k(t,e-0.26,e);
+    const inP=k(t,s,s+0.40), outP=k(t,e-0.36,e);
     el.style.opacity=String(Math.min(inP===0?0:1, 1-outP) * (inP<1?inP:1));
     /* the zoom: punch in from oversize, or pull out from undersize, then drift */
-    const ez=ob(k(t,s,s+0.62));
+    const ez=ob(k(t,s,s+0.55));
     const base = d>0 ? 1.85-0.85*ez : 0.55+0.45*ez;
-    const drift = d>0 ? -0.055*k(t,s+0.6,e) : 0.075*k(t,s+0.6,e);
+    const drift = d>0 ? -0.032*k(t,s+0.55,e) : 0.044*k(t,s+0.55,e);
     const exit = 1 + (d>0?0.22:-0.16)*oc(outP);
     el.style.transform=`scale(${(base+drift)*exit})`;
   }
   /* scene 2: the number counts down and locks */
   {const [ ,a2,b2]=SC[1];
    const D=window.DAYS, hi=Math.max(D+21,32);
-   const run=k(t,a2+0.18,a2+1.25);
+   const run=k(t,a2+0.25,a2+1.85);
    E('s2n').textContent=String(Math.round(hi-(hi-D)*oq(run)));
    E('s2n').style.color = run<1 ? '#F2EFE6' : '#3FC5EC';
-   E('s2b').style.opacity=String(k(t,a2+1.25,a2+1.6));}
+   E('s2b').style.opacity=String(k(t,a2+1.85,a2+2.25));}
   /* scene 9: rule wipes out under the date */
   {const [ ,a9]=SC[8];
-   E('s9r').style.width=(oc(k(t,a9+0.75,a9+1.25))*420)+'px';}
+   E('s9r').style.width=(oc(k(t,a9+0.85,a9+1.45))*420)+'px';}
   /* marquee keeps the frame alive */
   const mtxt='South West Sonics — Juniors — Bankstown — ';
   E('marq').textContent=mtxt.repeat(6); E('marqB').textContent=mtxt.repeat(6);
-  E('marq').style.transform=`translateX(${-(t*74)%620}px)`;
-  E('marqB').style.transform=`translateX(${-620+((t*58)%620)}px)`;
+  E('marq').style.transform=`translateX(${-(t*46)%620}px)`;
+  E('marqB').style.transform=`translateX(${-620+((t*36)%620)}px)`;
   const dark=!isBlue(n);
   const mc = dark?'rgba(242,239,230,.20)':'rgba(4,22,29,.30)';
   E('marq').style.color=mc; E('marqB').style.color=mc;

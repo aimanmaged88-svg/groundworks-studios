@@ -1,6 +1,6 @@
 # Sonics tryouts promo
 
-20 seconds, 1080x1920 (9:16), for Reels, TikTok and Stories. Pure
+29 seconds, 1080x1920 (9:16), for Reels, TikTok and Stories. Pure
 graphic — no photography. Every scene punches in from oversize or pulls
 out from undersize with a back-out overshoot, and the field flips
 between black and Sonics blue on the three hardest lines.
@@ -20,17 +20,22 @@ Google Fonts for Archivo and Hanken Grotesk.
 
 ## The beats
 
-    0.0s  badge punches in
-    1.6s  the number spins down and locks
-    3.7s  WHY TURN UP?                        (blue)
-    5.0s  Never played before? Good.
-    6.7s  Nobody gets cut.                    (blue)
-    8.3s  Every skill level.
-    9.9s  Walk in knowing nobody. Leave with a team.
-   11.8s  Our juniors have played in Japan.   (blue)
-   13.6s  SAT 3 OCT, 2:00PM, Bankstown Basketball Stadium
-   15.8s  Ages 10-17, all skill levels
-   17.2s  Come down and have a run / Text 0414 145 332
+     0.0s  badge punches in
+     2.3s  the number spins down and locks
+     5.3s  WHY TURN UP?                        (blue)
+     7.3s  Never played before? Good.
+     9.9s  Nobody gets cut.                    (blue)
+    12.5s  Every skill level.
+    15.0s  Walk in knowing nobody. Leave with a team.
+    17.9s  Our juniors have played in Japan.   (blue)
+    20.6s  SAT 3 OCT, 2:00PM, Bankstown Basketball Stadium
+    23.7s  Ages 10-17, all skill levels
+    26.0s  Come down and have a run / Text 0414 145 332
+
+Paced for reading: each line fades in over 0.4s, finishes its zoom by
+0.55s, then sits nearly still until the 0.36s fade out. That leaves
+1.1-2.2s of settled, readable type per scene, and the date card and the
+phone number get the longest holds.
 
 Silent on purpose — trending audio added in the app reaches further
 than a baked-in track.
