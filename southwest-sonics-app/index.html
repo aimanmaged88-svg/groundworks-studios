@@ -651,6 +651,74 @@ body{font-size:15px;letter-spacing:0;
 .wcdots{display:flex;gap:7px;justify-content:center;margin-bottom:16px}
 .wcdots i{width:7px;height:7px;border-radius:99px;background:rgba(255,255,255,.18);transition:.4s var(--ease)}
 .wcdots i.on{background:var(--sky);width:22px}
+
+/* ==================== LEVELS SCREEN ==================== */
+.lvhead{position:relative;overflow:hidden;border-radius:22px;padding:24px 20px;margin-top:10px;
+  background:linear-gradient(160deg,#1a1b20,#101116);border:1px solid var(--line)}
+.lvhead:before{content:"";position:absolute;inset:-50% -30% auto auto;width:300px;height:300px;
+  border-radius:50%;background:radial-gradient(circle,rgba(63,197,236,.2),transparent 68%)}
+.lvhead .k{position:relative;font-size:10px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--sky)}
+.lvhead h2{position:relative;font-family:var(--disp);font-weight:400;font-size:29px;text-transform:uppercase;
+  line-height:1.03;margin-top:11px;letter-spacing:.2px}
+.lvhead p{position:relative;font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6}
+.lvhead p b{color:var(--ink);font-weight:600}
+
+.tier{position:relative;border-radius:18px;padding:18px;margin-top:11px;overflow:hidden;
+  background:linear-gradient(170deg,rgba(255,255,255,.045),rgba(255,255,255,.015));
+  border:1px solid var(--line);transition:transform .4s var(--spring)}
+.tier:active{transform:scale(.988)}
+.tier .glow{position:absolute;inset:-70% -40% auto auto;width:230px;height:230px;border-radius:50%;
+  opacity:0;transition:opacity .5s}
+.tier.done .glow,.tier.here .glow{opacity:.5}
+.tthead{position:relative;display:flex;align-items:center;gap:13px}
+.tbadge{width:52px;height:52px;border-radius:17px;flex:0 0 auto;display:grid;place-items:center;
+  font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:-.02em;
+  background:rgba(255,255,255,.05);color:var(--dim);border:1px solid var(--line)}
+.tbadge svg{width:22px;height:22px}
+.tname{font-family:var(--disp);font-weight:700;font-size:22px;letter-spacing:-.01em;line-height:1}
+.ttag{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  margin-top:6px}
+.treq{margin-left:auto;flex:0 0 auto;text-align:right}
+.treq .rn{font-family:var(--disp);font-weight:700;font-size:19px;line-height:1}
+.treq .rl{font-size:9px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+  margin-top:5px}
+.tfun{position:relative;font-size:14px;color:var(--muted);line-height:1.6;margin-top:14px}
+.tun{position:relative;display:flex;gap:9px;align-items:flex-start;margin-top:13px;padding-top:13px;
+  border-top:1px solid var(--line)}
+.tun .ui{width:20px;height:20px;flex:0 0 auto;color:var(--dim);margin-top:1px}
+.tun .ui svg{width:20px;height:20px}
+.tun .ut{font-size:13px;color:var(--muted);line-height:1.5}
+.tun .ut b{color:var(--ink);font-weight:600}
+.tstat{position:relative;margin-top:13px;font-size:11px;font-weight:800;letter-spacing:.11em;
+  text-transform:uppercase;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:99px}
+
+/* per-tier colour */
+.tier.lv1 .glow{background:radial-gradient(circle,#8E8E93,transparent 68%)}
+.tier.lv2 .glow{background:radial-gradient(circle,#3FC5EC,transparent 68%)}
+.tier.lv3 .glow{background:radial-gradient(circle,#16E37F,transparent 68%)}
+.tier.lv4 .glow{background:radial-gradient(circle,#FFC63D,transparent 68%)}
+.tier.lv5 .glow{background:radial-gradient(circle,#F5821F,transparent 68%)}
+.tier.lv6 .glow{background:radial-gradient(circle,#E7369B,transparent 68%)}
+.tier.done.lv1 .tbadge,.tier.here.lv1 .tbadge{background:rgba(142,142,147,.2);color:#C7C7CC;border-color:rgba(142,142,147,.4)}
+.tier.done.lv2 .tbadge,.tier.here.lv2 .tbadge{background:rgba(63,197,236,.18);color:var(--sky);border-color:rgba(63,197,236,.4)}
+.tier.done.lv3 .tbadge,.tier.here.lv3 .tbadge{background:rgba(22,227,127,.18);color:var(--green);border-color:rgba(22,227,127,.4)}
+.tier.done.lv4 .tbadge,.tier.here.lv4 .tbadge{background:rgba(255,198,61,.18);color:var(--gold);border-color:rgba(255,198,61,.4)}
+.tier.done.lv5 .tbadge,.tier.here.lv5 .tbadge{background:rgba(245,130,31,.2);color:#F5821F;border-color:rgba(245,130,31,.42)}
+.tier.done.lv6 .tbadge,.tier.here.lv6 .tbadge{background:var(--grad);color:#1a0d00;border-color:transparent}
+
+.tier.here{border-color:rgba(63,197,236,.42);box-shadow:0 0 0 1px rgba(63,197,236,.18),0 20px 50px -26px rgba(63,197,236,.5)}
+.tier.here .tstat{background:rgba(63,197,236,.16);color:var(--sky)}
+.tier.done .tstat{background:rgba(22,227,127,.14);color:var(--green)}
+.tier.lock .tstat{background:rgba(255,255,255,.05);color:var(--dim)}
+.tier.lock .tname,.tier.lock .tfun{color:var(--dim)}
+.tier.lock{opacity:.78}
+.tier.here .tname{color:var(--sky)}
+.tprog{position:relative;height:7px;border-radius:6px;background:rgba(255,255,255,.07);margin-top:12px;overflow:hidden}
+.tprog i{display:block;height:100%;min-width:9px;border-radius:6px;background:linear-gradient(90deg,var(--sky),var(--gold))}
+.backrow{display:flex;align-items:center;gap:9px;margin-bottom:4px;color:var(--sky);font-size:13px;
+  font-weight:700;cursor:pointer;padding:6px 0}
+.backrow svg{width:16px;height:16px;transform:rotate(180deg)}
 </style>
 </head>
 <body>
@@ -815,12 +883,30 @@ const I={
 /* Levels are earned by turning up. Nothing here ranks a kid against a
    team-mate — every number is that player against their own last month. */
 const LEVELS=[
-  {k:"rookie",  n:"Rookie",    at:0,  cl:"lv1", un:"Your profile and the full season schedule"},
-  {k:"squad",   n:"Squad",     at:5,  cl:"lv2", un:"Coach starts rating your skills"},
-  {k:"rotation",n:"Rotation",  at:12, cl:"lv3", un:"Defence rating + your own stat card"},
-  {k:"starter", n:"Starter",   at:22, cl:"lv4", un:"Court IQ rating + coach's development notes"},
-  {k:"core",    n:"Core",      at:35, cl:"lv5", un:"Captain and leadership nominations"},
-  {k:"legend",  n:"Franchise", at:50, cl:"lv6", un:"The club honour board"},
+  {k:"rookie", n:"Rookie", at:0,  cl:"lv1", tag:"Day one",
+   fun:"You're in. Name on the roster, jersey on the way.",
+   un:"Your profile and the full season schedule",
+   how:"Sign up and turn up once."},
+  {k:"starter",n:"Starter",at:5,  cl:"lv2", tag:"Earned a spot",
+   fun:"Five in. Coach knows your name and how you move.",
+   un:"Coach starts rating ball handling, shooting and teamwork",
+   how:"Get to 5 sessions."},
+  {k:"hooper", n:"Hooper", at:12, cl:"lv3", tag:"You can play",
+   fun:"Twelve in. You're not learning the game any more — you're playing it.",
+   un:"Your defence rating and your own stat card",
+   how:"Get to 12 sessions."},
+  {k:"bucket", n:"Bucket", at:22, cl:"lv4", tag:"Automatic",
+   fun:"Twenty-two. Coach looks for you when it actually matters.",
+   un:"Your court IQ rating and your coach's development notes",
+   how:"Get to 22 sessions."},
+  {k:"og",     n:"OG",     at:35, cl:"lv5", tag:"Respected",
+   fun:"Thirty-five. You've been here. The young ones copy your warm-up.",
+   un:"Captain and leadership nominations",
+   how:"Get to 35 sessions."},
+  {k:"unk",    n:"UNK",    at:50, cl:"lv6", tag:"Certified",
+   fun:"Fifty. Everyone at Bankstown knows exactly who you are.",
+   un:"The club honour board — your name on the wall",
+   how:"Get to 50 sessions."},
 ];
 const SKILLS=[
   {k:"ball", n:"Ball handling", at:5,  d:"Control under pressure, both hands"},
@@ -1083,7 +1169,7 @@ function wcPanels(){
      h:"You see what we see.",
      p:`No more guessing how they're going. Their profile shows <b>every training and game they've attended</b>, the skills their coach has rated, and the coach's own notes.`,
      list:[
-       [I.star,"Their level","Rookie through to Franchise — earned by turning up, nothing else."],
+       [I.star,"Their level","Rookie all the way to UNK — earned by turning up, nothing else."],
        [I.check,"Their skills","Rated by their coach, and they unlock as the coach sees more of them."],
        [I.chat,"Coach notes","What they're doing well and what to work on next."],
      ],
@@ -1275,9 +1361,12 @@ function revealBelowFold(s){
 }
 
 /* sliding indicators */
+/* sub-screens keep their parent tab lit */
+const NAVPARENT={levels:"profile"};
+const navTab=()=>NAVPARENT[VIEW.tab]||VIEW.tab;
 function syncNav(){
   const nav=app.querySelector(".nav"); if(!nav) return;
-  nav.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.tab===VIEW.tab));
+  nav.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.tab===navTab()));
   let ind=nav.querySelector(".navind");
   if(!ind){ ind=document.createElement("div"); ind.className="navind"; nav.insertBefore(ind,nav.firstChild); }
   const act=nav.querySelector("button.on");
@@ -1328,7 +1417,7 @@ function bottomNav(){
     ? [["home",I.home,"Home"],["profile",I.star,"Player"],["season",I.sched,"Season"],["pay",I.money,"Fees"],["more",I.more,"More"]]
     : [["home",I.home,"Home"],["profile",I.star,"Profile"],["sched",I.sched,"Schedule"],["team",I.team,"Team"]];
   return `<div class="nav">${items.map(([k,i,l])=>
-    `<button data-tab="${k}" class="${VIEW.tab===k?'on':''}"><span class="i">${i}</span>${l}</button>`).join("")}</div>`;
+    `<button data-tab="${k}" class="${navTab()===k?'on':''}"><span class="i">${i}</span>${l}</button>`).join("")}</div>`;
 }
 
 /* ============================ LOGIN ============================ */
@@ -1769,6 +1858,7 @@ function parentView(){
   const t=S.teams.find(x=>x.div===p.div)||{};
   const c=coachOf(p.div);
   if(VIEW.tab==="profile") return profileView(p);
+  if(VIEW.tab==="levels")  return levelsView(p);
   if(VIEW.tab==="season"||VIEW.tab==="sched") return seasonView(p,t);
   if(VIEW.tab==="more")  return moreView(p,t);
   if(VIEW.tab==="team")  return rosterView(p,t);
@@ -1880,6 +1970,7 @@ function playerView(){
   const first=p.name.split(" ")[0];
   const t=S.teams.find(x=>x.div===p.div);
   if(VIEW.tab==="profile") return profileView(p);
+  if(VIEW.tab==="levels") return levelsView(p);
   if(VIEW.tab==="sched") return schedule(false,p.div);
   if(VIEW.tab==="team") return rosterView(p,t);
   const playing=p.avail==="in";
@@ -2010,15 +2101,18 @@ function profileView(p){
   </div>
 
   <div class="h">The ladder</div>
-  <div class="card"><div class="ladder">
-    ${LEVELS.map((lv,i)=>{
-      const got=i<L.i, now=i===L.i;
-      return `<div class="lrow ${got?'got':now?'now':'locked'}">
-        <div class="lpip">${got?I.check:i+1}</div>
-        <div class="rmain"><div class="ln">${lv.n}</div><div class="lu">${lv.un}</div></div>
-        <div class="lreq">${lv.at===0?'Start':lv.at+' sess'}</div>
-      </div>`;}).join("")}
-  </div></div>
+  <div class="card childcard" data-tab="levels">
+    <div class="row" style="border:none;padding:2px">
+      <div class="av soft">${I.star}</div>
+      <div class="rmain"><div class="t">All six levels</div>
+        <div class="m">Rookie · Starter · Hooper · Bucket · OG · UNK</div></div>
+      <span class="chev">${I.chev}</span>
+    </div>
+    <div class="lvtrack" style="margin-top:12px"><i style="width:${pct}%"></i></div>
+    <div class="small muted" style="margin-top:7px">${L.next
+      ? "See what "+(parent?first:"you")+" unlock"+(parent?"s":"")+" next and what it takes"
+      : "Top of the ladder — nothing left to climb"}</div>
+  </div>
 
   <div class="h">Details</div>
   <div class="card">
@@ -2035,6 +2129,52 @@ function profileView(p){
     <div class="row" data-tab="team"><div class="av soft">${I.team}</div>
       <div class="rmain"><div class="t">Team-mates</div><div class="m">${S.players.filter(x=>x.div===p.div).length} in ${t.name||p.div}</div></div>
       <span class="chev">${I.chev}</span></div>
+  </div>
+  ${resetBtn()}`;
+}
+
+/* ============================ LEVELS SCREEN ============================ */
+function levelsView(p){
+  const L=levelOf(p), sess=L.s, parent=VIEW.role==="parent";
+  const first=p.name.split(" ")[0];
+  const who=parent?first:"you";
+  const top=LEVELS[LEVELS.length-1];
+  return `
+  <div class="backrow" data-tab="profile">${I.chev} Back to profile</div>
+  <div class="lvhead">
+    <div class="k">Six levels · one way up</div>
+    <h2>Every level is<br>earned the same way.</h2>
+    <p>Turn up. That's it. Every training and every game is <b>one session</b>, and sessions are the
+      only thing that move ${parent?first:"you"} up this list. ${parent?first+" is":"You're"} on
+      <b>${L.cur.n}</b> with <b>${sess} session${sess===1?'':'s'}</b>.</p>
+    ${L.next?`<div class="tprog"><i style="width:${levelPct(p)}%"></i></div>
+      <p style="margin-top:10px"><b>${L.next.at-sess} more</b> and ${who} ${parent?'hits':'hit'} ${L.next.n}.</p>`
+      :`<p style="margin-top:10px"><b>Top of the ladder.</b> Nothing left to climb.</p>`}
+  </div>
+
+  ${LEVELS.map((lv,i)=>{
+    const done=i<L.i, here=i===L.i, lock=i>L.i;
+    const togo=lv.at-sess;
+    return `<div class="tier ${lv.cl} ${done?'done':here?'here':'lock'}">
+      <div class="glow"></div>
+      <div class="tthead">
+        <div class="tbadge">${done?I.check:lock?I.lock:lv.n[0]}</div>
+        <div class="rmain">
+          <div class="tname">${lv.n}</div>
+          <div class="ttag">${lv.tag}</div>
+        </div>
+        <div class="treq"><div class="rn">${lv.at===0?'0':lv.at}</div><div class="rl">sessions</div></div>
+      </div>
+      <div class="tfun">${lv.fun}</div>
+      <div class="tun"><div class="ui">${lock?I.lock:I.star}</div>
+        <div class="ut">Unlocks <b>${lv.un}</b></div></div>
+      <div class="tstat">${done?"Unlocked":here?"You are here":togo+" more session"+(togo===1?'':'s')}</div>
+    </div>`;}).join("")}
+
+  <div class="card" style="margin-top:14px">
+    <div class="small muted">Everyone climbs the same ladder at their own pace — ${parent?first+"'s":"your"}
+      level is never compared to a team-mate's. Miss a few weeks and nothing is taken away; the counter
+      just waits for ${who} to come back.</div>
   </div>
   ${resetBtn()}`;
 }
