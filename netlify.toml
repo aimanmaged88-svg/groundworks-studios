@@ -1,8 +1,15 @@
 # Netlify config for this monorepo.
-# Each Sonics site deploys from its own folder; swap `publish` before deploying:
+# Each Sonics site deploys from its own folder. Swap `publish` (and the
+# functions directory, where the site has functions) before deploying:
+#
 #   southwest-sonics-app      -> southwest-sonics-app.netlify.app  (the club app)
+#   southwest-sonics-site     -> southwestsonics.netlify.app       (the website)
 #   southwest-sonics-register -> sonics-register.netlify.app       (public rego form)
-#   southwest-sonics-inbox    -> sonics-inbox.netlify.app          (private inbox + functions)
+#   sonics-notes              -> sonics-notes.netlify.app          (private inbox + functions)
 [build]
-  publish = "southwest-sonics-app"
+  publish = "sonics-notes"
   command = ""
+
+# Only read when the site being deployed has functions; harmless otherwise.
+[functions]
+  directory = "sonics-notes/netlify/functions"
