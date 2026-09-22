@@ -40,6 +40,21 @@ h1{font-family:var(--disp);font-weight:400;font-size:33px;text-transform:upperca
 .ft{margin-top:14px;font-size:10.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
 .ft .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 a.again{display:inline-block;margin-top:22px;font-size:13px;font-weight:700;color:var(--sky);text-decoration:none}
+.appcard{background:linear-gradient(165deg,rgba(63,197,236,.13),rgba(63,197,236,.03));
+  border:1px solid rgba(63,197,236,.3);border-radius:20px;padding:22px;margin-top:16px;text-align:left}
+.appcard .k{font-size:9.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--sky)}
+.appcard h2{font-family:var(--disp);font-weight:400;font-size:21px;text-transform:uppercase;
+  letter-spacing:.3px;line-height:1.08;margin-top:11px}
+.appcard p{font-size:14px;color:var(--muted);margin-top:11px;line-height:1.62}
+.appcard p b{color:var(--ink);font-weight:600}
+.appli{display:flex;gap:11px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.appli:last-of-type{border-bottom:none}
+.appli .d{width:6px;height:6px;border-radius:50%;background:var(--sky);flex:0 0 auto;margin-top:7px}
+.appli .t{font-size:13.5px;font-weight:700}
+.appli .m{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.5}
+.appnote{margin-top:14px;padding:14px;border-radius:13px;background:rgba(255,255,255,.04);
+  border:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.6}
+.appnote b{color:var(--green);font-weight:700}
 </style>
 </head>
 <body>
@@ -62,6 +77,27 @@ a.again{display:inline-block;margin-top:22px;font-size:13px;font-weight:700;colo
     <div class="step"><div class="n">4</div><div>
       <div class="t">What to bring</div>
       <div class="m">Basketball shoes, a water bottle, and someone to cheer them on.</div></div></div>
+  </div>
+
+  <div class="appcard">
+    <div class="k">One more thing</div>
+    <h2>Everything lives in the Sonics app</h2>
+    <p>Once your child is placed in a team we'll send you a login. From then on the app is
+      <b>the one place</b> you need — and the only place we post changes.</p>
+    <div style="margin-top:14px">
+      <div class="appli"><div class="d"></div><div>
+        <div class="t">The whole season</div>
+        <div class="m">Games, trainings, courts and times. Changes land here first, not in a group chat.</div></div></div>
+      <div class="appli"><div class="d"></div><div>
+        <div class="t">Your child's profile</div>
+        <div class="m">Every training and game they attend, the skills their coach has rated, and the coach's notes.</div></div></div>
+      <div class="appli"><div class="d"></div><div>
+        <div class="t">Fees and forms</div>
+        <div class="m">What's owing, incident reports, absences, medical updates — all in two taps.</div></div></div>
+    </div>
+    <div class="appnote">Their progress is driven by <b>turning up</b>. Every training and every game
+      counts toward their level and unlocks their next skill rating. Mark them in or out each week
+      and check the app like you'd check a school report — that's the bit we need from you.</div>
   </div>
 
   <a class="again" href="/">Register another child →</a><div class="ft" style="margin-top:18px;letter-spacing:.06em;text-transform:none;font-weight:600;font-size:12px;color:#A1A1A6">Questions? Text 0414 145 332</div>

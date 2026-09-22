@@ -602,6 +602,55 @@ body{font-size:15px;letter-spacing:0;
 .rate button{flex:1;height:30px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.04);
   color:var(--dim);font-family:var(--disp);font-weight:700;font-size:13px;cursor:pointer;transition:.2s}
 .rate button.on{background:var(--sky);color:#03202b;border-color:transparent}
+
+/* ==================== PARENT WELCOME ==================== */
+.wcwrap{position:fixed;inset:0;z-index:260;display:none}
+.wcwrap.on{display:block}
+.wcwrap .wcbg{position:absolute;inset:0;background:#08080a;opacity:0;transition:opacity .4s var(--ease)}
+.wcwrap.in .wcbg{opacity:1}
+.wc{position:absolute;inset:0;max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column;
+  padding:calc(26px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));
+  opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease),transform .5s var(--spring)}
+.wcwrap.in .wc{opacity:1;transform:none}
+.wc:before{content:"";position:absolute;inset:0 0 auto;height:56%;pointer-events:none;
+  background:radial-gradient(110% 62% at 50% 0%,rgba(63,197,236,.16),transparent 66%)}
+.wctop{display:flex;align-items:center;gap:11px;position:relative;flex:0 0 auto}
+.wctop img{width:34px;height:34px;border-radius:50%}
+.wctop .wn{font-family:var(--disp);font-weight:700;font-size:12px;letter-spacing:.15em;text-transform:uppercase}
+.wcskip{margin-left:auto;background:none;border:0;color:var(--dim);font-family:inherit;font-size:12.5px;
+  font-weight:600;cursor:pointer;padding:6px 2px}
+.wcbody{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;position:relative;
+  overflow-y:auto;padding:14px 0}
+.wcpanel{display:none;animation:wcIn .55s var(--spring) both}
+.wcpanel.on{display:block}
+@keyframes wcIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.wcic{width:58px;height:58px;border-radius:19px;display:grid;place-items:center;margin-bottom:22px;
+  background:rgba(63,197,236,.14);color:var(--sky);border:1px solid rgba(63,197,236,.26)}
+.wcic svg{width:28px;height:28px}
+.wcic.gold{background:rgba(255,198,61,.14);color:var(--gold);border-color:rgba(255,198,61,.26)}
+.wcic.green{background:rgba(22,227,127,.13);color:var(--green);border-color:rgba(22,227,127,.26)}
+.wckick{font-size:10.5px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:var(--sky);
+  margin-bottom:12px}
+.wc h2{font-family:var(--disp);font-weight:400;font-size:clamp(28px,8.4vw,34px);text-transform:uppercase;
+  line-height:1.02;letter-spacing:.2px}
+.wc p{color:var(--muted);font-size:16px;line-height:1.66;margin-top:16px}
+.wc p b{color:var(--ink);font-weight:600}
+.wclist{margin-top:20px;display:flex;flex-direction:column;gap:2px}
+.wcli{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+.wcli:last-child{border-bottom:none}
+.wcli .wi{width:26px;height:26px;border-radius:9px;flex:0 0 auto;display:grid;place-items:center;
+  background:rgba(255,255,255,.055);color:var(--sky)}
+.wcli .wi svg{width:14px;height:14px}
+.wcli .wt{font-size:14.5px;font-weight:700}
+.wcli .wm{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.5}
+.wcpull{margin-top:22px;padding:17px;border-radius:15px;
+  background:rgba(255,198,61,.08);border:1px solid rgba(255,198,61,.24)}
+.wcpull .q{font-size:15.5px;line-height:1.6;color:var(--ink)}
+.wcpull .q b{color:var(--gold)}
+.wcfoot{flex:0 0 auto;position:relative;padding-top:18px}
+.wcdots{display:flex;gap:7px;justify-content:center;margin-bottom:16px}
+.wcdots i{width:7px;height:7px;border-radius:99px;background:rgba(255,255,255,.18);transition:.4s var(--ease)}
+.wcdots i.on{background:var(--sky);width:22px}
 </style>
 </head>
 <body>
@@ -616,6 +665,7 @@ body{font-size:15px;letter-spacing:0;
 </div>
 <div class="amb"><i class="a"></i><i class="b"></i><i class="c"></i></div>
 <div class="app" id="app"></div>
+<div class="wcwrap" id="welcome"><div class="wcbg"></div><div class="wc"></div></div>
 <div class="sheetwrap" id="sheet"><div class="sheetbg" data-act="closesheet"></div><div class="sheet"></div></div>
 <script>
 /* ============================ SEED DATA ============================ */
@@ -726,7 +776,7 @@ function migrate(){
   ];
 }
 function save(){ try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){} }
-function reset(){ S=JSON.parse(JSON.stringify(SEED)); migrate(); save(); }
+function reset(){ S=JSON.parse(JSON.stringify(SEED)); migrate(); S.welcomedParent=false; save(); }
 
 let VIEW = { role:"admin", tab:"home", authed:false, regFilter:"all", moneyFilter:"owing", schedWk:0, seasonFilter:"all" };
 
@@ -1010,6 +1060,85 @@ function noticeBlock(){
     <div class="ntt">${n.t}</div><div class="ntb">${n.b}</div>
     <div class="ntm">${n.when} · ${n.aud}</div>
   </div></div>`;
+}
+
+/* ============================ PARENT WELCOME ============================ */
+/* Shown once, the first time a parent opens the app. Sets the expectation
+   that this is the one place everything lives — and that their kid's
+   progress is tied to turning up. Re-openable from More. */
+let WCi=0;
+function wcPanels(){
+  const kid=player(S.loginPlayer)||{}; const first=(kid.name||"your child").split(" ")[0];
+  return [
+    {ic:I.home, cl:"", kick:"Welcome to the Sonics app",
+     h:"One place. Everything.",
+     p:`This is the whole club in your pocket. If it's about ${first}, it's in here — and if it's in here, it's right.`,
+     list:[
+       [I.sched,"The schedule","Every game, every training, court and time. Changes land here first."],
+       [I.money,"Fees","What's owing, what's paid, and pay it in two taps."],
+       [I.team,"The team","Who's playing Friday, who the coach is, how to reach them."],
+       [I.doc,"Forms","Incidents, absences, medical updates, complaints and ideas."],
+     ]},
+    {ic:I.star, cl:"gold", kick:`${first}'s progress`,
+     h:"You see what we see.",
+     p:`No more guessing how they're going. Their profile shows <b>every training and game they've attended</b>, the skills their coach has rated, and the coach's own notes.`,
+     list:[
+       [I.star,"Their level","Rookie through to Franchise — earned by turning up, nothing else."],
+       [I.check,"Their skills","Rated by their coach, and they unlock as the coach sees more of them."],
+       [I.chat,"Coach notes","What they're doing well and what to work on next."],
+     ],
+     pull:`Nothing here ranks ${first} against a team-mate. <b>Every number is them against their own record.</b>`},
+    {ic:I.shield, cl:"green", kick:"The part that matters",
+     h:"They move forward by turning up.",
+     p:`Their level, their skill ratings, their coach's read on them — all of it is driven by attendance. A kid who comes every week gets better and we can prove it. A kid who drifts in and out, we can't fairly judge at all.`,
+     pull:`Which is where you come in. <b>Mark them in or out each week, keep the fees clear, and check this app like you'd check a school report.</b> Do that and we'll do the rest.`,
+     final:true},
+  ];
+}
+function renderWelcome(){
+  const P=wcPanels(), n=P.length;
+  const el=document.querySelector("#welcome .wc"); if(!el) return;
+  el.innerHTML=`
+  <div class="wctop">
+    <img src="logo.png" alt="South West Sonics">
+    <div class="wn">South West Sonics</div>
+    <button class="wcskip" data-act="wcskip">Skip</button>
+  </div>
+  <div class="wcbody">
+    ${P.map((x,i)=>`<div class="wcpanel ${i===WCi?'on':''}">
+      <div class="wcic ${x.cl}">${x.ic}</div>
+      <div class="wckick">${x.kick}</div>
+      <h2>${x.h}</h2>
+      <p>${x.p}</p>
+      ${x.list?`<div class="wclist">${x.list.map(([ic,t,m])=>`<div class="wcli">
+        <div class="wi">${ic}</div><div><div class="wt">${t}</div><div class="wm">${m}</div></div></div>`).join("")}</div>`:''}
+      ${x.pull?`<div class="wcpull"><div class="q">${x.pull}</div></div>`:''}
+    </div>`).join("")}
+  </div>
+  <div class="wcfoot">
+    <div class="wcdots">${P.map((_,i)=>`<i class="${i===WCi?'on':''}"></i>`).join("")}</div>
+    <div class="btnrow">
+      ${WCi>0?`<button class="btn gh" style="flex:0 0 34%" data-act="wcback">Back</button>`:''}
+      <button class="btn" data-act="${WCi===n-1?'wcdone':'wcnext'}">${
+        WCi===n-1?"I'm in":"Next"}</button>
+    </div>
+  </div>`;
+}
+function openWelcome(){
+  WCi=0; renderWelcome();
+  const w=document.getElementById("welcome");
+  w.classList.add("on");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>w.classList.add("in")));
+}
+function closeWelcome(){
+  const w=document.getElementById("welcome");
+  w.classList.remove("in");
+  setTimeout(()=>w.classList.remove("on"),440);
+}
+function maybeWelcome(){
+  if(VIEW.role!=="parent") return;
+  if(S.welcomedParent) return;
+  openWelcome();
 }
 
 /* ============================ RENDER ENGINE ============================ */
@@ -1506,6 +1635,7 @@ function moreView(p,t){
 
   <div class="h">Know before you go</div>
   <div class="card">
+    ${row(I.info,"How this app works","The one-stop shop, and why it matters",'data-act="wcopen"')}
     ${row(I.shirt,"What to bring","Uniform, water, mouthguard",'data-act="info" data-kind="bring"')}
     ${row(I.map,"Venue &amp; parking","Getting to Bankstown, where to park",'data-act="info" data-kind="venue"')}
     ${row(I.shield,"Code of conduct","What we expect courtside",'data-act="info" data-kind="conduct"')}
@@ -1947,7 +2077,7 @@ document.getElementById("roleswitch").addEventListener("click",e=>{
   const b=e.target.closest("button[data-role]"); if(!b)return;
   if(VIEW.role===b.dataset.role) return;
   VIEW.role=b.dataset.role; VIEW.tab="home";
-  closeSheet(); render();
+  closeSheet(); render(); maybeWelcome();
 });
 
 /* tap ripple on anything pressable */
@@ -1997,6 +2127,11 @@ function handleAct(a){
   if(act==="remind"){ const p=player(id); S.feed.unshift({t:"Reminder sent to "+p.name,m:money(p.owe)+" · "+new Date().toLocaleDateString()}); save(); toast("Payment reminder sent"); render(SOFT); refreshSheet(); return; }
   if(act==="approve"){ const p=player(id); p.reg="registered"; save(); toast(p.name+" registered"); render(SOFT); refreshSheet(); return; }
   if(act==="pay"){ const p=player(id); p.owe=0; p.pay="paid"; save(); toast("Payment complete"); render(SOFT); refreshSheet(); return; }
+  if(act==="wcnext"){ WCi++; renderWelcome(); return; }
+  if(act==="wcback"){ WCi--; renderWelcome(); return; }
+  if(act==="wcskip"||act==="wcdone"){ S.welcomedParent=true; save(); closeWelcome();
+    if(act==="wcdone") toast("You're all set — welcome to the club"); return; }
+  if(act==="wcopen"){ openWelcome(); return; }
   if(act==="rate"){ const p=player(id); p.skills=p.skills||{}; p.skills[a.dataset.sk]=+a.dataset.v;
     save(); toast("Rating saved"); refreshSheet(); return; }
   if(act==="logsess"){ const p=player(id); const g=a.dataset.kind==="game";
@@ -2042,6 +2177,11 @@ function handleAct(a){
 }
 
 /* the sheet lives outside the app frame — give it its own delegate */
+document.getElementById("welcome").addEventListener("click",e=>{
+  const a=e.target.closest("[data-act]"); if(!a) return;
+  handleAct(a);
+});
+
 sheetEl().addEventListener("click",e=>{
   const au=e.target.closest("[data-aud]");
   if(au){ au.parentNode.querySelectorAll("[data-aud]").forEach(x=>x.classList.remove("on")); au.classList.add("on"); return; }
