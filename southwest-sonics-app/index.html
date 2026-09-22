@@ -508,6 +508,100 @@ body{font-size:15px;letter-spacing:0;
   background:linear-gradient(135deg,rgba(63,197,236,.12),rgba(63,197,236,.02));
   box-shadow:0 0 0 1px rgba(63,197,236,.12)}
 .sheet .row{padding:12px 2px}
+
+/* ==================== PLAYER PROFILE / PROGRESSION ==================== */
+.pcard{position:relative;overflow:hidden;background:linear-gradient(160deg,#17181c,#111216);
+  border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:10px}
+.pcard:before{content:"";position:absolute;inset:-40% -20% auto auto;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,rgba(63,197,236,.17),transparent 68%);pointer-events:none}
+.ptop{display:flex;align-items:center;gap:14px;position:relative}
+.pav{width:62px;height:62px;border-radius:19px;flex:0 0 auto;display:grid;place-items:center;
+  font-family:var(--disp);font-weight:700;font-size:23px;color:#03202b;
+  background:linear-gradient(150deg,var(--sky),var(--sky-deep));
+  box-shadow:0 12px 30px -10px rgba(63,197,236,.6)}
+.pname{font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-.02em;line-height:1.1}
+.pmeta{font-size:12.5px;color:var(--muted);margin-top:5px}
+.lvchip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;
+  font-size:10px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;margin-top:8px;
+  background:rgba(63,197,236,.15);color:var(--sky);border:1px solid rgba(63,197,236,.3)}
+.lvchip.lv4,.lvchip.lv5{background:rgba(255,198,61,.15);color:var(--gold);border-color:rgba(255,198,61,.32)}
+.lvchip.lv6{background:var(--grad);color:#1a0d00;border-color:transparent}
+
+.lvbar{margin-top:18px;position:relative}
+.lvbar .lt{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--muted)}
+.lvbar .lt b{font-family:var(--disp);font-weight:700;font-size:13px;color:var(--ink)}
+.lvtrack{height:10px;border-radius:8px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:9px;
+  border:1px solid rgba(255,255,255,.05)}
+.lvtrack i{display:block;height:100%;min-width:10px;border-radius:8px;
+  background:linear-gradient(90deg,var(--sky),var(--gold));
+  transition:width 1.1s cubic-bezier(.22,1,.36,1);box-shadow:0 0 14px rgba(63,197,236,.45)}
+.lvnext{font-size:12px;color:var(--dim);margin-top:9px;line-height:1.5}
+.lvnext b{color:var(--sky);font-weight:700}
+
+/* ladder */
+.ladder{display:flex;flex-direction:column;gap:0;margin-top:2px}
+.lrow{display:flex;gap:13px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line)}
+.lrow:last-child{border-bottom:none}
+.lpip{width:30px;height:30px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  font-family:var(--disp);font-weight:700;font-size:12px;
+  background:rgba(255,255,255,.05);color:var(--dim);border:1px solid var(--line)}
+.lrow.got .lpip{background:rgba(22,227,127,.15);color:var(--green);border-color:rgba(22,227,127,.35)}
+.lrow.got .lpip svg{width:15px;height:15px}
+.lrow.now .lpip{background:var(--sky);color:#03202b;border-color:transparent;
+  box-shadow:0 0 0 4px rgba(63,197,236,.16)}
+.lrow .ln{font-family:var(--disp);font-weight:700;font-size:15px}
+.lrow.locked .ln,.lrow.locked .lu{color:var(--dim)}
+.lrow .lu{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+.lrow .lreq{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+  margin-left:auto;flex:0 0 auto;padding-top:4px;white-space:nowrap}
+
+/* skills */
+.sk{padding:14px 0;border-bottom:1px solid var(--line)}
+.sk:last-child{border-bottom:none}
+.sktop{display:flex;align-items:center;gap:9px}
+.skn{font-weight:700;font-size:14.5px}
+.skv{margin-left:auto;font-family:var(--disp);font-weight:700;font-size:14px;color:var(--sky)}
+.sk.lock .skn,.sk.lock .skd{color:var(--dim)}
+.skd{font-size:12px;color:var(--muted);margin-top:4px}
+.pips{display:flex;gap:5px;margin-top:9px}
+.pips i{flex:1;height:7px;border-radius:4px;background:rgba(255,255,255,.07)}
+.pips i.on{background:linear-gradient(90deg,var(--sky),var(--sky-deep));
+  box-shadow:0 0 10px rgba(63,197,236,.35)}
+.sk.lock .pips i{background:rgba(255,255,255,.04)}
+.sklock{margin-left:auto;font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dim);display:inline-flex;align-items:center;gap:5px}
+.sklock svg{width:12px;height:12px}
+
+/* badges */
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:2px}
+.bg{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;
+  padding:14px 8px;text-align:center;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.bg .bi{width:30px;height:30px;margin:0 auto 9px;display:grid;place-items:center;border-radius:10px;
+  background:rgba(255,255,255,.05);color:var(--dim)}
+.bg .bi svg{width:17px;height:17px}
+.bg .bn{font-size:11px;font-weight:700;color:var(--dim);line-height:1.35}
+.bg.got{background:rgba(22,227,127,.07);border-color:rgba(22,227,127,.25)}
+.bg.got .bi{background:rgba(22,227,127,.16);color:var(--green)}
+.bg.got .bn{color:var(--ink)}
+.bg.got:active{transform:scale(.96)}
+
+/* attendance split */
+.split2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.note-coach{background:rgba(255,198,61,.07);border:1px solid rgba(255,198,61,.22);border-radius:14px;padding:15px}
+.note-coach .nq{font-size:14.5px;line-height:1.6;color:var(--ink)}
+.note-coach .nw{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gold);margin-top:10px}
+.lockbox{text-align:center;padding:22px 16px;border:1px dashed var(--line-2,rgba(255,255,255,.14));
+  border-radius:14px;color:var(--dim)}
+.lockbox .lk{width:34px;height:34px;margin:0 auto 10px;display:grid;place-items:center;border-radius:11px;
+  background:rgba(255,255,255,.05)}
+.lockbox .lk svg{width:17px;height:17px}
+.lockbox .lm{font-size:13px;line-height:1.55}
+/* coach rating stepper */
+.rate{display:flex;gap:6px;margin-top:9px}
+.rate button{flex:1;height:30px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.04);
+  color:var(--dim);font-family:var(--disp);font-weight:700;font-size:13px;cursor:pointer;transition:.2s}
+.rate button.on{background:var(--sky);color:#03202b;border-color:transparent}
 </style>
 </head>
 <body>
@@ -600,6 +694,29 @@ function migrate(){
     if(p.consent===undefined) p.consent = p.reg==="registered";
     if(p.uniform===undefined) p.uniform = (i%4!==1);
     if(!p.phone) p.phone="04"+String(10+i).padStart(2,"0")+" "+String(100+i*37).slice(0,3)+" "+String(200+i*53).slice(0,3);
+    /* progression */
+    if(p.games===undefined){
+      const extra=[14,9,21,2,11,26,17,4,13,31,23,1,19,38,28,7,3][i%17];
+      const total=p.att+extra;
+      p.games  = Math.round(total*0.4);
+      p.trains = total-p.games;
+    }
+    if(p.streak===undefined) p.streak=[6,3,8,1,4,11,5,2,7,9,6,0,10,14,8,3,1][i%17];
+    if(p.perfect===undefined) p.perfect=sessionsOf(p)>=22;
+    if(p.tour===undefined)    p.tour=sessionsOf(p)>=35;
+    if(!p.pos)  p.pos=["Guard","Forward","Centre","Guard","Forward"][i%5];
+    if(!p.since)p.since=["Feb 2024","Mar 2024","Jul 2024","Feb 2025","May 2025"][i%5];
+    if(!p.skills){
+      const lv=levelOf(p).i, base=Math.min(5,1+lv);
+      p.skills={};
+      SKILLS.forEach((sk,j)=>{ p.skills[sk.k]= sessionsOf(p)>=sk.at
+        ? Math.max(1,Math.min(5, base + ((i+j)%3) - 1)) : 0; });
+    }
+    if(!p.note) p.note=["Great engine, never stops moving. Work on finishing with the left.",
+      "Reads the game well beyond his years. Talk more on defence.",
+      "Huge improvement on the dribble since term 1. Keep shooting.",
+      "Best team-mate in the squad. Confidence is the only thing missing.",
+      "Defensive stopper. Let's build the jump shot next block."][i%5];
   });
   S.coaches.forEach((c,i)=>{ if(!c.phone) c.phone="04"+String(20+i).padStart(2,"0")+" "+String(300+i*41).slice(0,3)+" "+String(400+i*29).slice(0,3); });
   if(!S.reports) S.reports=[];
@@ -640,7 +757,50 @@ const I={
   info:sv('<circle cx="12" cy="12" r="8.8"/><path d="M12 11v5.4"/><path d="M12 7.9v.1"/>'),
   chat:sv('<path d="M20.4 13.2a7.4 7.4 0 0 1-8 7.3L6 21.4l1-4.2a7.4 7.4 0 1 1 13.4-4z"/>'),
   chev:sv('<path d="M9.5 5.5 16 12l-6.5 6.5"/>'),
+  lock:sv('<rect x="4.6" y="10.4" width="14.8" height="10.2" rx="2.4"/><path d="M8.2 10.4V7.6a3.8 3.8 0 0 1 7.6 0v2.8"/>'),
+  star:sv('<path d="m12 3.4 2.7 5.5 6 .9-4.35 4.25 1.03 6-5.38-2.83L6.62 20.05l1.03-6L3.3 9.8l6-.9z"/>'),
 };
+
+/* ===================== PROGRESSION ===================== */
+/* Levels are earned by turning up. Nothing here ranks a kid against a
+   team-mate — every number is that player against their own last month. */
+const LEVELS=[
+  {k:"rookie",  n:"Rookie",    at:0,  cl:"lv1", un:"Your profile and the full season schedule"},
+  {k:"squad",   n:"Squad",     at:5,  cl:"lv2", un:"Coach starts rating your skills"},
+  {k:"rotation",n:"Rotation",  at:12, cl:"lv3", un:"Defence rating + your own stat card"},
+  {k:"starter", n:"Starter",   at:22, cl:"lv4", un:"Court IQ rating + coach's development notes"},
+  {k:"core",    n:"Core",      at:35, cl:"lv5", un:"Captain and leadership nominations"},
+  {k:"legend",  n:"Franchise", at:50, cl:"lv6", un:"The club honour board"},
+];
+const SKILLS=[
+  {k:"ball", n:"Ball handling", at:5,  d:"Control under pressure, both hands"},
+  {k:"shoot",n:"Shooting",      at:5,  d:"Form, range and consistency"},
+  {k:"team", n:"Teamwork",      at:5,  d:"Passing, talking, backing up team-mates"},
+  {k:"def",  n:"Defence",       at:12, d:"Stance, effort and help defence"},
+  {k:"iq",   n:"Court IQ",      at:22, d:"Reading the game, decisions, spacing"},
+];
+const sessionsOf=p=>(p.trains||0)+(p.games||0);
+function levelOf(p){
+  const s=sessionsOf(p); let i=0;
+  LEVELS.forEach((L,n)=>{ if(s>=L.at) i=n; });
+  return {i, cur:LEVELS[i], next:LEVELS[i+1]||null, s};
+}
+function levelPct(p){
+  const {cur,next,s}=levelOf(p);
+  if(!next) return 100;
+  return Math.max(0,Math.min(100,Math.round((s-cur.at)/(next.at-cur.at)*100)));
+}
+function badgesOf(p){
+  const s=sessionsOf(p);
+  return [
+    {n:"First session", ic:I.ball,  got:s>=1,            hint:"Turn up once"},
+    {n:"5 in a row",    ic:I.check, got:(p.streak||0)>=5,hint:"Five sessions without missing one"},
+    {n:"10 trainings",  ic:I.shirt, got:(p.trains||0)>=10,hint:"Ten trainings this season"},
+    {n:"5 games",       ic:I.ball,  got:(p.games||0)>=5, hint:"Play five games"},
+    {n:"Perfect month", ic:I.shield,got:!!p.perfect,     hint:"A full month, nothing missed"},
+    {n:"Tour player",   ic:I.map,   got:!!p.tour,        hint:"Travel with the club"},
+  ];
+}
 
 /* ============================ HELPERS ============================ */
 const $=(s,el=document)=>el.querySelector(s);
@@ -734,6 +894,11 @@ function playerSheet(id){
     <div class="sh-item"><div class="k">Contact</div><div class="v">${admin||own||VIEW.role==="coach"?p.phone:"—"}</div></div>
     <div class="sh-item"><div class="k">Consent form</div><div class="v ${p.consent?'b-green':'b-red'}">${p.consent?"Signed":"Outstanding"}</div></div>
     <div class="sh-item"><div class="k">Uniform</div><div class="v ${p.uniform?'b-green':'b-red'}">${p.uniform?"Collected":"Not collected"}</div></div>
+    <div class="sh-item sh-full"><div class="k">Level</div>
+      <div class="v b-sky" style="cursor:default">${levelOf(p).cur.n} · ${sessionsOf(p)} sessions</div>
+      <div class="lvtrack" style="margin-top:8px"><i style="width:${levelPct(p)}%"></i></div>
+      <div class="small muted" style="margin-top:6px">${p.trains||0} trainings · ${p.games||0} games${
+        levelOf(p).next?` · ${levelOf(p).next.at-sessionsOf(p)} to ${levelOf(p).next.n}`:` · top level`}</div></div>
     <div class="sh-item sh-full"><div class="k">This Friday</div>
       <div class="v">${t.time||""}pm · ${t.court||""} · ${t.type==="game"?"vs "+t.opp:"Training"}</div>
       <div class="small muted" style="margin-top:5px">Coach ${t.coach||"—"}</div></div>
@@ -742,6 +907,25 @@ function playerSheet(id){
   ${own?`<div class="btnrow" style="margin-top:14px">
     ${p.owe>0?`<button class="btn gold" data-tab="pay" data-act="closesheet">Pay ${money(p.owe)}</button>`:''}
     <button class="btn gh" data-act="callcoach">${I.phone} Call coach</button>
+  </div>`:''}
+  ${(VIEW.role==="coach"||admin)?`
+  <div class="kicker sky" style="margin-top:18px">Coach ratings</div>
+  <div class="small muted" style="margin:7px 0 4px">Tap to rate. A skill stays locked until ${p.name.split(" ")[0]} has
+    enough sessions for a fair read — the player sees it unlock on their profile.</div>
+  <div class="card" style="margin-top:10px">
+    ${SKILLS.map(sk=>{
+      const open=sessionsOf(p)>=sk.at, v=(p.skills&&p.skills[sk.k])||0;
+      return `<div class="sk ${open?'':'lock'}">
+        <div class="sktop"><span class="skn">${sk.n}</span>
+          ${open?`<span class="skv">${v}/5</span>`:`<span class="sklock">${I.lock} needs ${sk.at}</span>`}</div>
+        ${open?`<div class="rate">${[1,2,3,4,5].map(n=>
+          `<button class="${n<=v?'on':''}" data-act="rate" data-id="${p.id}" data-sk="${sk.k}" data-v="${n}">${n}</button>`
+        ).join("")}</div>`:`<div class="pips">${[1,2,3,4,5].map(()=>`<i></i>`).join("")}</div>`}
+      </div>`;}).join("")}
+  </div>
+  <div class="btnrow" style="margin-top:12px">
+    <button class="btn gh" data-act="logsess" data-id="${p.id}" data-kind="train">+ Training</button>
+    <button class="btn gh" data-act="logsess" data-id="${p.id}" data-kind="game">+ Game</button>
   </div>`:''}
   ${admin?`<div class="btnrow" style="margin-top:14px;flex-wrap:wrap">
     ${p.reg!=="registered"?`<button class="btn" data-act="approve" data-id="${p.id}">Complete registration</button>`:''}
@@ -1012,8 +1196,8 @@ function bottomNav(){
     : VIEW.role==="coach"
     ? [["home",I.team,"Team"],["avail",I.check,"Availability"],["sched",I.sched,"Schedule"]]
     : VIEW.role==="parent"
-    ? [["home",I.home,"Home"],["season",I.sched,"Season"],["team",I.team,"Team"],["pay",I.money,"Fees"],["more",I.more,"More"]]
-    : [["home",I.home,"Home"],["sched",I.sched,"Schedule"],["team",I.team,"Team"]];
+    ? [["home",I.home,"Home"],["profile",I.star,"Player"],["season",I.sched,"Season"],["pay",I.money,"Fees"],["more",I.more,"More"]]
+    : [["home",I.home,"Home"],["profile",I.star,"Profile"],["sched",I.sched,"Schedule"],["team",I.team,"Team"]];
   return `<div class="nav">${items.map(([k,i,l])=>
     `<button data-tab="${k}" class="${VIEW.tab===k?'on':''}"><span class="i">${i}</span>${l}</button>`).join("")}</div>`;
 }
@@ -1329,6 +1513,12 @@ function moreView(p,t){
     ${row(I.info,"Season dates","Terms, finals and breaks",'data-act="info" data-kind="dates"')}
   </div>
 
+  <div class="h">The team</div>
+  <div class="card">
+    ${row(I.team,"Team roster","Who else is in "+(t.name||"the team"),'data-tab="team"')}
+    ${row(I.sched,"Full season","Every round, result and fixture",'data-tab="season"')}
+  </div>
+
   <div class="h">Who to contact</div>
   <div class="card">
     <div class="row"><div class="av g2">${initials(t.coach||"")}</div>
@@ -1448,6 +1638,7 @@ function parentView(){
   const first=p.name.split(" ")[0];
   const t=S.teams.find(x=>x.div===p.div)||{};
   const c=coachOf(p.div);
+  if(VIEW.tab==="profile") return profileView(p);
   if(VIEW.tab==="season"||VIEW.tab==="sched") return seasonView(p,t);
   if(VIEW.tab==="more")  return moreView(p,t);
   if(VIEW.tab==="team")  return rosterView(p,t);
@@ -1473,13 +1664,17 @@ function parentView(){
   return `
   ${photoHero(first+"'s season.",t.name+".",`${p.div} · #${p.jersey} · Coach ${t.coach}`,"Parent")}
 
-  <div class="card childcard" data-act="pl" data-id="${p.id}" style="margin-top:10px">
+  <div class="card childcard" data-tab="profile" style="margin-top:10px">
     <div class="row" style="border:none;padding:2px">
       <div class="av" style="width:46px;height:46px;font-size:17px">${initials(p.name)}</div>
       <div class="rmain"><div class="t">${p.name}</div>
-        <div class="m">${t.name} · #${p.jersey} · tap for the full picture</div></div>
-      <span class="tag info">Profile</span>
+        <div class="m">${levelOf(p).cur.n} · ${sessionsOf(p)} sessions · ${t.name} #${p.jersey}</div></div>
+      <span class="tag info">Profile ›</span>
     </div>
+    <div class="lvtrack" style="margin-top:12px"><i style="width:${levelPct(p)}%"></i></div>
+    <div class="small muted" style="margin-top:7px">${levelOf(p).next
+      ? levelOf(p).next.at-sessionsOf(p)+" more sessions to "+levelOf(p).next.n
+      : "Top level — on the club honour board"}</div>
   </div>
 
   <div class="h">This Friday</div>
@@ -1554,6 +1749,7 @@ function playerView(){
   const p=player(S.loginPlayer);
   const first=p.name.split(" ")[0];
   const t=S.teams.find(x=>x.div===p.div);
+  if(VIEW.tab==="profile") return profileView(p);
   if(VIEW.tab==="sched") return schedule(false,p.div);
   if(VIEW.tab==="team") return rosterView(p,t);
   const playing=p.avail==="in";
@@ -1574,6 +1770,20 @@ function playerView(){
     </div>
   </div>
 
+  <div class="h">My level</div>
+  <div class="card childcard" data-tab="profile">
+    <div class="row" style="border:none;padding:2px">
+      <div class="av" style="width:46px;height:46px;font-size:17px">${initials(p.name)}</div>
+      <div class="rmain"><div class="t">${levelOf(p).cur.n}</div>
+        <div class="m">${sessionsOf(p)} sessions · ${p.trains} trainings, ${p.games} games</div></div>
+      <span class="tag info">Profile ›</span>
+    </div>
+    <div class="lvtrack" style="margin-top:12px"><i style="width:${levelPct(p)}%"></i></div>
+    <div class="small muted" style="margin-top:7px">${levelOf(p).next
+      ? "Turn up "+(levelOf(p).next.at-sessionsOf(p))+" more times to unlock "+levelOf(p).next.n
+      : "Top level reached. Honour board."}</div>
+  </div>
+
   <div class="h">My status</div>
   <div class="card">
     <div class="row"><div class="av">${initials(p.name)}</div><div class="rmain"><div class="t">Registration</div><div class="m">Season 2026</div></div><div class="rside">${regTag(p)}</div></div>
@@ -1586,6 +1796,116 @@ function playerView(){
     <div class="av">${initials(t.coach)}</div>
     <div class="rmain"><div class="t">${t.name}</div><div class="m">Coach ${t.coach} · ${S.players.filter(x=>x.div===p.div).length} players</div></div>
     <button class="btn gh sm" data-tab="team">Roster ›</button></div></div>
+  ${resetBtn()}`;
+}
+
+/* ============================ PLAYER PROFILE ============================ */
+function profileView(p){
+  const t=S.teams.find(x=>x.div===p.div)||{};
+  const L=levelOf(p), pct=levelPct(p), sess=L.s;
+  const first=p.name.split(" ")[0];
+  const parent=VIEW.role==="parent";
+  const you=parent?first:"You";
+  const your=parent?first+"'s":"Your";
+  const rate=Math.round(p.att/Math.max(1,p.sess)*100);
+  const badges=badgesOf(p), earned=badges.filter(b=>b.got).length;
+  const notesOpen=sess>=22;
+
+  return `
+  <div class="pcard">
+    <div class="ptop">
+      <div class="pav">${initials(p.name)}</div>
+      <div class="rmain">
+        <div class="pname">${p.name}</div>
+        <div class="pmeta">${t.name||p.div} · #${p.jersey} · ${p.pos}</div>
+        <span class="lvchip ${L.cur.cl}">${I.star} ${L.cur.n}</span>
+      </div>
+    </div>
+    <div class="lvbar">
+      <div class="lt"><span>Level progress</span><b>${sess} session${sess===1?'':'s'}</b></div>
+      <div class="lvtrack"><i style="width:${pct}%"></i></div>
+      <div class="lvnext">${L.next
+        ? `<b>${L.next.at-sess} more</b> to reach ${L.next.n} — unlocks ${L.next.un.toLowerCase()}.`
+        : `Top level reached. ${you} ${parent?'is':'are'} on the club honour board.`}</div>
+    </div>
+  </div>
+
+  <div class="h">How ${parent?first+' earns':'you earn'} it</div>
+  <div class="kpis">
+    <div class="kpi blue"><div class="v">${p.trains||0}</div>
+      <div class="l">Trainings</div><div class="sub muted">all time</div></div>
+    <div class="kpi gold"><div class="v">${p.games||0}</div>
+      <div class="l">Games</div><div class="sub muted">all time</div></div>
+  </div>
+  <div class="kpis" style="margin-top:9px">
+    <div class="kpi green"><div class="v">${rate}<span style="font-size:15px;color:var(--muted)">%</span></div>
+      <div class="l">This term</div><div class="sub muted">${p.att} of ${p.sess} turned up</div></div>
+    <div class="kpi"><div class="v">${p.streak||0}</div>
+      <div class="l">Best streak</div><div class="sub muted">in a row, no misses</div></div>
+  </div>
+  <div class="card" style="margin-top:9px">
+    <div class="small muted">Every training and every game counts as one session. Turning up is the
+      only thing that moves this bar — ${parent?'nobody else’s child affects it':'nobody else affects it'}.</div>
+  </div>
+
+  <div class="h">Skills <span class="pill small muted">rated by Coach ${t.coach||'—'}</span></div>
+  <div class="card">
+    ${SKILLS.map(sk=>{
+      const open=sess>=sk.at, v=open?(p.skills&&p.skills[sk.k])||0:0;
+      return `<div class="sk ${open?'':'lock'}">
+        <div class="sktop"><span class="skn">${sk.n}</span>
+          ${open?`<span class="skv">${v}/5</span>`
+                :`<span class="sklock">${I.lock} ${sk.at} sessions</span>`}</div>
+        <div class="skd">${open?sk.d:`Unlocks at ${sk.at} sessions — ${sk.at-sess} to go.`}</div>
+        <div class="pips">${[1,2,3,4,5].map(n=>`<i class="${open&&n<=v?'on':''}"></i>`).join("")}</div>
+      </div>`;}).join("")}
+  </div>
+  <div class="card">
+    <div class="small muted">Coaches only rate a skill once they've seen enough of it. That's why they
+      open up as ${parent?first+' turns':'you turn'} up — more sessions, a fairer read.</div>
+  </div>
+
+  <div class="h">${your} coach notes</div>
+  ${notesOpen
+    ? `<div class="note-coach"><div class="nq">"${p.note}"</div>
+         <div class="nw">Coach ${t.coach||''} · this term</div></div>`
+    : `<div class="lockbox"><div class="lk">${I.lock}</div>
+         <div class="lm">Coach notes unlock at <b style="color:var(--sky)">Starter</b> — 22 sessions.<br>
+           ${22-sess} to go.</div></div>`}
+
+  <div class="h">Badges <span class="pill small muted">${earned}/${badges.length}</span></div>
+  <div class="badges">
+    ${badges.map(b=>`<div class="bg ${b.got?'got':''}" data-act="badge" data-n="${b.n}" data-hint="${b.hint}">
+      <div class="bi">${b.got?b.ic:I.lock}</div><div class="bn">${b.n}</div></div>`).join("")}
+  </div>
+
+  <div class="h">The ladder</div>
+  <div class="card"><div class="ladder">
+    ${LEVELS.map((lv,i)=>{
+      const got=i<L.i, now=i===L.i;
+      return `<div class="lrow ${got?'got':now?'now':'locked'}">
+        <div class="lpip">${got?I.check:i+1}</div>
+        <div class="rmain"><div class="ln">${lv.n}</div><div class="lu">${lv.un}</div></div>
+        <div class="lreq">${lv.at===0?'Start':lv.at+' sess'}</div>
+      </div>`;}).join("")}
+  </div></div>
+
+  <div class="h">Details</div>
+  <div class="card">
+    <div class="row"><div class="av soft">${I.shirt}</div>
+      <div class="rmain"><div class="t">Jersey #${p.jersey}</div><div class="m">${p.pos} · ${t.name||p.div}</div></div></div>
+    <div class="row"><div class="av soft">${I.coaches}</div>
+      <div class="rmain"><div class="t">Coach ${t.coach||'—'}</div><div class="m">${p.div} · Friday nights</div></div>
+      <button class="btn gh sm" data-act="callcoach">${I.phone} Call</button></div>
+    <div class="row"><div class="av soft">${I.sched}</div>
+      <div class="rmain"><div class="t">At the club since</div><div class="m">${p.since}</div></div></div>
+    ${parent?`<div class="row"><div class="av soft">${I.money}</div>
+      <div class="rmain"><div class="t">Fees</div><div class="m">${p.owe>0?money(p.owe)+" owing":"Season fee settled"}</div></div>
+      <div class="rside">${payTag(p)}</div></div>`:''}
+    <div class="row" data-tab="team"><div class="av soft">${I.team}</div>
+      <div class="rmain"><div class="t">Team-mates</div><div class="m">${S.players.filter(x=>x.div===p.div).length} in ${t.name||p.div}</div></div>
+      <span class="chev">${I.chev}</span></div>
+  </div>
   ${resetBtn()}`;
 }
 
@@ -1677,6 +1997,17 @@ function handleAct(a){
   if(act==="remind"){ const p=player(id); S.feed.unshift({t:"Reminder sent to "+p.name,m:money(p.owe)+" · "+new Date().toLocaleDateString()}); save(); toast("Payment reminder sent"); render(SOFT); refreshSheet(); return; }
   if(act==="approve"){ const p=player(id); p.reg="registered"; save(); toast(p.name+" registered"); render(SOFT); refreshSheet(); return; }
   if(act==="pay"){ const p=player(id); p.owe=0; p.pay="paid"; save(); toast("Payment complete"); render(SOFT); refreshSheet(); return; }
+  if(act==="rate"){ const p=player(id); p.skills=p.skills||{}; p.skills[a.dataset.sk]=+a.dataset.v;
+    save(); toast("Rating saved"); refreshSheet(); return; }
+  if(act==="logsess"){ const p=player(id); const g=a.dataset.kind==="game";
+    if(g) p.games=(p.games||0)+1; else p.trains=(p.trains||0)+1;
+    p.att++; p.sess++; p.streak=(p.streak||0)+1;
+    const before=levelOf(p).i;
+    save();
+    const L=levelOf(p);
+    toast(L.i>before ? p.name.split(" ")[0]+" reached "+L.cur.n+"!" : (g?"Game":"Training")+" logged");
+    refreshSheet(); return; }
+  if(act==="badge"){ toast(a.dataset.hint); return; }
   if(act==="avail"){ const p=player(id); p.avail=a.dataset.v; save(); toast(a.dataset.v==="in"?"You're in for Friday":"Marked unavailable"); render(SOFT); return; }
   if(act==="nudge"){ toast("Nudge sent to players who haven't replied"); return; }
   if(act==="msg"){ toast("Team message sent"); return; }
