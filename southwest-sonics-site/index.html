@@ -293,7 +293,7 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
 .rail{display:flex;gap:14px;margin-top:30px;overflow-x:auto;scroll-snap-type:x mandatory;
   padding-bottom:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .rail::-webkit-scrollbar{display:none}
-.rail figure{position:relative;flex:0 0 76%;max-width:340px;scroll-snap-align:center;
+.rail figure{position:relative;flex:0 0 74%;max-width:300px;scroll-snap-align:center;
   border-radius:17px;overflow:hidden;border:1px solid var(--line);aspect-ratio:4/5;
   background:#101012;box-shadow:0 26px 60px -30px rgba(0,0,0,.9);
   transition:transform .45s var(--ease),border-color .4s}
@@ -336,10 +336,12 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
   .c{padding:30px 28px} .c h3{font-size:24px} .c p{font-size:16.5px}
 
   /* tryouts — editorial split */
-  .duo .wrap{display:grid;grid-template-columns:1fr minmax(0,430px);gap:70px;
+  .duo .wrap{display:grid;grid-template-columns:1fr minmax(0,352px);gap:74px;
     align-items:center;justify-content:space-between}
   .duo .photo{margin-top:0;aspect-ratio:4/5}
   .duo .hbtns{margin-top:30px} .duo .hbtns .btn{min-width:0}
+  /* flipped: the photo takes the narrow column, not the wide one */
+  .duo.flip .wrap{grid-template-columns:minmax(0,352px) 1fr}
   .duo.flip .photo{order:-1}
   .path .p b{font-size:19px} .path .p span{font-size:10px}
   .tryout{padding:26px} .tryout .d b{font-size:50px} .tryout .t{font-size:20px}
@@ -359,7 +361,7 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
 
   /* split + rail */
   .split{margin-top:96px}
-  .split .wrap{display:grid;grid-template-columns:minmax(0,430px) 1fr;gap:70px;align-items:center;
+  .split .wrap{display:grid;grid-template-columns:minmax(0,352px) 1fr;gap:74px;align-items:center;
     justify-content:space-between}
   .split .pic{aspect-ratio:4/5}
   .split.flip .pic{order:2}
@@ -367,7 +369,8 @@ footer .fg{font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:
   .split h2{font-size:clamp(44px,4.4vw,56px);max-width:14ch}
   .split .body{font-size:18.5px}
   .split .pull{font-size:27px;margin-top:28px}
-  .rail{gap:20px;margin-top:44px;overflow-x:visible;display:grid;grid-template-columns:repeat(3,1fr)}
+  .rail{gap:20px;margin-top:44px;overflow-x:visible;display:grid;grid-template-columns:repeat(3,1fr);
+    max-width:840px}
   .rail figure{flex:none;max-width:none}
   .railhint{display:none}
 
