@@ -1,6 +1,6 @@
 # Sonics tryouts promo
 
-29 seconds, 1080x1920 (9:16), for Reels, TikTok and Stories. Pure
+30 seconds, 1080x1920 (9:16), for Reels, TikTok and Stories. Pure
 graphic — no photography. Every scene punches in from oversize or pulls
 out from undersize with a back-out overshoot, and the field flips
 between black and Sonics blue on the three hardest lines.
@@ -30,12 +30,19 @@ Google Fonts for Archivo and Hanken Grotesk.
     17.9s  Our juniors have played in Japan.   (blue)
     20.6s  SAT 3 OCT, 2:00PM, Bankstown Basketball Stadium
     23.7s  Ages 10-17, all skill levels
-    26.0s  Come down and have a run / Text 0414 145 332
+    26.0s  Come down and have a run
+           -> Text 0414 145 332
+           -> Link in bio
 
 Paced for reading: each line fades in over 0.4s, finishes its zoom by
 0.55s, then sits nearly still until the 0.36s fade out. That leaves
 1.1-2.2s of settled, readable type per scene, and the date card and the
-phone number get the longest holds.
+phone number get the longest holds. The closing scene staggers its
+four parts so the badge, the line, the number and the link each land
+separately.
+
+The registration link that belongs in the bio:
+https://sonics-register.netlify.app
 
 Silent on purpose — trending audio added in the app reaches further
 than a baked-in track.

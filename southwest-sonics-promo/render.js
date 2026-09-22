@@ -2,7 +2,7 @@ const { chromium } = require('playwright');
 const fs=require('fs');
 const DIR=__dirname;
 const FR=DIR+'/frames';
-const FPS=30, DUR=29.0, N=Math.round(FPS*DUR);
+const FPS=30, DUR=30.2, N=Math.round(FPS*DUR);
 // days until the next 3 October, computed at render time
 function daysToGo(){
   const now=new Date(); const y=now.getFullYear();

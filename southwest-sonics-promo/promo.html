@@ -100,7 +100,10 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
     box-shadow:0 28px 84px rgba(0,0,0,.8),0 0 0 2px rgba(242,239,230,.12)">
     <img src="logo.png" style="width:100%;height:100%;display:block"></div>
   <div class="d cream" id="s11a" style="font-size:112px;margin-top:60px">Come down<br>and have<br>a run.</div>
-  <div id="s11b" style="margin-top:58px"><span class="pill">Text 0414 145 332</span></div>
+  <div id="s11b" style="margin-top:54px"><span class="pill">Text 0414 145 332</span></div>
+  <div id="s11c" style="margin-top:46px">
+    <div class="k cream" style="font-size:36px"><span class="sky" style="font-size:40px">&#8593;</span>&nbsp; Link in bio</div>
+  </div>
 </div>
 
 <div id="slash" style="opacity:0"></div>
@@ -126,9 +129,9 @@ const SC=[
  [8,17.90,20.60,  1],
  [9,20.60,23.70, -1],
  [10,23.70,26.00, 1],
- [11,26.00,29.00,-1],
+ [11,26.00,30.20,-1],
 ];
-const DUR=29.0;
+const DUR=30.2;
 const BLUE=[3,4,7];                 /* scenes 3,5,8 run on a blue field (index+1) */
 const isBlue=n=>n===3||n===5||n===8;
 function paint(t){
@@ -164,6 +167,16 @@ function paint(t){
    E('s2n').textContent=String(Math.round(hi-(hi-D)*oq(run)));
    E('s2n').style.color = run<1 ? '#F2EFE6' : '#3FC5EC';
    E('s2b').style.opacity=String(k(t,a2+1.85,a2+2.25));}
+  /* scene 11: logo, line, number, then the link */
+  {const a11=SC[10][1];
+   E('m11').style.opacity=String(k(t,a11+0.10,a11+0.52));
+   E('s11a').style.opacity=String(k(t,a11+0.45,a11+0.92));
+   const pp=k(t,a11+1.00,a11+1.42);
+   E('s11b').style.opacity=String(pp);
+   E('s11b').style.transform=`scale(${0.86+0.14*ob(pp)})`;
+   const lp=k(t,a11+1.75,a11+2.20);
+   E('s11c').style.opacity=String(lp);
+   E('s11c').style.transform=`translateY(${(1-oc(lp))*30}px)`;}
   /* scene 9: rule wipes out under the date */
   {const [ ,a9]=SC[8];
    E('s9r').style.width=(oc(k(t,a9+0.85,a9+1.45))*420)+'px';}
