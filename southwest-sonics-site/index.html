@@ -21,7 +21,7 @@
   --ink:#F2EFE6; --muted:#B4B0A7; --dim:#7C786F;
   --accent:#3FC5EC; --accent-2:#2FB4E0;
   --grad:linear-gradient(120deg,#E7369B,#F5821F,#FCC21A);
-  --halo:conic-gradient(from 0deg,#E7369B,#F5821F,#FCC21A,#3FC5EC,#E7369B);
+  --halo:conic-gradient(from 0deg,#3FC5EC,#7FE0F7,#1C9BC6,#5BD2F0,#3FC5EC);
   --disp:'Archivo','Helvetica Neue',Arial,sans-serif;
   --sans:'Hanken Grotesk',system-ui,-apple-system,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
@@ -52,12 +52,12 @@ h1,h2,h3,h4{font-family:var(--disp);font-weight:900;letter-spacing:-.04em;line-h
 .mark{position:relative;width:var(--m,200px);height:var(--m,200px);margin:0 auto;
   transform-style:preserve-3d;will-change:transform}
 .mark .halo{position:absolute;inset:-22%;border-radius:50%;background:var(--halo);
-  filter:blur(26px);opacity:.42;animation:spin 18s linear infinite}
-.mark .ring{position:absolute;inset:-7px;border-radius:50%;background:var(--halo);
+  filter:blur(28px);opacity:.34;animation:spin 18s linear infinite}
+.mark .ring{position:absolute;inset:-6px;border-radius:50%;background:var(--halo);
   animation:spin 11s linear infinite;
   -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));
           mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));
-  opacity:.92}
+  opacity:.6}
 .mark .disc{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;
   box-shadow:0 34px 80px rgba(0,0,0,.72),0 0 0 1px rgba(242,239,230,.07),
              inset 0 1px 0 rgba(255,255,255,.08)}
