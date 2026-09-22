@@ -445,6 +445,19 @@ function TodayView({ data, setKey, go }) {
 /* =======================================================================
    2. MONEY
    ======================================================================= */
+// Defined at module scope (NOT inside BudgetView) so the input is not
+// remounted on every keystroke — that would drop focus and lose the edit.
+function MoneyField({ label, value, onChange }) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      <div className="relative">
+        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6b7079] font-bold">$</span>
+        <Input type="number" inputMode="decimal" className="pl-7" value={value ?? ""} onChange={onChange} placeholder="0" />
+      </div>
+    </div>
+  );
+}
 function BudgetView({ data, setKey }) {
   const b = data.budget;
   const setBudget = (patch) => setKey("budget", (c) => ({ ...c, ...patch }));
@@ -461,13 +474,7 @@ function BudgetView({ data, setKey }) {
   const [dns, setDns] = useState("");
   const addDns = () => { if (!dns.trim()) return; setBudget({ doNotSpend: [...b.doNotSpend, { id: uid(), text: dns.trim() }] }); setDns(""); };
   const delDns = (id) => setBudget({ doNotSpend: b.doNotSpend.filter((x) => x.id !== id) });
-  const MoneyField = ({ k, label }) => (
-    <div>
-      <Label>{label}</Label>
-      <div className="relative"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6b7079] font-bold">$</span>
-        <Input type="number" inputMode="decimal" className="pl-7" value={b[k] ?? ""} onChange={(e) => setBudget({ [k]: e.target.value })} placeholder="0" /></div>
-    </div>
-  );
+  const field = (k, label) => <MoneyField key={k} label={label} value={b[k]} onChange={(e) => setBudget({ [k]: e.target.value })} />;
   return (
     <div className="space-y-4">
       <SectionHeader icon="money" title="Money" subtitle="A calm, honest look at what's coming in and going out." />
@@ -479,12 +486,12 @@ function BudgetView({ data, setKey }) {
         {over && <p className="mt-3 text-sm font-semibold text-[#f0a9a6] bg-[#e5736f]/10 rounded-xl p-3">You're planning to spend more than you have. Try trimming food, fuel or bills, or move a debt payment to next week.</p>}
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <Card><MoneyField k="available" label="Money I have now" /></Card>
-        <Card><MoneyField k="incoming" label="Money coming in" /></Card>
+        <Card>{field("available", "Money I have now")}</Card>
+        <Card>{field("incoming", "Money coming in")}</Card>
       </div>
       <Card>
         <Label>Where it's going</Label>
-        <div className="grid grid-cols-2 gap-3">{rows.map((r) => <MoneyField key={r.key} k={r.key} label={r.label} />)}</div>
+        <div className="grid grid-cols-2 gap-3">{rows.map((r) => field(r.key, r.label))}</div>
       </Card>
       <Card>
         <Label>Do NOT spend on</Label>
