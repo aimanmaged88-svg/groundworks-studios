@@ -1,3 +1,6 @@
 # Netlify CLI local site-link state (not part of the source)
 .netlify/
 southwest-sonics-promo/frames/
+
+# registration snapshot — real people, never committed (repo is public)
+sonics-notes/data.json

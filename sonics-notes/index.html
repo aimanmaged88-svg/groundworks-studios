@@ -136,7 +136,7 @@ const COLS=[["Received","_at"],["Player name","Player name"],["Age","Age"],["Gro
  ["Gender","Gender"],["School","School"],["Experience","Experience"],["Uniform","Uniform size"],
  ["Parent","Parent name"],["Mobile","Parent mobile"],["Email","Parent email"],["Medical","Medical"]];
 const NOMED=['','none','no','nothing','n/a','na','nil','no medical conditions','-'];
-let ROWS=[], SORT={k:'_at',dir:-1};
+let ROWS=[], SORT={k:'_at',dir:-1}, SNAP='';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const syd=iso=>{try{return new Date(iso).toLocaleString('en-AU',{timeZone:'Australia/Sydney',
@@ -237,7 +237,8 @@ function render(){
         if(k==='Medical') return `<td>${hasMed(r)?'<span class="chip med">check</span> ':''}${esc(v||'—')}</td>`;
         return `<td>${esc(v||'—')}</td>`;}).join('')}</tr>`;}).join('')}
     </tbody></table></div>`;
-  $('#ft').textContent=`Showing ${list.length} of ${ROWS.length} · exports follow your filters · times in Sydney`;
+  $('#ft').textContent=`Showing ${list.length} of ${ROWS.length} · exports follow your filters · times in Sydney`
+    + (SNAP?` · snapshot taken ${syd(SNAP)} — ask Aiman to refresh`:'');
   document.querySelectorAll('table.d th').forEach(th=>th.onclick=()=>{
     const k=th.dataset.k; SORT = SORT.k===k?{k,dir:-SORT.dir}:{k,dir:1}; render();});
   document.querySelectorAll('.st[data-g]').forEach(b=>b.onclick=()=>{$('#fGender').value=b.dataset.g;sync();});
@@ -282,10 +283,15 @@ function boot(rows){
 }
 async function load(){
   $('#rf').disabled=true;
+  let j=null;
+  /* live feed first; fall back to the deployed snapshot, which sits behind
+     this site's password just like the page does */
+  try{ const r=await fetch('/.netlify/functions/registrations',{cache:'no-store'});
+       const t=await r.json(); if(t&&t.ok) j=t; }catch(e){}
+  if(!j){ try{ const r2=await fetch('data.json?t='+Date.now(),{cache:'no-store'});
+       if(r2.ok){ const t2=await r2.json(); if(t2&&t2.ok){ j=t2; SNAP=t2.snapshot||''; } } }catch(e){} }
   try{
-    const r=await fetch('/.netlify/functions/registrations',{cache:'no-store'});
-    const j=await r.json();
-    if(j.ok){ boot(j.rows||[]); }
+    if(j&&j.ok){ boot(j.rows||[]); }
     else{
       $('#filters').style.display='none'; $('#panels').innerHTML='';
       $('#mount').innerHTML=`<div class="note warn"><h3>One step left to switch it on</h3>
