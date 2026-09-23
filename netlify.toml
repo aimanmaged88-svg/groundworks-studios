@@ -7,7 +7,7 @@
 #   southwest-sonics-register -> sonics-register.netlify.app       (public rego form)
 #   sonics-notes              -> sonics-notes.netlify.app          (private inbox + functions)
 [build]
-  publish = "sonics-notes"
+  publish = "southwest-sonics-app"
   command = ""
 
 # Only read when the site being deployed has functions; harmless otherwise.
