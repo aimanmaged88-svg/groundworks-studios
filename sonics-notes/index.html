@@ -15,8 +15,24 @@
  --line2:rgba(242,239,230,.18);--ink:#F2EFE6;--muted:#B4B0A7;--dim:#7C786F;
  --sky:#3FC5EC;--green:#16E37F;--gold:#FFC63D;--red:#FF5D5D;--pink:#E7369B;
  --disp:'Archivo',Arial,sans-serif;--sans:'Hanken Grotesk',system-ui,sans-serif}
+
+/* ---------- light theme ---------- */
+:root[data-theme="light"]{
+  --bg:#F6F6F4;--card:#FFFFFF;--card2:#FBFBF9;--line:rgba(9,9,11,.11);
+  --line2:rgba(9,9,11,.22);--ink:#121215;--muted:#55535A;--dim:#86838B;
+  --sky:#1187B0;--green:#0E9E5E;--gold:#A9720B;--red:#C63A3A;--pink:#BE2A7E;
+}
+:root[data-theme="light"] .st,:root[data-theme="light"] .panel,
+:root[data-theme="light"] .tblwrap,:root[data-theme="light"] .note{
+  box-shadow:0 1px 2px rgba(9,9,11,.05),0 6px 18px -10px rgba(9,9,11,.14)}
+:root[data-theme="light"] table.d tr:hover td{background:rgba(9,9,11,.028)}
+:root[data-theme="light"] .btn.g{background:rgba(9,9,11,.04)}
+:root[data-theme="light"] select,:root[data-theme="light"] .srch,
+:root[data-theme="light"] .fld{background:#fff}
+:root[data-theme="light"] .bar{background:rgba(9,9,11,.08)}
+:root[data-theme="light"] .pips i{background:rgba(9,9,11,.08)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;
+body{background:var(--bg);color:var(--ink);transition:background .25s,color .25s;font-family:var(--sans);font-size:15px;line-height:1.6;
  -webkit-font-smoothing:antialiased;padding-bottom:70px}
 .wrap{max-width:1320px;margin:0 auto;padding:0 20px}
 header{padding:32px 0 20px;border-bottom:1px solid var(--line);margin-bottom:22px}
@@ -96,6 +112,42 @@ td a{color:var(--sky);text-decoration:none}
 .note code{background:rgba(255,255,255,.07);padding:2px 7px;border-radius:5px;font-size:13px;
  font-family:ui-monospace,Menlo,monospace;color:var(--ink)}
 .empty{text-align:center;padding:52px 20px;color:var(--dim)}
+
+.hbtn{border:1px solid var(--line2);background:transparent;color:var(--ink);cursor:pointer;
+  font-family:var(--sans);font-weight:700;font-size:12.5px;padding:9px 14px;border-radius:10px;
+  display:inline-flex;align-items:center;gap:7px;transition:.18s}
+.hbtn:hover{border-color:var(--sky);color:var(--sky)}
+.hrow{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.editbar{display:flex;gap:11px;align-items:center;flex-wrap:wrap;margin-bottom:14px;padding:13px 16px;
+  border-radius:13px;background:rgba(255,198,61,.08);border:1px solid rgba(255,198,61,.3)}
+.editbar .t{font-size:13.5px;color:var(--ink);font-weight:600}
+.editbar .m{font-size:12.5px;color:var(--muted)}
+.btn.sm{padding:8px 14px;font-size:12.5px}
+.btn.red{background:rgba(255,93,93,.14);color:var(--red);border:1px solid rgba(255,93,93,.32)}
+td .del{border:0;background:transparent;color:var(--dim);cursor:pointer;font-size:15px;padding:3px 7px;
+  border-radius:7px;line-height:1}
+td .del:hover{background:rgba(255,93,93,.14);color:var(--red)}
+tr.gone td{opacity:.42}
+tr.gone td.nm{text-decoration:line-through}
+.chip.new{background:rgba(22,227,127,.15);color:var(--green)}
+/* add-player sheet */
+.ovl{position:fixed;inset:0;z-index:300;background:rgba(4,6,10,.62);display:none;
+  align-items:flex-start;justify-content:center;padding:34px 16px;overflow-y:auto}
+.ovl.on{display:flex}
+:root[data-theme="light"] .ovl{background:rgba(9,9,11,.42)}
+.sheet2{width:100%;max-width:720px;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;padding:24px}
+.sheet2 h2{font-family:var(--disp);font-weight:900;font-size:21px;letter-spacing:-.03em;margin-bottom:5px}
+.sheet2 .sub2{color:var(--muted);font-size:13.5px;margin-bottom:18px}
+.fgrid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:620px){.fgrid{grid-template-columns:1fr 1fr}}
+.f label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:6px}
+.fld{width:100%;padding:11px 13px;border-radius:10px;background:var(--card2);border:1px solid var(--line);
+  color:var(--ink);font-family:var(--sans);font-size:14px}
+.fld:focus{outline:none;border-color:var(--sky)}
+.f.wide{grid-column:1/-1}
+.sheet2 .acts{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
 footer{margin-top:22px;color:var(--dim);font-size:12px}
 </style></head><body>
 <div class="wrap">
@@ -103,8 +155,13 @@ footer{margin-top:22px;color:var(--dim);font-size:12px}
 <header><div class="top">
   <img src="logo.png" alt="">
   <div><h1>Sonics Inbox</h1><div class="sub">Tryout registrations · South West Sonics</div></div>
-  <div class="pill">Private</div>
+  <div class="hrow">
+    <button class="hbtn" id="add">+ Add player</button>
+    <button class="hbtn" id="theme">Light</button>
+    <div class="pill">Private</div>
+  </div>
 </div></header>
+<div id="editbar"></div>
 
 <div id="panels"></div>
 
@@ -123,6 +180,16 @@ footer{margin-top:22px;color:var(--dim);font-size:12px}
 </div>
 
 <div id="mount"><div class="empty">Loading…</div></div>
+
+<div class="ovl" id="ovl"><div class="sheet2">
+  <h2 id="shTitle">Add a player</h2>
+  <div class="sub2">Anything you leave blank just shows as a dash. Only the name is required.</div>
+  <div class="fgrid" id="fgrid"></div>
+  <div class="acts">
+    <button class="btn" id="save">Save player</button>
+    <button class="btn g" id="cancel">Cancel</button>
+  </div>
+</div></div>
 <footer id="ft"></footer>
 </div>
 
@@ -136,7 +203,24 @@ const COLS=[["Received","_at"],["Player name","Player name"],["Age","Age"],["Gro
  ["Gender","Gender"],["School","School"],["Experience","Experience"],["Uniform","Uniform size"],
  ["Parent","Parent name"],["Mobile","Parent mobile"],["Email","Parent email"],["Medical","Medical"]];
 const NOMED=['','none','no','nothing','n/a','na','nil','no medical conditions','-'];
-let ROWS=[], SORT={k:'_at',dir:-1}, SNAP='';
+let BASE=[], ROWS=[], SORT={k:'_at',dir:-1}, SNAP='';
+/* local edit layer — kept on this device, never silently sent anywhere */
+const EKEY='sonics_edits_v1', TKEY='sonics_theme';
+let EDITS={del:{},add:[]};
+try{ const raw=localStorage.getItem(EKEY); if(raw) EDITS=Object.assign({del:{},add:[]},JSON.parse(raw)); }catch(e){}
+const saveEdits=()=>{ try{localStorage.setItem(EKEY,JSON.stringify(EDITS));}catch(e){} };
+const nEdits=()=>Object.keys(EDITS.del).length+EDITS.add.length;
+
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  const b=document.getElementById('theme'); if(b) b.textContent = t==='light'?'Dark':'Light';
+  try{localStorage.setItem(TKEY,t);}catch(e){}
+}
+(function initTheme(){
+  let t=null; try{t=localStorage.getItem(TKEY);}catch(e){}
+  if(!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  applyTheme(t);
+})();
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const syd=iso=>{try{return new Date(iso).toLocaleString('en-AU',{timeZone:'Australia/Sydney',
@@ -148,7 +232,24 @@ function grpOf(r){const a=ageOf(r); if(a===null) return 'Not stated';
 const genOf=r=>(r.data['Gender']||'').trim()||'Not stated';
 const hasMed=r=>!NOMED.includes((r.data['Medical']||'').trim().toLowerCase());
 
-function prep(){ ROWS.forEach(r=>{ r._at=r.at; r._grp=grpOf(r); }); }
+function rebuild(){
+  ROWS = BASE.filter(r=>!EDITS.del[r.id]).concat(EDITS.add)
+             .sort((a,b)=>new Date(b.at)-new Date(a.at));
+  ROWS.forEach(r=>{ r._at=r.at; r._grp=grpOf(r); });
+}
+function editBar(){
+  const n=nEdits(), el=document.getElementById('editbar');
+  if(!n){ el.innerHTML=''; return; }
+  const d=Object.keys(EDITS.del).length, a=EDITS.add.length;
+  el.innerHTML='<div class="editbar"><div><div class="t">'+n+' change'+(n===1?'':'s')+
+    ' saved on this device</div><div class="m">'+a+' added, '+d+
+    ' removed. Your exports include them. To publish for Abz and Nour, send Aiman the export.'+
+    '</div></div><button class="btn g sm" id="undoAll">Undo all</button></div>';
+  document.getElementById('undoAll').onclick=()=>{
+    if(!confirm('Undo every change on this device and go back to the published list?')) return;
+    EDITS={del:{},add:[]}; saveEdits(); rebuild(); render();
+  };
+}
 function dupIds(){const seen={},d=new Set();
   ROWS.forEach(r=>{const k=((r.data['Player name']||'')+'|'+(r.data['Date of birth']||'')).toLowerCase().trim();
     if(k.length>1){ if(seen[k]) d.add(r.id); else seen[k]=1; }}); return d;}
@@ -225,22 +326,31 @@ function render(){
   $('#mount').innerHTML = !list.length ? '<div class="empty">Nothing matches those filters.</div>' :
    `<div class="tblwrap"><table class="d"><thead><tr>${COLS.map(([lab,k])=>
      `<th data-k="${esc(k)}">${esc(lab)} <span class="ar">${SORT.k===k?(SORT.dir>0?'▲':'▼'):''}</span></th>`).join('')}
-    </tr></thead><tbody>${list.map(r=>{const d=r.data;
+    <th></th></tr></thead><tbody>${list.map(r=>{const d=r.data;
       return `<tr>${COLS.map(([lab,k])=>{
         if(k==='_at') return `<td>${esc(syd(r.at))} ${dups.has(r.id)?'<span class="chip dup">dup</span>':''}</td>`;
         if(k==='_grp') return `<td><span class="chip b">${esc(grpOf(r))}</span></td>`;
         let v=d[k]||'';
-        if(k==='Player name') return `<td class="nm">${esc(v)}</td>`;
+        if(k==='Player name') return `<td class="nm">${esc(v)}${r.local?' <span class="chip new">added</span>':''}</td>`;
         if(k==='Gender') return `<td>${v?`<span class="chip ${/girl|female/i.test(v)?'gl':'b'}">${esc(v)}</span>`:'—'}</td>`;
         if(k==='Parent mobile') return `<td><a href="tel:${esc(String(v).replace(/\s/g,''))}">${esc(v)}</a></td>`;
         if(k==='Parent email') return `<td><a href="mailto:${esc(v)}">${esc(v)}</a></td>`;
         if(k==='Medical') return `<td>${hasMed(r)?'<span class="chip med">check</span> ':''}${esc(v||'—')}</td>`;
-        return `<td>${esc(v||'—')}</td>`;}).join('')}</tr>`;}).join('')}
+        return `<td>${esc(v||'—')}</td>`;}).join('')}
+        <td><button class="del" data-del="${esc(r.id)}" title="Remove">&#10005;</button></td></tr>`;}).join('')}
     </tbody></table></div>`;
   $('#ft').textContent=`Showing ${list.length} of ${ROWS.length} · exports follow your filters · times in Sydney`
     + (SNAP?` · snapshot taken ${syd(SNAP)} — ask Aiman to refresh`:'');
   document.querySelectorAll('table.d th').forEach(th=>th.onclick=()=>{
     const k=th.dataset.k; SORT = SORT.k===k?{k,dir:-SORT.dir}:{k,dir:1}; render();});
+  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.del, row=ROWS.find(x=>x.id===id);
+    const nm=(row&&row.data['Player name'])||'this entry';
+    if(!confirm('Remove '+nm+' from the list?\n\nYou can undo it from the bar at the top.')) return;
+    if(row&&row.local) EDITS.add=EDITS.add.filter(x=>x.id!==id); else EDITS.del[id]=true;
+    saveEdits(); rebuild(); render();
+  });
+  editBar();
   document.querySelectorAll('.st[data-g]').forEach(b=>b.onclick=()=>{$('#fGender').value=b.dataset.g;sync();});
   document.querySelectorAll('.st[data-med]').forEach(b=>b.onclick=()=>{$('#fMed').value='y';sync();});
   document.querySelectorAll('.st[data-clear]').forEach(b=>b.onclick=()=>clearAll());
@@ -271,8 +381,49 @@ $('#csv').onclick=()=>{const rows=sheet(); if(!rows.length) return;
   const el=$('#'+id); el.addEventListener(id==='q'?'input':'change',render);});
 $('#clr').onclick=clearAll; $('#rf').onclick=load;
 
+/* ---------- add a player ---------- */
+const SEL={
+ "Age":["10","11","12","13","14","15","16","17"],
+ "Gender":["Boy","Girl","Prefer not to say"],
+ "Uniform size":["Youth S","Youth M","Youth L","Adult S","Adult M","Adult L","Adult XL"],
+ "Experience":["Brand new to basketball","Played a season or two","Plays representative / club elsewhere"],
+ "Relationship":["Mother","Father","Guardian","Other"],
+ "Ambulance cover":["Yes","No","Not sure"],
+ "Consent - medical":["Yes","No"],"Consent - conduct":["Yes","No"],"Consent - photos":["Yes","No"],
+ "How did you hear":["Word of mouth","Saw a game","Instagram","Already with the club","School","Other"]
+};
+const WIDE=["School","Medical","Notes","Emergency contact"];
+function openAdd(){
+  const g=$('#fgrid');
+  g.innerHTML=FIELDS.map(f=>{
+    const id='f_'+f.replace(/[^a-z]/gi,'');
+    const input = SEL[f]
+      ? '<select class="fld" id="'+id+'"><option value=""></option>'+
+        SEL[f].map(o=>'<option>'+esc(o)+'</option>').join('')+'</select>'
+      : '<input class="fld" id="'+id+'" type="'+(f==='Date of birth'?'date':
+          f.includes('mobile')||f.includes('phone')?'tel':f.includes('email')?'email':'text')+'">';
+    return '<div class="f'+(WIDE.includes(f)?' wide':'')+'"><label>'+esc(f)+'</label>'+input+'</div>';
+  }).join('');
+  $('#ovl').classList.add('on');
+  const first=g.querySelector('.fld'); if(first) first.focus();
+}
+function closeAdd(){ $('#ovl').classList.remove('on'); }
+$('#add').onclick=openAdd;
+$('#cancel').onclick=closeAdd;
+$('#ovl').addEventListener('click',e=>{ if(e.target.id==='ovl') closeAdd(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeAdd(); });
+$('#save').onclick=()=>{
+  const data={};
+  FIELDS.forEach(f=>{ const el=document.getElementById('f_'+f.replace(/[^a-z]/gi,'')); data[f]=el?el.value.trim():''; });
+  if(!data['Player name']){ alert('A player name is needed — everything else can wait.'); return; }
+  EDITS.add.push({id:'local-'+Date.now(), at:new Date().toISOString(), local:true, data});
+  saveEdits(); closeAdd(); rebuild(); render();
+};
+$('#theme').onclick=()=>applyTheme(
+  document.documentElement.getAttribute('data-theme')==='light'?'dark':'light');
+
 function boot(rows){
-  ROWS=rows.sort((a,b)=>new Date(b.at)-new Date(a.at)); prep();
+  BASE=rows.slice(); rebuild();
   fillSelect($('#fGender'),uniq(genOf),'All genders');
   fillSelect($('#fAge'),[...new Set(ROWS.map(grpOf))].sort(),'All age groups');
   fillSelect($('#fExp'),uniq(r=>r.data['Experience']||''),'All experience');
