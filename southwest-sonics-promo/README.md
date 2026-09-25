@@ -53,3 +53,33 @@ One block per scene in `promo.html`. Timings and zoom direction live in
 the `SC` array at the bottom: `[scene, start, end, dir]`, where dir is
 `1` to punch in and `-1` to pull out. Blue scenes are listed in
 `isBlue()`.
+
+---
+
+# Run It Back — returning players
+
+`return.html` / `render-return.js` → `sonics-run-it-back-Ndays.mp4`
+
+31 seconds, same engine and pacing as the tryouts cut. Written for kids
+already in the club: it speaks to them as Sonics, frames the new season
+as the next chapter, and closes on an assumption ("See you on the 3rd")
+rather than an ask. It never says or implies anyone has left.
+
+    0.0s  badge
+    2.3s  the number
+    5.3s  To every Sonic. / This one's for you          (blue)
+    7.5s  Last season was just the start.
+   10.1s  Same crew. Same court. Bigger season.         (blue)
+   12.9s  Last year you were the rookie. /
+          This year, they're watching you.
+   16.1s  We've been to Japan. Next up New Zealand 2027 (blue)
+   19.2s  Friday nights. Bankstown. Your team.
+   21.8s  RUN IT BACK.                                  (blue)
+   24.1s  Returning & new players — Sat 3 Oct, 2:00pm
+   27.2s  See you on the 3rd. / Text 0414 145 332 / Link in bio
+
+Lines inside a scene stagger in via `data-in="<seconds>"` on the element.
+
+    NODE_PATH=/opt/node22/lib/node_modules node render-return.js
+    ffmpeg -y -framerate 30 -i frames/f_%04d.png -c:v libx264 -preset slow \
+      -crf 18 -pix_fmt yuv420p -movflags +faststart sonics-run-it-back.mp4

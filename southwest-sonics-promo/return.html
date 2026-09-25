@@ -1,0 +1,188 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Hanken+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;background:#08080A;
+  font-family:'Hanken Grotesk',system-ui,sans-serif;color:#F2EFE6}
+#bg{position:absolute;inset:0;background:#08080A}
+.L{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+   justify-content:center;text-align:center;padding:0 72px;will-change:transform,opacity}
+.d{font-family:'Archivo',Arial,sans-serif;font-weight:900;letter-spacing:-.045em;line-height:.88;
+   text-transform:uppercase}
+.k{font-family:'Hanken Grotesk';font-size:30px;font-weight:800;letter-spacing:.30em;text-transform:uppercase}
+.sky{color:#3FC5EC}.ink{color:#04161d}.cream{color:#F2EFE6}
+.rule{height:12px;background:#3FC5EC;border-radius:8px;margin:44px auto 0}
+/* graphic furniture */
+#marq{position:absolute;left:0;right:0;top:78px;white-space:nowrap;font-family:'Archivo';font-weight:800;
+  font-size:30px;letter-spacing:.24em;color:rgba(242,239,230,.20);text-transform:uppercase}
+#marqB{position:absolute;left:0;right:0;bottom:92px;white-space:nowrap;font-family:'Archivo';font-weight:800;
+  font-size:30px;letter-spacing:.24em;color:rgba(242,239,230,.20);text-transform:uppercase}
+#slash{position:absolute;left:-40%;top:0;width:180%;height:100%;
+  background:linear-gradient(105deg,transparent 46%,#3FC5EC 46%,#3FC5EC 54%,transparent 54%)}
+#bar{position:absolute;left:0;bottom:0;height:10px;background:#3FC5EC;width:0}
+.grain{position:absolute;inset:0;opacity:.055;mix-blend-mode:overlay;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#mark{width:400px;height:400px;position:relative}
+#mark .halo{position:absolute;inset:-24%;border-radius:50%;filter:blur(66px);opacity:.62;
+  background:conic-gradient(from 0deg,#3FC5EC,#7FE0F7,#1C9BC6,#5BD2F0,#3FC5EC)}
+#mark .disc{position:absolute;inset:0;border-radius:50%;overflow:hidden;
+  box-shadow:0 44px 110px rgba(0,0,0,.82),0 0 0 2px rgba(242,239,230,.1)}
+#mark .disc img{width:100%;height:100%;display:block}
+.pill{display:inline-block;padding:22px 46px;border-radius:999px;background:#3FC5EC;color:#04161d;
+  font-family:'Archivo';font-weight:900;font-size:46px;letter-spacing:.02em}
+</style></head><body><div id="st">
+<div id="bg"></div>
+<div id="marq"></div><div id="marqB"></div>
+
+<div class="L" id="s1">
+  <div id="mark"><div class="halo"></div><div class="disc"><img src="logo.png"></div></div>
+  <div class="k cream" data-in="0.55" style="margin-top:74px;font-size:34px">South West Sonics</div>
+  <div class="k sky"   data-in="0.85" style="margin-top:26px;font-size:24px">Summer Comp 2026</div>
+</div>
+
+<div class="L" id="s2">
+  <div class="k sky" id="s2a">Summer Comp</div>
+  <div class="d" id="s2n" style="font-size:560px;margin-top:18px">8</div>
+  <div class="d cream" id="s2b" style="font-size:96px;margin-top:4px">Days out</div>
+</div>
+
+<div class="L" id="s3">
+  <div class="d ink" style="font-size:176px">To every<br>Sonic.</div>
+  <div class="k ink" data-in="0.75" style="margin-top:52px;font-size:32px">This one's for you</div>
+</div>
+
+<div class="L" id="s4">
+  <div class="d cream" style="font-size:138px">Last season<br>was just</div>
+  <div class="d sky" data-in="0.7" style="font-size:168px;margin-top:22px">the start.</div>
+</div>
+
+<div class="L" id="s5">
+  <div class="d ink" style="font-size:124px;white-space:nowrap">Same crew.</div>
+  <div class="d ink" data-in="0.45" style="font-size:124px;margin-top:14px;white-space:nowrap">Same court.</div>
+  <div class="d ink" data-in="0.95" style="font-size:160px;margin-top:40px">Bigger<br>season.</div>
+</div>
+
+<div class="L" id="s6">
+  <div class="d cream" style="font-size:112px">Last year<br>you were<br>the rookie.</div>
+  <div class="d sky" data-in="1.05" style="font-size:112px;margin-top:48px">This year,<br>they're<br>watching you.</div>
+</div>
+
+<div class="L" id="s7">
+  <div class="k ink">We've been to</div>
+  <div class="d ink" style="font-size:200px;margin-top:26px">Japan.</div>
+  <div class="k ink" data-in="0.8" style="margin-top:46px">Next up</div>
+  <div class="d ink" data-in="0.95" style="font-size:128px;margin-top:22px">New Zealand<br>2027.</div>
+  <div class="k ink" data-in="1.6" style="margin-top:46px;font-size:27px;letter-spacing:.2em">The ride only gets bigger</div>
+</div>
+
+<div class="L" id="s8">
+  <div class="d cream" style="font-size:138px">Friday<br>nights.</div>
+  <div class="d cream" data-in="0.45" style="font-size:138px;margin-top:22px">Bankstown.</div>
+  <div class="d sky" data-in="0.95" style="font-size:156px;margin-top:40px">Your team.</div>
+</div>
+
+<div class="L" id="s9">
+  <div class="k ink" style="font-size:32px">Summer Comp 2026</div>
+  <div class="d ink" style="font-size:244px;margin-top:30px">Run it<br>back.</div>
+</div>
+
+<div class="L" id="s10">
+  <div class="k sky">Returning &amp; new players</div>
+  <div class="d cream" style="font-size:168px;margin-top:30px;white-space:nowrap">Sat 3 Oct</div>
+  <div class="d sky"   data-in="0.5" style="font-size:150px;margin-top:10px">2:00pm</div>
+  <div class="rule" id="s10r" style="width:0"></div>
+  <div class="k cream" data-in="1.0" style="margin-top:40px;font-size:30px;line-height:1.5;opacity:.8">Bankstown<br>Basketball Stadium</div>
+</div>
+
+<div class="L" id="s11">
+  <div data-in="0.1" style="width:230px;height:230px;border-radius:50%;overflow:hidden;
+    box-shadow:0 28px 84px rgba(0,0,0,.8),0 0 0 2px rgba(242,239,230,.12)">
+    <img src="logo.png" style="width:100%;height:100%;display:block"></div>
+  <div class="d cream" data-in="0.45" style="font-size:124px;margin-top:60px">See you<br>on the 3rd.</div>
+  <div data-in="1.0" style="margin-top:58px"><span class="pill">Text 0414 145 332</span></div>
+  <div data-in="1.7" style="margin-top:46px">
+    <div class="k cream" style="font-size:36px"><span class="sky" style="font-size:40px">&#8593;</span>&nbsp; Link in bio</div>
+  </div>
+</div>
+
+<div id="slash" style="opacity:0"></div>
+<div class="grain"></div><div id="bar"></div>
+</div>
+<script>
+window.DAYS = window.DAYS || 8;
+const E=document.getElementById.bind(document);
+const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+const k=(t,a,b)=>cl((t-a)/(b-a),0,1);
+const oq=x=>1-Math.pow(1-x,5);
+const oc=x=>1-Math.pow(1-x,3);
+const ob=x=>{const c=1.70158,c3=c+1;return 1+c3*Math.pow(x-1,3)+c*Math.pow(x-1,2);};
+/* [scene, start, end, zoom]: 1 punches in from oversize, -1 pulls out from undersize */
+const SC=[
+ [1, 0.00, 2.30,  1],
+ [2, 2.30, 5.30,  1],
+ [3, 5.30, 7.50, -1],
+ [4, 7.50,10.10,  1],
+ [5,10.10,12.90, -1],
+ [6,12.90,16.10,  1],
+ [7,16.10,19.20, -1],
+ [8,19.20,21.80,  1],
+ [9,21.80,24.10, -1],
+ [10,24.10,27.20, 1],
+ [11,27.20,31.40,-1],
+];
+const DUR=31.4;
+/* blue field on every other beat from 3 to 9 — the pulse of the piece */
+const isBlue=n=>n===3||n===5||n===7||n===9;
+function paint(t){
+  let cur=SC[0];
+  for(const s of SC) if(t>=s[1]) cur=s;
+  const [n,a]=cur;
+  const fin=k(t,a,a+0.16);
+  E('bg').style.background = isBlue(n) ? (fin<0.5?'#08080A':'#3FC5EC') : '#08080A';
+  const w=k(t,a-0.10,a+0.30);
+  E('slash').style.opacity = (w>0&&w<1)?'1':'0';
+  E('slash').style.transform=`translateX(${(-1+2*oc(w))*120}%)`;
+
+  for(const [m,s,e,d] of SC){
+    const el=E('s'+m); const live = t>=s-0.30 && t<=e+0.20;
+    el.style.display=live?'flex':'none';
+    if(!live) continue;
+    const inP=k(t,s,s+0.40), outP=k(t,e-0.36,e);
+    el.style.opacity=String(Math.min(inP===0?0:1, 1-outP) * (inP<1?inP:1));
+    const ez=ob(k(t,s,s+0.55));
+    const base = d>0 ? 1.85-0.85*ez : 0.55+0.45*ez;
+    const drift = d>0 ? -0.032*k(t,s+0.55,e) : 0.044*k(t,s+0.55,e);
+    const exit = 1 + (d>0?0.22:-0.16)*oc(outP);
+    el.style.transform=`scale(${(base+drift)*exit})`;
+    /* staggered lines inside a scene, so each one lands on its own */
+    el.querySelectorAll('[data-in]').forEach(c=>{
+      const dl=parseFloat(c.dataset.in), p=k(t,s+dl,s+dl+0.42);
+      c.style.opacity=String(p);
+      c.style.transform=`translateY(${(1-oc(p))*34}px)`;
+    });
+  }
+  /* the number spins down and locks */
+  {const a2=SC[1][1];
+   const D=window.DAYS, hi=Math.max(D+24,32);
+   const run=k(t,a2+0.25,a2+1.85);
+   E('s2n').textContent=String(Math.round(hi-(hi-D)*oq(run)));
+   E('s2n').style.color = run<1 ? '#F2EFE6' : '#3FC5EC';
+   E('s2b').style.opacity=String(k(t,a2+1.85,a2+2.25));}
+  /* rule wipes out under the date */
+  {const a10=SC[9][1];
+   E('s10r').style.width=(oc(k(t,a10+0.85,a10+1.45))*420)+'px';}
+  const mtxt='South West Sonics — Run It Back — Bankstown — ';
+  E('marq').textContent=mtxt.repeat(6); E('marqB').textContent=mtxt.repeat(6);
+  E('marq').style.transform=`translateX(${-(t*46)%700}px)`;
+  E('marqB').style.transform=`translateX(${-700+((t*36)%700)}px)`;
+  const dark=!isBlue(n);
+  const mc = dark?'rgba(242,239,230,.20)':'rgba(4,22,29,.30)';
+  E('marq').style.color=mc; E('marqB').style.color=mc;
+  E('bar').style.width=(t/DUR*1080)+'px';
+  E('bar').style.background = dark?'#3FC5EC':'#04161d';
+}
+window.__paint=paint; paint(0);
+</script></body></html>
