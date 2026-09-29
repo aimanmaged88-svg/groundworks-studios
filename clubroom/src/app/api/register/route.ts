@@ -2,7 +2,8 @@ import { createHash } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { sendEmail } from "@/lib/email";
-import { getPublicClub, type FormField } from "@/lib/public-club";
+import { checkClubCanAddPlayers } from "@/lib/limits";
+import { getPublicClub, registrationsOpen, type FormField } from "@/lib/public-club";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
   if (!body.slug) return bad("Missing club.");
 
   const data = await getPublicClub(body.slug);
-  if (!data || !data.form || !data.season?.registration_open) return bad("Registrations are closed.", 409);
+  if (!data || !data.form || !registrationsOpen(data)) return bad("Registrations are closed.", 409);
   if (body.form_id && body.form_id !== data.form.id) return bad("The form has been updated. Reload the page and try again.", 409);
 
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "unknown";
@@ -31,6 +32,10 @@ export async function POST(request: NextRequest) {
   const admin = createAdminClient();
   const { data: allowed } = await admin.rpc("rate_limit_hit", { p_key: `register:${data.club.slug}:${ipHash}`, p_limit: 12, p_window: "15 minutes" });
   if (allowed === false) return bad("Too many submissions from this connection. Try again in a few minutes.", 429);
+
+  const { data: clubRow } = await admin.from("clubs").select("id").eq("slug", data.club.slug).single();
+  const limit = await checkClubCanAddPlayers(admin, clubRow!.id);
+  if (!limit.ok) return bad(limit.reason === "paused" ? "Registrations are closed at the moment. Please check with the club." : "The club's registration list is full for now. Please check with the club.", 409);
 
   // Validate every enabled field against the template
   const values = body.values ?? {};

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getClubContext } from "@/lib/club";
+import { checkClubCanAddPlayers } from "@/lib/limits";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -116,6 +117,8 @@ export async function addPlayerAction(slug: string, input: z.input<typeof addSch
   const parsed = addSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Check the details." };
   const admin = createAdminClient();
+  const limit = await checkClubCanAddPlayers(admin, ctx.club.id);
+  if (!limit.ok) return { ok: false, error: limit.reason === "paused" ? "The club is paused until a plan is chosen." : `The plan allows ${limit.limit} players. Upgrade under Settings → Billing to add more.` };
   const supabase = await createClient();
   const {
     data: { user },

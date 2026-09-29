@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ClubMark } from "@/components/club-mark";
 import { Banner } from "@/components/ui/card";
 import { ButtonLink } from "@/components/ui/button";
-import { getPublicClub } from "@/lib/public-club";
+import { getPublicClub, registrationsOpen } from "@/lib/public-club";
 import { logoUrl } from "@/lib/storage";
 import { RegistrationForm } from "./registration-form";
 
@@ -37,7 +37,7 @@ export default async function RegisterPage({ params }: { params: Promise<{ slug:
 
       {club.is_demo && <div className="bg-warn px-5 py-2 text-center text-[12px] font-bold uppercase tracking-[0.08em] text-bg">Demo club · don&rsquo;t enter real details</div>}
 
-      {!form || !season?.registration_open ? (
+      {!form || !season || !registrationsOpen(data) ? (
         <div className="mt-6 px-5">
           <Banner tone="warn">
             <b>Registrations are closed right now.</b> Check back soon, or get in touch with the club.

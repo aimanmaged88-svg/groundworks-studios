@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils";
 type Season = { id: string; name: string; starts_on: string | null; ends_on: string | null; age_rule_mode: AgeRuleMode; age_cutoff_date: string | null; fee_cents: number | null; fee_label: string | null; registration_open: boolean } | null;
 
 export function SeasonSettings({
-  slug,
   clubId,
   sportName,
   defaults,
@@ -21,7 +20,7 @@ export function SeasonSettings({
   divisions,
   venues,
 }: {
-  slug: string;
+  slug?: string;
   clubId: string;
   sportName: string;
   defaults: Array<{ name: string; min_age?: number | null; max_age?: number | null }>;

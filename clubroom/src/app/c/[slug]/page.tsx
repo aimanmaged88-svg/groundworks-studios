@@ -5,7 +5,7 @@ import { InstagramIcon } from "@/components/icons";
 import { ClubMark } from "@/components/club-mark";
 import { ButtonLink } from "@/components/ui/button";
 import { describeDivision } from "@/lib/age-rule";
-import { getPublicClub } from "@/lib/public-club";
+import { getPublicClub, registrationsOpen } from "@/lib/public-club";
 import { logoUrl, publicObjectUrl } from "@/lib/storage";
 import { fmtDob, money } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ export default async function PublicClubPage({ params }: { params: Promise<{ slu
   const { club, season } = data;
   const page = club.public_page;
   const hero = publicObjectUrl("club-media", page.hero_path);
-  const open = !!season?.registration_open;
+  const open = registrationsOpen(data);
   const ages = season?.divisions?.length ? `${season.divisions[0].name} to ${season.divisions[season.divisions.length - 1].name}` : null;
   const facts: Array<[string, string, string?]> = [];
   if (ages) facts.push(["Ages", ages, season?.divisions.map((d) => `${d.name} ${describeDivision(d, season.age_rule_mode)}`).join(" · ")]);

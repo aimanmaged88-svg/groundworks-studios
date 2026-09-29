@@ -19,6 +19,7 @@ const SECTIONS: Array<{ key: FormField["section"]; title: string }> = [
   { key: "extra", title: "Anything else" },
 ];
 const LOCKED = new Set(["player.first_name", "player.dob", "guardian.email"]);
+const newKey = (prefix: string) => `${prefix}_${Date.now().toString(36)}`;
 
 export function FormBuilder({ slug, version, initial }: { slug: string; version: number; initial: State }) {
   const router = useRouter();
@@ -36,7 +37,7 @@ export function FormBuilder({ slug, version, initial }: { slug: string; version:
     setS({ ...s, fields: next });
   };
   const addCustom = (section: FormField["section"]) => {
-    const key = `custom_${Date.now().toString(36)}`;
+    const key = newKey("custom");
     const idx = s.fields.map((f) => f.section).lastIndexOf(section);
     const field: FormField = { key, label: "New question", type: "text", required: false, section, maps_to: "custom", enabled: true };
     const next = [...s.fields];
@@ -140,7 +141,7 @@ export function FormBuilder({ slug, version, initial }: { slug: string; version:
       ))}
 
       <section>
-        <SectionHead title="Consents" number="06" sub="Each one is stored with the exact wording and time it was agreed to." action={<Button size="sm" variant="outline" icon={<Plus className="size-4" />} onClick={() => setS({ ...s, consents: [...s.consents, { key: `consent_${Date.now().toString(36)}`, label: "New consent", text: "", required: false }] })}>Add a consent</Button>} />
+        <SectionHead title="Consents" number="06" sub="Each one is stored with the exact wording and time it was agreed to." action={<Button size="sm" variant="outline" icon={<Plus className="size-4" />} onClick={() => setS({ ...s, consents: [...s.consents, { key: newKey("consent"), label: "New consent", text: "", required: false }] })}>Add a consent</Button>} />
         <div className="mt-3 flex flex-col gap-2">
           {s.consents.map((c, i) => (
             <div key={c.key} className="flex flex-col gap-2 rounded-[var(--r-md)] bg-elev p-3">

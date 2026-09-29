@@ -4,6 +4,7 @@ import { publicEnv } from "@/lib/env";
 import type { Database } from "@/lib/supabase/database.types";
 import type { Colours } from "@/app/start/wizard";
 import type { Division } from "@/lib/age-rule";
+import { subscriptionAllowsUse } from "@/lib/plans";
 
 export type FormField = {
   key: string;
@@ -51,7 +52,13 @@ export type PublicClub = {
     age_cutoff_date: string | null;
     divisions: Division[];
   } | null;
+  billing: { status: string; trial_ends_at: string | null } | null;
 };
+
+/** Registrations are open only when the season says so and the club's plan or trial allows it. */
+export function registrationsOpen(data: PublicClub) {
+  return !!data.form && !!data.season?.registration_open && subscriptionAllowsUse(data.billing);
+}
 
 /** Everything the public pages need, fetched as anon through the RPC (no session, no cookies). */
 export const getPublicClub = cache(async (slug: string): Promise<PublicClub | null> => {

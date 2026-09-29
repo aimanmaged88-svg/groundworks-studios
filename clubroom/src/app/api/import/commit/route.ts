@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { getClubContext } from "@/lib/club";
 import { buildRow } from "@/lib/import";
+import { checkClubCanAddPlayers } from "@/lib/limits";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -26,6 +27,10 @@ export async function POST(request: NextRequest) {
   } = await supabase.auth.getUser();
   const admin = createAdminClient();
   const skipSet = new Set(skip);
+  const limit = await checkClubCanAddPlayers(admin, ctx.club.id, rows.length - skipSet.size);
+  if (!limit.ok) {
+    return NextResponse.json({ ok: false, error: limit.reason === "paused" ? "The club is paused until a plan is chosen." : `This import would go past the plan's ${limit.limit} players. Upgrade under Settings → Billing, or import fewer rows.` }, { status: 409 });
+  }
 
   let created = 0;
   let duplicates = 0;
