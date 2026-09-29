@@ -51,4 +51,8 @@ Schema lives in `supabase/migrations`. Apply to the hosted project with the Supa
 
 ## Deploy
 
-Netlify builds from `clubroom/` (see `netlify.toml`). Set the functions region to Sydney in the site settings so compute sits next to the data.
+Netlify builds from `clubroom/` (see `netlify.toml`; the Next.js adapter is listed there explicitly). Set the functions region to Sydney in the site settings so compute sits next to the data.
+
+- Linked to GitHub: every push to the production branch deploys.
+- Uploading by hand (Netlify connector or CLI): upload the `clubroom/` folder on its own, not the monorepo, with the `base` line dropped from `netlify.toml`. Uploading the repo root zips every project's `node_modules` and is rejected as too large.
+- Without the Supabase keys the marketing pages still work; sign-in and sign-up show an "opening soon" notice and app routes redirect to it. Add the keys and the same deploy becomes the full app.

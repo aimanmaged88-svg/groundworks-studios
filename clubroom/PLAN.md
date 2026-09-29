@@ -315,9 +315,11 @@ Promo media (countdown and hype videos rendered from the club's branding, day co
 - Sign-up, sign-in, magic link, invites; seven-step wizard; club app shell; dashboard; share page with QR; public club page with Open Graph image; registration form rendered from the club's template with live age-group hint; server-side registration (validation, honeypot, rate limit, plan limit, atomic write, confirmation email); members database (scoreboard, matrix, filters, sort, audited medical reveal, edit, fee status, archive, admin add, logged Excel/CSV exports); spreadsheet import mapped to the prototype's columns; settings (club, season, form builder with versions, admins and coaches, billing); Stripe checkout/portal/webhook; platform owner view with support-access audit; demo club seed; marketing site, pricing, preview builder, lead capture; Instagram kit draft.
 - 12 Playwright journeys pass on phone and desktop; CI workflow in `.github/workflows/clubroom.yml`.
 
-**Waiting on Aiman (see §10):** product name, pricing sign-off, domain, repo privacy, the Supabase organisation (Pro), Stripe and Resend accounts. Deployment happens the moment the Supabase project exists; the Netlify site is created through the connector.
+**Live on Netlify (29 September):** https://clubroom-lmru.netlify.app serves the marketing site, pricing and the preview builder. Sign-in and sign-up show an "opening soon" notice until the database is connected; app routes redirect there. Deploys so far are uploads of the `clubroom/` folder through the Netlify connector (the Next.js adapter is listed explicitly in `netlify.toml`); linking the GitHub repo in Netlify turns that into deploy-on-push. Functions still run in Netlify's default US region until the region is set to Sydney in the site settings.
 
-**Next, in order:** deploy and smoke-test on the real URL; make Aiman the platform owner; Sonics import walkthrough; Phase 2 (coach roll call, parent portal, progression).
+**Waiting on Aiman (see §10):** product name, pricing sign-off, domain, repo privacy, Stripe and Resend accounts, and one Supabase decision: the free organisation is at its two-project limit, so either upgrade it to Pro or name a project to pause. The moment the Sydney project exists the migrations, seed and Netlify keys go in and the full app is live on the same URL.
+
+**Next, in order:** Supabase project → keys into Netlify → smoke-test the real URL; make Aiman the platform owner; Sonics import walkthrough; Phase 2 (coach roll call, parent portal, progression).
 
 ## 15. How we work
 - Small, clear commits on `claude/affectionate-gates-5prjdn`.
