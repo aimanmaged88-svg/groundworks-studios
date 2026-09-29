@@ -19,7 +19,7 @@
   --ink:#EEF3F9; --muted:#8B97A7; --dim:#5C6675;
   --green:#16E37F; --green-deep:#0BB866; --green-ink:#052a19;
   --gold:#FFC63D; --amber:#FFB020; --red:#FF5D5D; --blue:#3DA5FF;
-  --sky:#3FC5EC; --sky-deep:#1C9BC6; --grad:linear-gradient(120deg,#E7369B,#F5821F,#FCC21A);
+  --sky:#3FC5EC; --sky-deep:#1C9BC6; --grad:linear-gradient(120deg,#9BE6F8,#3FC5EC 45%,#1C9BC6);
   --disp:'Archivo Black','Arial Black',system-ui,sans-serif;
   --sans:'Inter',system-ui,-apple-system,sans-serif;
   --rad:18px; --rad2:20px;
@@ -89,6 +89,12 @@ img{max-width:100%}
 .kicker.sky{color:var(--sky)}
 .htitle{font-family:var(--disp);font-weight:400;font-size:29px;line-height:.96;letter-spacing:.2px;
   text-transform:uppercase;margin-top:7px}
+.deskcard{display:flex;align-items:center;gap:14px;margin-top:12px;padding:14px 16px;border-radius:16px;text-decoration:none;color:var(--ink);
+  background:rgba(63,197,236,.08);border:1px solid rgba(63,197,236,.28)}
+.deskcard b{display:block;font-size:14px;font-weight:700}
+.deskcard span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.deskcard .go{margin-left:auto;display:flex;align-items:center;gap:4px;color:var(--sky);font-weight:700;font-size:13px;margin-top:0;white-space:nowrap}
+.deskcard .go svg{width:16px;height:16px}
 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* ---- cards ---- */
@@ -525,7 +531,7 @@ body{font-size:15px;letter-spacing:0;
   font-size:10px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;margin-top:8px;
   background:rgba(63,197,236,.15);color:var(--sky);border:1px solid rgba(63,197,236,.3)}
 .lvchip.lv4,.lvchip.lv5{background:rgba(255,198,61,.15);color:var(--gold);border-color:rgba(255,198,61,.32)}
-.lvchip.lv6{background:var(--grad);color:#1a0d00;border-color:transparent}
+.lvchip.lv6{background:var(--grad);color:#04222E;border-color:transparent}
 
 .lvbar{margin-top:18px;position:relative}
 .lvbar .lt{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--muted)}
@@ -699,13 +705,13 @@ body{font-size:15px;letter-spacing:0;
 .tier.lv3 .glow{background:radial-gradient(circle,#16E37F,transparent 68%)}
 .tier.lv4 .glow{background:radial-gradient(circle,#FFC63D,transparent 68%)}
 .tier.lv5 .glow{background:radial-gradient(circle,#F5821F,transparent 68%)}
-.tier.lv6 .glow{background:radial-gradient(circle,#E7369B,transparent 68%)}
+.tier.lv6 .glow{background:radial-gradient(circle,#3FC5EC,transparent 68%)}
 .tier.done.lv1 .tbadge,.tier.here.lv1 .tbadge{background:rgba(142,142,147,.2);color:#C7C7CC;border-color:rgba(142,142,147,.4)}
 .tier.done.lv2 .tbadge,.tier.here.lv2 .tbadge{background:rgba(63,197,236,.18);color:var(--sky);border-color:rgba(63,197,236,.4)}
 .tier.done.lv3 .tbadge,.tier.here.lv3 .tbadge{background:rgba(22,227,127,.18);color:var(--green);border-color:rgba(22,227,127,.4)}
 .tier.done.lv4 .tbadge,.tier.here.lv4 .tbadge{background:rgba(255,198,61,.18);color:var(--gold);border-color:rgba(255,198,61,.4)}
 .tier.done.lv5 .tbadge,.tier.here.lv5 .tbadge{background:rgba(245,130,31,.2);color:#F5821F;border-color:rgba(245,130,31,.42)}
-.tier.done.lv6 .tbadge,.tier.here.lv6 .tbadge{background:var(--grad);color:#1a0d00;border-color:transparent}
+.tier.done.lv6 .tbadge,.tier.here.lv6 .tbadge{background:var(--grad);color:#04222E;border-color:transparent}
 
 .tier.here{border-color:rgba(63,197,236,.42);box-shadow:0 0 0 1px rgba(63,197,236,.18),0 20px 50px -26px rgba(63,197,236,.5)}
 .tier.here .tstat{background:rgba(63,197,236,.16);color:var(--sky)}
@@ -764,26 +770,26 @@ const SEED = {
   ],
   players:[
     // U12
-    {id:"p1", name:"Zayd Hassan", div:"U14", jersey:7, guardian:"Mariam Hassan", reg:"registered", pay:"partial", owe:40, avail:"in", medical:true},
-    {id:"p2", name:"Omar Fares", div:"U12", jersey:4, guardian:"Layla Fares", reg:"registered", pay:"paid", owe:0, avail:"in"},
-    {id:"p3", name:"Eli Novak", div:"U12", jersey:11, guardian:"Petra Novak", reg:"registered", pay:"paid", owe:0, avail:"unset"},
-    {id:"p4", name:"Kai Mansour", div:"U12", jersey:9, guardian:"Sara Mansour", reg:"pending", pay:"unpaid", owe:120, avail:"unset"},
-    {id:"p5", name:"Leo Tran", div:"U12", jersey:3, guardian:"Anh Tran", reg:"registered", pay:"paid", owe:0, avail:"out"},
+    {id:"p1", name:"Zayd Hassan", div:"U14", jersey:7, guardian:"Mariam Hassan", reg:"registered", pay:"partial", owe:40, avail:"in", medical:true, sess:8, att:8, trains:7, games:27, streak:23, perfect:true, tour:false, pos:"Guard", since:"Apr 2025", skills:{ball:4,shoot:4,team:3,def:3,iq:3}, note:"Ready for U16 next season. Left-hand finish is the last real gap."},
+    {id:"p2", name:"Omar Fares", div:"U12", jersey:4, guardian:"Layla Fares", reg:"registered", pay:"paid", owe:0, avail:"in", sess:8, att:7, trains:15, games:59, streak:12, perfect:true, tour:false, pos:"Guard", since:"Apr 2024", skills:{ball:4,shoot:5,team:4,def:5,iq:4}, note:"Runs the U12 warm-up now without being asked. Moves up to U14 in summer."},
+    {id:"p3", name:"Eli Novak", div:"U12", jersey:11, guardian:"Petra Novak", reg:"registered", pay:"paid", owe:0, avail:"unset", sess:8, att:6, trains:7, games:19, streak:6, perfect:true, tour:false, pos:"Forward", since:"Oct 2025", skills:{ball:2,shoot:3,team:3,def:2,iq:2}, note:"Good hands for his age. Needs to stop fading away on every shot."},
+    {id:"p4", name:"Kai Mansour", div:"U12", jersey:9, guardian:"Sara Mansour", reg:"pending", pay:"unpaid", owe:120, avail:"unset", sess:8, att:4, trains:3, games:11, streak:5, perfect:false, tour:false, pos:"Centre", since:"Apr 2026", skills:{ball:3,shoot:2,team:2,def:2,iq:0}, note:"Missed four of the last six. Sara says school sport clashes on Fridays. Follow up."},
+    {id:"p5", name:"Leo Tran", div:"U12", jersey:3, guardian:"Anh Tran", reg:"registered", pay:"paid", owe:0, avail:"out", sess:8, att:3, trains:5, games:27, streak:7, perfect:true, tour:false, pos:"Guard", since:"Apr 2025", skills:{ball:3,shoot:3,team:3,def:3,iq:2}, note:"Attendance dipped late in the season. Still one of the better decision makers."},
     // U14
-    {id:"p6", name:"Yusuf Kaya", div:"U14", jersey:12, guardian:"Deniz Kaya", reg:"registered", pay:"unpaid", owe:120, avail:"in"},
-    {id:"p7", name:"Marco Bianchi", div:"U14", jersey:5, guardian:"Gina Bianchi", reg:"registered", pay:"paid", owe:0, avail:"in"},
-    {id:"p8", name:"Adam Rahal", div:"U14", jersey:8, guardian:"Nadia Rahal", reg:"pending", pay:"unpaid", owe:120, avail:"unset"},
-    {id:"p9", name:"Bilal Aziz", div:"U14", jersey:6, guardian:"Hana Aziz", reg:"registered", pay:"partial", owe:40, avail:"out"},
+    {id:"p6", name:"Yusuf Kaya", div:"U14", jersey:12, guardian:"Deniz Kaya", reg:"registered", pay:"unpaid", owe:120, avail:"in", sess:8, att:6, trains:15, games:67, streak:22, perfect:true, tour:true, pos:"Forward", since:"May 2024", skills:{ball:5,shoot:5,team:5,def:5,iq:5}, note:"Most consistent player in the squad. No summer registration yet, call Deniz."},
+    {id:"p7", name:"Marco Bianchi", div:"U14", jersey:5, guardian:"Gina Bianchi", reg:"registered", pay:"paid", owe:0, avail:"in", sess:8, att:5, trains:9, games:40, streak:5, perfect:false, tour:true, pos:"Guard", since:"Sep 2024", skills:{ball:5,shoot:4,team:4,def:3,iq:3}, note:"Starting to talk on defence. Next step is calling plays."},
+    {id:"p8", name:"Adam Rahal", div:"U14", jersey:8, guardian:"Nadia Rahal", reg:"pending", pay:"unpaid", owe:120, avail:"unset", sess:8, att:4, trains:3, games:11, streak:4, perfect:true, tour:false, pos:"Centre", since:"Feb 2026", skills:{ball:2,shoot:2,team:2,def:2,iq:0}, note:"Three missed Fridays in a row. Nadia mentioned transport."},
+    {id:"p9", name:"Bilal Aziz", div:"U14", jersey:6, guardian:"Hana Aziz", reg:"registered", pay:"partial", owe:40, avail:"out", sess:8, att:1, trains:9, games:35, streak:19, perfect:true, tour:false, pos:"Forward", since:"May 2025", skills:{ball:4,shoot:5,team:5,def:4,iq:3}, note:"Missed most of the last two months. Not injured as far as we know. Needs a call."},
     // U16
-    {id:"p10", name:"Jordan Lee", div:"U16", jersey:23, guardian:"—", reg:"registered", pay:"paid", owe:0, avail:"in"},
-    {id:"p11", name:"Sami Haddad", div:"U16", jersey:15, guardian:"—", reg:"registered", pay:"paid", owe:0, avail:"in"},
-    {id:"p12", name:"Ryan Cole", div:"U16", jersey:2, guardian:"—", reg:"lapsed", pay:"unpaid", owe:120, avail:"unset"},
-    {id:"p13", name:"Noah Khoury", div:"U16", jersey:14, guardian:"—", reg:"registered", pay:"paid", owe:0, avail:"in"},
+    {id:"p10", name:"Jordan Lee", div:"U16", jersey:23, guardian:"Grace Lee", reg:"registered", pay:"paid", owe:0, avail:"in", sess:8, att:7, trains:16, games:70, streak:23, perfect:true, tour:true, pos:"Guard", since:"May 2024", skills:{ball:5,shoot:5,team:5,def:5,iq:4}, note:"Captain material. Moves to U18 in summer, keep him with this group if we can."},
+    {id:"p11", name:"Sami Haddad", div:"U16", jersey:15, guardian:"Rami Haddad", reg:"registered", pay:"paid", owe:0, avail:"in", sess:8, att:5, trains:13, games:35, streak:5, perfect:true, tour:true, pos:"Forward", since:"Oct 2024", skills:{ball:4,shoot:4,team:4,def:3,iq:3}, note:"Park player learning to play inside a system. Big improvement since October."},
+    {id:"p12", name:"Ryan Cole", div:"U16", jersey:2, guardian:"Kerry Cole", reg:"lapsed", pay:"unpaid", owe:120, avail:"unset", sess:8, att:0, trains:5, games:14, streak:17, perfect:true, tour:false, pos:"Guard", since:"Oct 2025", skills:{ball:4,shoot:3,team:4,def:4,iq:0}, note:"Last attended 12 June. Two messages to Kerry, no reply."},
+    {id:"p13", name:"Noah Khoury", div:"U16", jersey:14, guardian:"Joseph Khoury", reg:"registered", pay:"paid", owe:0, avail:"in", sess:8, att:5, trains:6, games:38, streak:8, perfect:true, tour:false, pos:"Centre", since:"Feb 2025", skills:{ball:4,shoot:3,team:4,def:4,iq:4}, note:"Reliable. Sets proper screens, which nobody else in U16 does."},
     // U18
-    {id:"p14", name:"Malik Turner", div:"U18", jersey:21, guardian:"—", reg:"registered", pay:"paid", owe:0, avail:"in"},
-    {id:"p15", name:"Deng Akol", div:"U18", jersey:10, guardian:"—", reg:"registered", pay:"partial", owe:60, avail:"in"},
-    {id:"p16", name:"Cody Walsh", div:"U18", jersey:0, guardian:"—", reg:"registered", pay:"paid", owe:0, avail:"out"},
-    {id:"p17", name:"Faisal Omar", div:"U18", jersey:33, guardian:"—", reg:"pending", pay:"unpaid", owe:120, avail:"unset"},
+    {id:"p14", name:"Malik Turner", div:"U18", jersey:21, guardian:"Denise Turner", reg:"registered", pay:"paid", owe:0, avail:"in", sess:8, att:8, trains:19, games:73, streak:26, perfect:true, tour:true, pos:"Guard", since:"May 2024", skills:{ball:5,shoot:5,team:5,def:5,iq:5}, note:"Turns 18 next year and wants to stay. Talk to him about U21 Saturdays and helping with the U12s."},
+    {id:"p15", name:"Deng Akol", div:"U18", jersey:10, guardian:"Achol Akol", reg:"registered", pay:"partial", owe:60, avail:"in", sess:8, att:4, trains:9, games:32, streak:12, perfect:true, tour:true, pos:"Centre", since:"May 2025", skills:{ball:3,shoot:4,team:3,def:3,iq:3}, note:"Rim protector. Free throws are what's holding him back."},
+    {id:"p16", name:"Cody Walsh", div:"U18", jersey:0, guardian:"Tracey Walsh", reg:"registered", pay:"paid", owe:0, avail:"out", sess:8, att:5, trains:4, games:25, streak:6, perfect:true, tour:false, pos:"Forward", since:"Oct 2025", skills:{ball:4,shoot:4,team:3,def:4,iq:3}, note:"Five seasons elsewhere before us. Undecided about U21."},
+    {id:"p17", name:"Faisal Omar", div:"U18", jersey:33, guardian:"Samira Omar", reg:"pending", pay:"unpaid", owe:120, avail:"unset", sess:8, att:4, trains:2, games:9, streak:1, perfect:false, tour:false, pos:"Guard", since:"May 2026", skills:{ball:3,shoot:3,team:2,def:0,iq:0}, note:"Found us on Instagram. Comes about every second week."},
   ],
   tasks:[
     {id:"t1", tt:"Chase 4 unpaid U14 registrations", owner:"Abdulla", due:"Due today", done:false},
@@ -799,7 +805,7 @@ const SEED = {
 const FEE = 120;
 
 /* ============================ STATE ============================ */
-const LS="sonics_v1";
+const LS="sonics_v2"; /* v2: player numbers now match the desktop register */
 let S = load();
 function load(){ try{const r=localStorage.getItem(LS); if(r) return JSON.parse(r);}catch(e){} return JSON.parse(JSON.stringify(SEED)); }
 /* fill in anything a saved copy predates */
@@ -1466,6 +1472,10 @@ function dHome(){
     <div class="kpi green"><div class="v">${s.attRate}<span style="font-size:15px;color:var(--muted)">%</span></div><div class="l">Attendance</div><div class="sub muted">season average</div></div>
     <div class="kpi gold"><div class="v">${S.teams.length}</div><div class="l">Teams</div><div class="sub muted">U12 — U18</div></div>
   </div>
+
+  <a class="deskcard" href="dashboard.html" target="_blank" rel="noopener">
+    <div><b>Player register</b><span>Every player's history, current form and next season, on a desktop screen.</span></div>
+    <span class="go">Open ${I.chev}</span></a>
 
   <div class="h">Needs your attention</div>
   <div class="card">

@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Sonics · Player register</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+  --bg:#0B0C0E; --panel:#111317; --panel-2:#171A1F; --hover:#1A1E24;
+  --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.13);
+  --ink:#EEF0F3; --ink-2:#A9B0BA; --muted:#6F7783;
+  --accent:#3FC5EC; --accent-ink:#04222E; --accent-wash:rgba(63,197,236,.12);
+  --grid:#20242A; --axis:#363B43;
+  --s-train:#1FA3D1; --s-game:#D95926;
+  --o1:#1D5F7E; --o2:#1F7FA6; --o3:#22A0CF; --o4:#4FBCE3; --o5:#86D3EE; --o6:#C2EAF8;
+  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --good-ink:#3BC43B;
+  --flow:rgba(238,240,243,.10); --flow-hi:rgba(63,197,236,.42);
+  --shadow:0 18px 48px -18px rgba(0,0,0,.7);
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F3F2EE; --panel:#FFFFFF; --panel-2:#F7F6F2; --hover:#F1F0EB;
+  --line:rgba(12,14,18,.08); --line-2:rgba(12,14,18,.15);
+  --ink:#0D0F12; --ink-2:#48505B; --muted:#7A818C;
+  --accent:#0E8DB8; --accent-ink:#FFFFFF; --accent-wash:rgba(14,141,184,.09);
+  --grid:#ECEAE4; --axis:#C8C5BC;
+  --s-train:#1C9BC6; --s-game:#EB6834;
+  --o1:#5FBAE0; --o2:#3AA3D3; --o3:#2189BD; --o4:#18709D; --o5:#12577A; --o6:#0D405A;
+  --good-ink:#0B7A0B;
+  --flow:rgba(13,15,18,.08); --flow-hi:rgba(14,141,184,.34);
+  --shadow:0 18px 40px -20px rgba(20,24,30,.35);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.45 var(--sans);-webkit-font-smoothing:antialiased;
+  font-feature-settings:"ss02" 1}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+.mono{font-family:var(--mono);font-feature-settings:"zero" 1}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)} .ink2{color:var(--ink-2)}
+svg{display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 86%,transparent);
+  backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
+.top .in{max-width:1480px;margin:0 auto;padding:0 28px;height:60px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex:none}
+.brand img{width:30px;height:30px;border-radius:50%}
+.brand b{display:block;font-weight:600;font-size:14px;letter-spacing:-.005em;line-height:1.1}
+.brand span{display:block;font:500 11px/1.3 var(--mono);color:var(--muted);letter-spacing:.02em}
+.tabs{display:flex;gap:2px;height:100%}
+.tabs a{display:flex;align-items:center;padding:0 12px;text-decoration:none;color:var(--ink-2);font-weight:500;font-size:13.5px;
+  border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs a:hover{color:var(--ink)}
+.tabs a.on{color:var(--ink);border-bottom-color:var(--accent)}
+.tools{margin-left:auto;display:flex;align-items:center;gap:10px}
+.search{display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid var(--line-2);border-radius:7px;
+  background:var(--panel);width:280px;color:var(--muted)}
+.search:focus-within{border-color:var(--accent)}
+.search input{border:0;outline:0;background:none;flex:1;min-width:0;font-size:13px;color:var(--ink)}
+.search input::placeholder{color:var(--muted)}
+kbd{font:500 11px var(--mono);border:1px solid var(--line-2);border-bottom-width:2px;border-radius:4px;padding:0 5px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:5px;font:500 11px var(--mono);
+  letter-spacing:.02em;border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+.pill.test{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent)}
+:root[data-theme="light"] .pill.test{color:#8A5A00;border-color:rgba(160,110,0,.4)}
+.btn{height:34px;padding:0 12px;border-radius:7px;border:1px solid var(--line-2);background:var(--panel);cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;white-space:nowrap}
+.btn:hover{background:var(--hover)}
+.btn.icon{width:34px;padding:0;justify-content:center}
+.btn svg{width:16px;height:16px}
+
+/* ---------- filter row ---------- */
+.fbar{max-width:1480px;margin:0 auto;padding:16px 28px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fbar label{display:inline-flex;align-items:center;gap:0;height:32px;border:1px solid var(--line-2);border-radius:7px;background:var(--panel);
+  overflow:hidden}
+.fbar label span{font:500 11px var(--mono);color:var(--muted);padding:0 4px 0 10px;letter-spacing:.02em}
+.fbar select{border:0;background:none;height:100%;padding:0 26px 0 4px;font-size:13px;appearance:none;-webkit-appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%23888' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 8px center;background-size:12px}
+.fbar select option{background:var(--panel);color:var(--ink)}
+.fbar label.set{border-color:var(--accent)}
+.fbar .count{margin-left:auto;font:500 12px var(--mono);color:var(--muted)}
+.fbar .clear{height:32px;border:0;background:none;color:var(--accent);cursor:pointer;font-size:13px;padding:0 6px}
+
+main{max-width:1480px;margin:0 auto;padding:16px 28px 40px}
+
+/* ---------- cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.c12{grid-column:span 12}.c8{grid-column:span 8}.c7{grid-column:span 7}.c6{grid-column:span 6}.c5{grid-column:span 5}.c4{grid-column:span 4}.c3{grid-column:span 3}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;min-width:0}
+.card.flush{padding:0}
+.ch{display:flex;align-items:baseline;gap:4px 12px;margin-bottom:14px;flex-wrap:wrap}
+.scrollx{overflow-x:auto;overflow-y:hidden}
+.ch h2{margin:0;font-size:14px;font-weight:600;letter-spacing:-.005em}
+.ch .sub{font-size:12.5px;color:var(--muted)}
+.ch .right{margin-left:auto;font:500 11.5px var(--mono);color:var(--muted);white-space:nowrap}
+.card.flush .ch{padding:18px 20px 0}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend i.ring{background:none!important;border:1.5px solid var(--line-2)}
+
+/* KPI tiles */
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px 14px;min-width:0;display:flex;flex-direction:column}
+.kpi .l{font-size:12.5px;color:var(--ink-2)}
+.kpi .v{font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.1;margin-top:8px}
+.kpi .v small{font-size:15px;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:2px}
+.kpi .s{font-size:12px;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.kpi .spark{margin-top:auto;padding-top:10px}
+.delta{display:inline-flex;align-items:center;gap:3px;font-weight:500}
+.delta svg{width:12px;height:12px}
+.delta.up{color:var(--good-ink)} .delta.down{color:var(--crit)} .delta.flat{color:var(--muted)}
+
+/* level chip */
+.lv{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;white-space:nowrap}
+.lv i{width:8px;height:8px;border-radius:2px;flex:none}
+.l0{background:var(--o1)}.l1{background:var(--o2)}.l2{background:var(--o3)}.l3{background:var(--o4)}.l4{background:var(--o5)}.l5{background:var(--o6)}
+
+/* status */
+.st{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;white-space:nowrap}
+.st svg{width:13px;height:13px;flex:none}
+.st.good svg{color:var(--good)} .st.warn svg{color:var(--warn)} .st.crit svg{color:var(--crit)} .st.none svg{color:var(--muted)}
+
+/* ---------- table ---------- */
+.tw{overflow:auto;border-top:1px solid var(--line);max-height:calc(100vh - 210px)}
+table{width:100%;border-collapse:collapse}
+th{position:sticky;top:0;z-index:1;background:var(--panel);text-align:left;font:500 11px var(--mono);letter-spacing:.03em;color:var(--muted);
+  padding:10px 12px;border-bottom:1px solid var(--line-2);white-space:nowrap;user-select:none}
+th.sort{cursor:pointer} th.sort:hover{color:var(--ink)}
+th .ar{display:inline-block;width:10px;margin-left:4px;color:var(--accent)}
+th.r,td.r{text-align:right}
+td{padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+tbody tr{cursor:pointer}
+tbody tr:hover td,tbody tr.kb td{background:var(--hover)}
+tbody tr.former td{color:var(--muted)}
+.who{display:flex;align-items:center;gap:10px}
+.av{width:28px;height:28px;border-radius:6px;display:grid;place-items:center;font:600 11px var(--sans);letter-spacing:.02em;flex:none;
+  background:var(--accent-wash);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent)}
+.who b{font-weight:500;display:block;line-height:1.2}
+.who small{display:block;font:400 11.5px var(--mono);color:var(--muted)}
+.bar{width:64px;height:4px;border-radius:2px;background:var(--grid);overflow:hidden;display:inline-block;vertical-align:middle;margin-left:8px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:2px}
+
+/* ---------- lists ---------- */
+.list{display:flex;flex-direction:column}
+.li{display:grid;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}
+.li:first-child{border-top:0}
+.li:hover .nm{color:var(--accent)}
+.li .nm{font-weight:500}
+.li .mt{font-size:12px;color:var(--muted)}
+.empty{color:var(--muted);font-size:13px;padding:10px 0}
+
+/* ---------- tooltip ---------- */
+.tip{position:fixed;z-index:50;pointer-events:none;background:var(--panel);border:1px solid var(--line-2);border-radius:8px;box-shadow:var(--shadow);
+  padding:10px 12px;font-size:12.5px;min-width:160px;max-width:300px;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s}
+.tip.on{opacity:1;transform:none}
+.tip .tt{font-weight:600;margin-bottom:6px}
+.tip .tr{display:flex;justify-content:space-between;gap:16px;color:var(--ink-2);line-height:1.6}
+.tip .tr b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.tip .tr i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}
+.tip .tn{color:var(--muted);margin-top:4px;font-size:12px;white-space:normal}
+
+/* chart text */
+.ax{font:400 11px var(--mono);fill:var(--muted)}
+.axl{font:500 11px var(--sans);fill:var(--ink-2)}
+.lbl{font:500 11.5px var(--sans);fill:var(--ink)}
+.lbl2{font:400 11.5px var(--sans);fill:var(--ink-2)}
+.hit{fill:transparent;cursor:default}
+[data-tip]{outline:none}
+[data-tip]:focus-visible{outline:2px solid var(--accent)}
+
+/* ---------- player file ---------- */
+.crumb{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:13px;color:var(--muted)}
+.crumb a{color:var(--ink-2);text-decoration:none}.crumb a:hover{color:var(--ink)}
+.crumb .sp{margin-left:auto;display:flex;gap:6px}
+.phead{display:flex;align-items:center;gap:18px;padding:22px 24px}
+.phead .big{width:64px;height:64px;border-radius:12px;display:grid;place-items:center;font:600 22px var(--sans);letter-spacing:.01em;
+  background:var(--accent);color:var(--accent-ink);flex:none}
+.phead h1{margin:0;font-size:28px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.phead .meta{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--ink-2);font-size:13px}
+.phead .meta span{white-space:nowrap}
+.phead .lvbox{margin-left:auto;text-align:right;min-width:200px}
+.phead .lvbox .n{font-size:28px;font-weight:600;letter-spacing:-.02em}
+.phead .lvbox .n small{font-size:13px;color:var(--muted);font-weight:500;margin-left:4px;letter-spacing:0}
+.track{height:6px;border-radius:3px;background:var(--grid);margin-top:8px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.tri>div{padding:18px 24px 20px;border-left:1px solid var(--line);min-width:0}
+.tri>div:first-child{border-left:0}
+.tri h3{margin:0 0 12px;font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.tri h3 i{width:6px;height:6px;border-radius:50%;background:var(--muted)}
+.tri .now h3 i{background:var(--accent)}
+.tri .go h3 i{background:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:7px 16px;margin:0;font-size:13px}
+dl.kv dt{color:var(--muted);white-space:nowrap}
+dl.kv dd{margin:0;min-width:0}
+dl.kv dd a{color:var(--accent);text-decoration:none;cursor:pointer}
+dl.kv dd a:hover{text-decoration:underline}
+.path{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
+.path span{font:500 11.5px var(--mono);padding:2px 7px;border-radius:4px;border:1px solid var(--line-2);color:var(--ink-2)}
+.path span.cur{border-color:var(--accent);color:var(--accent)}
+.path em{font-style:normal;color:var(--muted);font-size:11px}
+
+.agrid{display:grid;gap:5px}
+.arow{display:grid;grid-template-columns:118px 1fr 70px;align-items:center;gap:12px}
+.arow .sn{font-size:12.5px;color:var(--ink-2)}
+.arow .sr{font:500 12px var(--mono);color:var(--ink-2);text-align:right}
+.cells{display:flex;gap:3px;flex-wrap:wrap}
+.cell{width:14px;height:14px;border-radius:3px}
+.cell.T{background:var(--s-train)} .cell.G{background:var(--s-game)} .cell.J{background:var(--s-game);box-shadow:inset 0 0 0 2px var(--panel),0 0 0 1px var(--s-game)}
+.cell.M{border:1.5px solid var(--line-2)} .cell.X{background:none;border:1px dashed var(--line)}
+
+.skills{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.sk{min-width:0}
+.sk .h{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px}
+.sk .h b{font-weight:500}
+.sk .h span{font:600 15px var(--sans)}
+.sk .lock{height:74px;display:grid;place-items:center;text-align:center;border:1px dashed var(--line-2);border-radius:6px;margin-top:8px;
+  font-size:12px;color:var(--muted);padding:0 10px}
+
+.tl{display:flex;flex-direction:column}
+.ev{display:grid;grid-template-columns:96px 88px 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:13px;align-items:baseline}
+.ev:first-child{border-top:0}
+.ev .d{font:400 12px var(--mono);color:var(--muted)}
+.ev .k{font:500 11px var(--mono);letter-spacing:.02em;color:var(--ink-2)}
+.ev .k.acc{color:var(--accent)}
+.ev q{quotes:none;color:var(--ink)}
+.ev a{color:var(--accent);cursor:pointer;text-decoration:none}
+.ev .by{color:var(--muted);font-size:12px;margin-left:6px}
+
+/* seasons grid */
+.sg th,.sg td{padding:6px 8px}
+.sg td.c{padding:4px}
+.sgc{height:34px;border-radius:5px;display:flex;flex-direction:column;justify-content:center;align-items:center;min-width:84px;
+  font:500 12px var(--sans);line-height:1.15}
+.sgc small{font:400 10.5px var(--mono);opacity:.85}
+.sgc.proj{background:none!important;border:1.5px solid var(--line-2);color:var(--ink-2)}
+.sgc.proj.ok{border-color:var(--accent);color:var(--ink)}
+.sgc.none{background:none}
+.sgc.gone{background:none;color:var(--muted);font:400 11.5px var(--sans);text-align:center;border:1px dashed var(--line)}
+.coh td{font:500 12px var(--mono);color:var(--ink-2);text-align:center;background:var(--panel-2);cursor:default}
+.coh td:first-child{text-align:left;font-family:var(--sans);color:var(--muted)}
+
+footer.method{max-width:1480px;margin:0 auto;padding:0 28px 48px;color:var(--muted);font-size:12.5px}
+footer.method .in{border-top:1px solid var(--line);padding-top:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+footer.method b{display:block;color:var(--ink-2);font-weight:500;margin-bottom:3px}
+
+@media (max-width:1180px){
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .c8,.c7,.c6,.c5,.c4,.c3{grid-column:span 12}
+  .skills{grid-template-columns:repeat(3,minmax(0,1fr))}
+  footer.method .in{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  .top .in{height:auto;flex-wrap:wrap;padding:10px 16px;gap:10px 16px}
+  .tabs{order:3;width:100%;height:38px}
+  .tools{margin-left:auto}
+  .search{width:100%;order:4}
+  .tools{flex-wrap:wrap;width:100%}
+  .fbar,main,footer.method{padding-left:16px;padding-right:16px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tri{grid-template-columns:1fr}
+  .tri>div{border-left:0;border-top:1px solid var(--line)}
+  .tri>div:first-child{border-top:0}
+  .phead{flex-wrap:wrap}
+  .phead .lvbox{margin-left:0;text-align:left;width:100%}
+  .skills{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ev{grid-template-columns:84px 1fr}
+  .ev .k{grid-column:2}
+  .ev>div:last-child{grid-column:1/-1}
+  .arow{grid-template-columns:90px 1fr 56px}
+  .ch .right{margin-left:0;width:100%}
+  .ch .sub{width:100%}
+  footer.method .in{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.tip{transition:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <a class="brand" href="#/overview"><img src="logo.png" alt=""><div><b>South West Sonics</b><span>Player register</span></div></a>
+  <nav class="tabs" id="tabs">
+    <a href="#/overview" data-v="overview">Overview</a>
+    <a href="#/players" data-v="players">Players</a>
+    <a href="#/seasons" data-v="seasons">Seasons</a>
+  </nav>
+  <div class="tools">
+    <label class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+      <input id="q" placeholder="Name, ID, suburb or guardian" autocomplete="off" spellcheck="false"><kbd>/</kbd></label>
+    <span class="pill test" title="Every person on this page is made up">Test data</span>
+    <button class="btn" id="export"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>Export</button>
+    <button class="btn icon" id="theme" aria-label="Switch theme"></button>
+  </div>
+</div></header>
+
+<div class="fbar" id="fbar"></div>
+<main id="view"></main>
+<footer class="method"><div class="in">
+  <div><b>Where the numbers come from</b>Every scheduled Friday since the club's first night, 3 May 2024, is a session. A player's record marks each one attended, missed, or before they joined.</div>
+  <div><b>Levels</b>Total sessions attended, trainings and games alike. Rookie 0, Starter 5, Hooper 12, Bucket 22, OG 35, UNK 50. Nobody is ranked against a team-mate.</div>
+  <div><b>Projections</b>Attendance over a player's last 10 sessions, applied to the Summer 2026/27 fixture list. A new player is shown at full attendance and marked as such.</div>
+  <div><b>Age groups</b>Age on 31 December of the year a season finishes. Winter 2026 uses 2026, Summer 2026/27 uses 2027. Test data only: 30 made-up players.</div>
+</div></footer>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script src="dash-data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+<script>
+"use strict";
+const $ = (s, e = document) => e.querySelector(s), $$ = (s, e = document) => [...e.querySelectorAll(s)];
+/* ============================================================
+   Data
+   ============================================================ */
+const D = window.SWS;
+const SCH = D.schedule;
+const SEAS = D.seasons;
+const SEAS_BY = Object.fromEntries(SEAS.map(s => [s.k, s]));
+const CUR = SEAS[SEAS.length - 1];
+const TODAY = D.today;
+const LEVELS = [
+  {n:"Rookie", at:0}, {n:"Starter", at:5}, {n:"Hooper", at:12},
+  {n:"Bucket", at:22}, {n:"OG", at:35}, {n:"UNK", at:50},
+];
+const SKILLS = [
+  {k:"ball", n:"Ball handling", at:5}, {k:"shoot", n:"Shooting", at:5}, {k:"team", n:"Teamwork", at:5},
+  {k:"def", n:"Defence", at:12}, {k:"iq", n:"Court IQ", at:22},
+];
+const SRC_LABEL = {"Launch day":"Club launch day", "Referral":"Referral", "Instagram":"Instagram", "School clinic":"School clinic", "Another club":"Moved from another club"};
+const GORD = ["U12","U14","U16","U18","U21"];
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const WD = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+const dt = s => new Date(s + "T00:00:00");
+const fd = (s, o = {}) => { if(!s) return "–"; const d = dt(s); return (o.wd ? WD[d.getDay()] + " " : "") + d.getDate() + " " + MON[d.getMonth()] + (o.ny ? "" : " " + d.getFullYear()); };
+const fmy = s => { const d = dt(s); return MON[d.getMonth()] + " " + d.getFullYear(); };
+const days = (a, b) => Math.round((dt(b) - dt(a)) / 864e5);
+const ageOn = (dob, on) => { const a = dt(dob), b = dt(on); let y = b.getFullYear() - a.getFullYear();
+  if (b.getMonth() < a.getMonth() || (b.getMonth() === a.getMonth() && b.getDate() < a.getDate())) y--; return y; };
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct = x => x == null ? "–" : Math.round(x * 100) + "%";
+const nf = n => n.toLocaleString("en-AU");
+const money = n => "$" + nf(n);
+const initials = n => n.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+
+function group(dob, y, g){
+  const a = y - +dob.slice(0, 4);
+  const c = a <= 11 ? "U12" : a <= 13 ? "U14" : a <= 15 ? "U16" : a <= 17 ? "U18" : "U21";
+  return g === "F" && c !== "U21" ? c + "G" : c;
+}
+const glabel = c => c ? (c.endsWith("G") ? c.slice(0, -1) + " Girls" : c) : "–";
+const gIdx = c => GORD.indexOf(String(c).replace("G", ""));
+function coachOf(code){ const e = Object.values(D.coaches).find(c => c.team === code); return e ? e.n : "Not assigned"; }
+const coachBy = k => D.coaches[k] ? D.coaches[k].n : k;
+const levelIdx = s => { let i = 0; LEVELS.forEach((L, n) => { if (s >= L.at) i = n; }); return i; };
+
+const PL = D.players.map(raw => {
+  const p = Object.assign({}, raw), a = p.att;
+  p.elig = []; p.hit = [];
+  for (let i = 0; i < a.length; i++) if (a[i] !== ".") { p.elig.push(i); if (a[i] === "1") p.hit.push(i); }
+  p.sessions = p.hit.length;
+  p.trains = p.hit.filter(i => SCH[i].t === "T").length;
+  p.games = p.sessions - p.trains;
+  p.status = p.left ? "former" : p.elig.length ? "current" : "new";
+  p.lv = levelIdx(p.sessions);
+  p.lvPct = p.lv === LEVELS.length - 1 ? 100 : Math.round((p.sessions - LEVELS[p.lv].at) / (LEVELS[p.lv + 1].at - LEVELS[p.lv].at) * 100);
+  p.levelDates = LEVELS.map((L, i) => { const k = i === 0 ? 0 : L.at - 1; return p.hit[k] !== undefined ? SCH[p.hit[k]].d : null; });
+  const l10 = p.elig.slice(-10), p10 = p.elig.slice(-20, -10);
+  p.r10n = l10.filter(i => a[i] === "1").length; p.r10d = l10.length;
+  p.r10 = l10.length ? p.r10n / l10.length : null;
+  p.rPrev = p10.length ? p10.filter(i => a[i] === "1").length / p10.length : null;
+  p.trend = p.r10 != null && p.rPrev != null ? p.r10 - p.rPrev : null;
+  p.spark = p.elig.slice(-16).map(i => a[i] === "1" ? 1 : 0);
+  let run = 0, best = 0; p.elig.forEach(i => { if (a[i] === "1") { run++; best = Math.max(best, run); } else run = 0; });
+  p.best = best; p.streak = run;
+  p.bySeason = {};
+  SEAS.forEach(s => {
+    const idx = p.elig.filter(i => SCH[i].s === s.k);
+    if (idx.length) p.bySeason[s.k] = { run: idx.length, hit: idx.filter(i => a[i] === "1").length, team: group(p.dob, s.y, p.g) };
+  });
+  const played = SEAS.filter(s => p.bySeason[s.k]);
+  p.firstSeason = played[0] ? played[0].k : null;
+  p.lastSeason = played.length ? played[played.length - 1].k : null;
+  p.team = p.status === "current" ? group(p.dob, CUR.y, p.g) : p.status === "former" ? p.bySeason[p.lastSeason].team : null;
+  p.nextGroup = group(p.dob, D.next.y, p.g);
+  p.moves = p.status === "current" && p.nextGroup !== p.team;
+  p.age = ageOn(p.dob, TODAY);
+  p.first = p.hit.length ? SCH[p.hit[0]].d : null;
+  p.last = p.hit.length ? SCH[p.hit[p.hit.length - 1]].d : null;
+  p.summerSt = p.status === "former" ? "–" : p.summer ? p.summer.st : "Not yet";
+  return p;
+});
+const BY = Object.fromEntries(PL.map(p => [p.k, p]));
+const BYID = Object.fromEntries(PL.map(p => [p.id, p]));
+PL.forEach(p => { p.brought = PL.filter(q => q.ref === p.k); });
+
+function projection(p){
+  if (p.status === "former") return [];
+  const r = p.status === "new" ? 1 : p.r10;
+  return LEVELS.slice(p.lv + 1).map(L => {
+    const need = L.at - p.sessions;
+    if (!r) return {L, need, date:null};
+    const k = Math.ceil(need / r);
+    return {L, need, k, date: D.future[k - 1] || null};
+  });
+}
+
+/* ============================================================
+   State, filters, routing
+   ============================================================ */
+const F = {team:"all", gender:"all", level:"all", summer:"all", status:"active"};
+let Q = "";
+let SORT = {k:"sessions", d:-1};
+let ROUTE = {v:"overview"};
+let KB = -1;
+
+function inView(p){
+  if (F.status === "active" && p.status === "former") return false;
+  if (F.status !== "active" && F.status !== "all" && p.status !== F.status) return false;
+  if (F.team !== "all") { if (F.team === "new" ? p.status !== "new" : p.team !== F.team) return false; }
+  if (F.gender !== "all" && p.g !== F.gender) return false;
+  if (F.level !== "all" && p.lv !== +F.level) return false;
+  if (F.summer !== "all" && p.summerSt !== F.summer) return false;
+  if (Q) {
+    const hay = (p.n + " " + p.id + " " + p.sub + " " + p.gd.n).toLowerCase();
+    if (!Q.toLowerCase().split(/\s+/).every(w => hay.includes(w))) return false;
+  }
+  return true;
+}
+const view = () => PL.filter(inView);
+const filtersOn = () => F.team !== "all" || F.gender !== "all" || F.level !== "all" || F.summer !== "all" || F.status !== "active" || Q;
+
+function renderFilters(){
+  const teams = ["U12","U14","U14G","U16","U18"];
+  const sel = (key, label, opts) => `<label class="${F[key] !== (key === "status" ? "active" : "all") ? "set" : ""}"><span>${label}</span>
+    <select data-f="${key}">${opts.map(([v, t]) => `<option value="${v}"${String(F[key]) === String(v) ? " selected" : ""}>${t}</option>`).join("")}</select></label>`;
+  const n = view().length;
+  $("#fbar").innerHTML =
+    sel("team", "Team", [["all","All teams"], ...teams.map(t => [t, glabel(t)]), ["new","Starting at tryouts"]]) +
+    sel("gender", "Gender", [["all","All"], ["M","Boys"], ["F","Girls"]]) +
+    sel("level", "Level", [["all","All levels"], ...LEVELS.map((L, i) => [i, L.n])]) +
+    sel("summer", CUR.k === "W26" ? "Summer 26/27" : "Next season", [["all","All"], ["Registered","Registered"], ["Not yet","Not registered yet"]]) +
+    sel("status", "Status", [["active","Current and new"], ["current","Current"], ["new","New"], ["former","Former"], ["all","Everyone"]]) +
+    (filtersOn() ? `<button class="clear" id="clear">Clear</button>` : "") +
+    `<span class="count">${n} of ${PL.length} players</span>`;
+  $$("#fbar select").forEach(s => s.onchange = () => { F[s.dataset.f] = s.value; KB = -1; render(); });
+  const c = $("#clear"); if (c) c.onclick = () => { Object.assign(F, {team:"all", gender:"all", level:"all", summer:"all", status:"active"}); Q = ""; $("#q").value = ""; render(); };
+}
+
+function parseRoute(){
+  const h = location.hash.replace(/^#\/?/, "");
+  const [a, b] = h.split("/");
+  if (a === "p" && BYID[b]) return {v:"player", id:b};
+  if (["overview","players","seasons"].includes(a)) return {v:a};
+  return {v:"overview"};
+}
+window.addEventListener("hashchange", () => { ROUTE = parseRoute(); render(); window.scrollTo(0, 0); });
+
+/* ============================================================
+   Tooltip
+   ============================================================ */
+const TIPS = [];
+const tipId = html => { TIPS.push(html); return TIPS.length - 1; };
+const tipAttr = html => ` data-tip="${tipId(html)}" tabindex="0"`;
+const tipRows = rows => rows.map(r => r ? `<div class="tr"><span>${r[2] ? `<i style="background:${r[2]}"></i>` : ""}${r[0]}</span><b>${r[1]}</b></div>` : "").join("");
+const tip = $("#tip");
+function showTip(html, x, y){
+  tip.innerHTML = html; tip.classList.add("on");
+  const w = tip.offsetWidth, h = tip.offsetHeight, vw = innerWidth, vh = innerHeight;
+  let L = x + 14, T = y + 14;
+  if (L + w > vw - 8) L = x - w - 14; if (T + h > vh - 8) T = y - h - 14;
+  tip.style.left = Math.max(8, L) + "px"; tip.style.top = Math.max(8, T) + "px";
+}
+const hideTip = () => tip.classList.remove("on");
+document.addEventListener("mouseover", e => { const t = e.target.closest("[data-tip]"); if (t) showTip(TIPS[+t.dataset.tip], e.clientX, e.clientY); });
+document.addEventListener("mousemove", e => { const t = e.target.closest("[data-tip]"); if (t && tip.classList.contains("on")) showTip(TIPS[+t.dataset.tip], e.clientX, e.clientY); });
+document.addEventListener("mouseout", e => { if (e.target.closest("[data-tip]")) hideTip(); });
+document.addEventListener("focusin", e => { const t = e.target.closest("[data-tip]"); if (t) { const r = t.getBoundingClientRect(); showTip(TIPS[+t.dataset.tip], r.right, r.top); } });
+document.addEventListener("focusout", e => { if (e.target.closest("[data-tip]")) hideTip(); });
+addEventListener("scroll", hideTip, {passive:true});
+
+/* ============================================================
+   Small parts
+   ============================================================ */
+const ICON = {
+  up:'<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5v-7M2.8 5.6 6 2.4l3.2 3.2"/></svg>',
+  down:'<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5v7M2.8 6.4 6 9.6l3.2-3.2"/></svg>',
+  flat:'<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2.5 6h7"/></svg>',
+  ok:'<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="7"/><path d="m4.9 8.2 2.1 2.1 4.1-4.4" fill="none" stroke="var(--panel)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  wait:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="8" r="6.2"/><path d="M8 4.8V8l2.2 1.4" stroke-linecap="round"/></svg>',
+  alert:'<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1" stroke="var(--panel)" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  dash:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6.2" stroke-dasharray="2.4 2.2"/></svg>',
+  prev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>',
+  next:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg>',
+  sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2.1M12 19.1v2.1M2.8 12h2.1M19.1 12h2.1M5.5 5.5l1.5 1.5M17 17l1.5 1.5M5.5 18.5 7 17M17 7l1.5-1.5"/></svg>',
+  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.6A8.4 8.4 0 0 1 9.4 4a8.4 8.4 0 1 0 10.6 10.6z"/></svg>',
+};
+const lvChip = i => `<span class="lv"><i class="l${i}"></i>${LEVELS[i].n}</span>`;
+function delta(v, unit = " pts"){
+  if (v == null) return "";
+  const n = Math.round(v * 100);
+  const cls = n > 0 ? "up" : n < 0 ? "down" : "flat";
+  return `<span class="delta ${cls}">${ICON[cls]}${n > 0 ? "+" : ""}${n}${unit}</span>`;
+}
+function summerCell(p){
+  if (p.status === "former") return `<span class="st none">${ICON.dash}Left ${fmy(p.left.d)}</span>`;
+  if (p.summerSt === "Registered") return `<span class="st good">${ICON.ok}${esc(glabel(p.nextGroup))}${p.moves ? ' <span class="muted">moves up</span>' : ""}</span>`;
+  return `<span class="st warn">${ICON.wait}Not yet</span>`;
+}
+function spark(vals, w = 96, h = 18){
+  if (!vals.length) return `<span class="muted mono" style="font-size:12px">no sessions</span>`;
+  const n = vals.length, gap = 2, cw = Math.max(2, (w - gap * (n - 1)) / n);
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${vals.map((v, i) =>
+    `<rect x="${(i * (cw + gap)).toFixed(1)}" y="${v ? 2 : h - 4}" width="${cw.toFixed(1)}" height="${v ? h - 2 : 2}" rx="1" fill="${v ? "var(--accent)" : "var(--axis)"}"/>`).join("")}</svg>`;
+}
+function niceMax(v){ const p = Math.pow(10, Math.floor(Math.log10(Math.max(1, v)))); const m = v / p; return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p; }
+function barPath(x, y, w, h, r){ // rounded data-end at the top, square at the baseline
+  if (h <= 0) return ""; r = Math.min(r, h, w / 2);
+  return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`;
+}
+function hbarPath(x, y, w, h, r){ // grows left to right, rounded at the right end
+  if (w <= 0) return ""; r = Math.min(r, w, h / 2);
+  return `M${x},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x}Z`;
+}
+const go = id => { location.hash = "#/p/" + id; };
+
+/* ============================================================
+   Overview
+   ============================================================ */
+function overview(){
+  const P = view();
+  const cur = P.filter(p => p.status === "current"), nw = P.filter(p => p.status === "new"), former = P.filter(p => p.status === "former");
+  const active = cur.concat(nw);
+  const totalSess = P.reduce((s, p) => s + p.sessions, 0);
+
+  // club attendance over the last 10 and the 10 before, per scheduled session
+  const lastIdx = SCH.map((s, i) => i).filter(i => SCH[i].t !== "J");
+  const rateAt = idxs => { let h = 0, e = 0; idxs.forEach(i => P.forEach(p => { const c = p.att[i]; if (c !== ".") { e++; if (c === "1") h++; } })); return e ? h / e : null; };
+  const L10 = lastIdx.slice(-10), P10 = lastIdx.slice(-20, -10);
+  const r10 = rateAt(L10), rp = rateAt(P10);
+  const sparkRates = lastIdx.slice(-20).map(i => rateAt([i]));
+
+  const reg = cur.filter(p => p.summerSt === "Registered").length;
+  const owing = active.filter(p => p.owe > 0);
+  const owed = owing.reduce((s, p) => s + p.owe, 0);
+  const toTry = days(TODAY, D.next.tryout);
+
+  const rateSpark = (() => {
+    const v = sparkRates.filter(x => x != null); if (!v.length) return "";
+    const w = 220, h = 30, n = sparkRates.length;
+    const pts = sparkRates.map((r, i) => r == null ? null : [i / (n - 1) * (w - 6) + 3, h - 3 - r * (h - 6)]).filter(Boolean);
+    const last = pts[pts.length - 1];
+    return `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">
+      <polyline points="${pts.map(p => p.join(",")).join(" ")}" fill="none" stroke="var(--axis)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+      <polyline points="${pts.slice(-10).map(p => p.join(",")).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+      <circle cx="${last[0]}" cy="${last[1]}" r="3" fill="var(--accent)"/></svg>`;
+  })();
+
+  return `
+  <div class="kpis">
+    <div class="kpi"><div class="l">${F.status === "active" ? "Current players" : "Players in view"}</div>
+      <div class="v">${F.status === "active" ? cur.length : P.length}</div>
+      <div class="s">${F.status === "active" ? `${nw.length} new for tryouts · ${PL.filter(p => p.status === "former").length} former` : `${cur.length} current · ${nw.length} new · ${former.length} former`}</div></div>
+    <div class="kpi"><div class="l">Sessions attended</div><div class="v">${nf(totalSess)}</div>
+      <div class="s">${SCH.length} sessions run since ${fd(SCH[0].d)}</div></div>
+    <div class="kpi"><div class="l">Attendance, last 10 Fridays</div><div class="v">${pct(r10)}</div>
+      <div class="s">${delta(r10 != null && rp != null ? r10 - rp : null)} vs the 10 before</div><div class="spark">${rateSpark}</div></div>
+    <div class="kpi"><div class="l">Registered for ${esc(D.next.n)}</div><div class="v">${reg}<small>&nbsp;of ${cur.length}</small></div>
+      <div class="s">${nw.length ? `plus ${nw.length} new · ` : ""}tryout ${fd(D.next.tryout, {wd:1, ny:1})}, ${toTry} days</div></div>
+    <div class="kpi"><div class="l">Fees owing, ${esc(CUR.n)}</div><div class="v">${money(owed)}</div>
+      <div class="s">${owing.length} ${owing.length === 1 ? "family" : "families"}</div></div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <section class="card c8"><div class="ch"><h2>Sessions attended by month</h2><span class="sub">Every Friday since the club started</span>
+      <div class="right legend"><span><i style="background:var(--s-train)"></i>Training</span><span><i style="background:var(--s-game)"></i>Game or tour</span></div></div>
+      <div id="chMonth" style="height:260px"></div></section>
+    <section class="card c4"><div class="ch"><h2>Levels</h2><span class="sub">Where the squad sits now</span></div>
+      <div id="chLevels"></div></section>
+
+    <section class="card c12"><div class="ch"><h2>Came from, now, heading</h2><span class="sub">How each player found the club, their team this winter, and their age group for ${esc(D.next.n)}</span>
+      <span class="right">hover a band for names</span></div>
+      <div class="scrollx"><div id="chFlow" style="height:380px;min-width:760px"></div></div></section>
+
+    <section class="card c5"><div class="ch"><h2>Before the tryout</h2><span class="sub">Returning players not registered yet</span><span class="right">${fd(D.next.tryout, {wd:1})}</span></div>
+      ${followUps(P)}</section>
+    <section class="card c4"><div class="ch"><h2>Next level-ups</h2><span class="sub">At each player's current rate</span></div>
+      ${levelUps(P)}</section>
+    <section class="card c3"><div class="ch"><h2>Moving up</h2><span class="sub">New age group in summer</span></div>
+      ${movingUp(P)}</section>
+  </div>`;
+}
+
+function followUps(P){
+  const list = P.filter(p => p.status === "current" && p.summerSt !== "Registered")
+    .sort((a, b) => (b.r10 ?? 0) - (a.r10 ?? 0) || b.sessions - a.sessions);
+  if (!list.length) return `<div class="empty">Everyone in view has registered.</div>`;
+  return `<div class="list">${list.map(p => {
+    const note = p.notes.length ? p.notes[p.notes.length - 1] : null;
+    return `<div class="li" style="grid-template-columns:28px 1fr auto" data-go="${p.id}">
+      <div class="av">${initials(p.n)}</div>
+      <div style="min-width:0"><div class="nm">${esc(p.n)} <span class="muted" style="font-weight:400">· ${glabel(p.team)} · ${LEVELS[p.lv].n}</span></div>
+        <div class="mt" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${note ? esc(note.t) : `${esc(p.gd.n)}, ${p.gd.rel.toLowerCase()}`}</div></div>
+      <div style="text-align:right">${spark(p.spark.slice(-10), 70, 16)}<div class="mt mono" style="margin-top:3px">${p.r10n}/${p.r10d} last 10</div></div>
+    </div>`; }).join("")}</div>`;
+}
+function levelUps(P){
+  const rows = P.filter(p => p.status !== "former" && p.lv < LEVELS.length - 1).map(p => ({p, x: projection(p)[0]}))
+    .filter(r => r.x && r.x.date).sort((a, b) => a.x.date.localeCompare(b.x.date) || a.x.need - b.x.need).slice(0, 8);
+  if (!rows.length) return `<div class="empty">No level-ups projected for this group.</div>`;
+  return `<div class="list">${rows.map(({p, x}) => `<div class="li" style="grid-template-columns:1fr auto" data-go="${p.id}">
+    <div style="min-width:0"><div class="nm">${esc(p.n)}</div><div class="mt">${LEVELS[p.lv].n} → ${x.L.n} · ${x.need} to go${p.status === "new" ? " · full attendance" : ""}</div></div>
+    <div class="mono" style="font-size:12.5px;text-align:right">${fd(x.date, {ny:1})}<div class="mt">${x.k} ${x.k === 1 ? "Friday" : "Fridays"}</div></div></div>`).join("")}</div>`;
+}
+function movingUp(P){
+  const rows = P.filter(p => p.moves).sort((a, b) => gIdx(a.team) - gIdx(b.team) || a.n.localeCompare(b.n));
+  if (!rows.length) return `<div class="empty">Nobody in view changes age group.</div>`;
+  return `<div class="list">${rows.map(p => `<div class="li" style="grid-template-columns:1fr auto" data-go="${p.id}">
+    <div class="nm">${esc(p.n)}</div><div class="mono" style="font-size:12px"><span class="muted">${glabel(p.team)} →</span> ${glabel(p.nextGroup)}</div></div>`).join("")}</div>`;
+}
+
+function chartMonths(el, P){
+  const W = el.clientWidth, H = el.clientHeight, m = {l:38, r:6, t:22, b:26};
+  const first = dt(SCH[0].d), last = dt(TODAY);
+  const months = [];
+  for (let y = first.getFullYear(), mo = first.getMonth(); y < last.getFullYear() || (y === last.getFullYear() && mo <= last.getMonth()); mo++) {
+    if (mo > 11) { mo = 0; y++; } months.push({y, mo, T:0, G:0, run:0, elig:0});
+  }
+  const key = d => { const x = dt(d); return (x.getFullYear() - first.getFullYear()) * 12 + x.getMonth() - first.getMonth(); };
+  SCH.forEach((s, i) => { const M = months[key(s.d)]; if (!M) return; M.run++;
+    P.forEach(p => { const c = p.att[i]; if (c !== ".") { M.elig++; if (c === "1") { if (s.t === "T") M.T++; else M.G++; } } }); });
+  const max = niceMax(Math.max(1, ...months.map(M => M.T + M.G)));
+  const iw = W - m.l - m.r, ih = H - m.t - m.b, bw = iw / months.length, cw = Math.min(24, bw * .62);
+  const y = v => m.t + ih - v / max * ih;
+  let g = "";
+  // season bands
+  SEAS.concat([{k:D.next.k, n:D.next.n, from:D.next.from, to:TODAY}]).forEach((s, si) => {
+    const a = Math.max(0, key(s.from)), b = Math.min(months.length - 1, key(s.to));
+    if (a > months.length - 1 || b < 0 || s.k === D.next.k) return;
+    const x0 = m.l + a * bw, x1 = m.l + (b + 1) * bw;
+    if (si % 2 === 0) g += `<rect x="${x0}" y="${m.t - 16}" width="${x1 - x0}" height="${ih + 16}" fill="var(--panel-2)"/>`;
+    const lab = s.n.replace("Summer ", "Sum ").replace("Winter ", "Win ");
+    if (x1 - x0 > lab.length * 7 + 10) g += `<text class="ax" x="${x0 + 6}" y="${m.t - 5}">${lab}</text>`;
+  });
+  for (let v = 0; v <= max; v += max / 4) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/><text class="ax" x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${nf(v)}</text>`;
+  months.forEach((M, i) => {
+    const x = m.l + i * bw + (bw - cw) / 2, tot = M.T + M.G;
+    const hT = M.T / max * ih, hG = M.G / max * ih;
+    const gap = M.T && M.G ? 2 : 0;
+    if (M.T) g += `<path d="${M.G ? `M${x},${y(0)}V${y(0) - hT}H${x + cw}V${y(0)}Z` : barPath(x, y(0) - hT, cw, hT, 4)}" fill="var(--s-train)"/>`;
+    if (M.G) g += `<path d="${barPath(x, y(0) - hT - hG, cw, Math.max(0, hG - gap), 4)}" fill="var(--s-game)"/>`;
+    if (i % (W < 640 ? 6 : 4) === 0) g += `<text class="ax" x="${m.l + i * bw + bw / 2}" y="${H - 8}" text-anchor="middle">${MON[M.mo]} ${String(M.y).slice(2)}</text>`;
+    const t = `<div class="tt">${MON[M.mo]} ${M.y}</div>` + (M.run ? tipRows([
+      ["Training", nf(M.T), "var(--s-train)"], ["Game or tour", nf(M.G), "var(--s-game)"], ["Sessions run", M.run],
+      ["Attendance", M.elig ? pct(tot / M.elig) : "–"]]) : `<div class="tn">No sessions. Off-season.</div>`);
+    g += `<rect class="hit" x="${m.l + i * bw}" y="${m.t}" width="${bw}" height="${ih}"${tipAttr(t)} aria-label="${MON[M.mo]} ${M.y}: ${tot} attended"/>`;
+  });
+  g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(0)}" y2="${y(0)}" stroke="var(--axis)"/>`;
+  el.innerHTML = `<svg width="${W}" height="${H}" role="img" aria-label="Sessions attended by month, training and games">${g}</svg>`;
+}
+
+function chartLevels(el, P){
+  const act = P.filter(p => p.status !== "former");
+  const counts = LEVELS.map((L, i) => act.filter(p => p.lv === i));
+  const max = Math.max(1, ...counts.map(c => c.length));
+  const W = el.clientWidth, rowH = 38, H = rowH * LEVELS.length, lw = 108, vw = 34, bh = 16;
+  let g = "";
+  LEVELS.slice().reverse().forEach((L, j) => {
+    const i = LEVELS.length - 1 - j, c = counts[i], yy = j * rowH, w = (W - lw - vw) * c.length / max;
+    g += `<text class="lbl" x="0" y="${yy + rowH / 2 + 1}">${L.n}</text><text class="ax" x="${lw - 10}" y="${yy + rowH / 2 + 1}" text-anchor="end">${L.at}+</text>`;
+    g += `<rect x="${lw}" y="${yy + (rowH - bh) / 2}" width="${W - lw - vw}" height="${bh}" rx="3" fill="var(--grid)" opacity=".5"/>`;
+    if (c.length) g += `<path d="${hbarPath(lw, yy + (rowH - bh) / 2, w, bh, 4)}" fill="var(--o${i + 1})"/>`;
+    g += `<text class="lbl" x="${lw + w + 8}" y="${yy + rowH / 2 + 1}">${c.length}</text>`;
+    const t = `<div class="tt">${L.n} · ${L.at}+ sessions</div>` + (c.length ? `<div class="tn">${c.map(p => esc(p.n)).join(", ")}</div>` : `<div class="tn">Nobody at this level.</div>`);
+    g += `<rect class="hit" x="0" y="${yy}" width="${W}" height="${rowH}"${tipAttr(t)} aria-label="${L.n}: ${c.length}"/>`;
+  });
+  el.innerHTML = `<svg width="${W}" height="${H}" role="img" aria-label="Players by level" style="dominant-baseline:middle">${g}</svg>
+    <div class="muted" style="font-size:12px;margin-top:10px">${act.length} current and new players. Levels come from sessions attended, nothing else.</div>`;
+}
+
+function chartFlow(el, P){
+  const act = P.filter(p => p.status !== "former");
+  const W = el.clientWidth, H = el.clientHeight, nodeW = 10, pad = 10, top = 22;
+  if (!act.length) { el.innerHTML = `<div class="empty">No current players in view.</div>`; return; }
+  const colL = p => p.src, colM = p => p.status === "new" ? "Tryout" : p.team, colR = p => p.summerSt === "Registered" ? p.nextGroup : "Not yet";
+  const orderM = ["Tryout","U12","U14","U14G","U16","U18"];
+  const orderR = ["U12","U12G","U14","U14G","U16","U16G","U18","U21","Not yet"];
+  const srcCount = {}; act.forEach(p => srcCount[colL(p)] = (srcCount[colL(p)] || 0) + 1);
+  const bary = k => { const ps = act.filter(p => colL(p) === k); return ps.reduce((s, p) => s + orderM.indexOf(colM(p)), 0) / ps.length; };
+  const orderL = Object.keys(srcCount).sort((a, b) => bary(a) - bary(b));
+  const cols = [orderL, orderM, orderR].map((ord, ci) => {
+    const f = [colL, colM, colR][ci];
+    return ord.map(k => ({k, ci, ps: act.filter(p => f(p) === k)})).filter(n => n.ps.length);
+  });
+  const N = act.length;
+  const scale = Math.min(...cols.map(c => (H - top - pad * (c.length - 1)) / N));
+  const labW = Math.min(170, W * .16);
+  const xs = [labW, W / 2 - nodeW / 2, W - labW - nodeW];
+  cols.forEach((c, ci) => { const tot = c.reduce((s, n) => s + n.ps.length, 0) * scale + pad * (c.length - 1); let y = top + (H - top - tot) / 2;
+    c.forEach(n => { n.x = xs[ci]; n.y = y; n.h = n.ps.length * scale; n.out = n.y; n.inn = n.y; y += n.h + pad; }); });
+  const nodeOf = (ci, k) => cols[ci].find(n => n.k === k);
+  const labelOf = (ci, k) => ci === 0 ? SRC_LABEL[k] || k : k === "Tryout" ? "Starting at tryouts" : k === "Not yet" ? "Not registered yet" : glabel(k);
+  let links = "";
+  const mk = (a, b, ps, ci) => {
+    const h = ps.length * scale, y0 = a.out, y1 = b.inn; a.out += h; b.inn += h;
+    const x0 = a.x + nodeW, x1 = b.x, cx = (x0 + x1) / 2;
+    const d = `M${x0},${y0}C${cx},${y0} ${cx},${y1} ${x1},${y1}V${y1 + h}C${cx},${y1 + h} ${cx},${y0 + h} ${x0},${y0 + h}Z`;
+    const t = `<div class="tt">${esc(labelOf(ci, a.k))} → ${esc(labelOf(ci + 1, b.k))}</div><div class="tr"><span>Players</span><b>${ps.length}</b></div><div class="tn">${ps.map(p => esc(p.n)).join(", ")}</div>`;
+    links += `<path class="flow" data-a="${ci}:${esc(a.k)}" data-b="${ci + 1}:${esc(b.k)}" d="${d}" fill="var(--flow)"${tipAttr(t)} aria-label="${ps.length} players"/>`;
+  };
+  cols[0].forEach(a => cols[1].forEach(b => { const ps = a.ps.filter(p => colM(p) === b.k); if (ps.length) mk(a, b, ps, 0); }));
+  cols[1].forEach(a => cols[2].forEach(b => { const ps = a.ps.filter(p => colR(p) === b.k); if (ps.length) mk(a, b, ps, 1); }));
+  let nodes = "";
+  const heads = ["Came from", "Winter 2026", D.next.n];
+  cols.forEach((c, ci) => {
+    nodes += `<text class="ax" x="${ci === 0 ? xs[0] + nodeW : ci === 1 ? xs[1] + nodeW / 2 : xs[2]}" y="10" text-anchor="${ci === 0 ? "end" : ci === 1 ? "middle" : "start"}" style="text-transform:uppercase;letter-spacing:.06em">${heads[ci]}</text>`;
+    c.forEach(n => {
+      const warn = ci === 2 && n.k === "Not yet";
+      nodes += `<rect class="node" data-n="${ci}:${esc(n.k)}" x="${n.x}" y="${n.y}" width="${nodeW}" height="${Math.max(2, n.h)}" rx="2" fill="${warn ? "var(--warn)" : "var(--ink-2)"}"/>`;
+      const tx = ci === 0 ? n.x - 8 : ci === 1 ? n.x + nodeW + 8 : n.x + nodeW + 8, anchor = ci === 0 ? "end" : "start";
+      const ty = n.y + n.h / 2;
+      nodes += `<text class="lbl" x="${tx}" y="${ty - (ci === 1 ? 0 : 0)}" text-anchor="${anchor}" dominant-baseline="middle">${esc(labelOf(ci, n.k))}<tspan class="ax" dx="6">${n.ps.length}</tspan></text>`;
+    });
+  });
+  el.innerHTML = `<svg width="${W}" height="${H}" role="img" aria-label="Flow from how players found the club, to their current team, to their age group next season">${links}${nodes}</svg>`;
+  const svg = el.querySelector("svg");
+  svg.addEventListener("mouseover", e => { const f = e.target.closest(".flow"); if (!f) return;
+    svg.querySelectorAll(".flow").forEach(x => x.setAttribute("fill", x === f ? "var(--flow-hi)" : "var(--flow)")); });
+  svg.addEventListener("mouseleave", () => svg.querySelectorAll(".flow").forEach(x => x.setAttribute("fill", "var(--flow)")));
+}
+
+/* ============================================================
+   Players table
+   ============================================================ */
+const COLS = [
+  {k:"id", t:"ID", v:p => p.id},
+  {k:"n", t:"Player", v:p => p.n},
+  {k:"team", t:"Team", v:p => p.status === "new" ? "zz" : (gIdx(p.team) + (p.team && p.team.endsWith("G") ? .5 : 0))},
+  {k:"age", t:"Age", v:p => p.age, r:1},
+  {k:"lv", t:"Level", v:p => p.sessions},
+  {k:"sessions", t:"Sessions", v:p => p.sessions, r:1},
+  {k:"r10", t:"Last 10", v:p => p.r10 ?? -1},
+  {k:"trend", t:"Trend", v:p => p.trend ?? -9, r:1},
+  {k:"joined", t:"Joined", v:p => p.joined},
+  {k:"src", t:"Came from", v:p => p.src},
+  {k:"summer", t:"Summer 26/27", v:p => p.status === "former" ? 3 : p.summerSt === "Registered" ? 1 : 2},
+  {k:"owe", t:"Owing", v:p => p.owe, r:1},
+];
+function players(){
+  const P = view().sort((a, b) => { const c = COLS.find(c => c.k === SORT.k); const x = c.v(a), y = c.v(b);
+    return (x < y ? -1 : x > y ? 1 : 0) * SORT.d || a.n.localeCompare(b.n); });
+  const rows = P.map((p, i) => `<tr class="${p.status === "former" ? "former" : ""}${i === KB ? " kb" : ""}" data-go="${p.id}">
+    <td class="mono muted">${p.id}</td>
+    <td><div class="who"><div class="av">${initials(p.n)}</div><div><b>${esc(p.n)}</b><small>${p.no != null ? "#" + p.no + " · " : ""}${p.pos || "Position TBC"}</small></div></div></td>
+    <td>${p.status === "new" ? '<span class="muted">Tryout</span>' : glabel(p.team)}</td>
+    <td class="r num mono">${p.age}</td>
+    <td>${lvChip(p.lv)}${p.lv < 5 ? `<span class="bar" title="${p.lvPct}% of the way to ${LEVELS[p.lv + 1].n}"><i style="width:${p.lvPct}%"></i></span>` : ""}</td>
+    <td class="r num mono">${p.sessions}<span class="muted" style="font-size:11.5px"> ${p.trains}T ${p.games}G</span></td>
+    <td><div style="display:flex;align-items:center;gap:8px">${spark(p.spark.slice(-10), 64, 16)}<span class="mono num" style="font-size:12px;color:var(--ink-2)">${p.r10d ? p.r10n + "/" + p.r10d : ""}</span></div></td>
+    <td class="r">${p.trend != null ? delta(p.trend, "") : '<span class="muted">–</span>'}</td>
+    <td class="mono num" style="font-size:12.5px">${fd(p.joined)}</td>
+    <td>${esc(SRC_LABEL[p.src] || p.src)}${p.ref ? ` <span class="muted">via ${esc(BY[p.ref].n.split(" ")[0])}</span>` : ""}</td>
+    <td>${summerCell(p)}</td>
+    <td class="r num mono">${p.owe ? money(p.owe) : '<span class="muted">–</span>'}</td>
+  </tr>`).join("");
+  return `<section class="card flush"><div class="ch"><h2>Players</h2><span class="sub">Click a row for the full file. ↑ ↓ and Enter work too.</span>
+    <span class="right">sorted by ${COLS.find(c => c.k === SORT.k).t.toLowerCase()}, ${SORT.d < 0 ? "high to low" : "low to high"}</span></div>
+    <div class="tw" style="margin-top:14px"><table><thead><tr>${COLS.map(c => `<th class="sort${c.r ? " r" : ""}" data-sort="${c.k}" aria-sort="${SORT.k === c.k ? (SORT.d < 0 ? "descending" : "ascending") : "none"}">${c.t}<span class="ar">${SORT.k === c.k ? (SORT.d < 0 ? "↓" : "↑") : ""}</span></th>`).join("")}</tr></thead>
+    <tbody>${rows || `<tr><td colspan="${COLS.length}" class="muted" style="padding:24px 12px;cursor:default">No players match. Clear a filter or the search.</td></tr>`}</tbody></table></div></section>`;
+}
+
+/* ============================================================
+   Seasons grid
+   ============================================================ */
+function seasons(){
+  const P = view().slice().sort((a, b) => a.joined.localeCompare(b.joined) || a.n.localeCompare(b.n));
+  const cols = SEAS.map(s => s.k);
+  // cohort row over the whole club, not the filtered view, so the rates stay honest
+  const inS = k => PL.filter(p => p.bySeason[k]);
+  const coh = cols.map((k, i) => {
+    const now = inS(k), prev = i ? inS(cols[i - 1]) : [];
+    const back = prev.filter(p => p.bySeason[k]).length;
+    return {n: now.length, fresh: now.filter(p => p.firstSeason === k).length, ret: i ? back / prev.length : null, back, prevN: prev.length};
+  });
+  const curN = PL.filter(p => p.bySeason[CUR.k]);
+  const nextReg = curN.filter(p => p.summerSt === "Registered").length;
+  const shade = code => { const i = gIdx(code); return `var(--o${Math.min(6, i + 2)})`; };
+  // label ink picked by contrast against the actual fill, so it holds in both themes
+  const lum = hex => { const c = hex.replace("#", "").match(/../g).map(h => { const v = parseInt(h, 16) / 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); });
+    return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; };
+  const rootCS = getComputedStyle(document.documentElement);
+  const inkFor = code => { const L = lum(rootCS.getPropertyValue(`--o${Math.min(6, gIdx(code) + 2)}`).trim()); return 1.05 / (L + .05) >= 4.5 ? "#FFFFFF" : "#06202B"; };
+  const cell = (p, k) => {
+    const b = p.bySeason[k];
+    if (!b) {
+      const s = SEAS_BY[k];
+      if (p.left && p.left.d < s.from && p.lastSeason && cols.indexOf(k) === cols.indexOf(p.lastSeason) + 1)
+        return `<div class="sgc gone">Left<br>${esc(p.left.why)}</div>`;
+      return `<div class="sgc none"></div>`;
+    }
+    const t = `<div class="tt">${esc(p.n)} · ${esc(SEAS_BY[k].n)}</div>` + tipRows([["Team", glabel(b.team)], ["Coach", coachOf(b.team)],
+      ["Attended", `${b.hit} of ${b.run}`], ["Rate", pct(b.hit / b.run)], ["Team finish", (D.finish[k] || {})[b.team] || "–"]]);
+    return `<div class="sgc" style="background:${shade(b.team)};color:${inkFor(b.team)}"${tipAttr(t)}>${glabel(b.team).replace(" Girls", " G")}<small>${pct(b.hit / b.run)}</small></div>`;
+  };
+  const nextCell = p => {
+    if (p.status === "former") return p.left && p.lastSeason === CUR.k ? `<div class="sgc gone">Left<br>${esc(p.left.why)}</div>` : `<div class="sgc none"></div>`;
+    const ok = p.summerSt === "Registered";
+    const t = `<div class="tt">${esc(p.n)} · ${esc(D.next.n)}</div>` + tipRows([["Age group", glabel(p.nextGroup)], ["Registration", ok ? "Registered " + fd(p.summer.d, {ny:1}) : "Not yet"],
+      ["Change", p.moves ? "Moves up from " + glabel(p.team) : p.status === "new" ? "New player" : "Same age group"]]);
+    return `<div class="sgc proj${ok ? " ok" : ""}"${tipAttr(t)}>${glabel(p.nextGroup).replace(" Girls", " G")}<small>${ok ? "registered" : "not yet"}</small></div>`;
+  };
+  return `
+  <section class="card flush"><div class="ch"><h2>Season by season</h2><span class="sub">Each player's team and attendance for every season they've played. The last column is next season.</span>
+    <span class="right legend">${GORD.map((g, i) => `<span><i style="background:var(--o${Math.min(6, i + 2)})"></i>${g}</span>`).join("")}</span></div>
+  <div class="tw sg" style="margin-top:14px"><table style="table-layout:fixed;min-width:1080px"><colgroup><col style="width:220px"><col style="width:92px">${SEAS.map(() => "<col>").join("")}<col></colgroup>
+    <thead><tr><th style="min-width:210px">Player</th><th>Joined</th>${SEAS.map(s => `<th style="text-align:center">${esc(s.n)}</th>`).join("")}<th style="text-align:center">${esc(D.next.n)}</th></tr></thead>
+    <tbody>
+      <tr class="coh"><td>Players</td><td></td>${coh.map(c => `<td>${c.n}</td>`).join("")}<td>${nextReg} + ${PL.filter(p => p.status === "new").length} new</td></tr>
+      <tr class="coh"><td>New that season</td><td></td>${coh.map(c => `<td>${c.fresh}</td>`).join("")}<td>${PL.filter(p => p.status === "new").length}</td></tr>
+      <tr class="coh"><td>Back from the season before</td><td></td>${coh.map(c => `<td>${c.ret == null ? "–" : `${c.back}/${c.prevN} · ${pct(c.ret)}`}</td>`).join("")}<td>${nextReg}/${curN.length} so far</td></tr>
+      ${P.map(p => `<tr data-go="${p.id}" class="${p.status === "former" ? "former" : ""}"><td><div class="who"><div class="av">${initials(p.n)}</div><div><b>${esc(p.n)}</b><small>${p.id}</small></div></div></td>
+        <td class="mono num" style="font-size:12px">${fmy(p.joined)}</td>
+        ${cols.map(k => `<td class="c">${cell(p, k)}</td>`).join("")}<td class="c">${nextCell(p)}</td></tr>`).join("")}
+    </tbody></table></div></section>`;
+}
+
+/* ============================================================
+   Player file
+   ============================================================ */
+function events(p){
+  const E = [];
+  const add = (d, k, html, acc) => d && d <= TODAY && E.push({d, k, html, acc});
+  const how = {"Launch day":"at the club launch day", "Instagram":"through Instagram", "School clinic":"at a school clinic", "Another club":"moving across from another club"}[p.src];
+  add(p.joined, "Registered", `Signed up ${p.ref ? `on a referral from the ${esc(BY[p.ref].n.split(" ").slice(-1)[0])} family (<a data-go="${BY[p.ref].id}">${esc(BY[p.ref].n)}</a>)` : esc(how || "")}. Before Sonics: ${esc(p.prior.toLowerCase())}.`);
+  if (p.first) add(p.first, "First session", `${SCH[p.hit[0]].t === "T" ? "Training" : "Game"} night, ${esc(glabel(p.bySeason[SCH[p.hit[0]].s].team))}, ${esc(SEAS_BY[SCH[p.hit[0]].s].n)}.`);
+  LEVELS.forEach((L, i) => { if (i && p.levelDates[i]) add(p.levelDates[i], "Level", `Reached <b>${L.n}</b> at session ${L.at}.`, 1); });
+  // badges
+  let run = 0, b5 = null; p.elig.forEach(i => { if (p.att[i] === "1") { run++; if (run === 5 && !b5) b5 = SCH[i].d; } else run = 0; });
+  if (b5) add(b5, "Badge", "5 in a row. Five sessions without missing one.");
+  const tr = p.hit.filter(i => SCH[i].t === "T"), gm = p.hit.filter(i => SCH[i].t !== "T");
+  if (tr[9] !== undefined) add(SCH[tr[9]].d, "Badge", "10 trainings.");
+  if (gm[4] !== undefined) add(SCH[gm[4]].d, "Badge", "5 games.");
+  const byMonth = {}; p.elig.forEach(i => { const k = SCH[i].d.slice(0, 7); (byMonth[k] = byMonth[k] || []).push(i); });
+  const pm = Object.keys(byMonth).sort().find(k => byMonth[k].length >= 3 && byMonth[k].every(i => p.att[i] === "1"));
+  if (pm) add(SCH[byMonth[pm][byMonth[pm].length - 1]].d, "Badge", `Perfect month. Every session in ${MON[+pm.slice(5) - 1]} ${pm.slice(0, 4)}.`);
+  const tour = p.hit.filter(i => SCH[i].t === "J");
+  if (tour.length) add(SCH[tour[0]].d, "Tour", `Japan tour. ${tour.length} games with the club.`, 1);
+  SEAS.forEach(s => { const b = p.bySeason[s.k]; if (!b) return; const end = s.to < TODAY ? s.to : null;
+    if (end) add(end, "Season", `${esc(s.n)} finished. ${glabel(b.team)}, ${coachOf(b.team)}. Attended ${b.hit} of ${b.run}. Team finish: ${(D.finish[s.k] || {})[b.team] || "–"}.`); });
+  p.rv.forEach(r => add(r.d, "Review", `Coach ratings, ${esc(SEAS_BY[r.s].n)}: ${SKILLS.map((s, j) => r.r[j] ? `${s.n} ${r.r[j]}` : null).filter(Boolean).join(", ")}.`));
+  p.notes.forEach(n => add(n.d, "Coach note", `<q>${esc(n.t)}</q><span class="by">${esc(coachBy(n.by))}</span>`));
+  if (p.summer && p.summer.st === "Registered" && p.status !== "former") add(p.summer.d, "Registered", `Registered for ${esc(D.next.n)}, ${esc(glabel(p.nextGroup))}.`, 1);
+  if (p.left) add(p.left.d, "Left", `Left the club. ${esc(p.left.why)}.`);
+  const order = {"Left":0, "Registered":1, "Coach note":2, "Review":3, "Season":4, "Level":5, "Tour":6, "Badge":7, "First session":8};
+  return E.sort((a, b) => b.d.localeCompare(a.d) || (order[a.k] ?? 9) - (order[b.k] ?? 9));
+}
+
+function playerFile(id){
+  const p = BYID[id];
+  const P = view(); const list = P.length && P.includes(p) ? P : PL;
+  const ordered = list.slice().sort((a, b) => a.n.localeCompare(b.n));
+  const ix = ordered.indexOf(p), prev = ordered[(ix - 1 + ordered.length) % ordered.length], next = ordered[(ix + 1) % ordered.length];
+  const proj = projection(p);
+  const firstTeam = p.firstSeason ? p.bySeason[p.firstSeason].team : null;
+  const b = p.bySeason[CUR.k];
+  const refBy = p.ref ? BY[p.ref] : null;
+  // age-group path from next season on
+  const path = []; let lastG = null;
+  for (let y = D.next.y; y <= D.next.y + 6; y++) { const g = group(p.dob, y, p.g); if (g !== lastG) { path.push({y, g}); lastG = g; } if (g === "U21") break; }
+
+  const nextLv = proj[0];
+  const since = p.joined ? days(p.joined, TODAY) : 0;
+  const tenure = since > 365 ? `${Math.floor(since / 365)} yr ${Math.floor(since % 365 / 30.4)} mo` : `${Math.max(0, Math.floor(since / 30.4))} mo`;
+
+  return `
+  <div class="crumb"><a href="#/players">Players</a><span>/</span><span style="color:var(--ink)">${esc(p.n)}</span>
+    <span class="sp"><button class="btn icon" data-go="${prev.id}" aria-label="Previous player" title="Previous (←)">${ICON.prev}</button>
+    <button class="btn icon" data-go="${next.id}" aria-label="Next player" title="Next (→)">${ICON.next}</button></span></div>
+
+  <section class="card flush">
+    <div class="phead">
+      <div class="big">${initials(p.n)}</div>
+      <div style="min-width:0">
+        <h1>${esc(p.n)}</h1>
+        <div class="meta"><span class="mono">${p.id}</span>
+          ${p.status === "new" ? "<span>Starting at the summer tryout</span>" : `<span>${p.status === "former" ? "Last played " : ""}${glabel(p.team)}${p.no != null ? " · #" + p.no : ""}${p.pos ? " · " + p.pos : ""}</span>`}
+          ${p.status === "current" ? `<span>Coach ${coachOf(p.team)}</span>` : ""}
+          <span>Born ${fd(p.dob)} · ${p.age}</span><span>${esc(p.sub)}</span>
+          ${p.status === "former" ? `<span class="st none">${ICON.dash}Former player</span>` : ""}</div>
+      </div>
+      <div class="lvbox">
+        <div class="muted" style="font-size:12.5px">Level</div>
+        <div class="n">${LEVELS[p.lv].n}<small>${p.sessions} sessions</small></div>
+        <div class="track"><i style="width:${p.lvPct}%"></i></div>
+        <div class="muted" style="font-size:12px;margin-top:6px">${p.lv === 5 ? "Top level reached" : `${LEVELS[p.lv + 1].at - p.sessions} more to ${LEVELS[p.lv + 1].n}`}</div>
+      </div>
+    </div>
+    <div class="tri">
+      <div class="from"><h3><i></i>Came from</h3><dl class="kv">
+        <dt>Joined</dt><dd>${fd(p.joined)} <span class="muted">· ${tenure} ago, aged ${ageOn(p.dob, p.joined)}</span></dd>
+        <dt>Found us</dt><dd>${esc(SRC_LABEL[p.src] || p.src)}${refBy ? ` · <a data-go="${refBy.id}">${esc(refBy.n)}</a>'s family` : ""}</dd>
+        <dt>Before</dt><dd>${esc(p.prior)}</dd>
+        <dt>First night</dt><dd>${p.first ? `${fd(p.first, {wd:1})}, ${SCH[p.hit[0]].t === "T" ? "training" : "game"}` : "Not yet"}</dd>
+        <dt>First team</dt><dd>${firstTeam ? `${glabel(firstTeam)}, ${esc(SEAS_BY[p.firstSeason].n)}` : "–"}</dd>
+        ${p.tour ? `<dt>Touring</dt><dd>Japan, July 2025</dd>` : ""}
+        ${p.brought.length ? `<dt>Brought in</dt><dd>${p.brought.map(q => `<a data-go="${q.id}">${esc(q.n)}</a>`).join(", ")}</dd>` : ""}
+      </dl></div>
+      <div class="now"><h3><i></i>${p.status === "former" ? "When they left" : "Now"}</h3><dl class="kv">
+        ${p.status === "former" ? `<dt>Left</dt><dd>${fd(p.left.d)} · ${esc(p.left.why)}</dd>` : ""}
+        <dt>Team</dt><dd>${p.status === "new" ? "Allocated after the tryout" : `${glabel(p.team)} · ${coachOf(p.team)}`}</dd>
+        <dt>Sessions</dt><dd class="num">${p.sessions} <span class="muted">· ${p.trains} training, ${p.games} games</span></dd>
+        <dt>Last 10</dt><dd>${p.r10d ? `${p.r10n} of ${p.r10d} ${p.trend != null ? delta(p.trend) : ""}` : "No sessions yet"}</dd>
+        <dt>${esc(CUR.n)}</dt><dd>${b ? `${b.hit} of ${b.run} attended · ${pct(b.hit / b.run)}` : "Did not play"}</dd>
+        <dt>Streak</dt><dd>${p.streak} current · ${p.best} best</dd>
+        <dt>Fees</dt><dd>${p.owe ? `<span class="st crit">${ICON.alert}${money(p.owe)} owing</span>` : p.status === "former" ? "Settled" : `<span class="st good">${ICON.ok}Paid</span>`}</dd>
+      </dl></div>
+      <div class="go"><h3><i></i>${p.status === "former" ? "Status" : "Heading"}</h3>${p.status === "former" ? `<dl class="kv">
+        <dt>Status</dt><dd>Not with the club since ${fd(p.left.d)}</dd><dt>Would be</dt><dd>${glabel(p.nextGroup)} in ${esc(D.next.n)}</dd>
+        <dt>Last level</dt><dd>${LEVELS[p.lv].n}, ${p.sessions} sessions</dd></dl>` : `<dl class="kv">
+        <dt>${esc(D.next.n)}</dt><dd>${glabel(p.nextGroup)}${p.moves ? ` <span class="muted">· up from ${glabel(p.team)}</span>` : p.status === "new" ? "" : ` <span class="muted">· same age group</span>`}</dd>
+        <dt>Registration</dt><dd>${p.summerSt === "Registered" ? `<span class="st good">${ICON.ok}Registered ${fd(p.summer.d, {ny:1})}</span>` : `<span class="st warn">${ICON.wait}Not yet · tryout ${fd(D.next.tryout, {wd:1, ny:1})}</span>`}</dd>
+        <dt>Next level</dt><dd>${nextLv ? (nextLv.date ? `${nextLv.L.n} in ${nextLv.need} · <span class="mono">${fd(nextLv.date, {ny:1})}</span>` : `${nextLv.L.n} in ${nextLv.need} · no date at current rate`) : "At the top level"}${p.status === "new" && nextLv ? ' <span class="muted">at full attendance</span>' : ""}</dd>
+        ${proj[1] ? `<dt>Then</dt><dd>${proj[1].L.n} in ${proj[1].need} · <span class="mono">${proj[1].date ? fd(proj[1].date, {ny:1}) : "after Mar 2027"}</span></dd>` : ""}
+        <dt>Pathway</dt><dd><div class="path">${path.map((s, i) => `${i ? "<em>→</em>" : ""}<span class="${i === 0 ? "cur" : ""}">${glabel(s.g)} ${s.y === D.next.y ? "next" : "'" + String(s.y).slice(2)}</span>`).join("")}</div></dd>
+      </dl>`}</div>
+    </div>
+  </section>
+
+  <div class="grid" style="margin-top:16px">
+    <section class="card c8"><div class="ch"><h2>Sessions over time</h2><span class="sub">Running total, level lines, and the projection through ${esc(D.next.n)}</span>
+      <span class="right legend"><span><i style="background:var(--accent);height:2px;vertical-align:3px"></i>Attended</span><span><i style="background:none;border-top:2px dashed var(--accent);height:0;vertical-align:3px;border-radius:0"></i>Projected</span></span></div>
+      <div id="chCum" style="height:300px"></div></section>
+    <section class="card c4"><div class="ch"><h2>Family and admin</h2><span class="sub">Visible to admins and the team coach</span></div>
+      <dl class="kv">
+        <dt>Guardian</dt><dd>${esc(p.gd.n)} <span class="muted">· ${esc(p.gd.rel.toLowerCase())}</span></dd>
+        <dt>Mobile</dt><dd class="mono">04•• ••• ${esc(p.ph)}</dd>
+        <dt>Suburb</dt><dd>${esc(p.sub)}</dd>
+        <dt>Medical</dt><dd>${p.med ? `<span class="st warn">${ICON.alert}Note on file</span> <span class="muted">· admins and coach only</span>` : "Nothing on file"}</dd>
+        <dt>Photos</dt><dd>${p.photo ? "Consent given" : `<span class="st warn">${ICON.alert}No consent. Keep out of posts.</span>`}</dd>
+        <dt>Fees</dt><dd>${p.owe ? money(p.owe) + " owing, " + esc(CUR.n) : "Nothing owing"}</dd>
+        <dt>Record</dt><dd class="mono" style="font-size:12px">${p.id} · created ${fd(p.joined)}</dd>
+      </dl></section>
+
+    <section class="card c7"><div class="ch"><h2>Attendance record</h2><span class="sub">Every Friday since they joined</span>
+      <span class="right legend"><span><i style="background:var(--s-train)"></i>Training</span><span><i style="background:var(--s-game)"></i>Game</span><span><i class="ring"></i>Missed</span></span></div>
+      ${attendanceGrid(p)}</section>
+    <section class="card c5"><div class="ch"><h2>Season by season</h2></div>${seasonTable(p)}</section>
+
+    <section class="card c12"><div class="ch"><h2>Coach ratings</h2><span class="sub">Rated out of 5 at the end of each season. Skills open up as sessions add up.</span></div>
+      <div class="skills" id="skills">${skillsBlock(p)}</div></section>
+
+    <section class="card c12"><div class="ch"><h2>Record</h2><span class="sub">Everything logged against this player, newest first</span><span class="right">${events(p).length} entries</span></div>
+      <div class="tl">${events(p).map(e => `<div class="ev"><div class="d">${fd(e.d)}</div><div class="k${e.acc ? " acc" : ""}">${e.k}</div><div>${e.html}</div></div>`).join("")}</div></section>
+  </div>`;
+}
+
+function attendanceGrid(p){
+  const rows = SEAS.filter(s => p.bySeason[s.k]);
+  if (!rows.length) return `<div class="empty">No sessions yet. First chance is the tryout on ${fd(D.next.tryout, {wd:1})}.</div>`;
+  return `<div class="agrid">${rows.map(s => {
+    const idx = SCH.map((x, i) => i).filter(i => SCH[i].s === s.k && (SCH[i].t !== "J" || p.att[i] !== "."));
+    const b = p.bySeason[s.k];
+    const cells = idx.map(i => {
+      const c = p.att[i], t = SCH[i].t;
+      const cls = c === "." ? "X" : c === "0" ? "M" : t;
+      const what = t === "T" ? "Training" : t === "J" ? "Tour game, Japan" : "Game";
+      const res = c === "." ? "Before joining" : c === "1" ? "Attended" : "Missed";
+      return `<span class="cell ${cls}"${tipAttr(`<div class="tt">${fd(SCH[i].d, {wd:1})}</div>${tipRows([["Session", what], ["Result", res]])}`)} aria-label="${fd(SCH[i].d)}: ${what}, ${res}"></span>`;
+    }).join("");
+    return `<div class="arow"><div class="sn">${esc(s.n)}</div><div class="cells">${cells}</div><div class="sr">${b.hit}/${b.run}</div></div>`;
+  }).join("")}</div>`;
+}
+function seasonTable(p){
+  const rows = SEAS.filter(s => p.bySeason[s.k]);
+  if (!rows.length) return `<div class="empty">No seasons played yet.</div>`;
+  let cum = 0;
+  const body = rows.map(s => { const b = p.bySeason[s.k]; cum += b.hit;
+    return `<tr style="cursor:default"><td>${esc(s.n)}</td><td>${glabel(b.team)}</td><td class="r mono num">${b.hit}/${b.run}</td><td class="r mono num">${pct(b.hit / b.run)}</td><td>${LEVELS[levelIdx(cum)].n}</td><td>${(D.finish[s.k] || {})[b.team] || "–"}</td></tr>`; }).join("");
+  return `<div style="overflow:auto;margin:0 -20px"><table><thead><tr><th style="position:static">Season</th><th style="position:static">Team</th><th class="r" style="position:static">Attended</th><th class="r" style="position:static">Rate</th><th style="position:static">Level after</th><th style="position:static">Team finish</th></tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function skillsBlock(p){
+  return SKILLS.map((s, j) => {
+    const pts = p.rv.filter(r => r.r[j]).map(r => ({d:r.d, s:r.s, v:r.r[j]}));
+    if (!pts.length) return `<div class="sk"><div class="h"><b>${s.n}</b><span class="muted" style="font-size:12px;font-weight:400">locked</span></div>
+      <div class="lock">Opens at ${s.at} sessions${p.sessions < s.at ? `. ${s.at - p.sessions} to go.` : ". First rating at season end."}</div></div>`;
+    const last = pts[pts.length - 1], firstV = pts[0].v;
+    return `<div class="sk"><div class="h"><b>${s.n}</b><span>${last.v}<span class="muted" style="font-size:12px;font-weight:400"> /5${pts.length > 1 && last.v !== firstV ? ` · ${last.v > firstV ? "+" : ""}${last.v - firstV} since ${esc(SEAS_BY[pts[0].s].n.replace("Summer ", "Sum ").replace("Winter ", "Win "))}` : ""}</span></span></div>
+      <div class="skc" data-j="${j}" style="height:74px;margin-top:8px"></div></div>`;
+  }).join("");
+}
+function chartSkills(p){
+  $$(".skc").forEach(el => {
+    const j = +el.dataset.j, pts = p.rv.filter(r => r.r[j]).map(r => ({s:r.s, v:r.r[j]}));
+    const W = el.clientWidth, H = el.clientHeight, m = {l:14, r:10, t:8, b:18};
+    const iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const x = i => m.l + (pts.length === 1 ? iw / 2 : i / (pts.length - 1) * iw), y = v => m.t + ih - (v - 1) / 4 * ih;
+    let g = "";
+    [1, 3, 5].forEach(v => g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/><text class="ax" x="${m.l - 6}" y="${y(v) + 3.5}" text-anchor="end" style="font-size:9.5px">${v}</text>`);
+    g += `<polyline points="${pts.map((q, i) => x(i) + "," + y(q.v)).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    pts.forEach((q, i) => {
+      g += `<circle cx="${x(i)}" cy="${y(q.v)}" r="4" fill="var(--accent)" stroke="var(--panel)" stroke-width="2"/>`;
+      g += `<circle class="hit" cx="${x(i)}" cy="${y(q.v)}" r="12"${tipAttr(`<div class="tt">${esc(SKILLS[j].n)}</div>${tipRows([["Season", esc(SEAS_BY[q.s].n)], ["Rating", q.v + " of 5"]])}`)}/>`;
+      if (i === 0 || i === pts.length - 1) g += `<text class="ax" x="${x(i)}" y="${H - 3}" text-anchor="${pts.length === 1 ? "middle" : i === 0 ? "start" : "end"}" style="font-size:9.5px">${q.s}</text>`;
+    });
+    el.innerHTML = `<svg width="${W}" height="${H}" role="img" aria-label="${esc(SKILLS[j].n)} ratings: ${pts.map(q => q.v).join(", ")}">${g}</svg>`;
+  });
+}
+
+function chartCum(el, p){
+  const W = el.clientWidth, H = el.clientHeight, m = {l:44, r:62, t:24, b:28};
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const start = p.hit.length ? SCH[p.hit[0]].d : p.joined;
+  const r = p.status === "new" ? 1 : p.status === "former" ? 0 : (p.r10 || 0);
+  const end = p.status === "former" ? p.left.d : "2027-03-26";
+  // cumulative steps
+  const pts = [{d:start, v:0}]; let c = 0;
+  p.hit.forEach(i => { c++; pts.push({d:SCH[i].d, v:c}); });
+  const future = p.status === "former" ? [] : D.future.map((d, k) => ({d, v:p.sessions + r * (k + 1)}));
+  const maxV = Math.max(12, p.sessions, future.length ? future[future.length - 1].v : 0);
+  const topLv = LEVELS.findIndex(L => L.at > maxV);
+  const yMax = topLv === -1 ? Math.max(55, maxV * 1.08) : Math.max(LEVELS[topLv].at, maxV) * 1.08;
+  const t0 = dt(start).getTime(), t1 = dt(end).getTime();
+  const x = d => m.l + (dt(d).getTime() - t0) / Math.max(1, t1 - t0) * iw;
+  const y = v => m.t + ih - v / yMax * ih;
+  let g = "";
+  // season bands
+  SEAS.concat([{k:D.next.k, n:D.next.n, from:D.next.from, to:"2027-03-26"}]).forEach((s, i) => {
+    if (s.to < start || s.from > end) return;
+    const a = Math.max(m.l, x(s.from)), b = Math.min(m.l + iw, x(s.to));
+    if (b - a < 4) return;
+    g += `<rect x="${a}" y="${m.t - 16}" width="${b - a}" height="${ih + 16}" fill="${s.k === D.next.k ? "var(--accent-wash)" : "var(--panel-2)"}" opacity="${s.k === D.next.k ? .6 : 1}"/>`;
+    if (b - a > 54) g += `<text class="ax" x="${a + 5}" y="${m.t - 5}">${s.n.replace("Summer ", "Sum ").replace("Winter ", "Win ")}</text>`;
+  });
+  // level lines
+  LEVELS.forEach((L, i) => { if (!i || L.at > yMax) return;
+    g += `<line x1="${m.l}" x2="${m.l + iw}" y1="${y(L.at)}" y2="${y(L.at)}" stroke="var(--grid)"/>`;
+    g += `<text class="axl" x="${m.l + iw + 8}" y="${y(L.at) + 4}">${L.n}</text><text class="ax" x="${m.l - 8}" y="${y(L.at) + 4}" text-anchor="end">${L.at}</text>`; });
+  g += `<line x1="${m.l}" x2="${m.l + iw}" y1="${y(0)}" y2="${y(0)}" stroke="var(--axis)"/><text class="ax" x="${m.l - 8}" y="${y(0) + 4}" text-anchor="end">0</text>`;
+  // year ticks
+  for (let yr = dt(start).getFullYear() + 1; yr <= dt(end).getFullYear(); yr++) { const d = yr + "-01-01"; if (d > end) break;
+    g += `<line x1="${x(d)}" x2="${x(d)}" y1="${y(0)}" y2="${y(0) + 5}" stroke="var(--axis)"/><text class="ax" x="${x(d)}" y="${H - 8}" text-anchor="middle">${yr}</text>`; }
+  // step line
+  if (pts.length > 1) {
+    let d = `M${x(pts[0].d)},${y(0)}`;
+    for (let i = 1; i < pts.length; i++) d += `H${x(pts[i].d)}V${y(pts[i].v)}`;
+    d += `H${x(p.status === "former" ? p.left.d : TODAY)}`;
+    g += `<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>`;
+  }
+  // projection
+  if (future.length && r > 0) {
+    g += `<path d="M${x(TODAY)},${y(p.sessions)}${future.map(f => `L${x(f.d)},${y(f.v)}`).join("")}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4" opacity=".85"/>`;
+  }
+  // today marker
+  if (p.status !== "former") g += `<line x1="${x(TODAY)}" x2="${x(TODAY)}" y1="${m.t - 16}" y2="${y(0)}" stroke="var(--axis)"/><text class="ax" x="${x(TODAY) - 5}" y="${y(0) - 6}" text-anchor="end">today</text>`;
+  // level-up markers, reached and projected
+  LEVELS.forEach((L, i) => { if (!i) return; const d = p.levelDates[i]; if (d)
+    g += `<circle cx="${x(d)}" cy="${y(L.at)}" r="4.5" fill="var(--accent)" stroke="var(--panel)" stroke-width="2"/>`; });
+  projection(p).forEach(pr => { if (!pr.date || pr.L.at > yMax) return;
+    g += `<circle cx="${x(pr.date)}" cy="${y(pr.L.at)}" r="4.5" fill="var(--panel)" stroke="var(--accent)" stroke-width="2"/>`;
+    g += `<text class="lbl2" x="${x(pr.date)}" y="${y(pr.L.at) - 10}" text-anchor="middle" style="font-size:11px">${fd(pr.date, {ny:1})}</text>`; });
+  // crosshair layer
+  g += `<g id="xh" style="display:none"><line id="xhl" y1="${m.t - 16}" y2="${y(0)}" stroke="var(--ink-2)" stroke-width="1"/><circle id="xhc" r="4.5" fill="var(--accent)" stroke="var(--panel)" stroke-width="2"/></g>`;
+  g += `<rect id="xhr" x="${m.l}" y="${m.t - 16}" width="${iw}" height="${ih + 16}" fill="transparent"/>`;
+  el.innerHTML = `<svg width="${W}" height="${H}" role="img" aria-label="Running total of sessions for ${esc(p.n)}">${g}</svg>`;
+  // crosshair: nearest real or projected point
+  const all = pts.slice(1).map(q => ({d:q.d, v:q.v, proj:0})).concat(future.filter(() => r > 0).map(f => ({d:f.d, v:f.v, proj:1})));
+  const svg = el.querySelector("svg"), xh = svg.querySelector("#xh");
+  if (!all.length) return;
+  svg.querySelector("#xhr").addEventListener("mousemove", e => {
+    const bx = svg.getBoundingClientRect().left, mx = e.clientX - bx;
+    let best = all[0], bd = 1e9; all.forEach(q => { const dd = Math.abs(x(q.d) - mx); if (dd < bd) { bd = dd; best = q; } });
+    xh.style.display = ""; svg.querySelector("#xhl").setAttribute("x1", x(best.d)); svg.querySelector("#xhl").setAttribute("x2", x(best.d));
+    const c = svg.querySelector("#xhc"); c.setAttribute("cx", x(best.d)); c.setAttribute("cy", y(best.v));
+    c.setAttribute("fill", best.proj ? "var(--panel)" : "var(--accent)"); c.setAttribute("stroke", best.proj ? "var(--accent)" : "var(--panel)");
+    const v = Math.floor(best.v + 1e-9);
+    showTip(`<div class="tt">${fd(best.d, {wd:1})}</div>${tipRows([[best.proj ? "Projected total" : "Total", best.proj ? "≈ " + v : v], ["Level", LEVELS[levelIdx(v)].n]])}${best.proj ? `<div class="tn">At ${pct(r)} attendance${p.status === "new" ? ", assumed" : ", from the last 10"}.</div>` : ""}`, e.clientX, e.clientY);
+  });
+  svg.querySelector("#xhr").addEventListener("mouseleave", () => { xh.style.display = "none"; hideTip(); });
+}
+
+/* ============================================================
+   Render
+   ============================================================ */
+function render(){
+  TIPS.length = 0; hideTip();
+  $$("#tabs a").forEach(a => a.classList.toggle("on", a.dataset.v === (ROUTE.v === "player" ? "players" : ROUTE.v)));
+  renderFilters();
+  const V = $("#view");
+  if (ROUTE.v === "players") V.innerHTML = players();
+  else if (ROUTE.v === "seasons") V.innerHTML = seasons();
+  else if (ROUTE.v === "player") V.innerHTML = playerFile(ROUTE.id);
+  else V.innerHTML = overview();
+  document.title = ROUTE.v === "player" ? BYID[ROUTE.id].n + " · Sonics register" : "Sonics · Player register";
+  drawCharts();
+}
+function drawCharts(){
+  const P = view();
+  if (ROUTE.v === "overview") { chartMonths($("#chMonth"), P); chartLevels($("#chLevels"), P); chartFlow($("#chFlow"), P); }
+  if (ROUTE.v === "player") { const p = BYID[ROUTE.id]; chartCum($("#chCum"), p); chartSkills(p); }
+}
+
+document.addEventListener("click", e => {
+  const g = e.target.closest("[data-go]"); if (g) { e.preventDefault(); go(g.dataset.go); return; }
+  const s = e.target.closest("th[data-sort]"); if (s) { const k = s.dataset.sort; SORT = {k, d: SORT.k === k ? -SORT.d : (["n","id","joined","src","team","summer"].includes(k) ? 1 : -1)}; render(); }
+});
+$("#q").addEventListener("input", e => { Q = e.target.value.trim(); KB = -1; if (ROUTE.v !== "players" && Q) { location.hash = "#/players"; } else render(); });
+document.addEventListener("keydown", e => {
+  const typing = /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName);
+  if (e.key === "/" && !typing) { e.preventDefault(); $("#q").focus(); return; }
+  if (e.key === "Escape") { if (typing) { document.activeElement.blur(); return; } if (ROUTE.v === "player") location.hash = "#/players"; return; }
+  if (typing) { if (e.key === "Enter" && ROUTE.v === "players") { const r = $$("#view tbody tr[data-go]")[Math.max(0, KB)]; if (r) go(r.dataset.go); } return; }
+  if (ROUTE.v === "player" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) { const b = $$(".crumb .btn")[e.key === "ArrowLeft" ? 0 : 1]; if (b) go(b.dataset.go); }
+  if (ROUTE.v === "players" && (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter")) {
+    const rows = $$("#view tbody tr[data-go]"); if (!rows.length) return;
+    if (e.key === "Enter") { if (KB >= 0) go(rows[KB].dataset.go); return; }
+    e.preventDefault(); KB = Math.max(0, Math.min(rows.length - 1, KB + (e.key === "ArrowDown" ? 1 : -1)));
+    rows.forEach((r, i) => r.classList.toggle("kb", i === KB)); rows[KB].scrollIntoView({block:"nearest"});
+  }
+});
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { TIPS.length = 0; render(); }, 150); });
+
+/* theme */
+const TKEY = "sonics_dash_theme";
+function setTheme(t){ document.documentElement.dataset.theme = t; $("#theme").innerHTML = t === "light" ? ICON.moon : ICON.sun;
+  $("#theme").title = t === "light" ? "Dark theme" : "Light theme"; try { localStorage.setItem(TKEY, t); } catch(e) {} }
+(() => { let t = null; try { t = localStorage.getItem(TKEY); } catch(e) {}
+  if (!t) t = matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"; setTheme(t); })();
+$("#theme").onclick = () => { setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light"); render(); };
+
+/* export: filtered players plus every session, as a workbook */
+$("#export").onclick = () => {
+  const P = view();
+  const rows = P.map(p => ({
+    "ID": p.id, "Player": p.n, "Gender": p.g === "F" ? "Girl" : "Boy", "Born": p.dob, "Age": p.age, "Suburb": p.sub,
+    "Status": p.status, ["Team, " + CUR.n]: p.team ? glabel(p.team) : "", "Number": p.no ?? "", "Position": p.pos || "",
+    "Level": LEVELS[p.lv].n, "Sessions": p.sessions, "Trainings": p.trains, "Games": p.games,
+    "Last 10 attended": p.r10d ? p.r10n : "", "Last 10 run": p.r10d || "", "Best streak": p.best,
+    "Joined": p.joined, "Found us": SRC_LABEL[p.src] || p.src, "Referred by": p.ref ? BY[p.ref].n : "", "Before": p.prior,
+    "Next season group": glabel(p.nextGroup), "Next season registration": p.summerSt,
+    "Next level": projection(p)[0] ? projection(p)[0].L.n : "", "Next level ETA": projection(p)[0] && projection(p)[0].date || "",
+    "Owing": p.owe, "Guardian": p.gd.n, "Relationship": p.gd.rel, "Medical note": p.med ? "Yes" : "No", "Photo consent": p.photo ? "Yes" : "No",
+    "Left": p.left ? p.left.d : "", "Reason": p.left ? p.left.why : "",
+  }));
+  const sess = []; P.forEach(p => p.elig.forEach(i => sess.push({"ID": p.id, "Player": p.n, "Date": SCH[i].d, "Season": SEAS_BY[SCH[i].s].n,
+    "Session": SCH[i].t === "T" ? "Training" : SCH[i].t === "J" ? "Tour game" : "Game", "Attended": p.att[i] === "1" ? 1 : 0})));
+  const stamp = TODAY.replace(/-/g, "");
+  if (window.XLSX) {
+    const wb = XLSX.utils.book_new();
+    const a = XLSX.utils.json_to_sheet(rows); a["!cols"] = Object.keys(rows[0] || {}).map(k => ({wch: Math.max(10, k.length + 2)}));
+    XLSX.utils.book_append_sheet(wb, a, "Players");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(sess), "Sessions");
+    XLSX.writeFile(wb, `sonics-register-TEST-${stamp}.xlsx`);
+  } else {
+    const keys = Object.keys(rows[0] || {}); const csv = [keys.join(",")].concat(rows.map(r => keys.map(k => `"${String(r[k]).replace(/"/g, '""')}"`).join(","))).join("\n");
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv"})); a.download = `sonics-register-TEST-${stamp}.csv`; a.click();
+  }
+};
+
+ROUTE = parseRoute();
+render();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => render());
+</script>
+</body>
+</html>
