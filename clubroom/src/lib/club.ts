@@ -42,7 +42,7 @@ export type ClubContext = {
     fee_label: string | null;
     registration_open: boolean;
   } | null;
-  subscription: { plan: string; status: string; trial_ends_at: string | null; member_limit: number; current_period_end: string | null } | null;
+  subscription: { plan: string; status: string; trial_ends_at: string | null; member_limit: number; current_period_end: string | null; stripe_customer_id: string | null } | null;
 };
 
 /**
@@ -67,7 +67,7 @@ export const getClubContext = cache(async (slug: string): Promise<ClubContext> =
     supabase.from("club_users").select("role").eq("club_id", club.id).eq("user_id", user!.id).eq("status", "active"),
     supabase.from("platform_users").select("user_id").eq("user_id", user!.id).maybeSingle(),
     supabase.from("seasons").select("id, name, starts_on, ends_on, age_rule_mode, age_cutoff_date, fee_cents, fee_label, registration_open").eq("club_id", club.id).eq("is_current", true).maybeSingle(),
-    supabase.from("subscriptions").select("plan, status, trial_ends_at, member_limit, current_period_end").eq("club_id", club.id).maybeSingle(),
+    supabase.from("subscriptions").select("plan, status, trial_ends_at, member_limit, current_period_end, stripe_customer_id").eq("club_id", club.id).maybeSingle(),
   ]);
   const roles = (memberships ?? []).map((m) => m.role as ClubRole);
   const isPlatformOwner = !!owner;

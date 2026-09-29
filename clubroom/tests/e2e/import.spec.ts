@@ -22,8 +22,9 @@ test("a spreadsheet in the prototype's shape imports with the right mapping, dup
   const { slug, clubId } = await seedLiveClub(stamp);
   const email = `import-admin-${stamp}@e2e.test`;
   const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
-  const { data: u } = await admin.auth.admin.createUser({ email, password: "Passw0rd!e2e", email_confirm: true });
-  await sql("insert into public.club_users (club_id, user_id, role) values ($1, $2, 'admin')", [clubId, u!.user.id]);
+  const { data: u, error: uErr } = await admin.auth.admin.createUser({ email, password: "Passw0rd!e2e", email_confirm: true });
+  if (uErr || !u.user) throw uErr ?? new Error("no user");
+  await sql("insert into public.club_users (club_id, user_id, role) values ($1, $2, 'admin')", [clubId, u.user.id]);
 
   await page.goto("/sign-in");
   await page.getByLabel("Email").fill(email);
