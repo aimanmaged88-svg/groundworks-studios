@@ -54,3 +54,14 @@ export function slugify(input: string) {
 export function pluralise(n: number, one: string, many = `${one}s`) {
   return `${n} ${n === 1 ? one : many}`;
 }
+
+/** Whole days from now until an ISO timestamp, never negative. */
+export function daysUntil(iso: string | null | undefined) {
+  if (!iso) return null;
+  return Math.max(0, Math.ceil((new Date(iso).getTime() - Date.now()) / 86_400_000));
+}
+
+/** ISO timestamp for `days` ago. */
+export function daysAgoIso(days: number) {
+  return new Date(Date.now() - days * 86_400_000).toISOString();
+}

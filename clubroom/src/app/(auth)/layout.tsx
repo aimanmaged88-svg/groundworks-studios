@@ -3,7 +3,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="club-glow flex min-h-dvh flex-col">
+    <div className="flex min-h-dvh flex-col">
       <header className="mx-auto flex w-full max-w-md items-center justify-between px-5 pt-6">
         <Link href="/" className="display text-[18px] text-ink">
           Clubroom

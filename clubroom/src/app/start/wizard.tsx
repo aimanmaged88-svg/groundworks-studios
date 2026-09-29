@@ -93,44 +93,45 @@ export function Wizard({ data }: { data: WizardData }) {
   const sport = data.sports.find((s) => s.key === club?.sport_key) ?? data.sports[0];
 
   return (
-    <div className="club-glow min-h-dvh">
+    <div className="min-h-dvh">
       <header className="mx-auto flex w-full max-w-2xl items-center justify-between px-5 pt-6">
         <Link href="/" className="display text-[18px] text-ink">
           Clubroom
         </Link>
-        <div className="flex items-center gap-2">
-          <span className="text-[12.5px] text-ink-dim">
-            Step {step + 1} of {STEPS.length}
-          </span>
-          <ThemeToggle />
-        </div>
+        <ThemeToggle />
       </header>
 
       <main className="mx-auto w-full max-w-2xl px-5 pb-24 pt-8">
-        <ol className="-mx-5 mb-8 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none]">
-          {STEPS.map((s, i) => {
-            const done = i < completed;
-            const current = i === step;
-            const reachable = i <= completed;
-            return (
-              <li key={s.key} className="shrink-0">
-                <button
-                  type="button"
-                  disabled={!reachable}
-                  onClick={() => go(i)}
-                  className={cn(
-                    "flex h-8 items-center gap-1.5 rounded-full border px-3 text-[12px] font-bold transition-colors",
-                    current ? "border-club bg-club/15 text-ink" : done ? "border-line text-ink-muted hover:text-ink" : "border-line text-ink-dim",
-                    !reachable && "opacity-50",
-                  )}
-                >
-                  {done && !current ? <Check className="size-3.5 text-ok" /> : <span className="numeral text-[11px]">{i + 1}</span>}
-                  {s.title}
-                </button>
-              </li>
-            );
-          })}
-        </ol>
+        {/* Progress: a numeral and a bar, plus the finished steps as plain links. */}
+        <div className="mb-8">
+          <div className="flex items-end justify-between gap-4">
+            <span className="numeral text-[44px] text-ink">
+              {String(step + 1).padStart(2, "0")}
+              <span className="text-ink-dim">/{String(STEPS.length).padStart(2, "0")}</span>
+            </span>
+            <ol className="hidden flex-wrap justify-end gap-x-4 gap-y-1 sm:flex">
+              {STEPS.map((s, i) => {
+                const reachable = i <= completed;
+                return (
+                  <li key={s.key}>
+                    <button
+                      type="button"
+                      disabled={!reachable}
+                      onClick={() => go(i)}
+                      className={cn("inline-flex items-center gap-1 text-[12px] font-bold", i === step ? "text-ink" : reachable ? "text-ink-muted hover:text-ink" : "text-ink-dim/60")}
+                    >
+                      {i < completed && i !== step && <Check className="size-3 text-ok" />}
+                      {s.title}
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+          <div className="mt-3 h-1 w-full bg-line">
+            <div className="h-1 bg-club transition-[width] duration-500 [transition-timing-function:var(--ease-out)]" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
+          </div>
+        </div>
 
         <div key={step} className="rise">
           {step === 0 && (
@@ -215,13 +216,12 @@ export function Wizard({ data }: { data: WizardData }) {
 
 /* ----------------------------------------------------------------------- */
 
-function StepShell({ eyebrow, title, lead, children }: { eyebrow: string; title: string; lead?: React.ReactNode; children: React.ReactNode }) {
+function StepShell({ title, lead, children }: { eyebrow?: string; title: string; lead?: React.ReactNode; children: React.ReactNode }) {
   return (
     <section>
-      <p className="eyebrow">{eyebrow}</p>
-      <h1 className="display mt-2 text-[34px] text-ink sm:text-[40px]">{title}</h1>
-      {lead && <p className="mt-3 max-w-xl text-[14.5px] leading-relaxed text-ink-muted">{lead}</p>}
-      <div className="mt-8 flex flex-col gap-5">{children}</div>
+      <h1 className="display text-[36px] text-ink sm:text-[48px]">{title}</h1>
+      {lead && <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-ink-muted">{lead}</p>}
+      <div className="mt-8 flex flex-col gap-6">{children}</div>
     </section>
   );
 }
@@ -256,22 +256,25 @@ function StepClub({ club, sports, onDone }: { club: WizardData["club"]; sports: 
   const [sportKey, setSportKey] = useState(club?.sport_key ?? "basketball");
   const [suburb, setSuburb] = useState(club?.suburb ?? "");
   const [state, setState] = useState(club?.state ?? "NSW");
-  const [slug, setSlug] = useState(club?.slug ?? "");
+  const [manualSlug, setManualSlug] = useState(club?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(!!club);
-  const [slugState, setSlugState] = useState<"idle" | "checking" | "free" | "taken">("idle");
+  const [checked, setChecked] = useState<{ slug: string; available: boolean } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
 
-  useEffect(() => {
-    if (!slugTouched) setSlug(slugify(name));
-  }, [name, slugTouched]);
+  // The address follows the name until the person edits it by hand.
+  const slug = slugTouched ? manualSlug : slugify(name);
+  const setSlug = (v: string) => {
+    setSlugTouched(true);
+    setManualSlug(v);
+  };
+  const slugState: "idle" | "checking" | "free" | "taken" = club || slug.length < 3 ? "idle" : checked?.slug === slug ? (checked.available ? "free" : "taken") : "checking";
 
   useEffect(() => {
-    if (club || slug.length < 3) return setSlugState("idle");
-    setSlugState("checking");
+    if (club || slug.length < 3) return;
     const t = setTimeout(async () => {
       const r = await checkSlug(slug);
-      setSlugState(r.available ? "free" : "taken");
+      setChecked({ slug, available: r.available });
     }, 350);
     return () => clearTimeout(t);
   }, [slug, club]);
@@ -308,7 +311,7 @@ function StepClub({ club, sports, onDone }: { club: WizardData["club"]; sports: 
 
   return (
     <form onSubmit={submit}>
-      <StepShell eyebrow="Step 1" title="Your club" lead="The name goes on the registration form, the parent app and every email. You can change it later.">
+      <StepShell title="Your club" lead="The name goes on the registration form, the parent app and every email. You can change it later.">
         <Field label="Club name" required htmlFor="name">
           <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Bankstown Bullets Basketball" required minLength={2} autoFocus />
         </Field>
@@ -355,10 +358,7 @@ function StepClub({ club, sports, onDone }: { club: WizardData["club"]; sports: 
               id="slug"
               value={slug}
               disabled={!!club}
-              onChange={(e) => {
-                setSlugTouched(true);
-                setSlug(slugify(e.target.value));
-              }}
+              onChange={(e) => setSlug(slugify(e.target.value))}
               className="w-full bg-transparent py-3 pr-4 text-[16px] text-ink outline-none disabled:opacity-60"
               required
               minLength={3}
@@ -406,7 +406,7 @@ function StepLook({ club, onBack, onDone }: { club: NonNullable<WizardData["club
 
   return (
     <form onSubmit={submit}>
-      <StepShell eyebrow="Step 2" title="Logo and colours" lead="This is what parents see. Upload the logo and we'll suggest colours from it; pick the one that's really yours.">
+      <StepShell title="Logo and colours" lead="This is what parents see. Upload the logo and we'll suggest colours from it; pick the one that's really yours.">
         <LogoUpload
           clubId={club.id}
           clubName={club.name}
@@ -482,35 +482,32 @@ function ColourPicker({ label, value, onChange, swatches, hint }: { label: strin
 
 function PreviewCard({ club, theme, selected, onSelect }: { club: NonNullable<WizardData["club"]>; theme: "dark" | "light"; selected: boolean; onSelect: () => void }) {
   return (
-    <button type="button" onClick={onSelect} className={cn("rounded-[var(--r-lg)] border-2 p-1 text-left transition-colors", selected ? "border-club" : "border-line hover:border-line-strong")}>
-      <div data-theme={theme} className="rounded-[calc(var(--r-lg)-4px)] bg-bg p-4 text-ink" style={{ colorScheme: theme }}>
+    <button type="button" onClick={onSelect} className={cn("overflow-hidden rounded-[var(--r-lg)] border-2 text-left transition-colors", selected ? "border-club" : "border-line hover:border-line-strong")}>
+      <div data-theme={theme} className="bg-bg text-ink" style={{ colorScheme: theme }}>
         <ClubTheme colours={club.colours}>
-          <div className="club-glow -m-4 rounded-[calc(var(--r-lg)-4px)] p-4">
-            <div className="flex items-center gap-3">
-              <ClubMark name={club.name} src={logoUrl(club.logo_path)} size={40} />
-              <div className="min-w-0">
-                <p className="display truncate text-[15px] text-ink">{club.short_name || club.name}</p>
-                <p className="text-[11px] text-ink-muted">{theme === "dark" ? "Dark" : "Light"}</p>
-              </div>
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              <div className="rounded-[var(--r-sm)] border border-line bg-elev px-3 py-2">
-                <div className="numeral text-[20px] text-club">24</div>
+          <div className="band flex items-center gap-3 px-4 py-3">
+            <ClubMark name={club.name} src={logoUrl(club.logo_path)} size={36} />
+            <p className="display truncate text-[15px]">{club.short_name || club.name}</p>
+          </div>
+          <div className="px-4 pb-4 pt-3">
+            <div className="rule-top grid grid-cols-2 pt-2">
+              <div className="border-r border-line pr-3">
+                <div className="numeral text-[26px] text-club">24</div>
                 <div className="eyebrow">Registered</div>
               </div>
-              <div className="rounded-[var(--r-sm)] border border-line bg-elev px-3 py-2">
-                <div className="numeral text-[20px] text-ink">6</div>
+              <div className="pl-3">
+                <div className="numeral text-[26px] text-ink">6</div>
                 <div className="eyebrow">Owing</div>
               </div>
             </div>
             <div className="mt-3 flex items-center gap-2">
-              <span className="inline-flex h-9 flex-1 items-center justify-center rounded-full bg-club text-[12.5px] font-bold text-on-club">Register now</span>
-              <Chip tone="club">U12</Chip>
+              <span className="inline-flex h-9 flex-1 items-center justify-center rounded-[var(--r-md)] bg-club text-[12px] font-bold uppercase tracking-[0.06em] text-on-club">Register</span>
+              <Chip tone="muted">U12</Chip>
             </div>
           </div>
         </ClubTheme>
       </div>
-      <p className="px-3 py-2 text-[12px] font-bold text-ink-muted">{selected ? "Opens in this look" : "Use this look"}</p>
+      <p className="px-3 py-2 text-[12px] font-bold text-ink-muted">{selected ? `${theme === "dark" ? "Dark" : "Light"} · opens in this look` : `${theme === "dark" ? "Dark" : "Light"} · use this look`}</p>
     </button>
   );
 }
@@ -534,9 +531,9 @@ function StepVenues({ clubId, venues, onBack, onDone }: { clubId: string; venues
 
   return (
     <form onSubmit={submit}>
-      <StepShell eyebrow="Step 3" title="Where you play" lead="Games and trainings get pinned to a venue, and parents get directions from the app. One is plenty to start.">
+      <StepShell title="Where you play" lead="Games and trainings get pinned to a venue, and parents get directions from the app. One is plenty to start.">
         {rows.map((row, i) => (
-          <div key={row.id ?? i} className="flex items-start gap-3 rounded-[var(--r-md)] border border-line bg-elev p-3.5">
+          <div key={row.id ?? i} className="flex items-start gap-3 rounded-[var(--r-md)] bg-elev p-3.5">
             <MapPin className="mt-3.5 size-4 shrink-0 text-ink-dim" />
             <div className="grid flex-1 gap-3 sm:grid-cols-2">
               <Input placeholder="Venue name (e.g. Bankstown Basketball Stadium)" value={row.name} onChange={(e) => setRows(rows.map((r, j) => (j === i ? { ...r, name: e.target.value } : r)))} />
@@ -629,7 +626,7 @@ function StepSeason({
 
   return (
     <form onSubmit={submit}>
-      <StepShell eyebrow="Step 4" title="Season and age groups" lead="Age groups come from date of birth, not from the age a parent types in. Pick how your association counts it.">
+      <StepShell title="Season and age groups" lead="Age groups come from date of birth, not from the age a parent types in. Pick how your association counts it.">
         <Field label="Season name" required htmlFor="sname">
           <Input id="sname" value={name} onChange={(e) => setName(e.target.value)} required />
         </Field>
@@ -664,7 +661,7 @@ function StepSeason({
           </div>
           <div className="flex flex-col gap-2">
             {rows.map((d, i) => (
-              <div key={i} className="flex flex-col gap-2 rounded-[var(--r-md)] border border-line bg-elev p-2.5">
+              <div key={i} className="flex flex-col gap-2 rounded-[var(--r-md)] bg-elev p-3">
                 <div className="flex items-center gap-2">
                   <Input value={d.name} onChange={(e) => update(i, { name: e.target.value })} placeholder="U12" className="min-w-0 flex-1 py-2.5 font-bold" aria-label="Age group name" />
                   <div className="w-28 shrink-0">
@@ -693,7 +690,7 @@ function StepSeason({
                       <Input type="number" inputMode="numeric" value={d.max_age ?? ""} onChange={(e) => update(i, { max_age: num(e.target.value) })} placeholder="max" className="w-20 py-2.5" aria-label="Maximum age" />
                     </>
                   )}
-                  <span className="ml-auto truncate text-[11.5px] text-ink-dim">{describeDivision(d, mode)}</span>
+                  <span className="ml-auto hidden truncate text-[11.5px] text-ink-dim sm:inline">{describeDivision(d, mode)}</span>
                 </div>
               </div>
             ))}
@@ -703,7 +700,7 @@ function StepSeason({
           </Button>
         </div>
 
-        <label className="flex cursor-pointer items-center justify-between rounded-[var(--r-md)] border border-line bg-elev px-4 py-3.5">
+        <label className="flex cursor-pointer items-center justify-between rounded-[var(--r-md)] bg-elev px-4 py-3.5">
           <span>
             <span className="block text-[14px] font-bold text-ink">Registrations open</span>
             <span className="block text-[12.5px] text-ink-muted">Turn off to close the form without taking the page down.</span>
@@ -723,7 +720,7 @@ function StepSeason({
 
 function ModeCard({ active, onClick, title, text }: { active: boolean; onClick: () => void; title: string; text: string }) {
   return (
-    <button type="button" onClick={onClick} className={cn("rounded-[var(--r-md)] border p-4 text-left transition-colors", active ? "border-club bg-club/10" : "border-line bg-elev hover:border-line-strong")}>
+    <button type="button" onClick={onClick} className={cn("rounded-[var(--r-md)] border-2 p-4 text-left transition-colors", active ? "border-club bg-elev" : "border-transparent bg-elev hover:border-line-strong")}>
       <span className="block text-[14px] font-bold text-ink">{title}</span>
       <span className="mt-0.5 block text-[12.5px] text-ink-muted">{text}</span>
     </button>
@@ -751,7 +748,7 @@ function StepFees({ clubId, season, onBack, onDone }: { clubId: string; season: 
 
   return (
     <form onSubmit={submit}>
-      <StepShell eyebrow="Step 5" title="Fees" lead="We never make a number up. Either set the real fee now, or tell families it'll be confirmed. Fees are tracked as paid or owing; online payment comes later.">
+      <StepShell title="Fees" lead="We never make a number up. Either set the real fee now, or tell families it'll be confirmed. Fees are tracked as paid or owing; online payment comes later.">
         <div className="grid gap-2 sm:grid-cols-2">
           <ModeCard active={mode === "set"} onClick={() => setMode("set")} title="Set the fee now" text="Shown on the registration form and used to track who owes what." />
           <ModeCard active={mode === "later"} onClick={() => setMode("later")} title="Confirm it later" text="The form says the club will confirm fees. You can set it any time." />
@@ -808,7 +805,7 @@ function StepPeople({ clubId, invites, userEmail, onBack, onDone }: { clubId: st
 
   return (
     <form onSubmit={submit}>
-      <StepShell eyebrow="Step 6" title="Other admins" lead={`You're signed in as ${userEmail}. Add the other people who run the club and they get their own login with the same access. Coaches and parents get added from the app later.`}>
+      <StepShell title="Other admins" lead={`You're signed in as ${userEmail}. Add the other people who run the club and they get their own login with the same access. Coaches and parents get added from the app later.`}>
         {invites.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {invites.map((i) => (
@@ -824,7 +821,7 @@ function StepPeople({ clubId, invites, userEmail, onBack, onDone }: { clubId: st
         {results.length > 0 && (
           <div className="flex flex-col gap-2">
             {results.map((r) => (
-              <div key={r.email} className="flex flex-wrap items-center gap-3 rounded-[var(--r-md)] border border-line bg-elev px-4 py-3">
+              <div key={r.email} className="flex flex-wrap items-center gap-3 rounded-[var(--r-md)] bg-elev px-4 py-3">
                 <MailCheck className={cn("size-4", r.sent ? "text-ok" : "text-warn")} />
                 <span className="text-[14px] font-semibold text-ink">{r.email}</span>
                 <span className="text-[12.5px] text-ink-muted">{r.sent ? "Email sent." : "Email isn't set up yet, so send them this link:"}</span>
@@ -918,27 +915,25 @@ function StepLive({
         });
       }}
     >
-      <StepShell eyebrow="Step 7" title="Go live" lead="Check the summary. When you go live, the registration link works and the club page is public. Your 30-day trial starts now; no card needed.">
+      <StepShell title="Go live" lead="Check the summary. When you go live, the registration link works and the club page is public. Your 30-day trial starts now; no card needed.">
         <ClubTheme colours={club.colours}>
-          <div className="club-glow flex items-center gap-4 rounded-[var(--r-lg)] border border-line bg-elev p-5">
+          <div className="band flex items-center gap-4 rounded-[var(--r-lg)] p-5">
             <ClubMark name={club.name} src={logoUrl(club.logo_path)} size={56} />
             <div className="min-w-0">
-              <p className="display truncate text-[22px] text-ink">{club.name}</p>
-              <p className="text-[12.5px] text-ink-muted">
-                {[club.suburb, club.state].filter(Boolean).join(", ") || sportName}
-              </p>
+              <p className="display truncate text-[24px]">{club.name}</p>
+              <p className="text-[12.5px] opacity-80">{[club.suburb, club.state].filter(Boolean).join(", ") || sportName}</p>
             </div>
           </div>
         </ClubTheme>
-        <dl className="divide-y divide-line rounded-[var(--r-lg)] border border-line bg-elev">
+        <dl className="rule-top">
           {rows.map(([k, v]) => (
-            <div key={k} className="grid grid-cols-[110px_1fr] gap-3 px-5 py-3.5">
+            <div key={k} className="grid grid-cols-[110px_1fr] gap-3 border-b border-line py-3.5">
               <dt className="eyebrow pt-0.5">{k}</dt>
               <dd className="text-[14px] text-ink">{v}</dd>
             </div>
           ))}
         </dl>
-        <div className="flex flex-wrap items-center gap-3 rounded-[var(--r-lg)] border border-club/40 bg-club/10 p-4">
+        <div className="flex flex-wrap items-center gap-3 rounded-[var(--r-lg)] bg-elev p-4">
           <Link2 className="size-4 text-club" />
           <code className="min-w-0 flex-1 truncate text-[13.5px] text-ink">{link}</code>
           <CopyButton value={link} label="Copy link" />

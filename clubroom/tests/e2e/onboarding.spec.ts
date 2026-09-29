@@ -64,7 +64,8 @@ test.describe("a club signs up and goes live", () => {
     await expect(page.getByRole("heading", { name: "Season and age groups" })).toBeVisible();
     await expect(page.getByLabel("Age group name").first()).toHaveValue("U10");
     await page.getByRole("button", { name: "Year they were born" }).click();
-    await expect(page.getByText(/born \d{4}–\d{4}/).first()).toBeVisible();
+    await expect(page.getByText("Born", { exact: true }).first()).toBeVisible();
+    await expect(page.getByLabel("Born from").nth(1)).toHaveValue(String(new Date().getFullYear() - 11));
     await page.getByRole("button", { name: "Age on a set date" }).click();
     await shot(page, `${tag}-wizard-4-season`);
     await page.getByRole("button", { name: "Continue" }).click();
@@ -89,8 +90,17 @@ test.describe("a club signs up and goes live", () => {
     await expect(page.getByText(`/c/${slug}/register`)).toBeVisible();
     await expect(page.getByText("$180 per player, per season")).toBeVisible();
     await shot(page, `${tag}-wizard-7-live`);
-    await page.getByRole("button", { name: "Go live", exact: true }).click();
+    await page.locator('button[type="submit"]', { hasText: "Go live" }).click();
 
     await expect(page).toHaveURL(new RegExp(`/app/${slug}`));
+    await expect(page.getByText("You’re live.")).toBeVisible();
+    await expect(page.getByRole("heading", { name: clubName })).toBeVisible();
+    await shot(page, `${tag}-app-home-welcome`);
+
+    // the share page carries the same link and a QR code
+    await page.getByRole("link", { name: "Share", exact: true }).filter({ visible: true }).first().click();
+    await expect(page.getByRole("heading", { name: "Get the link out" })).toBeVisible();
+    await expect(page.getByTestId("qr").locator("svg")).toBeVisible();
+    await shot(page, `${tag}-app-share`);
   });
 });

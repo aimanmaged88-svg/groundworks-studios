@@ -11,9 +11,9 @@ export default async function SignUpPage({ searchParams }: { searchParams: Promi
   const user = await getSessionUser();
   if (user) redirect(next && next.startsWith("/") ? next : "/start");
   return (
-    <div className="rise">
-      <p className="eyebrow">Free for 30 days, no card needed</p>
-      <h1 className="display mt-3 text-[38px] text-ink">Start your club</h1>
+    <div className="rise rule-top pt-4">
+      <h1 className="display text-[44px] text-ink">Start your club</h1>
+      <p className="eyebrow mt-3">Free for 30 days · no card needed</p>
       <p className="mt-3 text-[14.5px] text-ink-muted">Make a login, set up the club, share the registration link. Every sign-up lands in the one list.</p>
       <div className="mt-8">
         <SignUpForm next={next} />

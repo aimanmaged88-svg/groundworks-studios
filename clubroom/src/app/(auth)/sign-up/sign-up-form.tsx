@@ -13,7 +13,7 @@ export function SignUpForm({ next }: { next?: string }) {
   if (state?.sent) {
     return (
       <Banner tone="ok" icon={<MailCheck className="size-5 text-ok" />}>
-        <b>Check your email.</b> We sent a link to <b>{state.sent}</b>. Open it on this device and you'll land straight in the setup.
+        <b>Check your email.</b> We sent a link to <b>{state.sent}</b>. Open it on this device and you&rsquo;ll land straight in the setup.
       </Banner>
     );
   }

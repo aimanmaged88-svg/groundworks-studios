@@ -11,9 +11,8 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
   const user = await getSessionUser();
   if (user) redirect(next && next.startsWith("/") ? next : "/app");
   return (
-    <div className="rise">
-      <p className="eyebrow">Welcome back</p>
-      <h1 className="display mt-3 text-[38px] text-ink">Sign in</h1>
+    <div className="rise rule-top pt-4">
+      <h1 className="display text-[44px] text-ink">Sign in</h1>
       <div className="mt-8">
         <SignInForm next={next} />
       </div>
