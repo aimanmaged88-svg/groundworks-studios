@@ -1,26 +1,258 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------
+   Tokens. Dark is the default look; light is a full second theme.
+   Club colours are set per club on the app shell (see ClubTheme).
+   ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b0c10;
+  --bg-elev: #14161c;
+  --bg-elev2: #1c1f27;
+  --bg-input: #171a21;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --ink: #f4f4f6;
+  --ink-muted: #a4a8b3;
+  --ink-dim: #6b7080;
+  --scrim: rgba(5, 6, 9, 0.72);
+
+  --club-primary: #f2b705;
+  --club-accent: #f2b705;
+  --club-on-primary: #14120a;
+
+  --ok: #2fd582;
+  --warn: #ffbf47;
+  --danger: #ff5c5c;
+  --info: #5ac8fa;
+
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  --shadow-card: 0 18px 50px -24px rgba(0, 0, 0, 0.7);
+  --shadow-pop: 0 30px 80px -30px rgba(0, 0, 0, 0.85);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root[data-theme="light"] {
+  --bg: #f4f3ef;
+  --bg-elev: #ffffff;
+  --bg-elev2: #f7f6f2;
+  --bg-input: #ffffff;
+  --line: rgba(12, 12, 16, 0.08);
+  --line-strong: rgba(12, 12, 16, 0.18);
+  --ink: #101114;
+  --ink-muted: #5c6070;
+  --ink-dim: #8b8f9c;
+  --scrim: rgba(12, 12, 16, 0.45);
+  --ok: #148a51;
+  --warn: #b77300;
+  --danger: #c93a3a;
+  --info: #1f7fbf;
+  --shadow-card: 0 14px 40px -24px rgba(20, 20, 30, 0.35);
+  --shadow-pop: 0 30px 80px -30px rgba(20, 20, 30, 0.45);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-elev: var(--bg-elev);
+  --color-elev2: var(--bg-elev2);
+  --color-input: var(--bg-input);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-dim: var(--ink-dim);
+  --color-club: var(--club-primary);
+  --color-club-accent: var(--club-accent);
+  --color-on-club: var(--club-on-primary);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --font-display: var(--font-archivo), "Arial Black", system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+  --radius-pill: var(--r-pill);
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+  --ease-spring: var(--ease-spring);
+  --ease-out: var(--ease-out);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+html {
+  color-scheme: dark;
+  background: var(--bg);
+}
+html[data-theme="light"] {
+  color-scheme: light;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+}
+::selection {
+  background: color-mix(in oklab, var(--club-primary) 60%, transparent);
+  color: var(--ink);
+}
+:focus-visible {
+  outline: 2px solid var(--club-primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  color: inherit;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+}
+
+/* Display type: bold, tight, uppercase */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 0.96;
+}
+.eyebrow {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.numeral {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+/* Subtle club glow behind hero areas */
+.club-glow {
+  background-image: radial-gradient(120% 60% at 50% -10%, color-mix(in oklab, var(--club-primary) 22%, transparent), transparent 62%);
+}
+
+/* Motion */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sheet-in {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.rise {
+  animation: rise 0.5s var(--ease-out) both;
+}
+.rise-2 {
+  animation: rise 0.5s var(--ease-out) 0.06s both;
+}
+.rise-3 {
+  animation: rise 0.5s var(--ease-out) 0.12s both;
+}
+.rise-4 {
+  animation: rise 0.5s var(--ease-out) 0.18s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .rise-2,
+  .rise-3,
+  .rise-4 {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Scrollbars that don't shout */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+/* Tables */
+.data-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+.data-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--bg-elev);
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+.data-table td {
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.data-table tbody tr:hover td {
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
+}
+.data-table tbody tr:last-child td {
+  border-bottom: none;
 }
