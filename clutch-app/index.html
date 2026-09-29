@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0B0A08">
+<title>Clutch</title>
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --disp:"Big Shoulders Display","IBM Plex Sans",sans-serif;
+  color-scheme:dark;
+  --bg:#0B0A08; --panel:#16130F; --panel-2:#1C1813; --hover:#241E17;
+  --line:rgba(255,240,220,.08); --line-2:rgba(255,240,220,.16);
+  --ink:#F6F1E9; --ink-2:#BAB1A4; --muted:#8B8175;
+  --accent:#FF8A1E; --accent-2:#E36F00; --accent-ink:#1A0C00; --accent-wash:rgba(255,138,30,.13); --accent-line:rgba(255,138,30,.4);
+  --good:#46C272; --warn:#F2B01E; --crit:#F2584B;
+  --good-wash:rgba(70,194,114,.13); --warn-wash:rgba(242,176,30,.13); --crit-wash:rgba(242,88,75,.13);
+  --shadow:0 24px 60px -20px rgba(0,0,0,.75);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--accent)}
+svg{display:block}
+.mono{font-family:var(--mono)} .muted{color:var(--muted)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+[hidden]{display:none!important}
+
+main{max-width:640px;margin:0 auto;padding:16px 16px calc(86px + env(safe-area-inset-bottom))}
+.apptop{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.apptop .in{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 16px}
+.apptop img{width:36px;height:36px;object-fit:contain}
+.apptop b{font:800 24px/1 var(--disp);text-transform:uppercase;letter-spacing:.01em}
+.apptop .r{margin-left:auto;font:500 11.5px var(--mono);color:var(--muted);text-align:right}
+
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,#131109 94%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:8px 4px calc(8px + env(safe-area-inset-bottom))}
+.tabbar .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-size:10.5px;font-weight:600;padding:4px 0;position:relative}
+.tabbar a svg{width:22px;height:22px}
+.tabbar a.on{color:var(--accent)}
+.tabbar .ct{position:absolute;top:-2px;left:calc(50% + 7px);font:600 10px var(--mono);background:var(--accent);color:var(--accent-ink);border-radius:9px;padding:0 5px}
+
+h1.pg{margin:14px 0 4px;font:800 34px/0.95 var(--disp);text-transform:uppercase}
+.pgsub{color:var(--ink-2);font-size:13.5px;margin-bottom:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:14.5px;font-weight:600}
+.btn{min-height:40px;padding:8px 14px;border-radius:10px;border:1px solid var(--line-2);background:var(--panel);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:14px;font-weight:500;text-decoration:none;color:var(--ink)}
+.btn:hover{background:var(--hover)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.btn.pri:hover{background:var(--accent-2)}
+.btn.sm{min-height:32px;padding:4px 10px;font-size:12.5px;border-radius:8px}
+.btn.ghost{background:none;border-color:transparent;color:var(--ink-2)}
+.btn svg{width:16px;height:16px}
+.btn:disabled{opacity:.5}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:6px;font-size:12px;border:1px solid var(--line-2);color:var(--ink-2)}
+.chip.acc{border-color:var(--accent-line);color:var(--accent);background:var(--accent-wash)}
+.chip.warn{border-color:transparent;color:var(--warn);background:var(--warn-wash)}
+.chip.good{border-color:transparent;color:var(--good);background:var(--good-wash)}
+.chip.crit{border-color:transparent;color:var(--crit);background:var(--crit-wash)}
+.seg{display:flex;border:1px solid var(--line-2);border-radius:10px;overflow:hidden;background:var(--panel);margin-bottom:14px}
+.seg button{flex:1;border:0;background:none;min-height:38px;cursor:pointer;font-size:13.5px;color:var(--ink-2)}
+.seg button.on{background:var(--accent-wash);color:var(--accent);font-weight:700}
+.seg button+button{border-left:1px solid var(--line)}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:500;z-index:60;box-shadow:var(--shadow);max-width:90vw;text-align:center}
+.av{border-radius:10px;display:grid;place-items:center;font-weight:700;background:var(--accent-wash);color:var(--accent);border:1px solid var(--accent-line);flex:none;overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover}
+.wl{display:inline-flex;gap:3px;vertical-align:middle}
+.wl i{width:17px;height:17px;border-radius:4px;display:grid;place-items:center;font:700 10px var(--mono);color:#fff;font-style:normal}
+.wl i.w{background:var(--good)} .wl i.l{background:var(--crit)} .wl i.d{background:var(--line-2);color:var(--ink-2)}
+.tog{display:inline-flex;border:1px solid var(--line-2);border-radius:9px;overflow:hidden;flex:none}
+.tog button{border:0;background:none;min-height:36px;min-width:52px;padding:0 12px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-2)}
+.tog button+button{border-left:1px solid var(--line)}
+.tog button.on.in{background:var(--good-wash);color:var(--good)}
+.tog button.on.out{background:var(--crit-wash);color:var(--crit)}
+.row{display:flex;align-items:center;gap:12px}
+.spread{justify-content:space-between}
+.list>*+*{border-top:1px solid var(--line)}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0;font-size:14px}
+dl.kv dt{color:var(--muted)} dl.kv dd{margin:0;min-width:0}
+.f{margin-bottom:12px}
+.f label{display:block;font-size:12.5px;color:var(--ink-2);font-weight:500;margin-bottom:5px}
+.f input,.f select,.f textarea{width:100%;min-height:44px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel-2);padding:10px 12px;font-size:15px}
+.f textarea{min-height:80px;resize:vertical}
+
+/* gate */
+.gate{position:fixed;inset:0;z-index:50;overflow:auto;background:
+  radial-gradient(900px 500px at 50% -10%,rgba(255,138,30,.22),transparent 60%),
+  var(--bg)}
+.gate .court{position:fixed;inset:0;pointer-events:none;opacity:.06}
+.gwrap{min-height:100%;display:grid;place-items:center;padding:28px 20px}
+.gbox{width:min(420px,100%);text-align:center}
+.gbox .logo{width:150px;height:150px;object-fit:contain;margin:0 auto;filter:drop-shadow(0 18px 40px rgba(255,138,30,.25))}
+.gbox h1{margin:6px 0 0;font:900 56px/0.95 var(--disp);text-transform:uppercase}
+.gbox .tag{color:var(--ink-2);font-size:14px;margin:8px 0 24px}
+.pick{display:grid;gap:12px;text-align:left}
+.pick button{display:flex;gap:14px;align-items:center;border:1px solid var(--line-2);background:var(--panel);border-radius:16px;padding:16px;cursor:pointer}
+.pick button:hover{border-color:var(--accent-line)}
+.pick .ic{width:52px;height:52px;border-radius:14px;background:var(--accent-wash);border:1px solid var(--accent-line);display:grid;place-items:center;color:var(--accent);flex:none}
+.pick .ic svg{width:26px;height:26px}
+.pick b{display:block;font:800 22px/1 var(--disp);text-transform:uppercase}
+.pick span{display:block;color:var(--ink-2);font-size:13px;margin-top:4px}
+.gcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;text-align:left}
+.gerr{color:var(--crit);font-size:13px;min-height:1.2em;margin-bottom:10px}
+.glink{background:none;border:0;color:var(--accent);cursor:pointer;font-size:13.5px;padding:0}
+.gback{margin-top:16px}
+/* kid code screen */
+.kidcode{ text-align:center }
+.kidcode h2{font:900 34px/1 var(--disp);text-transform:uppercase;margin:0 0 6px}
+.kidcode p{color:var(--ink-2);font-size:14px;margin:0 0 18px}
+.codebox{display:flex;gap:8px;justify-content:center;margin-bottom:18px}
+.codebox input{width:46px;height:58px;text-align:center;font:700 26px var(--mono);border:2px solid var(--line-2);border-radius:12px;background:var(--panel-2);color:var(--ink)}
+.codebox input:focus{border-color:var(--accent);outline:none}
+.bounce{animation:bounce 2.4s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* kid hero */
+.hero{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--accent-line);background:
+  radial-gradient(600px 300px at 80% -20%,rgba(255,138,30,.35),transparent 60%),
+  linear-gradient(160deg,#1E1710,#0F0C08);padding:20px;margin-bottom:14px}
+.hero .row1{display:flex;gap:16px;align-items:center}
+.hero .av{width:84px;height:84px;border-radius:18px;font-size:28px}
+.hero h1{margin:0;font:900 40px/0.9 var(--disp);text-transform:uppercase}
+.hero .sub{color:var(--ink-2);font-size:13.5px;margin-top:4px}
+.hero .no{position:absolute;top:6px;right:14px;font:900 84px/1 var(--disp);color:rgba(255,138,30,.16)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.stat{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center}
+.stat b{display:block;font:800 24px/1 var(--disp);color:var(--accent)}
+.stat span{display:block;font-size:10.5px;color:var(--ink-2);margin-top:3px;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.count{display:flex;align-items:center;gap:12px;background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:12px 16px;margin-top:14px;font-weight:700}
+.count b{font:900 30px/1 var(--disp)}
+.count svg{width:22px;height:22px}
+
+/* sessions */
+.sessrow{display:grid;grid-template-columns:52px 1fr auto;gap:12px;padding:12px 0;align-items:center}
+.sessrow .d{ text-align:center }
+.sessrow .d b{display:block;font:800 20px/1 var(--disp)}
+.sessrow .d span{display:block;font:600 10.5px var(--mono);color:var(--muted);text-transform:uppercase}
+.sessrow .t{min-width:0}
+.sessrow .t b{display:block;font-size:14.5px}
+.sessrow .t small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px}
+.score{font:800 20px var(--disp)}
+
+/* chat */
+.convbtn{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:0;padding:13px 0;cursor:pointer}
+.convbtn .av{width:44px;height:44px;font-size:15px}
+.convbtn b{display:block;font-size:14.5px}
+.convbtn small{display:block;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:56vw}
+.convbtn .dot{margin-left:auto;width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.thread{display:flex;flex-direction:column;height:calc(100dvh - 220px);min-height:320px}
+.tmsgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:4px 0 12px}
+.bubble{max-width:82%;border-radius:14px;padding:9px 13px;font-size:14.5px;line-height:1.45;background:var(--panel);border:1px solid var(--line);align-self:flex-start;white-space:pre-wrap;word-break:break-word}
+.bubble.me{align-self:flex-end;background:var(--accent-wash);border-color:var(--accent-line)}
+.bubble .who{font:600 11px var(--mono);color:var(--accent);margin-bottom:2px}
+.bubble .when{font:400 10.5px var(--mono);color:var(--muted);margin-top:3px}
+.tcomp{display:flex;gap:8px;padding-top:10px;border-top:1px solid var(--line)}
+.tcomp textarea{flex:1;min-height:44px;max-height:110px;border:1px solid var(--line-2);border-radius:12px;background:var(--panel);padding:11px 13px;font-size:15px;resize:none}
+
+/* board */
+.postcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.postcard .hd{display:flex;gap:10px;align-items:center}
+.postcard .hd .av{width:38px;height:38px;font-size:13px}
+.postcard .hd b{font-size:14px}
+.postcard .body{margin:10px 0 8px;font-size:14.5px;white-space:pre-wrap;word-break:break-word}
+.meta{display:flex;gap:16px;align-items:center;color:var(--muted);font-size:13px}
+.meta button{background:none;border:0;color:var(--muted);cursor:pointer;font-size:13px;display:inline-flex;gap:5px;align-items:center;padding:4px 0}
+.meta button.on{color:var(--accent)}
+.meta button svg{width:17px;height:17px}
+.cmt{display:grid;grid-template-columns:28px 1fr;gap:9px;padding:9px 0 0;font-size:13.5px}
+.cmt .av{width:28px;height:28px;font-size:10px;border-radius:8px}
+.cmt b{font-weight:600}
+.gal{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.gal .gi{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);aspect-ratio:1;background:var(--panel-2)}
+.gal img,.gal video{width:100%;height:100%;object-fit:cover;display:block}
+.gal .cap{position:absolute;left:0;right:0;bottom:0;padding:16px 8px 6px;font-size:11px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.72))}
+.gal .pend{position:absolute;top:6px;left:6px}
+.rules{font-size:13px;color:var(--ink-2);background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+.bigcode{font:700 34px/1 var(--mono);letter-spacing:.2em;text-align:center;background:var(--panel-2);border:1px dashed var(--accent-line);border-radius:14px;padding:18px 8px;margin:12px 0;user-select:all}
+.loading{position:fixed;inset:0;z-index:70;background:var(--bg);display:grid;place-items:center}
+.loading img{width:96px;height:96px;object-fit:contain;animation:bounce 1.2s ease-in-out infinite}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40}
+.sheet{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(560px,100%);max-height:86dvh;overflow:auto;background:var(--panel);border:1px solid var(--line-2);border-radius:18px 18px 0 0;z-index:41;padding:20px 18px calc(20px + env(safe-area-inset-bottom))}
+.sheet h2{margin:0 0 4px;font:800 26px/1 var(--disp);text-transform:uppercase}
+.sheet .sub{color:var(--ink-2);font-size:13px;margin-bottom:14px}
+</style>
+</head>
+<body>
+<div class="loading" id="loading"><img src="logo.png" alt=""></div>
+<div class="gate" id="gate" hidden>
+  <svg class="court" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#FF8A1E" stroke-width="2"><circle cx="200" cy="400" r="60"/><path d="M0 400h400M0 40h400M120 40v120a80 80 0 0 0 160 0V40M120 760v-120a80 80 0 0 1 160 0v120M0 760h400"/></g></svg>
+  <div class="gwrap"><div class="gbox" id="gbox"></div></div>
+</div>
+
+<header class="apptop" id="apptop" hidden><div class="in"><img src="logo.png" alt=""><b>Clutch</b><div class="r" id="whoami"></div></div></header>
+<main id="main" hidden></main>
+<nav class="tabbar" id="tabbar" hidden><div class="in" id="tabin"></div></nav>
+<div class="scrim" id="scrim" hidden data-act="closeSheet"></div>
+<div class="sheet" id="sheet" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+"use strict";
+/* Clutch · the family app. Parents and players. RLS in Supabase decides
+   what each sign-in can see; players only ever reach their own family. */
+const SUPA_URL = "https://egffberfhnnkhtiscaol.supabase.co";
+const SUPA_KEY = "sb_publishable_dsJ4eroFRHB2zD_s9jojag_oJM5HklH";
+const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+const $ = (s, e = document) => e.querySelector(s), $$ = (s, e = document) => [...e.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const TZ = "Australia/Sydney";
+const todayISO = () => new Intl.DateTimeFormat("en-CA", {timeZone: TZ}).format(new Date());
+const U = s => { const [y,m,d] = s.split("-").map(Number); return Date.UTC(y, m-1, d); };
+const iso = ms => new Date(ms).toISOString().slice(0,10);
+const addD = (s,n) => iso(U(s) + n*864e5);
+const dow = s => { const x = new Date(U(s)).getUTCDay(); return x === 0 ? 7 : x; };
+const monday = s => addD(s, 1 - dow(s));
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DN = ["","Mon","Tue","Wed","Thu","Fri","Sat","Sun"], DL = ["","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const fd = (s,o={}) => { if (!s) return "–"; const d = new Date(U(s.slice(0,10))); return (o.wd ? DN[dow(s.slice(0,10))] + " " : "") + d.getUTCDate() + " " + MON[d.getUTCMonth()] + (o.y ? " " + d.getUTCFullYear() : ""); };
+const ftime = ts => new Date(ts).toLocaleString("en-AU", {timeZone:TZ, day:"numeric", month:"short", hour:"numeric", minute:"2-digit"});
+const tm = t => +t.slice(0,2)*60 + +t.slice(3,5);
+const mt = m => String(Math.floor(m/60)).padStart(2,"0") + ":" + String(m%60).padStart(2,"0");
+const t12 = (t,ap=true) => { const m = tm(t), h = Math.floor(m/60), mm = m%60; return ((h+11)%12+1) + ":" + String(mm).padStart(2,"0") + (ap ? (h<12?"am":"pm") : ""); };
+const trange = (a,b) => t12(a,false) + "–" + t12(b);
+const money = n => "$" + Math.round(+n).toLocaleString("en-AU");
+const initials = n => (n||"?").split(" ").map(w => w[0]).join("").slice(0,2).toUpperCase();
+function toast(m){ const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2800); }
+
+let ME = null, D = null, KID = null;   // KID = the signed-in player row when role=player
+let VIEW = { r:"home", club:"board", conv:null, sched:"up" };
+const SIGNED = {};
+const isKid = () => ME && ME.role === "player";
+
+const sv = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const I = {
+  home:sv('<path d="M3.5 10.8 12 3.8l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/>'),
+  cal:sv('<rect x="3.5" y="5" width="17" height="15.5" rx="2.4"/><path d="M3.5 9.8h17M8.2 3v4M15.8 3v4"/>'),
+  chat:sv('<path d="M4 5.5h16v10.5H9.5L5.5 20v-4H4z"/>'),
+  club:sv('<circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/><path d="M17.8 4.8a3.4 3.4 0 0 1 0 6.4M20.5 20c0-2.4-1-4.2-2.7-5.4"/>'),
+  more:sv('<circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/>'),
+  ball:sv('<circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2M12 3.4v17.2M6 6c3.4 3 3.4 9 0 12M18 6c-3.4 3-3.4 9 0 12"/>'),
+  parent:sv('<circle cx="9" cy="7.5" r="3.2"/><path d="M3.4 20c0-3.4 2.5-5.4 5.6-5.4s5.6 2 5.6 5.4"/><circle cx="17" cy="9.5" r="2.4"/><path d="M15.8 14.7c2.8.3 4.6 2 4.6 5.3"/>'),
+  send:sv('<path d="M20.4 3.6 3.6 10.4l6.6 2.9 2.9 6.6 7.3-16.3z"/><path d="M10.2 13.3 20.4 3.6"/>'),
+  heart:sv('<path d="M12 20.3S4 15 4 9.6A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 8 2.6c0 5.4-8 10.7-8 10.7z"/>'),
+  video:sv('<rect x="3" y="6" width="13" height="12" rx="2.4"/><path d="m16 10 5-3v10l-5-3z"/>'),
+  share:sv('<circle cx="6" cy="12" r="2.6"/><circle cx="17.5" cy="5.5" r="2.6"/><circle cx="17.5" cy="18.5" r="2.6"/><path d="m8.4 10.8 6.8-4M8.4 13.2l6.8 4"/>'),
+  cam:sv('<path d="M4 8h3l1.6-2.4h6.8L17 8h3a1.5 1.5 0 0 1 1.5 1.5V18a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18V9.5A1.5 1.5 0 0 1 4 8z"/><circle cx="12" cy="13.4" r="3.4"/>'),
+  key:sv('<circle cx="8" cy="14.5" r="4.2"/><path d="m11 11.5 8.5-8.5M16 6.5l3 3M13.5 9l2 2"/>'),
+  ok:sv('<circle cx="12" cy="12" r="8.6"/><path d="m8.2 12.3 2.6 2.6 5-5.3"/>'),
+  alert:sv('<path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4M12 16.8v.1"/>'),
+  x:sv('<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>'),
+  back:sv('<path d="M15 5 8 12l7 7"/>'),
+};
+
+/* ---------- data ---------- */
+async function q(table, sel, order){ let x = sb.from(table).select(sel || "*"); if (order) x = x.order(order.c, {ascending:order.a !== false}); const { data, error } = await x.limit(5000); if (error) throw new Error(table + ": " + error.message); return data || []; }
+async function fetchAll(){
+  const wantMoney = !isKid();
+  const [org, venues, teams, players, guardians, fixtures, avail, roll, stats, notices, posts, comments, likes, media, convs, payments, instalments, logs] = await Promise.all([
+    q("org_settings"), q("venues"), q("teams"), q("players", "*", {c:"dob"}), q("guardians"),
+    q("fixtures", "*", {c:"date"}), q("availability"), q("roll"), q("game_stats"),
+    q("notices", "*", {c:"created_at", a:false}), q("posts", "*", {c:"created_at", a:false}),
+    q("comments", "*", {c:"created_at"}), q("post_likes"), q("media", "*", {c:"created_at", a:false}),
+    q("conversations"),
+    wantMoney ? q("payments") : Promise.resolve([]), wantMoney ? q("instalments", "*", {c:"due"}) : Promise.resolve([]),
+    q("player_log", "*", {c:"on_date", a:false}),
+  ]);
+  D = {org:org[0], venues, teams, players:players.filter(p => p.status === "active"), guardians, fixtures, stats, notices, posts, comments, likes, media, convs, payments, instalments, logs, avail:{}, roll:{}, msgs:{}, reads:{}};
+  avail.forEach(r => { (D.avail[r.session_key] = D.avail[r.session_key] || {})[r.player_id] = r.status; });
+  roll.forEach(r => { (D.roll[r.session_key] = D.roll[r.session_key] || {})[r.player_id] = r.present; });
+  try { (await q("conversation_reads")).forEach(r => { if (r.profile_id === ME.id) D.reads[r.conversation_id] = r.last_read_at; }); } catch (e) {}
+  KID = ME.player_id ? D.players.find(p => p.id === ME.player_id) : null;
+}
+const team = id => D.teams.find(t => t.id === id);
+const venue = id => D.venues.find(v => v.id === id);
+const tname = t => t ? `${t.age} ${t.div}` : "Training squad";
+const pname = p => p.first_name + " " + p.last_name;
+const myKids = () => isKid() ? (KID ? [KID] : []) : D.players;
+const myTeams = () => [...new Set(myKids().map(p => p.team_id).filter(Boolean))].map(team).filter(Boolean);
+const payTotal = p => D.payments.filter(x => x.player_id === p.id).reduce((s,x) => s + +x.amount, 0);
+const feeOf = p => { const t = team(p.team_id); return t ? +t.fee : 0; };
+const owing = p => Math.max(0, feeOf(p) - payTotal(p));
+const statsOf = p => { const S = D.stats.filter(s => s.player_id === p.id); const pts = S.reduce((x,s) => x + s.points, 0); return {games:S.length, pts, ppg:S.length ? pts/S.length : 0}; };
+const attOf = p => { let n = 0, here = 0; for (const k in D.roll) { const v = D.roll[k][p.id]; if (v !== undefined) { n++; if (v) here++; } } return {n, here, pct:n ? here/n : null}; };
+function last5(tid){ return D.fixtures.filter(f => f.team_id === tid && f.us != null).sort((a,b) => b.date.localeCompare(a.date)).slice(0,5); }
+const wlChips = tid => { const L = last5(tid); return L.length ? `<span class="wl">${L.slice().reverse().map(f => { const x = f.us > f.them ? "w" : f.us < f.them ? "l" : "d"; return `<i class="${x}">${x.toUpperCase()}</i>`; }).join("")}</span>` : '<span class="muted">no games yet</span>'; };
+async function signedUrl(path, bucket = "avatars"){
+  const key = bucket + ":" + path;
+  if (SIGNED[key]) return SIGNED[key];
+  const { data } = await sb.storage.from(bucket).createSignedUrl(path, 3600);
+  if (data && data.signedUrl) { SIGNED[key] = data.signedUrl; return data.signedUrl; }
+  return null;
+}
+function avatar(p, size){
+  const key = "avatars:" + p.photo_path;
+  if (p.photo_path && SIGNED[key]) return `<div class="av" style="width:${size}px;height:${size}px"><img src="${SIGNED[key]}" alt=""></div>`;
+  if (p.photo_path) signedUrl(p.photo_path).then(u => { if (u) render(); });
+  return `<div class="av" style="width:${size}px;height:${size}px;font-size:${Math.round(size/2.6)}px">${initials(pname(p))}</div>`;
+}
+function familySessions(fromD, toD){
+  const out = [];
+  myTeams().forEach(t => {
+    let M = monday(fromD);
+    while (M <= toD) {
+      (t.train || []).forEach((s,i) => { const date = addD(M, s.dow - 1);
+        if (date >= fromD && date <= toD && date >= (D.org.season.start || date) && date <= (D.org.season.end || date) && !(t.created && date < t.created))
+          out.push({key:`${t.id}|${date}|T${i}`, team:t.id, type:"T", date, start:s.start, end:s.end, venue:s.venue, court:s.court}); });
+      M = addD(M, 7);
+    }
+    D.fixtures.filter(f => f.team_id === t.id && f.date >= fromD && f.date <= toD).forEach(f => out.push({key:`${t.id}|${f.date}|G`, team:t.id, type:"G", date:f.date, start:f.time, end:mt(tm(f.time)+50), venue:f.venue_id, court:f.court, opp:f.opp, fx:f}));
+  });
+  return out.sort((a,b) => a.date.localeCompare(b.date) || tm(a.start) - tm(b.start));
+}
+const isPastS = s => { const T = todayISO(); return s.date < T || (s.date === T && tm(s.end) <= new Date().getHours()*60 + new Date().getMinutes()); };
+const nextGame = tid => D.fixtures.filter(f => f.team_id === tid && f.date >= todayISO() && f.us == null).sort((a,b) => a.date.localeCompare(b.date))[0];
+
+/* ---------- shell ---------- */
+function shell(){
+  const unread = D.convs.filter(c => c.last_message_at && (!D.reads[c.id] || D.reads[c.id] < c.last_message_at)).length;
+  const tabs = [["home","Home",I.home],["sched","Schedule",I.cal],["chat","Chat",I.chat],["club","Club",I.club],["more","More",I.more]];
+  $("#tabin").innerHTML = tabs.map(([k,l,i]) => `<a href="#/${k}" class="${VIEW.r === k ? "on" : ""}">${i}${l}${k === "chat" && unread ? `<span class="ct">${unread}</span>` : ""}</a>`).join("");
+  $("#whoami").innerHTML = isKid() ? `${esc(KID ? KID.first_name : "")}<br>player` : `${esc(ME.full_name.split(" ")[0])}<br>parent`;
+}
+function parseHash(){ const h = location.hash.replace(/^#\/?/, "").split("/")[0]; return ["home","sched","chat","club","more"].includes(h) ? h : "home"; }
+addEventListener("hashchange", () => { if (!D) return; VIEW.r = parseHash(); VIEW.conv = null; render(); scrollTo(0,0);
+  if (VIEW.r === "club") refreshClub();
+  if (VIEW.r === "chat") (async () => { try { const c = await q("conversations"); D.convs = c; render(); } catch (e) {} })(); });
+function render(){
+  if (!D || !ME) return;
+  shell();
+  $("#main").innerHTML = {home:vHome, sched:vSched, chat:vChat, club:vClub, more:vMore}[VIEW.r]();
+  const box = $("#tmsgs"); if (box) box.scrollTop = box.scrollHeight;
+}
+
+/* ---------- home ---------- */
+function vHome(){
+  if (isKid()) return kidHome();
+  const notices = D.notices.slice(0, 3);
+  return `<h1 class="pg">Salaam, ${esc(ME.full_name.split(" ")[0])}</h1><div class="pgsub">${esc(D.org.name)} · ${esc(D.org.season.name || "")}</div>
+  ${myKids().map(p => parentKidCard(p)).join("") || `<div class="card">No players linked to this account yet. Ask Clutch to check your family.</div>`}
+  ${notices.length ? `<div class="card"><h2>From the club</h2><div class="list">${notices.map(n => `<div style="padding:10px 0"><b style="font-size:14px">${esc(n.title)}</b><div class="muted" style="font-size:13px;margin-top:2px">${esc(n.body)}</div><div class="muted" style="font-size:11.5px;margin-top:4px">${esc(n.by_name)} · ${fd(n.created_at.slice(0,10))}</div></div>`).join("")}</div></div>` : ""}`;
+}
+function parentKidCard(p){
+  const t = team(p.team_id), o = owing(p), st = statsOf(p);
+  const next = familySessions(todayISO(), addD(todayISO(), 13)).filter(s => s.team === p.team_id && !isPastS(s)).slice(0, 2);
+  const inst = D.instalments.filter(i => i.player_id === p.id && i.due >= todayISO()).sort((a,b) => a.due.localeCompare(b.due))[0];
+  return `<div class="card">
+    <div class="row spread"><div class="row">${avatar(p, 52)}<div><b style="font-size:16px">${esc(pname(p))}</b>
+      <div class="muted" style="font-size:13px">${t ? `${tname(t)} · coach ${esc(t.coach_name || "TBC")}` : "Training squad"}${p.no != null ? ` · #${p.no}` : ""}</div></div></div>
+      ${t ? wlChips(t.id) : ""}</div>
+    ${next.map(s => sessLine(s, p)).join("") || `<div class="muted" style="padding:10px 0;font-size:13.5px">Nothing scheduled in the next two weeks.</div>`}
+    <div class="row" style="margin-top:10px;flex-wrap:wrap;gap:8px">
+      ${o ? `<span class="chip crit">${money(o)} owing${inst ? ` · next ${money(inst.amount)} ${fd(inst.due)}` : ""}</span>` : `<span class="chip good">${I.ok}Fees paid</span>`}
+      ${st.games ? `<span class="chip">${st.pts} pts this season</span>` : ""}
+      ${p.medical ? `<span class="chip warn">Medical note</span>` : ""}
+    </div></div>`;
+}
+function kidHome(){
+  const p = KID; if (!p) return `<div class="card">Your player profile isn't linked. Ask your parent to get a new code from Clutch.</div>`;
+  const t = team(p.team_id), st = statsOf(p), at = attOf(p);
+  const ng = t ? nextGame(t.id) : null;
+  const days = ng ? Math.max(0, Math.round((U(ng.date) - U(todayISO())) / 864e5)) : null;
+  const soc = p.socials || {};
+  return `
+  <div class="hero"><div class="no">${p.no != null ? "#" + p.no : ""}</div>
+    <div class="row1">${avatar(p, 84)}<div><h1>${esc(p.first_name)}</h1><div class="sub">${t ? `${tname(t)} · coach ${esc(t.coach_name || "TBC")}` : "Training squad"}</div>
+      <div style="margin-top:6px">${t ? wlChips(t.id) : ""}</div></div></div>
+    <div class="stats">
+      <div class="stat"><b>${st.pts}</b><span>points</span></div>
+      <div class="stat"><b>${st.games ? st.ppg.toFixed(1) : "–"}</b><span>per game</span></div>
+      <div class="stat"><b>${at.pct != null ? Math.round(at.pct*100) + "%" : "–"}</b><span>turn up</span></div>
+      <div class="stat"><b>${t ? last5(t.id).filter(f => f.us > f.them).length : 0}</b><span>wins in 5</span></div>
+    </div>
+    ${ng ? `<div class="count">${I.ball}<div>Next game ${days === 0 ? "is TODAY" : days === 1 ? "is tomorrow" : `in <b>${days}</b> days`}<div style="font-size:12px;font-weight:500">vs ${esc(ng.opp)} · ${fd(ng.date, {wd:1})}, ${t12(ng.time)}</div></div></div>` : ""}
+  </div>
+  <div class="card"><div class="row spread"><h2 style="margin:0">My profile</h2>
+    <button class="btn sm" data-act="shareCard">${I.share}Share</button></div>
+    <div class="row" style="margin-top:10px;flex-wrap:wrap;gap:8px">
+      ${["instagram","tiktok","youtube"].filter(k => soc[k]).map(k => `<span class="chip acc">${k} · ${esc(soc[k])}</span>`).join("")}
+      <button class="btn sm ghost" data-act="editSocials" data-id="${p.id}">${soc.instagram || soc.tiktok ? "Edit socials" : "Add my socials"}</button>
+      <label class="btn sm ghost" style="cursor:pointer">${I.cam}Photo<input type="file" accept="image/*" data-act="avatarUp" data-id="${p.id}" hidden></label>
+    </div>
+    ${!p.photo_consent ? `<div class="muted" style="font-size:12px;margin-top:8px">Photo sharing is off for you — talk to your parents if that should change.</div>` : ""}</div>
+  ${t ? recentGames(t) : ""}`;
+}
+function recentGames(t){
+  const past = last5(t.id);
+  if (!past.length) return "";
+  return `<div class="card"><h2>Last games</h2><div class="list">${past.map(f => `<div class="sessrow">
+    <div class="d"><b>${new Date(U(f.date)).getUTCDate()}</b><span>${MON[new Date(U(f.date)).getUTCMonth()]}</span></div>
+    <div class="t"><b>vs ${esc(f.opp)}</b><small>${f.us > f.them ? "Win" : "Loss"} ${f.us}–${f.them}</small></div>
+    ${f.video_url ? `<a class="btn sm" href="${esc(f.video_url)}" target="_blank" rel="noopener">${I.video}Watch</a>` : `<span class="score ${f.us > f.them ? "" : "muted"}">${f.us}–${f.them}</span>`}
+  </div>`).join("")}</div></div>`;
+}
+
+/* ---------- schedule ---------- */
+function sessLine(s, p){
+  const v = venue(s.venue), a = D.avail[s.key] || {}, val = p ? a[p.id] : null;
+  return `<div class="sessrow">
+    <div class="d"><b>${new Date(U(s.date)).getUTCDate()}</b><span>${DN[dow(s.date)]}</span></div>
+    <div class="t"><b>${s.type === "G" ? "Game vs " + esc(s.opp) : "Training"}</b><small>${trange(s.start, s.end)} · ${esc(v ? v.short : "TBC")}, court ${s.court}${!p ? " · " + tname(team(s.team)) : ""}</small></div>
+    ${s.type === "G" && p && !isPastS(s) ? `<div class="tog"><button class="${val === "in" ? "on in" : ""}" data-act="avail" data-id="${s.key}" data-p="${p.id}" data-v="in">In</button><button class="${val === "out" ? "on out" : ""}" data-act="avail" data-id="${s.key}" data-p="${p.id}" data-v="out">Out</button></div>` : ""}
+  </div>`;
+}
+function vSched(){
+  const T = todayISO();
+  const seg = `<div class="seg">${[["up","Coming up"],["res","Results"]].map(([k,l]) => `<button class="${VIEW.sched === k ? "on" : ""}" data-act="schedSeg" data-id="${k}">${l}</button>`).join("")}</div>`;
+  if (VIEW.sched === "res") {
+    const done = D.fixtures.filter(f => myTeams().some(t => t.id === f.team_id) && f.us != null).sort((a,b) => b.date.localeCompare(a.date)).slice(0, 20);
+    return `<h1 class="pg">Schedule</h1><div class="pgsub">Results and game videos</div>${seg}
+      <div class="card"><div class="list">${done.map(f => `<div class="sessrow">
+        <div class="d"><b>${new Date(U(f.date)).getUTCDate()}</b><span>${MON[new Date(U(f.date)).getUTCMonth()]}</span></div>
+        <div class="t"><b>${tname(team(f.team_id))} vs ${esc(f.opp)}</b><small>${f.us > f.them ? "Win" : "Loss"} ${f.us}–${f.them}</small></div>
+        ${f.video_url ? `<a class="btn sm" href="${esc(f.video_url)}" target="_blank" rel="noopener">${I.video}Watch</a>` : ""}</div>`).join("") || `<div class="muted" style="padding:8px 0">No results yet.</div>`}</div></div>`;
+  }
+  const S = familySessions(T, addD(T, 20)).filter(s => !isPastS(s));
+  const byDate = {};
+  S.forEach(s => (byDate[s.date] = byDate[s.date] || []).push(s));
+  const kidFor = s => myKids().find(p => p.team_id === s.team);
+  return `<h1 class="pg">Schedule</h1><div class="pgsub">The next three weeks. Tap In or Out for every game.</div>${seg}
+    ${Object.keys(byDate).sort().map(date => `<div class="card"><h2>${DL[dow(date)]} ${fd(date)}</h2>
+      <div class="list">${byDate[date].map(s => sessLine(s, kidFor(s))).join("")}</div></div>`).join("") || `<div class="card muted">Nothing scheduled yet.</div>`}`;
+}
+
+/* ---------- chat ---------- */
+async function ensureConvs(){
+  const fid = myKids()[0] ? myKids()[0].family_id : (ME.guardian_id ? (D.guardians.find(g => g.id === ME.guardian_id) || {}).family_id : null);
+  if (!fid) return;
+  const want = [["family", null]];
+  if (!isKid()) want.push(["club", null]);
+  myTeams().forEach(t => { if (!isKid() || (KID && KID.team_id === t.id)) want.push(["coach", t.id]); });
+  for (const [kind, tid] of want) {
+    const have = D.convs.find(c => c.kind === kind && c.family_id === fid && (kind !== "coach" || c.team_id === tid));
+    if (!have) { try { const { data } = await sb.rpc("open_conversation", {p_kind:kind, p_family:fid, p_team:tid}); if (data) { const { data: c } = await sb.from("conversations").select("*").eq("id", data).single(); if (c) D.convs.push(c); } } catch (e) {} }
+  }
+}
+function convTitle(c){
+  if (c.kind === "family") return "Family chat";
+  if (c.kind === "club") return "Clutch admins";
+  const t = team(c.team_id); return "Coach · " + (t ? tname(t) : "team");
+}
+function convSub(c){
+  if (c.kind === "family") return "Just your family";
+  if (c.kind === "club") return "Fees, registrations, anything club-side";
+  const t = team(c.team_id); return (t && t.coach_name ? t.coach_name + " · " : "") + "parents are always in this thread";
+}
+function vChat(){
+  if (VIEW.conv) return threadView();
+  const convs = D.convs.slice().sort((a,b) => (b.last_message_at || b.created_at).localeCompare(a.last_message_at || a.created_at));
+  return `<h1 class="pg">Chat</h1><div class="pgsub">${isKid() ? "Your family and your coach. Every message shows your name." : "Your family, your kids' coaches, and the club."}</div>
+  <div class="card"><div class="list">${convs.map(c => { const unread = c.last_message_at && (!D.reads[c.id] || D.reads[c.id] < c.last_message_at);
+    return `<button class="convbtn" data-act="openConv" data-id="${c.id}">
+      <div class="av">${c.kind === "coach" ? I.ball : c.kind === "club" ? I.club : I.parent}</div>
+      <div style="min-width:0"><b>${esc(convTitle(c))}</b><small>${esc(c.last_preview || convSub(c))}</small></div>
+      ${unread ? `<span class="dot"></span>` : ""}</button>`; }).join("") || `<div class="muted" style="padding:10px 0">Setting up your threads…</div>`}</div></div>`;
+}
+function threadView(){
+  const c = D.convs.find(x => x.id === VIEW.conv); if (!c) { VIEW.conv = null; return vChat(); }
+  const msgs = D.msgs[c.id] || [];
+  return `<div class="row" style="margin:14px 0 4px"><button class="btn sm ghost" data-act="backChat">${I.back}Back</button></div>
+  <h1 class="pg" style="margin-top:0">${esc(convTitle(c))}</h1><div class="pgsub">${esc(convSub(c))}</div>
+  <div class="thread"><div class="tmsgs" id="tmsgs">${msgs.map(m => `<div class="bubble${m.sender_id === ME.id ? " me" : ""}">${m.sender_id === ME.id ? "" : `<div class="who">${esc(m.sender_name)}${m.sender_role === "admin" ? " · Clutch" : m.sender_role === "coach" ? " · coach" : ""}</div>`}${esc(m.body)}<div class="when">${ftime(m.created_at)}</div></div>`).join("") || `<div class="muted" style="margin:auto;text-align:center">No messages yet.<br>Say salaam 👋</div>`}</div>
+  <form class="tcomp" data-form="msg" data-id="${c.id}"><textarea name="body" placeholder="Message" required maxlength="4000"></textarea><button class="btn pri" aria-label="Send" style="min-width:48px">${I.send}</button></form></div>`;
+}
+
+/* ---------- club (board + gallery) ---------- */
+function vClub(){
+  const seg = `<div class="seg">${[["board","Board"],["gallery","Gallery"]].map(([k,l]) => `<button class="${VIEW.club === k ? "on" : ""}" data-act="clubSeg" data-id="${k}">${l}</button>`).join("")}</div>`;
+  if (VIEW.club === "gallery") {
+    const gal = D.media.filter(m => m.status === "approved" || m.author_id === ME.id);
+    return `<h1 class="pg">Club</h1><div class="pgsub">Photos and clips from around Clutch</div>${seg}
+      <div class="card"><label class="btn pri" style="cursor:pointer;width:100%">${I.cam}Add a photo or clip<input type="file" accept="image/*,video/mp4,video/quicktime" data-act="galUp" hidden></label>
+      <div class="muted" style="font-size:12px;margin-top:8px;text-align:center">A Clutch admin checks everything before the club sees it.</div></div>
+      <div class="gal">${gal.map(m => `<div class="gi">${mediaTag(m)}${m.status === "pending" ? `<span class="chip warn pend">Waiting</span>` : ""}<div class="cap">${esc(m.caption || m.author_name)}</div></div>`).join("") || `<div class="muted">Nothing here yet.</div>`}</div>`;
+  }
+  const feed = D.posts.filter(p => p.status === "approved" || p.author_id === ME.id);
+  return `<h1 class="pg">Club</h1><div class="pgsub">The Clutch community board</div>${seg}
+  ${D.org.guidelines ? `<div class="rules">${esc(D.org.guidelines)}</div>` : ""}
+  <div class="card"><form data-form="post"><div class="f" style="margin-bottom:8px"><textarea name="body" placeholder="Share something with the club…" required maxlength="4000"></textarea></div>
+    <div class="row spread"><span class="muted" style="font-size:12px">An admin approves it before it goes up.</span><button class="btn pri sm">${I.send}Post</button></div></form></div>
+  ${feed.map(p => postCard(p)).join("") || `<div class="card muted">No posts yet. Be the first.</div>`}`;
+}
+function mediaTag(m){
+  const key = "media:" + m.path, url = SIGNED[key];
+  if (!url) { signedUrl(m.path, "media").then(u => { if (u) render(); }); return `<div style="display:grid;place-items:center;height:100%;color:var(--muted);font-size:12px">…</div>`; }
+  return m.kind === "video" ? `<video src="${url}" controls playsinline preload="metadata"></video>` : `<img src="${url}" alt="" loading="lazy">`;
+}
+function postCard(p){
+  const cms = D.comments.filter(c => c.post_id === p.id && (c.status === "approved" || c.author_id === ME.id));
+  const likes = D.likes.filter(l => l.post_id === p.id), mine = likes.some(l => l.profile_id === ME.id);
+  return `<div class="postcard">
+    <div class="hd"><div class="av">${initials(p.author_name)}</div><div><b>${esc(p.author_name)}</b> ${p.author_role === "admin" ? `<span class="chip acc" style="padding:1px 7px">Clutch</span>` : p.author_role === "coach" ? `<span class="chip" style="padding:1px 7px">coach</span>` : ""}
+      <div class="muted" style="font-size:11.5px">${ftime(p.created_at)}${p.status === "pending" ? ` · <span style="color:var(--warn)">waiting for approval</span>` : ""}</div></div></div>
+    <div class="body">${esc(p.body)}</div>
+    ${p.status === "approved" ? `<div class="meta"><button class="${mine ? "on" : ""}" data-act="like" data-id="${p.id}">${I.heart}${likes.length || ""}</button><span>${cms.length} comments</span></div>
+    ${cms.map(c => `<div class="cmt"><div class="av">${initials(c.author_name)}</div><div><b>${esc(c.author_name)}</b> ${esc(c.body)}${c.status === "pending" ? ` <span class="muted" style="font-size:11px">(waiting)</span>` : ""}</div></div>`).join("")}
+    <form data-form="comment" data-id="${p.id}" class="row" style="margin-top:10px;gap:8px"><input name="body" placeholder="Comment" required maxlength="2000" style="flex:1;min-height:38px;border:1px solid var(--line-2);border-radius:9px;background:var(--panel-2);padding:8px 11px;font-size:14px"><button class="btn sm" aria-label="Send">${I.send}</button></form>` : ""}
+  </div>`;
+}
+
+/* ---------- more ---------- */
+function vMore(){
+  if (isKid()) {
+    return `<h1 class="pg">More</h1><div class="pgsub">${esc(D.org.name)}</div>
+    <div class="card"><h2>House rules</h2><div class="muted" style="font-size:13.5px;white-space:pre-wrap">${esc(D.org.guidelines || "Play hard, be kind, listen to your coach.")}</div></div>
+    <div class="card"><button class="btn" data-act="signout" style="width:100%">Sign out</button>
+      <div class="muted" style="font-size:12px;margin-top:8px;text-align:center">Need back in later? Your parent makes you a new code in their app.</div></div>`;
+  }
+  return `<h1 class="pg">More</h1><div class="pgsub">Family settings and fees</div>
+  ${myKids().map(p => { const t = team(p.team_id), o = owing(p), inst = D.instalments.filter(i => i.player_id === p.id);
+    const soc = p.socials || {};
+    return `<div class="card"><div class="row spread"><div class="row">${avatar(p, 46)}<div><b>${esc(pname(p))}</b><div class="muted" style="font-size:12.5px">${t ? tname(t) : "Training squad"}</div></div></div>
+      <button class="btn sm pri" data-act="kidCode" data-id="${p.id}">${I.key}App code for ${esc(p.first_name)}</button></div>
+      <div class="row" style="margin-top:12px;gap:8px;flex-wrap:wrap">
+        <label class="btn sm" style="cursor:pointer">${I.cam}${p.photo_path ? "Change photo" : "Add photo"}<input type="file" accept="image/*" data-act="avatarUp" data-id="${p.id}" hidden></label>
+        <button class="btn sm" data-act="editSocials" data-id="${p.id}">Socials${soc.instagram ? " · " + esc(soc.instagram) : ""}</button>
+      </div>
+      <dl class="kv" style="margin-top:14px">
+        <dt>Season fee</dt><dd>${t ? money(feeOf(p)) : "–"}</dd>
+        <dt>Paid</dt><dd>${money(payTotal(p))}</dd>
+        <dt>Owing</dt><dd>${o ? `<b style="color:var(--crit)">${money(o)}</b>` : `<span class="chip good">${I.ok}All paid</span>`}</dd>
+        ${inst.length ? `<dt>Plan</dt><dd>${inst.map(i => `${money(i.amount)} on ${fd(i.due)}`).join("<br>")}</dd>` : ""}
+        ${p.medical ? `<dt>Medical</dt><dd>${esc(p.medical_note || "Note on file")}</dd>` : ""}
+        <dt>Photos</dt><dd>${p.photo_consent ? "Consent given" : "No consent — " + p.first_name + " stays out of the gallery"}</dd>
+      </dl></div>`; }).join("")}
+  <div class="card"><h2>${esc(D.org.name)}</h2><dl class="kv">
+    <dt>Contact</dt><dd>${esc(D.org.contact_name)}</dd>
+    <dt>Phone</dt><dd><a href="tel:${esc(D.org.phone.replace(/\s/g, ""))}">${esc(D.org.phone)}</a></dd>
+    <dt>Email</dt><dd><a href="mailto:${esc(D.org.email)}">${esc(D.org.email)}</a></dd></dl></div>
+  <div class="card"><button class="btn" data-act="signout" style="width:100%">Sign out</button></div>`;
+}
+
+/* ---------- sheet ---------- */
+function openSheet(html){ $("#sheet").innerHTML = html; $("#sheet").hidden = false; $("#scrim").hidden = false; }
+function closeSheet(){ $("#sheet").hidden = true; $("#scrim").hidden = true; }
+
+/* ---------- actions ---------- */
+async function run(fn){ try { await fn(); } catch (e) { console.error(e); toast(e.message || "That didn't work. Try again."); } }
+const ACT = {
+  closeSheet:() => closeSheet(),
+  signout:async () => { await sb.auth.signOut(); location.hash = ""; location.reload(); },
+  schedSeg:el => { VIEW.sched = el.dataset.id; render(); },
+  clubSeg:el => { VIEW.club = el.dataset.id; render(); },
+  avail:el => run(async () => {
+    const cur = (D.avail[el.dataset.id] || {})[el.dataset.p];
+    if (cur === el.dataset.v) { await sb.from("availability").delete().eq("session_key", el.dataset.id).eq("player_id", el.dataset.p); delete D.avail[el.dataset.id][el.dataset.p]; }
+    else { const { error } = await sb.from("availability").upsert({session_key:el.dataset.id, player_id:el.dataset.p, status:el.dataset.v, set_by:ME.id}); if (error) throw error;
+      (D.avail[el.dataset.id] = D.avail[el.dataset.id] || {})[el.dataset.p] = el.dataset.v; toast(el.dataset.v === "in" ? "Locked in 💪" : "Marked out — coach can plan around it"); }
+    render(); }),
+  openConv:el => run(async () => { VIEW.conv = el.dataset.id; const { data } = await sb.from("messages").select("*").eq("conversation_id", el.dataset.id).order("created_at").limit(300);
+    D.msgs[el.dataset.id] = data || []; markRead(el.dataset.id); render(); }),
+  backChat:() => { VIEW.conv = null; render(); },
+  like:el => run(async () => { const mine = D.likes.find(l => l.post_id === el.dataset.id && l.profile_id === ME.id);
+    if (mine) { await sb.from("post_likes").delete().eq("post_id", el.dataset.id).eq("profile_id", ME.id); D.likes = D.likes.filter(l => l !== mine); }
+    else { const { error } = await sb.from("post_likes").insert({post_id:el.dataset.id, profile_id:ME.id}); if (error) throw error; D.likes.push({post_id:el.dataset.id, profile_id:ME.id}); }
+    render(); }),
+  kidCode:el => run(async () => { const p = D.players.find(x => x.id === el.dataset.id);
+    const { data, error } = await sb.rpc("create_player_code", {p_player:p.id}); if (error) throw error;
+    openSheet(`<h2>Code for ${esc(p.first_name)}</h2><div class="sub">${esc(p.first_name)} opens this app on their own device, taps “I'm a player”, and types this. One use, lasts 7 days.</div>
+      <div class="bigcode">${data}</div>
+      <div class="row" style="gap:8px"><button class="btn pri" data-act="copyCode" data-v="${data}" style="flex:1">Copy code</button><button class="btn" data-act="closeSheet">Done</button></div>`); }),
+  copyCode:el => { navigator.clipboard && navigator.clipboard.writeText(el.dataset.v).then(() => toast("Copied")); },
+  editSocials:el => { const p = D.players.find(x => x.id === el.dataset.id), soc = p.socials || {};
+    openSheet(`<h2>${esc(p.first_name)}'s socials</h2><div class="sub">Handles only — they show on the player profile and when clips are shared.</div>
+    <form data-form="socials" data-id="${p.id}">
+      <div class="f"><label>Instagram</label><input name="instagram" value="${esc(soc.instagram || "")}" placeholder="@handle"></div>
+      <div class="f"><label>TikTok</label><input name="tiktok" value="${esc(soc.tiktok || "")}" placeholder="@handle"></div>
+      <div class="f"><label>YouTube</label><input name="youtube" value="${esc(soc.youtube || "")}" placeholder="channel"></div>
+      <div class="row" style="gap:8px"><button class="btn pri" style="flex:1">Save</button><button type="button" class="btn" data-act="closeSheet">Cancel</button></div></form>`); },
+  shareCard:() => run(async () => { const p = KID, t = team(p.team_id), st = statsOf(p);
+    const txt = `${p.first_name} ${p.last_name} 🏀 ${D.org.name}\n${t ? tname(t) : ""}${p.no != null ? " · #" + p.no : ""}\n${st.pts} points this season${st.games ? ` · ${st.ppg.toFixed(1)} a game` : ""}\n#ComingUpClutch`;
+    if (navigator.share) { try { await navigator.share({text:txt}); } catch (e) {} }
+    else { copyText(txt); toast("Copied — paste it anywhere"); } }),
+};
+function copyText(t){ if (navigator.clipboard) navigator.clipboard.writeText(t); }
+document.addEventListener("click", e => { const el = e.target.closest("[data-act]"); if (!el || el.type === "file") return; const fn = ACT[el.dataset.act]; if (fn) { if (el.tagName === "A") e.preventDefault(); fn(el); } });
+document.addEventListener("change", e => { const el = e.target;
+  if (el.dataset.act === "avatarUp" && el.files[0]) uploadAvatar(el.dataset.id, el.files[0]);
+  if (el.dataset.act === "galUp" && el.files[0]) uploadMedia(el.files[0]); });
+
+const FORMS = {
+  msg:async (f, el) => { const { data, error } = await sb.from("messages").insert({conversation_id:el.dataset.id, body:f.body}).select().single(); if (error) throw error;
+    (D.msgs[el.dataset.id] = D.msgs[el.dataset.id] || []).push(data);
+    const c = D.convs.find(x => x.id === el.dataset.id); if (c) { c.last_message_at = data.created_at; c.last_preview = data.body.slice(0,120); }
+    markRead(el.dataset.id); },
+  post:async f => { const { data, error } = await sb.from("posts").insert({body:f.body}).select().single(); if (error) throw error;
+    D.posts.unshift(data); toast("Sent — a Clutch admin will approve it"); },
+  comment:async (f, el) => { const { data, error } = await sb.from("comments").insert({post_id:el.dataset.id, body:f.body}).select().single(); if (error) throw error;
+    D.comments.push(data); toast("Sent for approval"); },
+  socials:async (f, el) => { const socials = {}; ["instagram","tiktok","youtube"].forEach(k => { if (f[k] && f[k].trim()) socials[k] = f[k].trim(); });
+    const { error } = await sb.rpc("set_player_profile", {p_player:el.dataset.id, p_photo:null, p_socials:socials, p_phone:null}); if (error) throw error;
+    D.players.find(p => p.id === el.dataset.id).socials = socials; closeSheet(); toast("Saved"); },
+};
+document.addEventListener("submit", e => { const el = e.target, k = el.dataset.form; if (!FORMS[k]) return; e.preventDefault();
+  const f = Object.fromEntries(new FormData(el).entries());
+  run(async () => { await FORMS[k](f, el); el.reset && el.reset(); render(); }); });
+
+function shrink(file, max){ return new Promise(res => { const img = new Image(); img.onload = () => { const k = Math.min(1, max / Math.max(img.width, img.height));
+  const c = document.createElement("canvas"); c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
+  c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); c.toBlob(b => res(b), "image/jpeg", .86); }; img.src = URL.createObjectURL(file); }); }
+function uploadAvatar(pid, file){ run(async () => {
+  const blob = await shrink(file, 512); const path = `players/${pid}.jpg`;
+  const { error } = await sb.storage.from("avatars").upload(path, blob, {upsert:true, contentType:"image/jpeg"}); if (error) throw error;
+  const { error: e2 } = await sb.rpc("set_player_profile", {p_player:pid, p_photo:path, p_socials:null, p_phone:null}); if (e2) throw e2;
+  D.players.find(p => p.id === pid).photo_path = path; delete SIGNED["avatars:" + path]; render(); toast("Photo saved"); }); }
+function uploadMedia(file){ run(async () => {
+  const isVideo = file.type.startsWith("video");
+  if (file.size > 50*1024*1024) { toast("Keep clips under 50MB"); return; }
+  const blob = isVideo ? file : await shrink(file, 1600);
+  const path = `gallery/${Date.now()}-${Math.random().toString(36).slice(2,8)}${isVideo ? ".mp4" : ".jpg"}`;
+  const { error } = await sb.storage.from("media").upload(path, blob, {contentType:isVideo ? file.type : "image/jpeg"}); if (error) throw error;
+  const { data, error: e2 } = await sb.from("media").insert({path, kind:isVideo ? "video" : "image", caption:""}).select().single(); if (e2) throw e2;
+  D.media.unshift(data); render(); toast("Sent — an admin approves it before the club sees it"); }); }
+
+function markRead(cid){ D.reads[cid] = new Date().toISOString(); sb.from("conversation_reads").upsert({conversation_id:cid, profile_id:ME.id, last_read_at:D.reads[cid]}).then(() => shell()); }
+function startRealtime(){
+  sb.channel("family")
+    .on("postgres_changes", {event:"INSERT", schema:"public", table:"messages"}, pl => { const m = pl.new;
+      if (D.msgs[m.conversation_id] && !D.msgs[m.conversation_id].some(x => x.id === m.id)) D.msgs[m.conversation_id].push(m);
+      const c = D.convs.find(x => x.id === m.conversation_id);
+      if (c) { c.last_message_at = m.created_at; c.last_preview = m.body.slice(0,120); if (VIEW.conv === m.conversation_id) markRead(c.id); }
+      render(); })
+    .on("postgres_changes", {event:"*", schema:"public", table:"posts"}, () => refreshClub())
+    .on("postgres_changes", {event:"*", schema:"public", table:"comments"}, () => refreshClub())
+    .on("postgres_changes", {event:"*", schema:"public", table:"media"}, () => refreshClub())
+    .subscribe();
+}
+let clubT = null;
+function refreshClub(){ clearTimeout(clubT); clubT = setTimeout(async () => {
+  try { const [p, c, m, l] = await Promise.all([q("posts", "*", {c:"created_at", a:false}), q("comments", "*", {c:"created_at"}), q("media", "*", {c:"created_at", a:false}), q("post_likes")]);
+    D.posts = p; D.comments = c; D.media = m; D.likes = l; render(); } catch (e) {} }, 400); }
+
+/* ---------- gate ---------- */
+function gate(mode, err){
+  $("#loading").hidden = true; $("#apptop").hidden = true; $("#main").hidden = true; $("#tabbar").hidden = true;
+  $("#gate").hidden = false;
+  const g = $("#gbox");
+  const head = `<img class="logo bounce" src="logo.png" alt="Clutch"><h1>Clutch</h1><div class="tag">Basketball is just the beginning.</div>`;
+  if (mode === "pick") { g.innerHTML = head + `<div class="pick">
+      <button data-g="parent"><div class="ic">${I.parent}</div><div><b>I'm a parent</b><span>Schedule, fees, coach chat and the club board</span></div></button>
+      <button data-g="kid"><div class="ic">${I.ball}</div><div><b>I'm a player</b><span>Got a code from your parent? This way.</span></div></button>
+    </div>`; return; }
+  if (mode === "kid") { g.innerHTML = head + `<div class="gcard kidcode">
+      <h2>Drop your code</h2><p>Six digits from your parent's Clutch app.</p>
+      <div class="gerr">${esc(err || "")}</div>
+      <form data-g="kidgo"><div class="codebox">${[0,1,2,3,4,5].map(i => `<input inputmode="numeric" maxlength="1" pattern="[0-9]" data-ci="${i}" autocomplete="${i === 0 ? "one-time-code" : "off"}">`).join("")}</div>
+      <button class="btn pri" style="width:100%">Let's go</button></form>
+      <p class="gback"><button class="glink" data-g="back">← Back</button></p></div>`; setTimeout(() => { const f = $('[data-ci="0"]'); if (f) f.focus(); }, 80); return; }
+  if (mode === "activate") { g.innerHTML = head + `<div class="gcard">
+      <div class="gerr">${esc(err || "")}</div>
+      <form data-g="activate">
+        <div class="f"><label>Email</label><input name="email" type="email" required autocomplete="username"></div>
+        <div class="f"><label>Activation code from Clutch</label><input name="code" required autocomplete="one-time-code" style="text-transform:uppercase"></div>
+        <div class="f"><label>Choose a password (8+ characters)</label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
+        <button class="btn pri" style="width:100%">Activate my account</button></form>
+      <p class="gback" style="text-align:center"><button class="glink" data-g="parent">Back to sign in</button></p></div>`; return; }
+  g.innerHTML = head + `<div class="gcard">
+    <div class="gerr">${esc(err || "")}</div>
+    <form data-g="signin">
+      <div class="f"><label>Email</label><input name="email" type="email" required autocomplete="username"></div>
+      <div class="f"><label>Password</label><input name="password" type="password" required autocomplete="current-password"></div>
+      <button class="btn pri" style="width:100%">Sign in</button></form>
+    <p class="gback" style="text-align:center"><button class="glink" data-g="toActivate">First time here? I have a code from Clutch</button></p>
+    <p style="text-align:center;margin:8px 0 0"><button class="glink" data-g="back">← Back</button></p></div>`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("button[data-g]"); if (!b) return;
+  const m = b.dataset.g;
+  if (m === "parent") gate("signin"); else if (m === "kid") gate("kid"); else if (m === "toActivate") gate("activate"); else if (m === "back") gate("pick"); });
+document.addEventListener("input", e => { const el = e.target; if (el.dataset.ci === undefined) return;
+  el.value = el.value.replace(/\D/g, "").slice(-1);
+  if (el.value && +el.dataset.ci < 5) { const n = $(`[data-ci="${+el.dataset.ci + 1}"]`); if (n) n.focus(); }
+  if (el.value.length === 0 && e.inputType === "deleteContentBackward" && +el.dataset.ci > 0) { const p = $(`[data-ci="${+el.dataset.ci - 1}"]`); if (p) p.focus(); } });
+document.addEventListener("paste", e => { const el = e.target; if (el.dataset && el.dataset.ci !== undefined) { const t = (e.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0, 6);
+  if (t.length > 1) { e.preventDefault(); [...t].forEach((ch, i) => { const b = $(`[data-ci="${i}"]`); if (b) b.value = ch; }); const last = $(`[data-ci="${Math.min(5, t.length - 1)}"]`); if (last) last.focus(); } } });
+document.addEventListener("submit", async e => {
+  const f = e.target; if (!f.dataset.g) return; e.preventDefault();
+  const btn = f.querySelector("button.pri"); if (btn) { btn.disabled = true; btn.textContent = "One sec…"; }
+  if (f.dataset.g === "kidgo") {
+    const code = $$("[data-ci]").map(x => x.value).join("");
+    if (code.length !== 6) { gate("kid", "Type all six digits."); return; }
+    const r = await fetch(`${SUPA_URL}/functions/v1/kid-login`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify({code})});
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { gate("kid", j.error || "That code didn't work."); return; }
+    const { error } = await sb.auth.verifyOtp({type:"magiclink", token_hash:j.token_hash});
+    if (error) { gate("kid", "Couldn't start your session. Ask for a new code."); return; }
+    boot(); return;
+  }
+  const v = Object.fromEntries(new FormData(f).entries());
+  if (f.dataset.g === "activate") {
+    const r = await fetch(`${SUPA_URL}/functions/v1/activate`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify(v)});
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { gate("activate", j.error || "That didn't work."); return; }
+    if (!["parent"].includes(j.role)) { gate("signin", "That code is a staff code — use clutch-hq.netlify.app instead."); return; }
+  }
+  const { error } = await sb.auth.signInWithPassword({email:v.email, password:v.password});
+  if (error) { gate("signin", error.message === "Invalid login credentials" ? "Wrong email or password." : error.message); return; }
+  boot();
+});
+
+/* ---------- boot ---------- */
+async function boot(){
+  $("#gate").hidden = true; $("#loading").hidden = false;
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { gate("pick"); return; }
+  const { data: prof } = await sb.from("profiles").select("*").eq("id", session.user.id).single();
+  if (!prof) { gate("pick", ""); return; }
+  ME = prof;
+  if (["admin","coach"].includes(ME.role)) { $("#loading").hidden = true; $("#gate").hidden = false;
+    $("#gbox").innerHTML = `<img class="logo" src="logo.png" alt=""><h1>Clutch</h1><div class="tag">This is the family app — staff sign in at</div>
+    <a class="btn pri" href="https://clutch-hq.netlify.app">clutch-hq.netlify.app</a><div style="height:10px"></div><button class="btn" data-act="signout">Sign out</button>`; return; }
+  if (ME.role === "pending") { $("#loading").hidden = true; gate("pick"); toast("This account isn't linked to a family yet — ask Clutch for a code."); return; }
+  try { await fetchAll(); await ensureConvs(); } catch (e) { console.error(e); $("#loading").hidden = true; gate("pick", "Couldn't load: " + e.message); return; }
+  $("#loading").hidden = true; $("#apptop").hidden = false; $("#main").hidden = false; $("#tabbar").hidden = false;
+  VIEW.r = parseHash(); render(); startRealtime();
+}
+if ("serviceWorker" in navigator) { addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {})); }
+boot();
+</script>
+</body>
+</html>
