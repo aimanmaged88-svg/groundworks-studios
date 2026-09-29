@@ -1,0 +1,66 @@
+{
+  "comment": "Shared by tests/unit/age-rule.test.ts and tests/rls/functions.test.ts. Age groups from date of birth; both the SQL and TypeScript implementations must agree on every case.",
+  "rules": [
+    {
+      "name": "age at 31 Dec 2026",
+      "mode": "age_at_date",
+      "cutoff": "2026-12-31",
+      "divisions": [
+        { "name": "U10", "sort": 1, "max_age": 9 },
+        { "name": "U12", "sort": 2, "min_age": 10, "max_age": 11 },
+        { "name": "U14", "sort": 3, "min_age": 12, "max_age": 13 },
+        { "name": "U16", "sort": 4, "min_age": 14, "max_age": 15 },
+        { "name": "U18", "sort": 5, "min_age": 16, "max_age": 17 }
+      ],
+      "cases": [
+        { "dob": "2018-01-01", "expect": "U10" },
+        { "dob": "2017-01-01", "expect": "U10" },
+        { "dob": "2016-12-31", "expect": "U12" },
+        { "dob": "2015-06-15", "expect": "U12" },
+        { "dob": "2014-12-31", "expect": "U14" },
+        { "dob": "2013-02-28", "expect": "U14" },
+        { "dob": "2012-12-31", "expect": "U16" },
+        { "dob": "2011-01-01", "expect": "U16" },
+        { "dob": "2010-12-31", "expect": "U18" },
+        { "dob": "2009-01-01", "expect": "U18" },
+        { "dob": "2008-12-31", "expect": null },
+        { "dob": "2000-01-01", "expect": null }
+      ]
+    },
+    {
+      "name": "age at 1 Jan 2027 (mid-season cutoff)",
+      "mode": "age_at_date",
+      "cutoff": "2027-01-01",
+      "divisions": [
+        { "name": "U12", "sort": 1, "max_age": 11 },
+        { "name": "U14", "sort": 2, "min_age": 12, "max_age": 13 }
+      ],
+      "cases": [
+        { "dob": "2015-01-01", "expect": "U14" },
+        { "dob": "2015-01-02", "expect": "U12" },
+        { "dob": "2013-01-01", "expect": null }
+      ]
+    },
+    {
+      "name": "birth year 2026 season",
+      "mode": "birth_year",
+      "cutoff": null,
+      "divisions": [
+        { "name": "U12", "sort": 1, "born_from": 2015, "born_to": 2016 },
+        { "name": "U14", "sort": 2, "born_from": 2013, "born_to": 2014 },
+        { "name": "U16", "sort": 3, "born_from": 2011, "born_to": 2012 },
+        { "name": "Seniors", "sort": 4, "born_to": 2008 }
+      ],
+      "cases": [
+        { "dob": "2016-12-31", "expect": "U12" },
+        { "dob": "2015-01-01", "expect": "U12" },
+        { "dob": "2014-07-04", "expect": "U14" },
+        { "dob": "2011-01-01", "expect": "U16" },
+        { "dob": "2010-06-06", "expect": null },
+        { "dob": "2008-12-31", "expect": "Seniors" },
+        { "dob": "1990-01-01", "expect": "Seniors" },
+        { "dob": "2017-01-01", "expect": null }
+      ]
+    }
+  ]
+}

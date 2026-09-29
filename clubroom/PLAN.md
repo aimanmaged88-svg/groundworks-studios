@@ -296,6 +296,7 @@ Promo media (countdown and hype videos rendered from the club's branding, day co
 - **Motion**: 200–350 ms spring-ish easing for sheets and cards; reduced-motion respected.
 - **Components**: app shell (bottom tabs on mobile, side rail on desktop), stat tile, matrix table, data table with sticky header, filter bar, bottom sheet, form fields with clear required marks, banners, empty states written like a person.
 - **Never**: emoji as icons, default browser blue, pure black text on pure white, lorem ipsum, invented names.
+- **Voice** (Aiman's rule, 29 Sep): write like a club person talking to another club person. Short sentences, concrete nouns (Friday, the group chat, the rego form), no slogans, no "the one place for everything" style taglines, no "ever", no lists of three with a twist. If it could be on any SaaS homepage, rewrite it.
 
 ---
 

@@ -1,6 +1,12 @@
+import { existsSync } from "node:fs";
 import { defineConfig, devices } from "@playwright/test";
 
 const baseURL = process.env.E2E_BASE_URL ?? "http://localhost:3000";
+
+// Some sandboxes ship one Chromium build rather than the exact one this
+// Playwright version expects; use it when present instead of downloading.
+const chromiumPath = process.env.PW_CHROMIUM_PATH ?? (existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
+const launchOptions = chromiumPath ? { executablePath: chromiumPath } : undefined;
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -16,6 +22,7 @@ export default defineConfig({
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     colorScheme: "dark",
+    launchOptions,
   },
   projects: [
     { name: "phone", use: { ...devices["iPhone 13"], defaultBrowserType: "chromium" } },

@@ -10,12 +10,12 @@ export default function Home() {
         <ThemeToggle />
       </header>
       <section className="flex flex-1 flex-col justify-center gap-6 py-16">
-        <p className="eyebrow rise">For clubs that run on volunteers</p>
+        <p className="eyebrow rise">Junior sport, sorted</p>
         <h1 className="display rise-2 text-[44px] text-ink sm:text-[64px]">
-          The one place your <span className="text-club">club</span> runs from.
+          Stop running the club out of a <span className="text-club">group chat</span>.
         </h1>
         <p className="rise-3 max-w-xl text-[17px] leading-relaxed text-ink-muted">
-          Registrations, a members database, coaches, parents and players. Your logo, your colours, live in five minutes. No technical setup, ever.
+          Parents fill in one form. You see who&rsquo;s registered, who&rsquo;s paid and who&rsquo;s turning up. Coaches get their team, parents get their kid&rsquo;s schedule. It carries your logo and colours, and there&rsquo;s nothing technical to set up.
         </p>
         <div className="rise-4 flex flex-wrap gap-3">
           <ButtonLink href="/sign-up" size="lg" icon={<ArrowRight className="size-4" />}>

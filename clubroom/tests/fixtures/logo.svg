@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <circle cx="128" cy="128" r="124" fill="#0e2a47"/>
+  <circle cx="128" cy="128" r="74" fill="#f25c05"/>
+  <path d="M54 128 H202 M128 54 V202 M75 75 Q128 128 181 181 M181 75 Q128 128 75 181" stroke="#0e2a47" stroke-width="10" fill="none"/>
+  <text x="128" y="236" text-anchor="middle" font-family="Arial Black, Arial" font-size="26" fill="#ffffff">TEST CLUB</text>
+</svg>

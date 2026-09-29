@@ -42,3 +42,5 @@ next-env.d.ts
 
 # keep the example env file
 !.env.example
+tests/e2e/.results/
+tests/e2e/screenshots/
