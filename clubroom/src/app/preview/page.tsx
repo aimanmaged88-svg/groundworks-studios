@@ -10,8 +10,24 @@ export const metadata: Metadata = {
 
 export default async function PreviewPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const q = await searchParams;
-  const supabase = await createClient();
-  const { data: sports } = await supabase.from("sports").select("key, name").order("sort");
+  // The preview needs no database; fall back to the built-in sport list if one isn't configured.
+  let sports: Array<{ key: string; name: string }> | null = null;
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    try {
+      const supabase = await createClient();
+      sports = (await supabase.from("sports").select("key, name").order("sort")).data;
+    } catch {
+      sports = null;
+    }
+  }
+  sports ??= [
+    { key: "basketball", name: "Basketball" },
+    { key: "netball", name: "Netball" },
+    { key: "football", name: "Football (soccer)" },
+    { key: "rugby_league", name: "Rugby league" },
+    { key: "afl", name: "Australian rules" },
+    { key: "other", name: "Other sport" },
+  ];
   return (
     <div className="flex min-h-dvh flex-col">
       <SiteHeader />
