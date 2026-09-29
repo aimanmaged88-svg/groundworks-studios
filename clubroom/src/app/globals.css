@@ -113,8 +113,9 @@
 }
 
 /* ------------------------------------------------------------------
-   Base
+   Base (layered, so utilities always win)
    ------------------------------------------------------------------ */
+@layer base {
 * {
   -webkit-tap-highlight-color: transparent;
 }
@@ -154,7 +155,9 @@ button {
 input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0.6;
 }
+}
 
+@layer components {
 /* Display type: bold, tight, uppercase, like a team sheet */
 .display {
   font-family: var(--font-display);
@@ -229,6 +232,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-right: none;
   }
 }
+}
 
 /* Motion */
 @keyframes rise {
@@ -288,6 +292,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 }
 
+@layer components {
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--line-strong) transparent;
@@ -324,4 +329,5 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .data-table tbody tr:hover td {
   background: color-mix(in oklab, var(--ink) 4%, transparent);
+}
 }

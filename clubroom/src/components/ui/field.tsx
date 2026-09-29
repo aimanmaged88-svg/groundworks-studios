@@ -1,4 +1,4 @@
-import { forwardRef, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
+import { cloneElement, forwardRef, isValidElement, useId, type InputHTMLAttributes, type ReactElement, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,13 +22,17 @@ export function Field({
   children: ReactNode;
   className?: string;
 }) {
+  // Always associate the label with its control, even when no id was given.
+  const autoId = useId();
+  const id = htmlFor ?? autoId;
+  const control = !htmlFor && isValidElement(children) && !(children.props as { id?: string }).id ? cloneElement(children as ReactElement<{ id?: string }>, { id }) : children;
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <label htmlFor={htmlFor} className="eyebrow">
+      <label htmlFor={id} className="eyebrow">
         {label}
         {required && <span className="text-club"> *</span>}
       </label>
-      {children}
+      {control}
       {error ? <p className="text-[12.5px] text-danger">{error}</p> : hint ? <p className="text-[12.5px] text-ink-dim">{hint}</p> : null}
     </div>
   );

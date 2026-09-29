@@ -14,7 +14,7 @@ export function ClubMark({ name, src, size = 44, className }: { name: string; sr
   }
   return (
     <span
-      className={cn("grid shrink-0 place-items-center rounded-full bg-club font-display text-on-club", className)}
+      className={cn("grid shrink-0 place-items-center rounded-full bg-ink font-display text-bg", className)}
       style={{ width: size, height: size, fontSize: Math.round(size * 0.36) }}
       aria-label={name}
     >

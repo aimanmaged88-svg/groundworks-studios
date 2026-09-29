@@ -422,7 +422,7 @@ function StepLook({ club, onBack, onDone }: { club: NonNullable<WizardData["club
         />
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <ColourPicker label="Main colour" value={primary} onChange={setPrimary} swatches={swatches} hint="Buttons, highlights, the glow." />
+          <ColourPicker label="Main colour" value={primary} onChange={setPrimary} swatches={swatches} hint="Buttons, headers, highlights." />
           <ColourPicker label="Second colour" value={accent} onChange={setAccent} swatches={swatches} hint="Badges and small accents." />
         </div>
 
