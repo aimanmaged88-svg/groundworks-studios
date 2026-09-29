@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
+import { supabaseConfigured } from "@/lib/env";
+import { NotConnected } from "../not-connected";
 import { SignUpForm } from "./sign-up-form";
 
 export const metadata: Metadata = { title: "Start your club" };
 
 export default async function SignUpPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
   const { next } = await searchParams;
+  if (!supabaseConfigured()) return <NotConnected title="Start your club" />;
   const user = await getSessionUser();
   if (user) redirect(next && next.startsWith("/") ? next : "/start");
   return (
