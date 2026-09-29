@@ -39,6 +39,7 @@
   --shadow:0 24px 50px -24px rgba(40,25,10,.35);
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.45 var(--sans);-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -117,6 +118,8 @@ button.kpi:hover{border-color:var(--line-2)}
 .al.crit svg{color:var(--crit)} .al.warn svg{color:var(--warn)} .al.info svg{color:var(--accent)}
 .al .t{font-size:13.5px}
 .al .t b{font-weight:600}
+.al.done{opacity:.65} .al.done svg{color:var(--good)}
+.stepn{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:600 11px var(--mono);background:var(--accent-wash);color:var(--accent);border:1px solid var(--accent-line)}
 .al .m{font-size:12px;color:var(--muted);margin-top:1px}
 
 /* week board */
@@ -264,6 +267,21 @@ dl.kv a{color:var(--accent);text-decoration:none}
   box-shadow:var(--shadow);animation:tin .18s ease-out}
 @keyframes tin{from{opacity:0;transform:translate(-50%,6px)}}
 
+.welcome{position:fixed;inset:0;z-index:70;background:radial-gradient(1200px 600px at 50% -10%,rgba(255,138,30,.16),transparent 60%),var(--bg);display:grid;place-items:center;padding:24px;overflow:auto}
+.welcome[hidden]{display:none}
+.wbox{width:min(640px,100%);text-align:center}
+.wbox img{width:150px;height:150px;object-fit:contain;margin:0 auto 6px}
+.wbox h1{margin:0;font:900 64px/0.95 var(--disp);text-transform:uppercase;letter-spacing:.01em}
+.wbox>p{color:var(--ink-2);margin:10px 0 26px;font-size:15px}
+.wopts{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}
+.wopt{border:1px solid var(--line-2);background:var(--panel);border-radius:12px;padding:18px 18px 16px;cursor:pointer}
+.wopt:hover{border-color:var(--accent-line)}
+.wopt b{display:block;font:800 26px/1 var(--disp);text-transform:uppercase}
+.wopt span{display:block;color:var(--ink-2);font-size:13px;margin-top:8px}
+.wopt.pri{border-color:var(--accent);background:var(--accent-wash)}
+.wopt.pri b{color:var(--accent)}
+.wbox .fine{color:var(--muted);font-size:12.5px;margin-top:18px}
+@media (max-width:600px){.wopts{grid-template-columns:1fr}.wbox h1{font-size:48px}.wbox img{width:110px;height:110px}}
 .tabbar{display:none}
 .morenav{display:none;margin-bottom:14px}
 .mtop{display:none}
@@ -307,8 +325,8 @@ dl.kv a{color:var(--accent);text-decoration:none}
     <a class="brand" href="#/week"><img src="logo.png" alt="Clutch"><div><b>Clutch HQ</b><span>Club operations</span></div></a>
     <nav class="nav" id="nav"></nav>
     <div class="foot">
-      <div class="demo"><b>Demo data.</b> Every player and coach here is made up except Cam. Changes save on this device only.</div>
-      <div class="row"><button class="btn sm" data-act="theme" id="themeBtn"></button><button class="btn sm ghost" data-act="reset">Reset demo</button></div>
+      <div class="demo" id="demoNote"></div>
+      <div class="row"><button class="btn sm" data-act="theme" id="themeBtn"></button><button class="btn sm ghost" data-act="reset" id="resetBtn">Reset demo</button></div>
     </div>
   </aside>
   <div style="min-width:0">
@@ -320,6 +338,18 @@ dl.kv a{color:var(--accent);text-decoration:none}
 <div class="scrim" id="scrim" data-act="closeAll"></div>
 <aside class="drawer" id="drawer" aria-hidden="true"></aside>
 <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+<div class="welcome" id="welcome" hidden>
+  <div class="wbox">
+    <img src="logo.png" alt="Clutch">
+    <h1>Clutch HQ</h1>
+    <p>Every team, session, player, registration and fee in one place.</p>
+    <div class="wopts">
+      <button class="wopt pri" data-act="startFresh"><b>Start fresh</b><span>An empty club with Camille as head coach. Add your venues, coaches and teams and it builds from there.</span></button>
+      <button class="wopt" data-act="startDemo"><b>Look around first</b><span>A made-up club with 8 teams and 74 players, so you can see how everything works.</span></button>
+    </div>
+    <p class="fine">Everything saves on this device. You can switch between the two any time in Settings.</p>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
 <script>
@@ -391,7 +421,7 @@ function seed(){
     {id:"v3", name:"Condell Park community centre", short:"Condell Park", courts:1},
   ];
   const coaches = [
-    {id:"c1", name:"Cam Allam", role:"Head coach", phone:phone(), wwcc:{no:"WWC•••••12E", exp:addD(T, 620)}},
+    {id:"c1", name:"Camille Allam", role:"Head coach · Finance · Admin", phone:phone(), wwcc:{no:"WWC•••••12E", exp:addD(T, 620)}},
     {id:"c2", name:"Yousef Khalil", role:"Coach", phone:phone(), wwcc:{no:"WWC•••••48E", exp:addD(T, 410)}},
     {id:"c3", name:"Omar Saad", role:"Coach", phone:phone(), wwcc:{no:"WWC•••••07E", exp:addD(T, 38)}},
     {id:"c4", name:"Bilal Hamdan", role:"Coach", phone:phone(), wwcc:{no:"WWC•••••93E", exp:addD(T, 830)}},
@@ -461,9 +491,9 @@ function seed(){
       fixtures.push(f);
     }
   });
-  const db = {v:1, created:T,
-    org:{name:"Clutch Basketball", email:"admin@clutchbasketball.com.au", phone:"0404 000 113", base:"Padstow, NSW",
-      season:{name:"Spring–Summer " + Y, start, end, ageYear:Y}, minRoster:7, minGame:5, prayer:true},
+  const db = {v:1, created:T, demo:true,
+    org:{name:"Clutch Basketball", contact:"Camille Allam", email:"admin@clutchbasketball.com.au", phone:"0404 000 113", base:"Padstow, NSW",
+      season:{name:"Spring–Summer " + Y, start, end, ageYear:Y}, minRoster:7, minGame:5, prayer:true, seasonSet:true},
     venues, coaches, teams, players, fixtures, avail:{}, roll:{},
     regs:[], tasks:[],
     tryout:{date:addD(M, 6), time:"10:00", venue:"v2"},
@@ -507,13 +537,27 @@ function seed(){
   return db;
 }
 
+/* An empty club: Clutch's public details and Camille, nothing else. */
+function blank(){
+  const T = todayISO(), M = monday(T), end = addD(M, 7 * 20 - 3), Y = +M.slice(0, 4), Y2 = +end.slice(0, 4);
+  return {v:1, created:T, demo:false,
+    org:{name:"Clutch Basketball", contact:"Camille Allam", email:"admin@clutchbasketball.com.au", phone:"0404 000 113", base:"Padstow, NSW",
+      season:{name:Y === Y2 ? "Season " + Y : `Season ${Y}/${String(Y2).slice(2)}`, start:M, end, ageYear:Y}, minRoster:7, minGame:5, prayer:true, seasonSet:false},
+    venues:[], coaches:[{id:"c1", name:"Camille Allam", role:"Head coach · Finance · Admin", phone:"", wwcc:null}],
+    teams:[], players:[], fixtures:[], avail:{}, roll:{}, regs:[],
+    tasks:[{id:uid("k"), t:"Add Camille's Working With Children Check", who:"Cam", due:null, done:false}],
+    tryout:{date:null, time:"10:00", venue:null}};
+}
+
 /* =========================================================
    Store
    ========================================================= */
 let DB;
-function load(){ try { const r = localStorage.getItem(KEY); if (r) return JSON.parse(r); } catch (e) {} return seed(); }
+function load(){ try { const r = localStorage.getItem(KEY); if (r) return JSON.parse(r); } catch (e) {} return null; }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }
 DB = load();
+const FIRST_RUN = !DB;
+if (!DB) DB = blank();
 
 /* =========================================================
    Derived data
@@ -545,7 +589,7 @@ function weekSessions(M, db = DB){
   db.teams.filter(t => !t.archived).forEach(t => {
     (t.train || []).forEach((s, i) => {
       const date = addD(M, s.dow - 1);
-      if (date < db.org.season.start || date > db.org.season.end) return;
+      if (date < db.org.season.start || date > db.org.season.end || (t.created && date < t.created)) return;
       out.push({key:`${t.id}|${date}|T${i}`, team:t.id, type:"T", date, start:s.start, end:s.end, venue:s.venue, court:s.court, coaches:[t.coach, t.asst].filter(Boolean)});
     });
     db.fixtures.filter(f => f.team === t.id && f.date >= M && f.date <= end).forEach(f => {
@@ -611,7 +655,7 @@ function alerts(M, S, C){
   S.filter(s => s.type === "G" && !isPast(s) && gameShort(s)).forEach(s => { const a = availCount(s);
     A.push({lv:a.inn + a.none < DB.org.minGame ? "crit" : "warn", t:`<b>${tname(team(s.team))}</b> has ${a.inn} confirmed for ${DN[dow(s.date)]}'s game`,
       m:a.inn + a.none < DB.org.minGame ? `${DB.org.minGame} needed and ${a.out} are out, so even if everyone replies they're short. Borrow from ${roster(s.team).length ? "the training squad or a lower division" : "another team"}.` : `${DB.org.minGame} needed. ${a.none} ${a.none === 1 ? "hasn't" : "haven't"} replied.`, act:"sess", id:s.key, btn:"Open"}); });
-  S.filter(s => isPast(s) && !DB.roll[s.key] && s.date >= addD(T, -6)).forEach(s => A.push({lv:"info", t:`Roll not taken: <b>${tname(team(s.team))}</b>, ${DN[dow(s.date)]} ${s.type === "G" ? "game" : "training"}`, m:"Take it now while it's fresh.", act:"sess", id:s.key, btn:"Take roll"}));
+  S.filter(s => isPast(s) && !DB.roll[s.key] && s.date >= addD(T, -6) && !(team(s.team).created && s.date <= team(s.team).created)).forEach(s => A.push({lv:"info", t:`Roll not taken: <b>${tname(team(s.team))}</b>, ${DN[dow(s.date)]} ${s.type === "G" ? "game" : "training"}`, m:"Take it now while it's fresh.", act:"sess", id:s.key, btn:"Take roll"}));
   active().forEach(p => { const e = eligibility(p, team(p.team)); if (!e.ok) A.push({lv:"crit", t:`<b>${esc(pname(p))}</b> is ${e.text.replace(", too old", " and too old")}`, m:`Rostered in ${tname(team(p.team))}. Born ${fd(p.dob, {y:1})}.`, act:"player", id:p.id, btn:"Move"}); });
   DB.teams.filter(t => !t.archived).forEach(t => { const n = roster(t.id).length;
     if (n < DB.org.minRoster) A.push({lv:"warn", t:`<b>${tname(t)}</b> has ${n} players`, m:`At least ${DB.org.minRoster} keeps a team safe from forfeits. ${active().filter(p => !p.team).length} in the training squad.`, act:"team", id:t.id, btn:"Roster"});
@@ -671,6 +715,8 @@ function shell(){
   const th = document.documentElement.dataset.theme;
   $("#themeBtn").innerHTML = (th === "light" ? I.moon : I.sun) + (th === "light" ? "Dark" : "Light");
   $("#themeBtnM").innerHTML = th === "light" ? I.moon : I.sun;
+  $("#demoNote").innerHTML = DB.demo ? "<b>Demo data.</b> A made-up club, except Camille. Changes save on this device only." : "<b>Saved on this device.</b> Back it up from Settings now and then.";
+  $("#resetBtn").hidden = !DB.demo;
 }
 function render(){
   ATT_CACHE = null;
@@ -704,12 +750,13 @@ function vWeek(){
       <button class="btn icon" data-act="wk" data-d="7" aria-label="Next week">${I.next}</button>
       <button class="btn pri" data-act="newTeam">${I.plus}New team</button></div></div>
 
+  ${setupCard()}
   <div class="kpis">
     <div class="kpi"><div class="l">Sessions</div><div class="v">${S.length}</div><div class="s">${S.length - games.length} training · ${games.length} games</div></div>
     <div class="kpi"><div class="l">Confirmed for games</div><div class="v">${av.inn}<small> of ${av.n}</small></div><div class="s">${av.none} still to reply</div></div>
     <button class="kpi${A.filter(a => a.lv === "crit").length ? " hot" : ""}" data-act="scrollTo" data-id="attn"><div class="l">Needs attention</div><div class="v">${A.length}</div><div class="s">${A.filter(a => a.lv === "crit").length} urgent</div></button>
     <button class="kpi" data-act="go" data-id="money"><div class="l">Fees owing</div><div class="v">${money(owe)}</div><div class="s">${plural(oweN, "player")}</div></button>
-    <button class="kpi" data-act="go" data-id="regos"><div class="l">New registrations</div><div class="v">${newRegos()}</div><div class="s">tryout ${fd(DB.tryout.date, {wd:1})}, ${t12(DB.tryout.time)}</div></button>
+    <button class="kpi" data-act="go" data-id="regos"><div class="l">New registrations</div><div class="v">${newRegos()}</div><div class="s">${DB.tryout.date ? `tryout ${fd(DB.tryout.date, {wd:1})}, ${t12(DB.tryout.time)}` : "no tryout set yet"}</div></button>
   </div>
 
   <div class="grid">
@@ -721,10 +768,24 @@ function vWeek(){
     <section class="c12"><div class="board">${days}</div></section>
   </div>`;
 }
+function setupCard(){
+  const steps = [
+    {t:"Add your venues", d:"Where you train and play. Courts are numbered from 1.", done:DB.venues.length > 0, act:"newVenue", btn:"Add venue"},
+    {t:"Check Camille and add coaches", d:"Each with their Working With Children Check number and expiry.", done:DB.coaches.some(c => c.wwcc && c.wwcc.exp), act:"go", id:"coaches", btn:"Coaches"},
+    {t:"Create your teams", d:"Age group, division, coach, training night and game night. 3 teams or 12, it's the same form.", done:DB.teams.some(t => !t.archived), act:"newTeam", btn:"New team"},
+    {t:"Add players", d:"One at a time, or straight from Registrations after a tryout.", done:active().length > 0, act:"newPlayer", btn:"Add player"},
+    {t:"Confirm the season dates", d:`Currently ${fd(DB.org.season.start, {y:1})} to ${fd(DB.org.season.end, {y:1})}. Sessions only show between these dates.`, done:!!DB.org.seasonSet, act:"go", id:"settings", btn:"Settings"},
+  ];
+  const left = steps.filter(x => !x.done).length, first = steps.findIndex(x => !x.done);
+  if (DB.demo || !left) return "";
+  return `<section class="card" style="margin-bottom:16px"><div class="ch"><h2>Set up Clutch HQ</h2><span class="sub">${steps.length - left} of ${steps.length} done</span></div>
+    <div class="alerts">${steps.map((x, i) => `<div class="al ${x.done ? "done" : "info"}">${x.done ? I.ok : `<span class="stepn">${i + 1}</span>`}<div><div class="t">${x.t}</div><div class="m">${x.d}</div></div>
+      ${x.done ? `<span class="chip good">Done</span>` : `<button class="btn sm${first === i ? " pri" : ""}" data-act="${x.act}" data-id="${x.id || ""}">${x.btn}</button>`}</div>`).join("")}</div></section>`;
+}
 function sessCard(s, C, mg){
   const t = team(s.team), v = venue(s.venue), fl = sessionFlags(s, C), past = isPast(s);
   let foot = "";
-  if (past) { const r = rollCount(s); foot = r ? `<div class="sm">${r.here} of ${r.n} there</div>` : `<span class="flag warn">Roll not taken</span>`; }
+  if (past) { const r = rollCount(s); foot = r ? `<div class="sm">${r.here} of ${r.n} there</div>` : t.created && s.date <= t.created ? "" : `<span class="flag warn">Roll not taken</span>`; }
   else if (s.type === "G") { const a = availCount(s); foot = `<div class="avb"><i class="in" style="width:${a.inn / Math.max(1, a.n) * 100}%"></i><i class="out" style="width:${a.out / Math.max(1, a.n) * 100}%"></i></div><div class="sm">${a.inn} in · ${a.out} out · ${a.none} no reply</div>`;
     if (gameShort(s)) foot += `<span class="flag warn">Short</span>`; }
   const spans = DB.org.prayer && tm(s.start) < tm(mg) && tm(mg) < tm(s.end);
@@ -809,7 +870,7 @@ function vPlayers(){
         <td class="r mono num">${a && a.pct != null ? Math.round(a.pct * 100) + "%" : "–"}</td>
         <td class="r">${!t ? '<span class="muted">–</span>' : o ? `<span class="st crit">${money(o)} owing</span>` : `<span class="st good">${I.ok}Paid</span>`}</td>
         <td>${esc(p.guardian.name)}</td><td class="mono num" style="font-size:12.5px">${esc(p.guardian.phone)}</td></tr>`; }).join("") ||
-      `<tr><td colspan="8" class="muted" style="padding:24px 12px">Nobody matches. Clear the search or filters.</td></tr>`}</tbody></table></div></section>`;
+      `<tr><td colspan="8" class="muted" style="padding:24px 12px">${active().length ? "Nobody matches. Clear the search or filters." : "No players yet. Add one here, or bring them in from Registrations after a tryout."}</td></tr>`}</tbody></table></div></section>`;
 }
 
 /* =========================================================
@@ -819,7 +880,7 @@ const STAGES = [["new","New"],["contacted","Contacted"],["tryout","Tryout booked
 function vRegos(){
   const T = todayISO(), joined = DB.regs.filter(r => r.stage === "joined").length;
   return `
-  <div class="ph"><div><h1>Registrations</h1><div class="sub">From the form on clutchbasketball.com.au · next tryout ${fd(DB.tryout.date, {wd:1})}, ${t12(DB.tryout.time)} at ${esc(venue(DB.tryout.venue).short)}</div></div>
+  <div class="ph"><div><h1>Registrations</h1><div class="sub">From the form on clutchbasketball.com.au · ${DB.tryout.date ? `next tryout ${fd(DB.tryout.date, {wd:1})}, ${t12(DB.tryout.time)}${venue(DB.tryout.venue) ? " at " + esc(venue(DB.tryout.venue).short) : ""}` : "no tryout date set yet"}</div></div>
     <div class="acts"><button class="btn" data-act="editTryout">Tryout details</button><button class="btn pri" data-act="newRego">${I.plus}Add by hand</button></div></div>
   <div class="pipe">${STAGES.map(([k, l]) => { const R = DB.regs.filter(r => r.stage === k).sort((a, b) => a.at.localeCompare(b.at));
     return `<div class="col"><h3>${l}<span>${R.length}</span></h3>${R.map(r => regoCard(r, T)).join("") || `<div class="empty" style="padding:4px 6px">Empty</div>`}</div>`; }).join("")}</div>
@@ -851,7 +912,7 @@ function vMoney(){
   const due = rows.reduce((s, x) => s + x.due, 0), got = rows.reduce((s, x) => s + x.got, 0);
   const owe = active().filter(p => owing(p) > 0).sort((a, b) => owing(b) - owing(a) || a.last.localeCompare(b.last));
   return `${moreNav()}
-  <div class="ph"><div><h1>Money</h1><div class="sub">Season fees for ${esc(DB.org.season.name)}. Payments are recorded here by hand for now.</div></div></div>
+  <div class="ph"><div><h1>Money</h1><div class="sub">Season fees for ${esc(DB.org.season.name)}${DB.coaches.some(c => /finance/i.test(c.role)) ? ` · looked after by ${esc(DB.coaches.find(c => /finance/i.test(c.role)).name)}` : ""}. Payments are recorded here by hand for now.</div></div></div>
   <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">
     <div class="kpi"><div class="l">Expected</div><div class="v">${money(due)}</div><div class="s">${active().filter(p => p.team).length} rostered players</div></div>
     <div class="kpi"><div class="l">Collected</div><div class="v">${money(got)}</div><div class="s">${due ? Math.round(got / due * 100) : 0}% of expected</div></div>
@@ -867,7 +928,7 @@ function vMoney(){
       ${owe.map(p => `<tr><td><a href="#" data-act="player" data-id="${p.id}" style="text-decoration:none;font-weight:500">${esc(pname(p))}</a></td><td style="white-space:nowrap">${tname(team(p.team))}</td><td class="r mono num">${money(owing(p))}</td>
         <td>${esc(p.guardian.name)}<div class="muted mono" style="font-size:12px">${esc(p.guardian.phone)}</div></td>
         <td class="r" style="white-space:nowrap"><button class="btn sm" data-act="feeMsg" data-id="${p.id}">${I.copy}Reminder</button> <button class="btn sm pri" data-act="pay" data-id="${p.id}">Record payment</button></td></tr>`).join("") ||
-        `<tr><td colspan="5" class="muted" style="padding:20px 12px">Everyone has paid.</td></tr>`}
+        `<tr><td colspan="5" class="muted" style="padding:20px 12px">${active().some(p => p.team) ? "Everyone has paid." : "Fees show up here once players are on a team."}</td></tr>`}
     </tbody></table></div></section>
   </div>`;
 }
@@ -901,7 +962,8 @@ function vSettings(){
   <div class="grid">
     <section class="card c6"><div class="ch"><h2>Club and season</h2></div>
       <form data-form="org" class="fg">
-        <div class="f"><label>Club name</label><input name="name" value="${esc(o.name)}"></div>
+        <div class="f h"><label>Club name</label><input name="name" value="${esc(o.name)}"></div>
+        <div class="f h"><label>Name on messages</label><input name="contact" value="${esc(o.contact || "")}"><span class="hint">Signs the WhatsApp messages</span></div>
         <div class="f h"><label>Email</label><input name="email" value="${esc(o.email)}"></div>
         <div class="f h"><label>Phone</label><input name="phone" value="${esc(o.phone)}"></div>
         <div class="f"><label>Season name</label><input name="sname" value="${esc(o.season.name)}"></div>
@@ -923,8 +985,9 @@ function vSettings(){
       </form>
       <div class="ch" style="margin-top:22px"><h2>Data</h2></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="export">${I.download}Players to Excel</button><button class="btn" data-act="backup">${I.download}Full backup</button>
-        <label class="btn" style="cursor:pointer">Restore backup<input type="file" accept="application/json" data-act="restore" hidden></label><button class="btn danger" data-act="reset">Reset demo data</button></div>
-      <p class="muted" style="font-size:12.5px;margin-bottom:0">This demo keeps everything in this browser. Real player details should only go in once the club has a proper login and database.</p>
+        <label class="btn" style="cursor:pointer">Restore backup<input type="file" accept="application/json" data-act="restore" hidden></label></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn danger" data-act="wipe">Start fresh</button><button class="btn" data-act="loadDemo">${DB.demo ? "Reload the demo club" : "Look at the demo club"}</button></div>
+      <p class="muted" style="font-size:12.5px;margin-bottom:0">Everything lives in this browser on this device, so Camille and Aiman each have their own copy. A shared login version comes next.</p>
     </section>
   </div>`;
 }
@@ -1045,6 +1108,7 @@ const venueOpts = v => opt(DB.venues.map(x => [x.id, x.short]), v);
 const coachOpts = (v, none) => (none ? `<option value="">${none}</option>` : "") + opt(DB.coaches.map(c => [c.id, c.name]), v);
 const dowOpts = v => opt([1,2,3,4,5,6,7].map(d => [d, DL[d]]), v);
 function teamForm(t){
+  if (!DB.venues.length) { AFTER_VENUE = () => teamForm(t); venueForm("Add a venue first", "Teams need somewhere to train and play. You can add more in Settings."); return; }
   const n = !t; t = t || {age:"U14", div:"Div 3", comp:"Friday juniors", coach:"", asst:"", cap:10, fee:280, train:[{dow:2, start:"18:00", end:"19:30", venue:DB.venues[1] ? DB.venues[1].id : DB.venues[0].id, court:1}], game:{dow:5, venue:DB.venues[0].id, time:"18:00"}};
   const tr = (t.train || [])[0] || {dow:2, start:"18:00", end:"19:30", venue:DB.venues[0].id, court:1};
   openModal(`<form data-form="team" data-id="${n ? "" : t.id}">
@@ -1070,6 +1134,14 @@ function teamForm(t){
     </div>
     <div class="mact"><button type="button" class="btn ghost" data-act="closeAll">Cancel</button><button class="btn pri">${n ? "Create team" : "Save changes"}</button></div></form>`);
 }
+let AFTER_VENUE = null;
+function venueForm(title, sub){
+  openModal(`<form data-form="venue"><h2>${title || "Add venue"}</h2><div class="sub">${sub || "Where you train or play."}</div><div class="fg">
+    <div class="f"><label>Full name</label><input name="name" placeholder="e.g. Bankstown Basketball Stadium" required></div>
+    <div class="f h"><label>Short name</label><input name="short" placeholder="Shown on the week board" required></div>
+    <div class="f h"><label>Courts</label><input type="number" name="courts" value="1" min="1"></div></div>
+    <div class="mact"><button type="button" class="btn ghost" data-act="closeAll">Cancel</button><button class="btn pri">Add venue</button></div></form>`);
+}
 function playerForm(teamId){
   const teams = DB.teams.filter(t => !t.archived).sort((a, b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
   openModal(`<form data-form="player"><h2>Add player</h2><div class="sub">Same fields as the website form, plus the team.</div><div class="fg">
@@ -1087,14 +1159,16 @@ function playerForm(teamId){
 /* =========================================================
    Messages
    ========================================================= */
+const signOff = () => `${DB.org.contact ? DB.org.contact + "\n" : ""}Clutch Basketball · ${DB.org.phone}`;
 function regMsg(r){
-  const tr = DB.tryout, v = venue(tr.venue);
-  if (r.stage === "offered" || r.stage === "tryout") return `Assalamu alaykum ${r.gname.split(" ")[0]},\n\nThanks for bringing ${r.first} to the tryout. We'd love to have him with Clutch this season in our ${ageGroupOf(r.dob)} group.\n\nReply here and we'll send through the team, training times and fees.\n\nClutch Basketball\n${DB.org.phone}`;
-  return `Assalamu alaykum ${r.gname.split(" ")[0]},\n\nThanks for registering ${r.first} with Clutch Basketball. We'd like to see him at our next tryout:\n\n${DL[dow(tr.date)]} ${fd(tr.date)}, ${t12(tr.time)}\n${v.name}\n\nBring a water bottle and runners. Reply here to confirm, or let us know if that time doesn't suit.\n\nClutch Basketball\n${DB.org.phone}`;
+  const tr = DB.tryout, v = venue(tr.venue), hi = `Assalamu alaykum ${r.gname.split(" ")[0]},\n\n`;
+  if (r.stage === "offered" || r.stage === "tryout") return `${hi}Thanks for bringing ${r.first} to the tryout. We'd love to have him with Clutch this season in our ${ageGroupOf(r.dob)} group.\n\nReply here and we'll send through the team, training times and fees.\n\n${signOff()}`;
+  if (!tr.date) return `${hi}Thanks for registering ${r.first} with Clutch Basketball. We're setting the next tryout date now and will send it through in the next few days.\n\n${signOff()}`;
+  return `${hi}Thanks for registering ${r.first} with Clutch Basketball. We'd like to see him at our next tryout:\n\n${DL[dow(tr.date)]} ${fd(tr.date)}, ${t12(tr.time)}\n${v ? v.name : "Venue to be confirmed"}\n\nBring a water bottle and runners. Reply here to confirm, or let us know if that time doesn't suit.\n\n${signOff()}`;
 }
 function feeMsg(p){
   const t = team(p.team);
-  return `Assalamu alaykum ${p.guardian.name.split(" ")[0]},\n\nA quick reminder that ${p.first}'s ${tname(t)} fee for ${DB.org.season.name} has ${money(owing(p))} still to pay (${money(t.fee)} for the season).\n\nBank transfer is easiest. Reply here if you'd like to split it into two payments.\n\nJazakAllahu khayran,\nClutch Basketball`;
+  return `Assalamu alaykum ${p.guardian.name.split(" ")[0]},\n\nA quick reminder that ${p.first}'s ${tname(t)} fee for ${DB.org.season.name} has ${money(owing(p))} still to pay (${money(t.fee)} for the season).\n\nBank transfer is easiest. Reply here if you'd like to split it into two payments.\n\nJazakAllahu khayran,\n${signOff()}`;
 }
 function copy(text){
   const done = () => toast("Copied. Paste it into WhatsApp.");
@@ -1126,6 +1200,7 @@ const ACT = {
   copyMsg:(el) => copy(teamMsg(team(el.dataset.id), el.dataset.w)),
   task:(el) => { const k = DB.tasks.find(x => x.id === el.dataset.id); k.done = el.checked; save(); render(); },
   regStage:(el) => { const r = DB.regs.find(x => x.id === el.dataset.id), to = el.dataset.to;
+    if (to === "tryout" && !DB.tryout.date) { toast("Set the tryout date first"); ACT.editTryout(); return; }
     if (to === "tryout") r.tryout = {...DB.tryout};
     r.stage = to; r.log.push({d:todayISO(), t:{contacted:"Contacted.", tryout:`Tryout booked for ${fd(DB.tryout.date, {wd:1})}.`, offered:"Offered a spot.", notnow:"Marked not now.", new:"Reopened."}[to]});
     save(); render(); },
@@ -1138,8 +1213,8 @@ const ACT = {
       <div class="mact"><button type="button" class="btn ghost" data-act="closeAll">Cancel</button><button class="btn pri">Add player</button></div></form>`); },
   editTryout:() => { const tr = DB.tryout;
     openModal(`<form data-form="tryout"><h2>Tryout details</h2><div class="sub">Used in the message families get when you book them in.</div><div class="fg">
-      <div class="f t"><label>Date</label><input type="date" name="date" value="${tr.date}" required></div><div class="f t"><label>Time</label><input type="time" name="time" value="${tr.time}" required></div>
-      <div class="f t"><label>Venue</label><select name="venue">${venueOpts(tr.venue)}</select></div></div>
+      <div class="f t"><label>Date</label><input type="date" name="date" value="${tr.date || ""}" required></div><div class="f t"><label>Time</label><input type="time" name="time" value="${tr.time}" required></div>
+      <div class="f t"><label>Venue</label><select name="venue"><option value="">To be confirmed</option>${venueOpts(tr.venue)}</select></div></div>
       <div class="mact"><button type="button" class="btn ghost" data-act="closeAll">Cancel</button><button class="btn pri">Save</button></div></form>`); },
   newRego:() => openModal(`<form data-form="rego"><h2>Add a registration</h2><div class="sub">For a family who called or messaged instead of using the website.</div><div class="fg">
       <div class="f h"><label>Player first name</label><input name="first" required></div><div class="f h"><label>Player last name</label><input name="last" required></div>
@@ -1157,6 +1232,11 @@ const ACT = {
   editCoach:(el) => coachForm(DB.coaches.find(c => c.id === el.dataset.id)),
   theme:() => setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light"),
   reset:() => { if (!confirm("Reset to the demo data? Anything you've changed on this device is lost.")) return; DB = seed(); save(); closeAll(); render(); toast("Demo data reset"); },
+  wipe:() => { if (!confirm(DB.demo ? "Start fresh? The demo club is cleared and you begin with an empty one." : "Start fresh? Everything on this device is cleared. Download a backup first if you need it.")) return; DB = blank(); save(); closeAll(); location.hash = "#/week"; render(); toast("Fresh start"); },
+  loadDemo:() => { if (!DB.demo && (DB.teams.length || DB.players.length) && !confirm("Load the demo club? Your own teams and players on this device are replaced. Download a backup first if you need it.")) return; DB = seed(); save(); closeAll(); render(); toast("Demo club loaded"); },
+  startFresh:() => { DB = blank(); save(); $("#welcome").hidden = true; location.hash = "#/week"; render(); },
+  startDemo:() => { DB = seed(); save(); $("#welcome").hidden = true; render(); },
+  newVenue:() => venueForm(),
   export:() => exportXlsx(),
   backup:() => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(DB, null, 1)], {type:"application/json"})); a.download = `clutch-hq-backup-${todayISO()}.json`; a.click(); },
 };
@@ -1179,7 +1259,7 @@ const FORMS = {
       DB.fixtures.filter(x => x.team === t.id && x.date >= todayISO()).forEach(x => { x.time = f.gtime; x.venue = f.gvenue; x.date = addD(monday(x.date), +f.gdow - 1); });
       toast(tname(t) + " saved");
     } else {
-      const t = {id:uid("t"), ...base, game:{dow:+f.gdow, venue:f.gvenue, time:f.gtime}}; DB.teams.push(t);
+      const t = {id:uid("t"), ...base, game:{dow:+f.gdow, venue:f.gvenue, time:f.gtime}, created:todayISO()}; DB.teams.push(t);
       let M = monday(todayISO()), round = 0; while (addD(M, +f.gdow - 1) <= DB.org.season.end) { const date = addD(M, +f.gdow - 1); if (date >= todayISO()) DB.fixtures.push({id:uid("f"), team:t.id, date, time:f.gtime, venue:f.gvenue, court:1, opp:"To be drawn", round:++round, us:null, them:null}); M = addD(M, 7); }
       toast(tname(t) + " created");
     }
@@ -1202,8 +1282,8 @@ const FORMS = {
   pay:(f, el) => { const p = player(el.dataset.id); p.payments.push({d:f.d, amt:+f.amt, how:f.how}); toast(`${money(+f.amt)} recorded for ${p.first}`); },
   coach:(f, el) => { const w = {no:f.no, exp:f.exp}; if (el.dataset.id) Object.assign(DB.coaches.find(c => c.id === el.dataset.id), {name:f.name, role:f.role, phone:f.phone, wwcc:f.exp ? w : null});
     else DB.coaches.push({id:uid("c"), name:f.name, role:f.role || "Coach", phone:f.phone, wwcc:f.exp ? w : null}); },
-  org:(f) => { const o = DB.org; o.name = f.name; o.email = f.email; o.phone = f.phone; o.season = {...o.season, name:f.sname, start:f.start, end:f.end, ageYear:+f.ageYear}; o.minRoster = +f.minRoster; o.minGame = +f.minGame; o.prayer = f.prayer === "1"; toast("Saved"); },
-  venue:(f) => { DB.venues.push({id:uid("v"), name:f.name, short:f.short, courts:+f.courts || 1}); toast(f.short + " added"); },
+  org:(f) => { const o = DB.org; o.name = f.name; o.contact = f.contact; o.email = f.email; o.phone = f.phone; o.seasonSet = true; o.season = {...o.season, name:f.sname, start:f.start, end:f.end, ageYear:+f.ageYear}; o.minRoster = +f.minRoster; o.minGame = +f.minGame; o.prayer = f.prayer === "1"; toast("Saved"); },
+  venue:(f) => { DB.venues.push({id:uid("v"), name:f.name.trim(), short:f.short.trim(), courts:+f.courts || 1}); if (DB.tryout && !DB.tryout.venue) DB.tryout.venue = DB.venues[0].id; toast(f.short + " added"); },
 };
 document.addEventListener("click", e => {
   const el = e.target.closest("[data-act]"); if (!el || el.tagName === "SELECT" || el.type === "checkbox" || el.type === "file") return;
@@ -1224,8 +1304,9 @@ document.addEventListener("submit", e => {
   const f = Object.fromEntries(new FormData(el).entries());
   if (FORMS[k](f, el) === false) return;
   save();
-  if (["team","player","join","tryout","rego","pay","coach"].includes(k)) { $("#modal").classList.remove("on"); if (!DRAWER) $("#scrim").classList.remove("on"); }
+  if (el.closest("#modal")) { $("#modal").classList.remove("on"); if (!DRAWER) $("#scrim").classList.remove("on"); }
   render();
+  if (k === "venue" && AFTER_VENUE) { const f2 = AFTER_VENUE; AFTER_VENUE = null; f2(); }
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape") { if ($("#modal").classList.contains("on")) { $("#modal").classList.remove("on"); if (!DRAWER) $("#scrim").classList.remove("on"); } else closeAll(); } });
 
@@ -1246,6 +1327,7 @@ function setTheme(t){ document.documentElement.dataset.theme = t; try { localSto
 
 VIEW.r = parseHash();
 render();
+if (FIRST_RUN) $("#welcome").hidden = false;
 </script>
 </body>
 </html>

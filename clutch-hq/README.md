@@ -1,8 +1,15 @@
 # Clutch HQ
 
+Live at **https://clutch-hq.netlify.app**
+
 Club operations for Clutch Basketball: every team, session, player, registration and fee in one place, for any number of teams.
 
-**This is a working demo.** The players, parents and coaches are made up (except Cam), the mobile numbers are from the range ACMA reserves for fiction, and emails use example.com. Everything saves in the browser on the device you're using. Real player details should only go in once there's a proper login and database behind it.
+The first visit asks how to start:
+
+- **Start fresh**: an empty club with Camille Allam (Head coach, Finance, Admin) and a setup checklist: venues, coaches, teams, players, season dates.
+- **Look around first**: a made-up demo club with 8 teams and 74 players. The mobile numbers come from the range ACMA reserves for fiction, and emails use example.com.
+
+Switch between them any time in Settings. Everything saves in the browser on the device you're using, so each person has their own copy until the shared login version is built. Back up from Settings.
 
 ## What it does
 
