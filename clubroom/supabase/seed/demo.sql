@@ -31,12 +31,17 @@ begin
   delete from public.clubs where slug = 'demo-hoops' and is_demo;
   delete from auth.users where id in (v_admin, v_coach1, v_coach2, v_parent);
 
-  insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
+  insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+                          confirmation_token, recovery_token, email_change_token_new, email_change, email_change_token_current, phone_change, phone_change_token, reauthentication_token)
   values
-    (v_admin,  '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'admin@demo.clubroom.local',  extensions.crypt('demo-admin-2026',  extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Dana Demo"}', now(), now()),
-    (v_coach1, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'coach@demo.clubroom.local',  extensions.crypt('demo-coach-2026',  extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Casey Demo"}', now(), now()),
-    (v_coach2, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'coach2@demo.clubroom.local', extensions.crypt('demo-coach-2026',  extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Jordan Demo"}', now(), now()),
-    (v_parent, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'parent@demo.clubroom.local', extensions.crypt('demo-parent-2026', extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Sam Demo"}', now(), now());
+    (v_admin,  '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'admin@demo.clubroom.local',  extensions.crypt('demo-admin-2026',  extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Dana Demo"}', now(), now(), '', '', '', '', '', '', '', ''),
+    (v_coach1, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'coach@demo.clubroom.local',  extensions.crypt('demo-coach-2026',  extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Casey Demo"}', now(), now(), '', '', '', '', '', '', '', ''),
+    (v_coach2, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'coach2@demo.clubroom.local', extensions.crypt('demo-coach-2026',  extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Jordan Demo"}', now(), now(), '', '', '', '', '', '', '', ''),
+    (v_parent, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'parent@demo.clubroom.local', extensions.crypt('demo-parent-2026', extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{"full_name":"Sam Demo"}', now(), now(), '', '', '', '', '', '', '', '');
+
+  insert into auth.identities (id, user_id, provider_id, provider, identity_data, last_sign_in_at, created_at, updated_at)
+  select gen_random_uuid(), u.id, u.id::text, 'email', jsonb_build_object('sub', u.id::text, 'email', u.email, 'email_verified', true), now(), now(), now()
+  from auth.users u where u.id in (v_admin, v_coach1, v_coach2, v_parent);
 
   insert into public.clubs (slug, name, short_name, sport_key, status, is_demo, suburb, state, colours, theme_default, instagram_handle, contact_email, public_page)
   values ('demo-hoops', 'Demo Hoops Basketball', 'Demo Hoops', 'basketball', 'active', true, 'Sampleton', 'NSW',
