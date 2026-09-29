@@ -416,6 +416,19 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"leads": {
+                  Row: {
+                    "club_name": string,"colours": NonNullable<Json>,"contact_name": string | null,"created_at": string,"email": string | null,"id": string,"instagram": string | null,"ip_hash": string | null,"logo_url": string | null,"message": string | null,"mobile": string | null,"source": string,"sport_key": string | null,"suburb": string | null
+                  }
+                  Insert: {
+                    "club_name": string,"colours"?: NonNullable<Json>,"contact_name"?: string | null,"created_at"?: string,"email"?: string | null,"id"?: string,"instagram"?: string | null,"ip_hash"?: string | null,"logo_url"?: string | null,"message"?: string | null,"mobile"?: string | null,"source"?: string,"sport_key"?: string | null,"suburb"?: string | null
+                  }
+                  Update: {
+                    "club_name"?: string,"colours"?: NonNullable<Json>,"contact_name"?: string | null,"created_at"?: string,"email"?: string | null,"id"?: string,"instagram"?: string | null,"ip_hash"?: string | null,"logo_url"?: string | null,"message"?: string | null,"mobile"?: string | null,"source"?: string,"sport_key"?: string | null,"suburb"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"level_config": {
                   Row: {
                     "badges": NonNullable<Json>,"club_id": string,"levels": NonNullable<Json>,"skills": NonNullable<Json>,"updated_at": string

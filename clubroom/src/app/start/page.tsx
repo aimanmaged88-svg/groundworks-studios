@@ -6,9 +6,9 @@ import { Wizard, type Colours, type WizardData } from "./wizard";
 
 export const metadata: Metadata = { title: "Set up your club" };
 
-export default async function StartPage({ searchParams }: { searchParams: Promise<{ club?: string; step?: string }> }) {
+export default async function StartPage({ searchParams }: { searchParams: Promise<{ club?: string; step?: string; name?: string; sport?: string; suburb?: string; primary?: string; accent?: string }> }) {
   const user = await requireUser("/start");
-  const { club: clubParam, step: stepParam } = await searchParams;
+  const { club: clubParam, step: stepParam, ...prefill } = await searchParams;
   const supabase = await createClient();
 
   const { data: sports } = await supabase.from("sports").select("key, name, default_divisions").order("sort");
@@ -56,6 +56,7 @@ export default async function StartPage({ searchParams }: { searchParams: Promis
     userName: profile?.full_name ?? null,
     userEmail: user.email ?? "",
     initialStep: stepParam ? Number(stepParam) : undefined,
+    prefill: { name: prefill.name, sport: prefill.sport, suburb: prefill.suburb, primary: prefill.primary, accent: prefill.accent },
   };
 
   return <Wizard data={data} />;

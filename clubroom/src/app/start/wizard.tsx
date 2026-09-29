@@ -62,6 +62,7 @@ export type WizardData = {
   userName: string | null;
   userEmail: string;
   initialStep?: number;
+  prefill?: { name?: string; sport?: string; suburb?: string; primary?: string; accent?: string };
 };
 
 const STEPS = [
@@ -138,6 +139,7 @@ export function Wizard({ data }: { data: WizardData }) {
             <StepClub
               club={club}
               sports={data.sports}
+              prefill={data.prefill}
               onDone={(c) => {
                 setClub(c);
                 go(1);
@@ -251,10 +253,10 @@ function Nav({ onBack, next = "Continue", pending, skip, extra }: { onBack?: () 
 
 /* ----------------------------------------------------------------------- */
 
-function StepClub({ club, sports, onDone }: { club: WizardData["club"]; sports: WizardData["sports"]; onDone: (club: NonNullable<WizardData["club"]>) => void }) {
-  const [name, setName] = useState(club?.name ?? "");
-  const [sportKey, setSportKey] = useState(club?.sport_key ?? "basketball");
-  const [suburb, setSuburb] = useState(club?.suburb ?? "");
+function StepClub({ club, sports, prefill, onDone }: { club: WizardData["club"]; sports: WizardData["sports"]; prefill?: WizardData["prefill"]; onDone: (club: NonNullable<WizardData["club"]>) => void }) {
+  const [name, setName] = useState(club?.name ?? prefill?.name ?? "");
+  const [sportKey, setSportKey] = useState(club?.sport_key ?? (prefill?.sport && sports.some((s) => s.key === prefill.sport) ? prefill.sport : "basketball"));
+  const [suburb, setSuburb] = useState(club?.suburb ?? prefill?.suburb ?? "");
   const [state, setState] = useState(club?.state ?? "NSW");
   const [manualSlug, setManualSlug] = useState(club?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(!!club);
@@ -298,7 +300,7 @@ function StepClub({ club, sports, onDone }: { club: WizardData["club"]; sports: 
           suburb,
           state,
           logo_path: null,
-          colours: { primary: "#f2b705", accent: "#f2b705", on_primary: "#14120a" },
+          colours: isHex(prefill?.primary ?? "") ? { primary: prefill!.primary!, accent: isHex(prefill?.accent ?? "") ? prefill!.accent! : prefill!.primary!, on_primary: onColour(prefill!.primary!) } : { primary: "#f2b705", accent: "#f2b705", on_primary: "#14120a" },
           theme_default: "dark",
           short_name: null,
           instagram_handle: null,
