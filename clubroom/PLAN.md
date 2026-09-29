@@ -308,7 +308,18 @@ Promo media (countdown and hype videos rendered from the club's branding, day co
 
 ---
 
-## 14. How we work
+## 14. Status (29 September 2026, end of first session)
+
+**Built and tested locally, on the branch:**
+- Schema, RLS policies, functions; 83 RLS proofs + 47 unit tests (`pnpm test`).
+- Sign-up, sign-in, magic link, invites; seven-step wizard; club app shell; dashboard; share page with QR; public club page with Open Graph image; registration form rendered from the club's template with live age-group hint; server-side registration (validation, honeypot, rate limit, plan limit, atomic write, confirmation email); members database (scoreboard, matrix, filters, sort, audited medical reveal, edit, fee status, archive, admin add, logged Excel/CSV exports); spreadsheet import mapped to the prototype's columns; settings (club, season, form builder with versions, admins and coaches, billing); Stripe checkout/portal/webhook; platform owner view with support-access audit; demo club seed; marketing site, pricing, preview builder, lead capture; Instagram kit draft.
+- 12 Playwright journeys pass on phone and desktop; CI workflow in `.github/workflows/clubroom.yml`.
+
+**Waiting on Aiman (see §10):** product name, pricing sign-off, domain, repo privacy, the Supabase organisation (Pro), Stripe and Resend accounts. Deployment happens the moment the Supabase project exists; the Netlify site is created through the connector.
+
+**Next, in order:** deploy and smoke-test on the real URL; make Aiman the platform owner; Sonics import walkthrough; Phase 2 (coach roll call, parent portal, progression).
+
+## 15. How we work
 - Small, clear commits on `claude/affectionate-gates-5prjdn`.
 - I test with Playwright before saying something works, and I attach screenshots.
 - When you need to click something, I give the direct link and one step at a time.
