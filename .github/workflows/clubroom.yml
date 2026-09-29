@@ -1,0 +1,58 @@
+name: Clubroom
+
+on:
+  push:
+    paths: ["clubroom/**", ".github/workflows/clubroom.yml"]
+  pull_request:
+    paths: ["clubroom/**", ".github/workflows/clubroom.yml"]
+
+concurrency:
+  group: clubroom-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: clubroom
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: clubroom/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec tsc --noEmit
+      - run: pnpm exec eslint src
+
+      - name: Start local Supabase
+        run: pnpm exec supabase start -x studio,imgproxy,logflare,vector,edge-runtime
+      - name: Write local env
+        run: |
+          pnpm exec supabase status -o env | sed -e 's/^API_URL=/NEXT_PUBLIC_SUPABASE_URL=/' -e 's/^ANON_KEY=/NEXT_PUBLIC_SUPABASE_ANON_KEY=/' -e 's/^SERVICE_ROLE_KEY=/SUPABASE_SERVICE_ROLE_KEY=/' -e 's/^DB_URL=/SUPABASE_DB_URL=/' | grep -E '^(NEXT_PUBLIC_SUPABASE_URL|NEXT_PUBLIC_SUPABASE_ANON_KEY|SUPABASE_SERVICE_ROLE_KEY|SUPABASE_DB_URL)=' > .env.local
+          echo "NEXT_PUBLIC_APP_URL=http://localhost:3000" >> .env.local
+          cat .env.local | sed 's/=.*/=…/'
+      - name: RLS proofs and unit tests
+        run: pnpm exec vitest run
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+      - name: End-to-end
+        run: pnpm exec playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: clubroom-e2e
+          path: |
+            clubroom/tests/e2e/screenshots
+            clubroom/tests/e2e/.results
+          if-no-files-found: ignore
+
+      - name: Build
+        run: pnpm build
