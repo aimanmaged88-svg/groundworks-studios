@@ -35,10 +35,10 @@ test("a spreadsheet in the prototype's shape imports with the right mapping, dup
   await page.locator('input[type="file"]').setInputFiles({ name: "sonics-registrations.csv", mimeType: "text/csv", buffer: Buffer.from(CSV, "utf8") });
   await expect(page.getByRole("heading", { name: "Match the columns" })).toBeVisible();
   // auto-mapping from the prototype's headers
-  await expect(page.locator("label", { hasText: "Player full name" }).locator("select")).toHaveValue("Player name");
-  await expect(page.locator("label", { hasText: "Date of birth" }).locator("select")).toHaveValue("Date of birth");
-  await expect(page.locator("label", { hasText: "Parent email" }).locator("select")).toHaveValue("Parent email");
-  await expect(page.locator("label", { hasText: "Consent: photos" }).locator("select")).toHaveValue("Consent - photos");
+  await expect(page.getByLabel("Map Player full name")).toHaveValue("Player name");
+  await expect(page.getByLabel("Map Date of birth")).toHaveValue("Date of birth");
+  await expect(page.getByLabel("Map Parent email")).toHaveValue("Parent email");
+  await expect(page.getByLabel("Map Consent: photos")).toHaveValue("Consent - photos");
   await expect(page.getByText("3 of 4 will be added")).toBeVisible();
   await expect(page.getByText("twice in file")).toBeVisible();
   await expect(page.getByText("unreadable date of birth")).toBeVisible();
@@ -46,19 +46,19 @@ test("a spreadsheet in the prototype's shape imports with the right mapping, dup
 
   await page.getByRole("button", { name: "Import 3 rows" }).click();
   await expect(page.getByRole("heading", { name: "Done" })).toBeVisible();
-  await expect(page.getByText("Added").locator("..").getByText("2")).toBeVisible();
+  await expect(page.getByText("Added").locator("..").getByText("3")).toBeVisible();
   await expect(page.getByText("Flagged as duplicates").locator("..").getByText("1")).toBeVisible();
 
   const rows = await sql<{ first_name: string; dob: string; source: string; possible_duplicate: boolean; submitted_at: string; guardians: number }>(
     `select p.first_name, p.dob::text, r.source, r.possible_duplicate, r.submitted_at::text,
             (select count(*)::int from public.people g where g.club_id = p.club_id and g.kind = 'guardian') as guardians
-     from public.registrations r join public.people p on p.id = r.player_person_id where r.club_id = $1 order by r.submitted_at`,
+     from public.registrations r join public.people p on p.id = r.player_person_id where r.club_id = $1 order by p.first_name, r.submitted_at`,
     [clubId],
   );
   expect(rows.map((r) => [r.first_name, r.dob, r.source, r.possible_duplicate])).toEqual([
     ["Ali", "2015-05-04", "import", false],
-    ["Layla", "2013-08-19", "import", false],
     ["Ali", "2015-05-04", "import", true],
+    ["Layla", "2013-08-19", "import", false],
   ]);
   expect(rows[0].submitted_at.startsWith("2026-09-20")).toBeTruthy();
   expect(rows[0].guardians).toBe(1); // one Sana, reused by email

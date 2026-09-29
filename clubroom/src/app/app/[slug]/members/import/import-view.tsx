@@ -155,7 +155,7 @@ export function ImportView({ slug, seasonName, existingKeys }: { slug: string; s
               {TARGETS.map((t) => (
                 <label key={t.key} className="grid grid-cols-[150px_1fr] items-center gap-3 text-[13px]">
                   <span className={cn("font-bold", mapping[t.key] ? "text-ink" : "text-ink-dim")}>{t.label}</span>
-                  <Select value={mapping[t.key] ?? ""} onChange={(e) => setMapping({ ...mapping, [t.key]: e.target.value })} className="py-2 text-[13px]">
+                  <Select value={mapping[t.key] ?? ""} onChange={(e) => setMapping({ ...mapping, [t.key]: e.target.value })} className="py-2 text-[13px]" aria-label={`Map ${t.label}`}>
                     <option value="">Not in the file</option>
                     {parsed.headers.map((h) => (
                       <option key={h} value={h}>
