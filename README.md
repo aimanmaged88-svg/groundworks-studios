@@ -10,6 +10,7 @@ The home for all Groundworks Studios projects. Each project lives in its own fol
 | Groundwork Labs — Business OS | [`aiman-business-os/`](aiman-business-os/) | [aiman-business-os.netlify.app](https://aiman-business-os.netlify.app) |
 | Groundwork Labs — Start Your Project | [`groundwork-labs/`](groundwork-labs/) | [groundwork-labs.netlify.app](https://groundwork-labs.netlify.app) |
 | Groundwork Labs — Post From Your Phone | [`studiogroundworks/`](studiogroundworks/) | [studiogroundworks.netlify.app](https://studiogroundworks.netlify.app) |
+| Clubroom — club operations platform (product) | [`clubroom/`](clubroom/) | — |
 | Studio Analytics | [`aiman-studio-analytics/`](aiman-studio-analytics/) | [aiman-studio-analytics.netlify.app](https://aiman-studio-analytics.netlify.app) |
 
 ## Lockdown Lab (Basketball IQ Academy)
