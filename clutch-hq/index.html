@@ -394,6 +394,16 @@ dl.kv a{color:var(--accent);text-decoration:none}
 .instrow{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:13px}
 .instrow:first-child{border-top:0}
 .pill2{font:500 11px var(--mono);border:1px solid var(--line-2);border-radius:5px;padding:2px 7px;color:var(--ink-2)}
+@media (max-width:760px){
+  .hidemob{display:none!important}
+  .pipe{grid-template-columns:1fr;overflow:visible;padding-bottom:0}
+  .morenav{flex-wrap:wrap;border-radius:10px}
+  .morenav button{flex:1 0 31%;height:38px}
+  th,td{padding:8px 8px;white-space:normal}
+  .tw{max-height:none}
+  .ph .acts{width:100%}
+  .fbar select{flex:1 0 45%}
+}
 @media (max-width:1000px){
   .chatwrap{grid-template-columns:1fr;height:auto}
   .convlist{max-height:300px}
@@ -791,16 +801,16 @@ function vPlayers(){
     <select data-f="status">${[["all","Everyone"],["owing","Owing fees"],["med","Medical note"]].map(([v,l]) => `<option value="${v}"${F.status === v ? " selected" : ""}>${l}</option>`).join("")}</select>
     <span class="ct">${L.length} shown</span></div>
   <section class="card flush"><div class="tw"><table>
-    <thead><tr><th>Player</th><th>Team</th><th>Last 5 games</th><th class="r">Season pts</th><th class="r">Attendance</th><th class="r">Fees</th><th>Parent</th><th>Phone</th></tr></thead>
+    <thead><tr><th>Player</th><th>Team</th><th class="hidemob">Last 5 games</th><th class="r hidemob">Season pts</th><th class="r hidemob">Attendance</th><th class="r">Fees</th><th class="hidemob">Parent</th><th class="hidemob">Phone</th></tr></thead>
     <tbody>${L.map(p => { const t = team(p.team_id), g = guardianOf(p), st = statsOf(p), at = attOf(p), o = owing(p);
       return `<tr class="click" data-act="player" data-id="${p.id}">
         <td><div class="who">${avatarHtml(p)}<div><b>${esc(pname(p))}</b><small>${p.no != null ? "#" + p.no + " · " : ""}${ageGroupOf(p.dob)} · ${ageOn(p.dob, todayISO())}</small></div></div></td>
         <td>${t ? tname(t) : '<span class="muted">Squad</span>'}</td>
-        <td>${t ? wlChips(t.id) : '<span class="muted">–</span>'}</td>
-        <td class="r mono num">${st.games ? `${st.pts} <span class="muted">· ${st.ppg.toFixed(1)}/g</span>` : '<span class="muted">–</span>'}</td>
-        <td class="r mono num">${at.pct != null ? Math.round(at.pct * 100) + "%" : "–"}</td>
+        <td class="hidemob">${t ? wlChips(t.id) : '<span class="muted">–</span>'}</td>
+        <td class="r mono num hidemob">${st.games ? `${st.pts} <span class="muted">· ${st.ppg.toFixed(1)}/g</span>` : '<span class="muted">–</span>'}</td>
+        <td class="r mono num hidemob">${at.pct != null ? Math.round(at.pct * 100) + "%" : "–"}</td>
         <td class="r">${!t ? '<span class="muted">–</span>' : o ? `<span class="st crit">${money(o)}</span>` : `<span class="st good">${I.ok}Paid</span>`}</td>
-        <td>${esc(g.name)}</td><td class="mono num" style="font-size:12.5px">${esc(g.phone)}</td></tr>`; }).join("") ||
+        <td class="hidemob">${esc(g.name)}</td><td class="mono num hidemob" style="font-size:12.5px">${esc(g.phone)}</td></tr>`; }).join("") ||
       `<tr><td colspan="8" class="muted" style="padding:24px 12px">Nobody matches.</td></tr>`}</tbody></table></div></section>`;
 }
 
@@ -816,8 +826,8 @@ function vRegos(){
       <button class="btn${showArch ? " pri" : ""}" data-act="toggleRegArch">${I.archive}${showArch ? "Back to the pipeline" : "Archive"}</button>
       <button class="btn pri" data-act="newRego">${I.plus}Add by hand</button></div></div>
   ${showArch ? `<section class="card flush"><div class="ch"><h2>Archived registrations</h2><span class="sub">Out of the pipeline, kept for the record</span></div>
-    <div class="tw" style="margin-top:10px"><table><thead><tr><th>Player</th><th>Parent</th><th>Phone</th><th>Stage</th><th>Sent</th><th></th></tr></thead><tbody>
-    ${L.map(r => `<tr><td><b>${esc(r.first_name + " " + r.last_name)}</b></td><td>${esc(r.gname)}</td><td class="mono">${esc(r.gphone)}</td><td>${esc(r.stage)}</td><td>${fd(r.at.slice(0,10))}</td>
+    <div class="tw" style="margin-top:10px"><table><thead><tr><th>Player</th><th class="hidemob">Parent</th><th class="hidemob">Phone</th><th>Stage</th><th class="hidemob">Sent</th><th></th></tr></thead><tbody>
+    ${L.map(r => `<tr><td><b>${esc(r.first_name + " " + r.last_name)}</b></td><td class="hidemob">${esc(r.gname)}</td><td class="mono hidemob">${esc(r.gphone)}</td><td>${esc(r.stage)}</td><td class="hidemob">${fd(r.at.slice(0,10))}</td>
       <td class="r"><button class="btn sm" data-act="regArch" data-id="${r.id}" data-v="0">Restore</button></td></tr>`).join("") || `<tr><td colspan="6" class="muted" style="padding:20px 12px">Nothing archived.</td></tr>`}</tbody></table></div></section>`
   : `<div class="pipe">${STAGES.map(([k, l]) => { const R = L.filter(r => r.stage === k).sort((a,b) => a.at.localeCompare(b.at));
     return `<div class="col"><h3>${l}<span>${R.length}</span></h3>${R.map(r => regoCard(r, T)).join("") || `<div class="empty" style="padding:4px 6px">Empty</div>`}</div>`; }).join("")}</div>`}`;
@@ -858,10 +868,10 @@ function vMoney(){
     <section class="card c5" style="align-self:start"><div class="ch"><h2>Payment plans</h2><span class="sub">What's due next from families paying in parts</span></div>
       <div>${coming.map(i => { const p = player(i.player_id); return `<div class="instrow"><div><b style="font-weight:600">${esc(pname(p))}</b><div class="muted" style="font-size:12px">${tname(team(p.team_id))}${i.note ? " · " + esc(i.note) : ""}</div></div>
         <span class="pill2">${fd(i.due, {wd:1})}</span><span class="mono num">${money(i.amount)}</span></div>`; }).join("") || `<div class="empty">No payment plans set up. Add one from a player's file.</div>`}</div></section>
-    <section class="card flush c7"><div class="ch"><h2>Still owing</h2><span class="sub">Largest first</span></div><div class="tw" style="margin-top:10px"><table><thead><tr><th>Player</th><th>Team</th><th class="r">Owing</th><th>Next instalment</th><th></th></tr></thead><tbody>
+    <section class="card flush c7"><div class="ch"><h2>Still owing</h2><span class="sub">Largest first</span></div><div class="tw" style="margin-top:10px"><table><thead><tr><th>Player</th><th class="hidemob">Team</th><th class="r">Owing</th><th class="hidemob">Next instalment</th><th></th></tr></thead><tbody>
       ${owe.map(p => { const nx = instOf(p).find(i => i.due >= T); return `<tr><td><a href="#" data-act="player" data-id="${p.id}" style="text-decoration:none;font-weight:500">${esc(pname(p))}</a><div class="muted mono" style="font-size:12px">${esc(guardianOf(p).phone)}</div></td>
-        <td style="white-space:nowrap">${tname(team(p.team_id))}</td><td class="r mono num">${money(owing(p))}</td>
-        <td>${nx ? `${money(nx.amount)} on ${fd(nx.due)}` : '<span class="muted">No plan</span>'}</td>
+        <td class="hidemob" style="white-space:nowrap">${tname(team(p.team_id))}</td><td class="r mono num">${money(owing(p))}</td>
+        <td class="hidemob">${nx ? `${money(nx.amount)} on ${fd(nx.due)}` : '<span class="muted">No plan</span>'}</td>
         <td class="r" style="white-space:nowrap"><button class="btn sm" data-act="feeMsg" data-id="${p.id}">${I.copy}Reminder</button> <button class="btn sm pri" data-act="pay" data-id="${p.id}">Record payment</button></td></tr>`; }).join("") ||
         `<tr><td colspan="5" class="muted" style="padding:20px 12px">Everyone has paid.</td></tr>`}</tbody></table></div></section>
   </div>`;
@@ -883,13 +893,13 @@ function vCoaches(){
   ${C.length ? `<section class="card" style="margin-bottom:16px;border-left:3px solid var(--crit)"><div class="ch"><h2>Clashes this week — arrange a fill-in</h2></div>
     ${C.map(x => `<div class="al crit">${I.alert}<div><div class="t"><b>${esc(coach(x.coach).name)}</b> · ${DL[dow(x.a.date)]}</div>
       <div class="m">${tname(team(x.a.team))} ${x.a.type === "G" ? "game" : "training"} ${trange(x.a.start, x.a.end)} and ${tname(team(x.b.team))} ${x.b.type === "G" ? "game" : "training"} ${trange(x.b.start, x.b.end)}. One of these needs another coach.</div></div><span></span></div>`).join("")}</section>` : ""}
-  <section class="card flush"><div class="tw"><table><thead><tr><th>Coach</th><th>Teams</th><th class="r">This week</th><th>Working With Children Check</th><th>Contact</th><th></th></tr></thead><tbody>
+  <section class="card flush"><div class="tw"><table><thead><tr><th>Coach</th><th class="hidemob">Teams</th><th class="r hidemob">This week</th><th>WWCC</th><th class="hidemob">Contact</th><th></th></tr></thead><tbody>
     ${D.coaches.map(c => { const T2 = D.teams.filter(t => !t.archived && (t.coach_id === c.id || t.asst_id === c.id)), w = wwcc(c), n = S.filter(s => s.coaches.includes(c.id)).length, cl = C.filter(x => x.coach === c.id);
       return `<tr><td><div class="who"><div class="av">${initials(c.name)}</div><div><b>${esc(c.name)}</b><small>${esc(c.role)}${c.profile_id ? "" : " · not signed in yet"}</small></div></div></td>
-        <td>${T2.map(t => `<span class="chip" style="margin:2px 4px 2px 0">${tname(t)}${t.asst_id === c.id ? " (asst)" : ""}</span>`).join("") || '<span class="muted">None</span>'}</td>
-        <td class="r mono num">${n}${cl.length ? ` <span class="chip crit">clash</span>` : ""}</td>
+        <td class="hidemob">${T2.map(t => `<span class="chip" style="margin:2px 4px 2px 0">${tname(t)}${t.asst_id === c.id ? " (asst)" : ""}</span>`).join("") || '<span class="muted">None</span>'}</td>
+        <td class="r mono num hidemob">${n}${cl.length ? ` <span class="chip crit">clash</span>` : ""}</td>
         <td><span class="st ${w.level}">${w.level === "good" ? I.ok : I.alert}${w.text}</span></td>
-        <td class="mono num" style="font-size:12.5px">${esc(c.phone || "")}<div class="muted" style="font-size:11.5px">${esc(c.email || "")}</div></td>
+        <td class="mono num hidemob" style="font-size:12.5px">${esc(c.phone || "")}<div class="muted" style="font-size:11.5px">${esc(c.email || "")}</div></td>
         <td class="r" style="white-space:nowrap">${isAdmin() ? `<button class="btn sm" data-act="coachCode" data-id="${c.id}">${I.key}Code</button> <button class="btn sm" data-act="editCoach" data-id="${c.id}">${I.edit}Edit</button>` : ""}</td></tr>`; }).join("")}
   </tbody></table></div></section>`;
 }
@@ -1257,7 +1267,7 @@ const ACT = {
     const { data, error } = await sb.rpc("create_activation_code", {p_kind:"guardian", p_target:g.id, p_email:g.email});
     if (error) throw error;
     const msg = `Assalamu alaykum ${g.name.split(" ")[0]},\n\nThe Clutch app is ready for your family. Set it up here:\n${FAMILY_URL}\n\n1. Tap "First time here"\n2. Email: ${g.email}\n3. Code: ${data}\n4. Choose your own password\n\nYou'll see ${p.first_name}'s schedule, mark him in or out for games, message the coach, and follow the club board.\n\n${D.org.contact_name}\nClutch Basketball`;
-    openModal(`<div style="padding:20px 22px"><h2>Parent code for ${esc(g.name)}</h2><div class="sub">One use, expires in 14 days. Send it to ${esc(g.phone)}.</div>
+    openModal(`<div style="padding:20px 22px"><h2>Parent code for ${esc(g.name)}</h2><div class="sub">One use, 14 days. Send it to ${esc(g.phone)}. This is also how you fix a forgotten password — a fresh code lets them set a new one.</div>
       <div class="bigcode">${data}</div>
       <div class="mact" style="justify-content:flex-start"><button class="btn pri" data-act="copyText" data-v="${esc(msg).replace(/"/g, "&quot;")}">${I.copy}Copy WhatsApp message</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); }),
   kidCode:el => run(async () => { const p = player(el.dataset.id);
@@ -1271,7 +1281,7 @@ const ACT = {
     const { data, error } = await sb.rpc("create_activation_code", {p_kind:"coach", p_target:c.id, p_email:c.email});
     if (error) throw error;
     const msg = `Salaam ${c.name.split(" ")[0]},\n\nYour Clutch HQ coach sign-in:\nhttps://clutch-hq.netlify.app\n\n1. Tap "First time here"\n2. Email: ${c.email}\n3. Code: ${data}\n4. Choose a password\n\nYou'll see your teams, take the roll, enter scores and message your families.\n\n${D.org.contact_name}`;
-    openModal(`<div style="padding:20px 22px"><h2>Coach code for ${esc(c.name)}</h2><div class="sub">One use, expires in 14 days.</div><div class="bigcode">${data}</div>
+    openModal(`<div style="padding:20px 22px"><h2>Coach code for ${esc(c.name)}</h2><div class="sub">One use, 14 days. Also fixes a forgotten password.</div><div class="bigcode">${data}</div>
       <div class="mact" style="justify-content:flex-start"><button class="btn pri" data-act="copyText" data-v="${esc(msg).replace(/"/g, "&quot;")}">${I.copy}Copy message</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); }),
   copyText:el => copy(el.dataset.v, "Copied"),
   newCoach:() => coachForm(null),
@@ -1510,22 +1520,28 @@ function gate(mode, err){
   const g = $("#gcard");
   if (mode === "wrongApp") { g.innerHTML = `<p style="margin:0 0 14px;font-size:14px">This sign-in belongs to the family app, not the staff one.</p>
     <a class="btn pri" href="${FAMILY_URL}">Open the Clutch app</a><div style="height:8px"></div><button class="btn" data-act="signout" style="width:100%">Sign out</button>`; return; }
+  if (mode === "forgot") { g.innerHTML = `<p style="margin:0 0 8px;font-size:14.5px;font-weight:600">Forgot your password?</p>
+    <p style="margin:0 0 16px;font-size:13.5px;color:var(--ink-2)">No stress — message Clutch and an admin sends you a fresh code. When it arrives, tap “I have a code” and pick a new password.</p>
+    <a class="btn pri" style="width:100%" href="https://wa.me/61404000113?text=${encodeURIComponent("Salaam, I forgot my Clutch HQ password. My email is: ")}" target="_blank" rel="noopener">WhatsApp Clutch for a reset code</a>
+    <div style="height:8px"></div>
+    <button class="btn" style="width:100%" data-g="toActivate">I have a code</button>
+    <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toSignin">Back to sign in</button></p>`; return; }
   if (mode === "activate") { g.innerHTML = `<form id="gform" data-g="activate">
     <div class="gerr">${esc(err || "")}</div>
     <div class="f"><label>Email</label><input name="email" type="email" required autocomplete="username"></div>
-    <div class="f"><label>Activation code from Clutch</label><input name="code" required autocomplete="one-time-code" style="text-transform:uppercase"></div>
+    <div class="f"><label>Code from Clutch</label><input name="code" required autocomplete="one-time-code" style="text-transform:uppercase"></div>
     <div class="f"><label>Choose a password (8+ characters)</label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
-    <button class="btn pri">Activate and sign in</button>
+    <button class="btn pri">Set password and sign in</button>
     <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toSignin">Back to sign in</button></p></form>`; return; }
   g.innerHTML = `<form id="gform" data-g="signin">
     <div class="gerr">${esc(err || "")}</div>
     <div class="f"><label>Email</label><input name="email" type="email" required autocomplete="username"></div>
     <div class="f"><label>Password</label><input name="password" type="password" required autocomplete="current-password"></div>
     <button class="btn pri">Sign in</button>
-    <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toActivate">First time here? I have an activation code</button></p></form>`;
+    <p style="text-align:center;margin:14px 0 0;display:flex;justify-content:space-between"><button type="button" class="glink" data-g="toActivate">I have a code</button><button type="button" class="glink" data-g="toForgot">Forgot password?</button></p></form>`;
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-g]"); if (!b || b.tagName === "FORM") return;
-  if (b.dataset.g === "toActivate") gate("activate"); if (b.dataset.g === "toSignin") gate("signin"); });
+  if (b.dataset.g === "toActivate") gate("activate"); if (b.dataset.g === "toSignin") gate("signin"); if (b.dataset.g === "toForgot") gate("forgot"); });
 document.addEventListener("submit", async e => {
   const f = e.target; if (!f.dataset.g) return; e.preventDefault();
   const v = Object.fromEntries(new FormData(f).entries());

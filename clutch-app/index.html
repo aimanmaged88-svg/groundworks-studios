@@ -660,22 +660,28 @@ function gate(mode, err){
       <div class="gerr">${esc(err || "")}</div>
       <form data-g="activate">
         <div class="f"><label>Email</label><input name="email" type="email" required autocomplete="username"></div>
-        <div class="f"><label>Activation code from Clutch</label><input name="code" required autocomplete="one-time-code" style="text-transform:uppercase"></div>
+        <div class="f"><label>Code from Clutch</label><input name="code" required autocomplete="one-time-code" style="text-transform:uppercase"></div>
         <div class="f"><label>Choose a password (8+ characters)</label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
-        <button class="btn pri" style="width:100%">Activate my account</button></form>
+        <button class="btn pri" style="width:100%">Set password and sign in</button></form>
       <p class="gback" style="text-align:center"><button class="glink" data-g="parent">Back to sign in</button></p></div>`; return; }
+  if (mode === "forgot") { g.innerHTML = head + `<div class="gcard" style="text-align:center">
+    <p style="margin:0 0 8px;font-weight:600;font-size:15px">Forgot your password?</p>
+    <p style="margin:0 0 16px;font-size:13.5px;color:var(--ink-2)">Message Clutch and we'll send you a fresh code. When it arrives, tap “I have a code” and choose a new password.</p>
+    <a class="btn pri" style="width:100%" href="https://wa.me/61404000113?text=${encodeURIComponent("Salaam, I forgot my Clutch app password. My email is: ")}" target="_blank" rel="noopener">WhatsApp Clutch</a>
+    <div style="height:8px"></div><button class="btn" style="width:100%" data-g="toActivate">I have a code</button>
+    <p class="gback"><button class="glink" data-g="parent">← Back to sign in</button></p></div>`; return; }
   g.innerHTML = head + `<div class="gcard">
     <div class="gerr">${esc(err || "")}</div>
     <form data-g="signin">
       <div class="f"><label>Email</label><input name="email" type="email" required autocomplete="username"></div>
       <div class="f"><label>Password</label><input name="password" type="password" required autocomplete="current-password"></div>
       <button class="btn pri" style="width:100%">Sign in</button></form>
-    <p class="gback" style="text-align:center"><button class="glink" data-g="toActivate">First time here? I have a code from Clutch</button></p>
+    <p class="gback" style="display:flex;justify-content:space-between"><button class="glink" data-g="toActivate">I have a code</button><button class="glink" data-g="toForgot">Forgot password?</button></p>
     <p style="text-align:center;margin:8px 0 0"><button class="glink" data-g="back">← Back</button></p></div>`;
 }
 document.addEventListener("click", e => { const b = e.target.closest("button[data-g]"); if (!b) return;
   const m = b.dataset.g;
-  if (m === "parent") gate("signin"); else if (m === "kid") gate("kid"); else if (m === "toActivate") gate("activate"); else if (m === "back") gate("pick"); });
+  if (m === "parent") gate("signin"); else if (m === "kid") gate("kid"); else if (m === "toActivate") gate("activate"); else if (m === "toForgot") gate("forgot"); else if (m === "back") gate("pick"); });
 document.addEventListener("input", e => { const el = e.target; if (el.dataset.ci === undefined) return;
   el.value = el.value.replace(/\D/g, "").slice(-1);
   if (el.value && +el.dataset.ci < 5) { const n = $(`[data-ci="${+el.dataset.ci + 1}"]`); if (n) n.focus(); }
