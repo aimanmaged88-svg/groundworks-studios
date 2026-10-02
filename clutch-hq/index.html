@@ -1526,6 +1526,13 @@ function gate(mode, err){
     <div style="height:8px"></div>
     <button class="btn" style="width:100%" data-g="toActivate">I have a code</button>
     <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toSignin">Back to sign in</button></p>`; return; }
+  if (mode === "welcome") { g.innerHTML = `<form id="gform" data-g="welcome">
+    <p style="margin:0 0 8px;font-size:14.5px;font-weight:600">Welcome to Clutch HQ 👋</p>
+    <p style="margin:0 0 16px;font-size:13.5px;color:var(--ink-2)">One step and you're in: pick a password. Next time you open the app it's just your email and this password.</p>
+    <div class="gerr">${esc(err || "")}</div>
+    <div class="f"><label>Choose a password (8+ characters)</label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
+    <button class="btn pri">Set my password and go in</button>
+    <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toSignin">I already have a password</button></p></form>`; return; }
   if (mode === "activate") { g.innerHTML = `<form id="gform" data-g="activate">
     <div class="gerr">${esc(err || "")}</div>
     <div class="f"><label>Email</label><input name="email" type="email" required autocomplete="username"></div>
@@ -1541,11 +1548,21 @@ function gate(mode, err){
     <p style="text-align:center;margin:14px 0 0;display:flex;justify-content:space-between"><button type="button" class="glink" data-g="toActivate">I have a code</button><button type="button" class="glink" data-g="toForgot">Forgot password?</button></p></form>`;
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-g]"); if (!b || b.tagName === "FORM") return;
-  if (b.dataset.g === "toActivate") gate("activate"); if (b.dataset.g === "toSignin") gate("signin"); if (b.dataset.g === "toForgot") gate("forgot"); });
+  if (b.dataset.g === "toActivate") gate("activate"); if (b.dataset.g === "toSignin") { WELCOME = null; gate("signin"); } if (b.dataset.g === "toForgot") gate("forgot"); });
 document.addEventListener("submit", async e => {
   const f = e.target; if (!f.dataset.g) return; e.preventDefault();
   const v = Object.fromEntries(new FormData(f).entries());
   f.querySelector("button.pri").disabled = true;
+  if (f.dataset.g === "welcome") {
+    const r = await fetch(`${SUPA_URL}/functions/v1/setup`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify({token:WELCOME, password:v.password})});
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { gate("welcome", j.error || "That didn't work"); return; }
+    if (!["admin","coach"].includes(j.role)) { gate("signin", "That link is for the family app: " + FAMILY_URL); return; }
+    WELCOME = null;
+    const { error } = await sb.auth.signInWithPassword({email:j.email, password:v.password});
+    if (error) { gate("signin", error.message); return; }
+    boot(); return;
+  }
   if (f.dataset.g === "activate") {
     const r = await fetch(`${SUPA_URL}/functions/v1/activate`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify(v)});
     const j = await r.json().catch(() => ({}));
@@ -1558,7 +1575,12 @@ document.addEventListener("submit", async e => {
 });
 
 /* ---------- boot ---------- */
+// A welcome link (clutch-hq.netlify.app/#welcome=TOKEN) skips the whole gate:
+// the token is lifted out of the URL before anything else sees it.
+let WELCOME = null;
+{ const m = location.hash.match(/^#welcome=([A-Za-z0-9_-]{16,64})$/); if (m) { WELCOME = m[1]; history.replaceState(null, "", location.pathname + location.search); } }
 async function boot(){
+  if (WELCOME) { $("#loading").hidden = true; gate("welcome"); return; }
   $("#gate").hidden = true; $("#loading").hidden = false;
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { gate("signin"); return; }
