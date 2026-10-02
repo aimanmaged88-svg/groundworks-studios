@@ -487,7 +487,7 @@ function sunsetMin(s, lat = -33.95, lon = 151.03){
   return +p[0] * 60 + +p[1];
 }
 const maghrib = s => mt(sunsetMin(s) + 3);
-function toast(m){ const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
+function toast(m, ms){ const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), ms || 2600); }
 function copy(text, note){
   const done = () => toast(note || "Copied");
   if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fb); else fb();
@@ -805,7 +805,7 @@ function vPlayers(){
   const teams = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
   return `
   <div class="ph"><div><h1>Players</h1><div class="sub">${active().length} active · age groups use age on 31 December ${D.org.season.ageYear}</div></div>
-    <div class="acts"><button class="btn" data-act="exportPlayers">${I.download}Excel</button>${isAdmin() ? `<button class="btn pri" data-act="newPlayer">${I.plus}Add player</button>` : ""}</div></div>
+    <div class="acts"><button class="btn" data-act="exportPlayers">${I.download}Excel</button>${isAdmin() ? `<button class="btn" data-act="inviteFamily">${I.key}Invite a family</button><button class="btn pri" data-act="newPlayer">${I.plus}Add player</button>` : ""}</div></div>
   <div class="fbar">
     <input type="search" placeholder="Search name, parent or phone" value="${esc(F.q)}" data-f="q" aria-label="Search">
     <select data-f="team"><option value="all">All teams</option>${teams.map(t => `<option value="${t.id}"${F.team === t.id ? " selected" : ""}>${tname(t)}</option>`).join("")}<option value="squad"${F.team === "squad" ? " selected" : ""}>Training squad</option></select>
@@ -909,12 +909,12 @@ function vCoaches(){
   const M = monday(todayISO()), S = weekSessions(M), C = conflicts(S).filter(c => c.kind === "coach");
   return `${moreNav()}
   <div class="ph"><div><h1>Coaches</h1><div class="sub">Every coach needs a current Working With Children Check before they run a session.</div></div>
-    ${isAdmin() ? `<div class="acts"><button class="btn pri" data-act="newCoach">${I.plus}Add coach</button></div>` : ""}</div>
+    ${isAdmin() ? `<div class="acts"><button class="btn" data-act="inviteCoach">${I.key}Invite link</button><button class="btn pri" data-act="newCoach">${I.plus}Add coach</button></div>` : ""}</div>
   ${C.length ? `<section class="card" style="margin-bottom:16px;border-left:3px solid var(--crit)"><div class="ch"><h2>Clashes this week — arrange a fill-in</h2></div>
     ${C.map(x => `<div class="al crit">${I.alert}<div><div class="t"><b>${esc(coach(x.coach).name)}</b> · ${DL[dow(x.a.date)]}</div>
       <div class="m">${tname(team(x.a.team))} ${x.a.type === "G" ? "game" : "training"} ${trange(x.a.start, x.a.end)} and ${tname(team(x.b.team))} ${x.b.type === "G" ? "game" : "training"} ${trange(x.b.start, x.b.end)}. One of these needs another coach.</div></div><span></span></div>`).join("")}</section>` : ""}
   <section class="card flush"><div class="tw"><table><thead><tr><th>Coach</th><th class="hidemob">Teams</th><th class="r hidemob">This week</th><th>WWCC</th><th class="hidemob">Contact</th><th></th></tr></thead><tbody>
-    ${D.coaches.map(c => { const T2 = D.teams.filter(t => !t.archived && (t.coach_id === c.id || t.asst_id === c.id)), w = wwcc(c), n = S.filter(s => s.coaches.includes(c.id)).length, cl = C.filter(x => x.coach === c.id);
+    ${D.coaches.filter(c => c.name !== "(removed test)").map(c => { const T2 = D.teams.filter(t => !t.archived && (t.coach_id === c.id || t.asst_id === c.id)), w = wwcc(c), n = S.filter(s => s.coaches.includes(c.id)).length, cl = C.filter(x => x.coach === c.id);
       return `<tr><td><div class="who"><div class="av">${initials(c.name)}</div><div><b>${esc(c.name)}</b><small>${esc(c.role)}${c.profile_id ? "" : " · not signed in yet"}</small></div></div></td>
         <td class="hidemob">${T2.map(t => `<span class="chip" style="margin:2px 4px 2px 0">${tname(t)}${t.asst_id === c.id ? " (asst)" : ""}</span>`).join("") || '<span class="muted">None</span>'}</td>
         <td class="r mono num hidemob">${n}${cl.length ? ` <span class="chip crit">clash</span>` : ""}</td>
@@ -926,7 +926,8 @@ function vCoaches(){
 
 /* ---------- messages ---------- */
 function vMessages(){
-  const convs = D.convs.slice().sort((a,b) => (b.last_message_at || b.created_at).localeCompare(a.last_message_at || a.created_at));
+  const convs = D.convs.filter(c => (fam(c.family_id) || {}).name !== "(removed test)")
+    .sort((a,b) => (b.last_message_at || b.created_at).localeCompare(a.last_message_at || a.created_at));
   const open = VIEW.conv ? D.convs.find(c => c.id === VIEW.conv) : null;
   const msgs = open ? (D.msgs[open.id] || []) : [];
   return `
@@ -1022,6 +1023,10 @@ function vSettings(){
   <div class="grid">
     <section class="card c6" style="align-self:start"><div class="ch"><h2>Safe to play with</h2></div>
       <p class="muted" style="font-size:13.5px;line-height:1.6;margin:4px 0 0">Nothing in here sends by itself. Every SMS and email button only opens your own phone's composer — you press send there, or don't. Receipts and messages inside the app reach a family only after they've signed in with the code you give them. So until you hand codes out, you can add players, move teams around and record payments freely — it's all just between the admins.</p></section>
+    <section class="card c6" style="align-self:start"><div class="ch"><h2>Bring in a spreadsheet</h2></div>
+      <p class="muted" style="font-size:13.5px;line-height:1.6;margin:4px 0 14px">Got the old player list in Excel? Drop it here. It reads your headings, guesses which column is which — you check the guesses and hit import. Anyone already in the system gets skipped, team names get matched where they line up, and the rest land in the Training squad for you to sort.</p>
+      <label class="btn pri" style="cursor:pointer">${I.download}Choose the file<input type="file" accept=".xlsx,.xls,.csv" data-act="sheetUpload" hidden></label>
+      <p class="muted" style="font-size:12.5px;margin-top:10px">Takes .xlsx, .xls and .csv. One season per file works best.</p></section>
     <section class="card c6"><div class="ch"><h2>Club and season</h2></div>
       <form data-form="org" class="fg">
         <div class="f h"><label>Club name</label><input name="name" value="${esc(o.name)}"></div>
@@ -1326,6 +1331,22 @@ const ACT = {
     openModal(`<div style="padding:20px 22px"><h2>Coach code for ${esc(c.name)}</h2><div class="sub">One use, 14 days. Also fixes a forgotten password.</div><div class="bigcode">${data}</div>
       <div class="mact" style="justify-content:flex-start"><button class="btn pri" data-act="copyText" data-v="${esc(msg).replace(/"/g, "&quot;")}">${I.copy}Copy message</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); }),
   copyText:el => copy(el.dataset.v, "Copied"),
+  inviteCoach:() => run(async () => {
+    const { data: tok, error } = await sb.rpc("create_invite", {p_kind:"coach", p_label:"coach"});
+    if (error) throw error;
+    const link = `https://clutch-hq.netlify.app/#join=${tok}`;
+    const msg = `Salaam! You're coaching with Clutch 🏀\n\nSet yourself up here — takes two minutes:\n${link}\n\nFill in your details (WWCC too), pick a password, and you're straight into Clutch HQ.\n\n${D.org.contact_name}`;
+    openModal(`<div style="padding:20px 22px"><h2>Coach invite link</h2><div class="sub">One use, 14 days. They fill in their own name, mobile, WWCC and password — no typing on your end.</div>
+      <div style="background:rgba(125,125,125,.12);border-radius:10px;padding:12px 14px;font-size:12.5px;word-break:break-all;margin-bottom:14px" class="mono">${link}</div>
+      <div class="mact" style="justify-content:flex-start;flex-wrap:wrap"><button class="btn pri" data-act="copyText" data-v="${esc(msg).replace(/"/g, "&quot;")}">${I.copy}Copy WhatsApp message</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); }),
+  inviteFamily:() => run(async () => {
+    const { data: tok, error } = await sb.rpc("create_invite", {p_kind:"family", p_label:"family"});
+    if (error) throw error;
+    const link = `${FAMILY_URL}/#join=${tok}`;
+    const msg = `Salaam! Welcome to Clutch Basketball 🏀\n\nSet your family up here — takes two minutes:\n${link}\n\nFill in your details and your player's, pick a password, and you'll have the schedule, fees and club board in your pocket.\n\n${D.org.contact_name}`;
+    openModal(`<div style="padding:20px 22px"><h2>Family invite link</h2><div class="sub">One use, 14 days. The parent fills in their own details and the player's — the family lands in the system ready to go.</div>
+      <div style="background:rgba(125,125,125,.12);border-radius:10px;padding:12px 14px;font-size:12.5px;word-break:break-all;margin-bottom:14px" class="mono">${link}</div>
+      <div class="mact" style="justify-content:flex-start;flex-wrap:wrap"><button class="btn pri" data-act="copyText" data-v="${esc(msg).replace(/"/g, "&quot;")}">${I.copy}Copy WhatsApp message</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); }),
   newCoach:() => coachForm(null),
   editCoach:el => coachForm(coach(el.dataset.id)),
   pay:el => { const p = player(el.dataset.id);
@@ -1422,6 +1443,7 @@ document.addEventListener("click", e => { const el = e.target.closest("[data-act
 document.addEventListener("change", e => { const el = e.target;
   if (el.dataset.act === "task") return ACT.task(el);
   if (el.dataset.act === "move") return ACT.move(el);
+  if (el.dataset.act === "sheetUpload" && el.files[0]) return importSheet(el.files[0]);
   if (el.dataset.act === "avatarUpload" && el.files[0]) return uploadAvatar(el.dataset.id, el.files[0]);
   if (el.dataset.act === "galUpload" && el.files[0]) return uploadMedia(el.files[0]);
   if (el.dataset.act === "ptsIn") return run(async () => { const pts = Math.max(0, +el.value || 0);
@@ -1484,6 +1506,48 @@ const FORMS = {
     const { data } = await sb.from("payments").insert({player_id:pid, amount:+f.amt, paid_on:f.d, method:f.how, note:f.note || "", recorded_by:ME.id}).select().single().throwOnError();
     D.payments.push(data); render(); showReceipt(player(pid), data); return false; },
   payPick:async f => FORMS.pay(f, {dataset:{}}),
+  importGo:async f => {
+    if (!IMP) return;
+    const col = k => f[k] === "" || f[k] == null ? -1 : +f[k];
+    const S = v => String(v ?? "").trim();
+    const get = (r, k) => col(k) < 0 ? "" : S(r[col(k)]);
+    const raw = (r, k) => col(k) < 0 ? "" : r[col(k)];
+    const live = D.teams.filter(t => !t.archived);
+    const teamFor = v => { if (!v) return null; const s = v.toLowerCase().replace(/\s+/g, " ").trim();
+      let t = live.find(t => tname(t).toLowerCase() === s) || live.find(t => (t.age + " " + t.div).toLowerCase() === s);
+      if (!t) { const byAge = live.filter(t => t.age.toLowerCase() === s); if (byAge.length === 1) t = byAge[0]; }
+      return t ? t.id : null; };
+    let added = 0, dupes = 0, noName = 0, noTeam = 0, badDob = 0;
+    const famCache = {};
+    for (const r of IMP.rows) {
+      let first = get(r, "first"), last = get(r, "last");
+      if (!first) { const full = get(r, "full"); if (full) { const parts = full.split(/\s+/);
+        first = parts.length > 1 ? parts.slice(0, -1).join(" ") : parts[0]; last = parts.length > 1 ? parts[parts.length - 1] : last; } }
+      if (!first) { noName++; continue; }
+      last = last || "";
+      const dob = parseDob(raw(r, "dob"));
+      if (D.players.some(p => p.first_name.toLowerCase() === first.toLowerCase() && p.last_name.toLowerCase() === last.toLowerCase())) { dupes++; continue; }
+      const gname = get(r, "gname"), gphone = get(r, "gphone"), gemail = get(r, "gemail");
+      const key = (gemail || gphone || (gname ? gname + "|" + last : "one-off|" + first + "|" + last)).toLowerCase();
+      let famId = famCache[key];
+      if (!famId) {
+        const { data: fam } = await sb.from("families").insert({name:(last || first) + " family"}).select().single().throwOnError();
+        famId = famCache[key] = fam.id;
+        if (gname || gphone || gemail) await sb.from("guardians").insert({family_id:famId, name:gname || "Parent", rel:"Guardian", phone:gphone, email:gemail || null}).throwOnError();
+      }
+      const tv = get(r, "team"), team_id = teamFor(tv);
+      if (tv && !team_id) noTeam++;
+      if (!dob) badDob++;
+      const med = get(r, "med"), jersey = get(r, "no");
+      await sb.from("players").insert({family_id:famId, first_name:first, last_name:last, dob:dob || "2012-01-01",
+        phone:get(r, "phone"), team_id, no:/^\d+$/.test(jersey) ? +jersey : null, medical:!!med, medical_note:med,
+        source:dob ? "Imported from spreadsheet" : "Imported — check date of birth"}).throwOnError();
+      added++;
+    }
+    IMP = null; await reload();
+    toast(`${added} players in` + (dupes ? ` · ${dupes} already here, skipped` : "") + (noName ? ` · ${noName} rows had no name` : "")
+      + (noTeam ? ` · ${noTeam} team names didn't match (Training squad)` : "") + (badDob ? ` · ${badDob} birthdays to check` : ""), 9000);
+  },
   inst:async (f, el) => { const { data } = await sb.from("instalments").insert({player_id:el.dataset.id, amount:+f.amt, due:f.due, note:f.note || ""}).select().single(); D.instalments.push(data); },
   rego:async f => { const { data } = await sb.from("registrations").insert({first_name:f.first, last_name:f.last, dob:f.dob || null, phone:f.phone || "", gname:f.gname, gphone:f.gphone, gemail:f.gemail || "", msg:f.msg || ""}).select().single(); D.regs.push(data); },
   join:async (f, el) => { const r = D.regs.find(x => x.id === el.dataset.id);
@@ -1538,6 +1602,69 @@ document.addEventListener("submit", e => {
     if (el.dataset.form === "msg" || el.dataset.form === "task" || el.dataset.form === "note" || el.dataset.form === "comment" || el.dataset.form === "post") el.reset();
     render(); });
 });
+
+/* ---------- spreadsheet import ---------- */
+// The reader library only loads when someone actually picks a file.
+let IMP = null;
+async function needXLSX(){ if (window.XLSX) return;
+  await new Promise((ok, no) => { const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+    s.onload = ok; s.onerror = () => no(new Error("Couldn't load the spreadsheet reader — check the connection"));
+    document.head.appendChild(s); });
+}
+function importSheet(file){ run(async () => {
+  await needXLSX();
+  // raw:true keeps CSV cells as the text that was typed — otherwise the reader
+  // guesses dates American-style and 12/03 (12 March) turns into December 3.
+  const wb = XLSX.read(await file.arrayBuffer(), {type:"array", raw:true});
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const all = XLSX.utils.sheet_to_json(ws, {header:1, raw:true, defval:""});
+  const hi = all.findIndex(r => r.filter(c => typeof c === "string" && c.trim()).length >= 2);
+  if (hi < 0) throw new Error("Couldn't find a heading row in that file");
+  const headers = all[hi].map(h => String(h).trim());
+  const rows = all.slice(hi + 1).filter(r => r.some(c => String(c).trim()));
+  if (!rows.length) throw new Error("No rows under the headings");
+  IMP = {headers, rows};
+  importMap();
+}); }
+// What we can file, and how a heading usually spells it.
+const IMP_FIELDS = [
+  ["first", "Player first name", /first|given/i],
+  ["last", "Player last name", /last ?name|surname|family name/i],
+  ["full", "Player full name (one column)", /^(player ?|child ?|full ?)?names?$/i],
+  ["dob", "Date of birth", /d\.? ?o\.? ?b|birth/i],
+  ["team", "Team or age group", /team|squad|age ?group|division|div/i],
+  ["no", "Jersey number", /jersey|singlet|^#$|^no\.?$|^(shirt|top) ?(no|number)$/i],
+  ["gname", "Parent name", /(parent|guardian|mother|father|mum|dad)(?!.*(mob|phone|mail|numb))/i],
+  ["gphone", "Parent mobile", /(parent|guardian|contact|emergency).*(mob|phone|number)|^(mobile|phone|contact)( number)?$/i],
+  ["gemail", "Parent email", /mail/i],
+  ["phone", "Player mobile", /player.*(mob|phone)/i],
+  ["med", "Medical note", /medical|allerg|health|condition/i],
+];
+function importMap(){
+  const used = new Set(), guess = {};
+  for (const [k, , re] of IMP_FIELDS) { const i = IMP.headers.findIndex((h, ix) => h && re.test(h) && !used.has(ix));
+    if (i >= 0) { guess[k] = i; used.add(i); } }
+  const opts = ci => `<option value="">— not in this sheet —</option>` + IMP.headers.map((h, i) =>
+    `<option value="${i}"${ci === i ? " selected" : ""}>${esc(h || "column " + (i + 1))}</option>`).join("");
+  openModal(`<form data-form="importGo"><h2>Import ${IMP.rows.length} rows</h2>
+    <div class="sub">The headings have been matched up automatically — fix any that look wrong, then import. Already-known players are skipped.</div><div class="fg">
+    ${IMP_FIELDS.map(([k, label]) => `<div class="f h"><label>${label}</label><select name="${k}">${opts(guess[k])}</select></div>`).join("")}
+    </div>${mact("Import players")}</form>`);
+}
+function parseDob(v){
+  if (v === "" || v == null) return null;
+  if (typeof v === "number" && v > 20000 && v < 60000) return new Date(Date.UTC(1899, 11, 30) + v * 86400000).toISOString().slice(0, 10);
+  const s = String(v).trim();
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/); if (m) return m[0];
+  m = s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/); // Australian: day first
+  if (m) { let y = +m[3]; if (y < 100) y += y > 30 ? 1900 : 2000;
+    let d = +m[1], mo = +m[2];
+    if (mo > 12 && d <= 12) { const t = mo; mo = d; d = t; } // clearly month-first, flip it
+    if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+    return `${y}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}`; }
+  return null;
+}
 
 /* ---------- uploads ---------- */
 function shrink(file, max){ return new Promise(res => { const img = new Image(); img.onload = () => { const k = Math.min(1, max / Math.max(img.width, img.height));
@@ -1601,6 +1728,18 @@ function gate(mode, err){
     <div style="height:8px"></div>
     <button class="btn" style="width:100%" data-g="toActivate">I have a code</button>
     <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toSignin">Back to sign in</button></p>`; return; }
+  if (mode === "join") { g.innerHTML = `<form id="gform" data-g="join">
+    <p style="margin:0 0 8px;font-size:14.5px;font-weight:600">Welcome to the Clutch coaching staff 👋</p>
+    <p style="margin:0 0 16px;font-size:13.5px;color:var(--ink-2)">Fill in your details once and you're in. The WWCC number comes from the Office of the Children's Guardian.</p>
+    <div class="gerr">${esc(err || "")}</div>
+    <div class="f"><label>Full name</label><input name="name" required autocomplete="name"></div>
+    <div class="f"><label>Mobile</label><input name="phone" inputmode="tel" required autocomplete="tel"></div>
+    <div class="f"><label>Email (your sign-in)</label><input name="email" type="email" required autocomplete="email"></div>
+    <div class="f"><label>WWCC number</label><input name="wwcc_no" placeholder="WWC1234567E"></div>
+    <div class="f"><label>WWCC expiry</label><input name="wwcc_exp" type="date"></div>
+    <div class="f"><label>Choose a password (8+ characters)</label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
+    <button class="btn pri">Save my details and go in</button>
+    <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toSignin">I already have an account</button></p></form>`; return; }
   if (mode === "welcome") { g.innerHTML = `<form id="gform" data-g="welcome">
     <p style="margin:0 0 8px;font-size:14.5px;font-weight:600">Welcome to Clutch HQ 👋</p>
     <p style="margin:0 0 16px;font-size:13.5px;color:var(--ink-2)">One step and you're in: pick a password. Next time you open the app it's just your email and this password.</p>
@@ -1623,11 +1762,20 @@ function gate(mode, err){
     <p style="text-align:center;margin:14px 0 0;display:flex;justify-content:space-between"><button type="button" class="glink" data-g="toActivate">I have a code</button><button type="button" class="glink" data-g="toForgot">Forgot password?</button></p></form>`;
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-g]"); if (!b || b.tagName === "FORM") return;
-  if (b.dataset.g === "toActivate") gate("activate"); if (b.dataset.g === "toSignin") { WELCOME = null; gate("signin"); } if (b.dataset.g === "toForgot") gate("forgot"); });
+  if (b.dataset.g === "toActivate") gate("activate"); if (b.dataset.g === "toSignin") { WELCOME = null; JOIN = null; gate("signin"); } if (b.dataset.g === "toForgot") gate("forgot"); });
 document.addEventListener("submit", async e => {
   const f = e.target; if (!f.dataset.g) return; e.preventDefault();
   const v = Object.fromEntries(new FormData(f).entries());
   f.querySelector("button.pri").disabled = true;
+  if (f.dataset.g === "join") {
+    const r = await fetch(`${SUPA_URL}/functions/v1/join`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify({...v, token:JOIN})});
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { gate("join", j.error || "That didn't work"); return; }
+    JOIN = null;
+    const { error } = await sb.auth.signInWithPassword({email:j.email, password:v.password});
+    if (error) { gate("signin", error.message); return; }
+    boot(); return;
+  }
   if (f.dataset.g === "welcome") {
     const r = await fetch(`${SUPA_URL}/functions/v1/setup`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify({token:WELCOME, password:v.password})});
     const j = await r.json().catch(() => ({}));
@@ -1652,10 +1800,12 @@ document.addEventListener("submit", async e => {
 /* ---------- boot ---------- */
 // A welcome link (clutch-hq.netlify.app/#welcome=TOKEN) skips the whole gate:
 // the token is lifted out of the URL before anything else sees it.
-let WELCOME = null;
+let WELCOME = null, JOIN = null;
 { const m = location.hash.match(/^#welcome=([A-Za-z0-9_-]{16,64})$/); if (m) { WELCOME = m[1]; history.replaceState(null, "", location.pathname + location.search); } }
+{ const m = location.hash.match(/^#join=([A-Za-z0-9_-]{16,64})$/); if (m) { JOIN = m[1]; history.replaceState(null, "", location.pathname + location.search); } }
 async function boot(){
   if (WELCOME) { $("#loading").hidden = true; gate("welcome"); return; }
+  if (JOIN) { $("#loading").hidden = true; gate("join"); return; }
   $("#gate").hidden = true; $("#loading").hidden = false;
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { gate("signin"); return; }

@@ -664,6 +664,24 @@ function gate(mode, err){
         <div class="f"><label>Choose a password (8+ characters)</label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
         <button class="btn pri" style="width:100%">Set password and sign in</button></form>
       <p class="gback" style="text-align:center"><button class="glink" data-g="parent">Back to sign in</button></p></div>`; return; }
+  if (mode === "join") { g.innerHTML = head + `<div class="gcard">
+      <p style="margin:0 0 6px;font-weight:600;font-size:15px">Welcome to Clutch 👋</p>
+      <p style="margin:0 0 14px;font-size:13.5px;color:var(--ink-2)">Fill this in once — you, then your player — and you're in. Add brothers later from inside the app.</p>
+      <div class="gerr">${esc(err || "")}</div>
+      <form data-g="join">
+        <div class="f"><label>Your name</label><input name="gname" required autocomplete="name"></div>
+        <div class="f"><label>You are the</label><select name="grel"><option>Father</option><option>Mother</option><option>Guardian</option></select></div>
+        <div class="f"><label>Your mobile</label><input name="gphone" inputmode="tel" required autocomplete="tel"></div>
+        <div class="f"><label>Your email (your sign-in)</label><input name="email" type="email" required autocomplete="email"></div>
+        <div class="f"><label>Player's first name</label><input name="first" required></div>
+        <div class="f"><label>Player's last name</label><input name="last" required></div>
+        <div class="f"><label>Player's date of birth</label><input name="dob" type="date" required></div>
+        <div class="f"><label>Player's mobile (optional)</label><input name="pphone" inputmode="tel"></div>
+        <div class="f"><label>Anything medical we should know? (optional)</label><input name="med"></div>
+        <div class="f"><label>OK for photos of your player on the club board?</label><select name="photo"><option value="1">Yes</option><option value="0">No</option></select></div>
+        <div class="f"><label>Choose a password (8+ characters)</label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
+        <button class="btn pri" style="width:100%">Set us up and sign in</button></form>
+      <p class="gback" style="text-align:center"><button class="glink" data-g="parent">I already have an account</button></p></div>`; return; }
   if (mode === "forgot") { g.innerHTML = head + `<div class="gcard" style="text-align:center">
     <p style="margin:0 0 8px;font-weight:600;font-size:15px">Forgot your password?</p>
     <p style="margin:0 0 16px;font-size:13.5px;color:var(--ink-2)">Message Clutch and we'll send you a fresh code. When it arrives, tap “I have a code” and choose a new password.</p>
@@ -681,7 +699,7 @@ function gate(mode, err){
 }
 document.addEventListener("click", e => { const b = e.target.closest("button[data-g]"); if (!b) return;
   const m = b.dataset.g;
-  if (m === "parent") gate("signin"); else if (m === "kid") gate("kid"); else if (m === "toActivate") gate("activate"); else if (m === "toForgot") gate("forgot"); else if (m === "back") gate("pick"); });
+  if (m === "parent") { JOIN = null; gate("signin"); } else if (m === "kid") gate("kid"); else if (m === "toActivate") gate("activate"); else if (m === "toForgot") gate("forgot"); else if (m === "back") { JOIN = null; gate("pick"); } });
 document.addEventListener("input", e => { const el = e.target; if (el.dataset.ci === undefined) return;
   el.value = el.value.replace(/\D/g, "").slice(-1);
   if (el.value && +el.dataset.ci < 5) { const n = $(`[data-ci="${+el.dataset.ci + 1}"]`); if (n) n.focus(); }
@@ -702,6 +720,15 @@ document.addEventListener("submit", async e => {
     boot(); return;
   }
   const v = Object.fromEntries(new FormData(f).entries());
+  if (f.dataset.g === "join") {
+    const r = await fetch(`${SUPA_URL}/functions/v1/join`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify({...v, token:JOIN})});
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { gate("join", j.error || "That didn't work."); return; }
+    JOIN = null;
+    const { error } = await sb.auth.signInWithPassword({email:j.email, password:v.password});
+    if (error) { gate("signin", error.message); return; }
+    boot(); return;
+  }
   if (f.dataset.g === "activate") {
     const r = await fetch(`${SUPA_URL}/functions/v1/activate`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify(v)});
     const j = await r.json().catch(() => ({}));
@@ -714,7 +741,12 @@ document.addEventListener("submit", async e => {
 });
 
 /* ---------- boot ---------- */
+// A family invite link (clutch-basketball.netlify.app/#join=TOKEN): the parent
+// fills in their own details. The token is lifted out of the URL first.
+let JOIN = null;
+{ const m = location.hash.match(/^#join=([A-Za-z0-9_-]{16,64})$/); if (m) { JOIN = m[1]; history.replaceState(null, "", location.pathname + location.search); } }
 async function boot(){
+  if (JOIN) { $("#loading").hidden = true; gate("join"); return; }
   $("#gate").hidden = true; $("#loading").hidden = false;
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { gate("pick"); return; }
