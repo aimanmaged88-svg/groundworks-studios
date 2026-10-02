@@ -543,6 +543,18 @@ const payTotal = p => D.payments.filter(x => x.player_id === p.id).reduce((s,x) 
 const feeOf = p => { const t = team(p.team_id); return t ? +t.fee : 0; };
 const owing = p => Math.max(0, feeOf(p) - payTotal(p));
 const instOf = p => D.instalments.filter(i => i.player_id === p.id).sort((a,b) => a.due.localeCompare(b.due));
+const rno = x => "#" + String(x.receipt_no ?? "").padStart(4, "0");
+function receiptText(p, x){ const t = team(p.team_id), left = owing(p);
+  return `Clutch Basketball — Receipt ${rno(x)}\n${money(x.amount)} received (${x.method.toLowerCase()}) on ${fd(x.paid_on, {y:1})}\nPlayer: ${pname(p)}${t ? " · " + tname(t) : ""}${x.note ? `\nFor: ${x.note}` : ""}\n${feeOf(p) ? (left ? `Season fees now: ${money(left)} still to pay` : "Season fees: paid in full") : "Thank you!"}\nJazakAllahu khayran,\n${D.org.contact_name}`;
+}
+function showReceipt(p, x){ const g = D.guardians.some(y => y.family_id === p.family_id), txt = receiptText(p, x);
+  openModal(`<div style="padding:20px 22px"><h2>Receipt ${rno(x)}</h2>
+    <div class="sub">Saved on ${esc(pname(p))}'s file. Copy it for WhatsApp${g ? ", or send it straight to the family's thread in the app" : ""}.</div>
+    <pre style="white-space:pre-wrap;background:rgba(125,125,125,.12);border-radius:10px;padding:14px;font-size:13px;line-height:1.55;font-family:inherit;margin:0 0 14px">${esc(txt)}</pre>
+    <div class="mact" style="justify-content:flex-start;flex-wrap:wrap"><button class="btn pri" data-act="copyText" data-v="${esc(txt).replace(/"/g, "&quot;")}">${I.copy}Copy receipt</button>
+    ${g ? `<button class="btn" data-act="sendReceipt" data-id="${x.id}">Send in the app</button>` : ""}
+    <button class="btn ghost" data-act="closeAll">Done</button></div></div>`);
+}
 const statsOf = p => { const S = D.stats.filter(s => s.player_id === p.id); const pts = S.reduce((x,s) => x + s.points, 0); return {games:S.length, pts, ppg:S.length ? pts/S.length : null}; };
 function last5(tid){ return D.fixtures.filter(f => f.team_id === tid && f.us != null).sort((a,b) => b.date.localeCompare(a.date)).slice(0,5).map(f => f.us > f.them ? "w" : f.us < f.them ? "l" : "d"); }
 const wlChips = tid => { const L = last5(tid); return L.length ? `<span class="wl">${L.slice().reverse().map(x => `<i class="${x}">${x.toUpperCase()}</i>`).join("")}</span>` : '<span class="muted">–</span>'; };
@@ -793,7 +805,7 @@ function vPlayers(){
   const teams = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
   return `
   <div class="ph"><div><h1>Players</h1><div class="sub">${active().length} active · age groups use age on 31 December ${D.org.season.ageYear}</div></div>
-    <div class="acts"><button class="btn" data-act="exportPlayers">${I.download}Excel</button>${isAdmin() ? `<button class="btn pri" data-act="newFamily">${I.plus}Add family</button>` : ""}</div></div>
+    <div class="acts"><button class="btn" data-act="exportPlayers">${I.download}Excel</button>${isAdmin() ? `<button class="btn pri" data-act="newPlayer">${I.plus}Add player</button>` : ""}</div></div>
   <div class="fbar">
     <input type="search" placeholder="Search name, parent or phone" value="${esc(F.q)}" data-f="q" aria-label="Search">
     <select data-f="team"><option value="all">All teams</option>${teams.map(t => `<option value="${t.id}"${F.team === t.id ? " selected" : ""}>${tname(t)}</option>`).join("")}<option value="squad"${F.team === "squad" ? " selected" : ""}>Training squad</option></select>
@@ -810,7 +822,7 @@ function vPlayers(){
         <td class="r mono num hidemob">${st.games ? `${st.pts} <span class="muted">· ${st.ppg.toFixed(1)}/g</span>` : '<span class="muted">–</span>'}</td>
         <td class="r mono num hidemob">${at.pct != null ? Math.round(at.pct * 100) + "%" : "–"}</td>
         <td class="r">${!t ? '<span class="muted">–</span>' : o ? `<span class="st crit">${money(o)}</span>` : `<span class="st good">${I.ok}Paid</span>`}</td>
-        <td class="hidemob">${esc(g.name)}</td><td class="mono num hidemob" style="font-size:12.5px">${esc(g.phone)}</td></tr>`; }).join("") ||
+        <td class="hidemob">${g ? esc(g.name) : '<span class="muted">–</span>'}</td><td class="mono num hidemob" style="font-size:12.5px">${g ? esc(g.phone) : ""}</td></tr>`; }).join("") ||
       `<tr><td colspan="8" class="muted" style="padding:24px 12px">Nobody matches.</td></tr>`}</tbody></table></div></section>`;
 }
 
@@ -857,7 +869,8 @@ function vMoney(){
   const T = todayISO();
   const coming = D.instalments.filter(i => { const p = player(i.player_id); return p && owing(p) > 0 && i.due >= addD(T, -7); }).sort((a,b) => a.due.localeCompare(b.due)).slice(0, 12);
   return `${moreNav()}
-  <div class="ph"><div><h1>Money</h1><div class="sub">Season fees for ${esc(D.org.season.name || "")} · looked after by ${esc(D.org.contact_name)}</div></div></div>
+  <div class="ph"><div><h1>Money</h1><div class="sub">Season fees for ${esc(D.org.season.name || "")} · looked after by ${esc(D.org.contact_name)}</div></div>
+    <div class="acts"><button class="btn pri" data-act="payPick">${I.plus}Record payment</button></div></div>
   <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">
     <div class="kpi"><div class="l">Expected</div><div class="v">${money(due)}</div></div>
     <div class="kpi"><div class="l">Collected</div><div class="v">${money(got)}</div><div class="s">${due ? Math.round(got / due * 100) : 0}% of expected</div></div>
@@ -869,11 +882,18 @@ function vMoney(){
       <div>${coming.map(i => { const p = player(i.player_id); return `<div class="instrow"><div><b style="font-weight:600">${esc(pname(p))}</b><div class="muted" style="font-size:12px">${tname(team(p.team_id))}${i.note ? " · " + esc(i.note) : ""}</div></div>
         <span class="pill2">${fd(i.due, {wd:1})}</span><span class="mono num">${money(i.amount)}</span></div>`; }).join("") || `<div class="empty">No payment plans set up. Add one from a player's file.</div>`}</div></section>
     <section class="card flush c7"><div class="ch"><h2>Still owing</h2><span class="sub">Largest first</span></div><div class="tw" style="margin-top:10px"><table><thead><tr><th>Player</th><th class="hidemob">Team</th><th class="r">Owing</th><th class="hidemob">Next instalment</th><th></th></tr></thead><tbody>
-      ${owe.map(p => { const nx = instOf(p).find(i => i.due >= T); return `<tr><td><a href="#" data-act="player" data-id="${p.id}" style="text-decoration:none;font-weight:500">${esc(pname(p))}</a><div class="muted mono" style="font-size:12px">${esc(guardianOf(p).phone)}</div></td>
+      ${owe.map(p => { const nx = instOf(p).find(i => i.due >= T); return `<tr><td><a href="#" data-act="player" data-id="${p.id}" style="text-decoration:none;font-weight:500">${esc(pname(p))}</a><div class="muted mono" style="font-size:12px">${esc((guardianOf(p) || {}).phone || "")}</div></td>
         <td class="hidemob" style="white-space:nowrap">${tname(team(p.team_id))}</td><td class="r mono num">${money(owing(p))}</td>
         <td class="hidemob">${nx ? `${money(nx.amount)} on ${fd(nx.due)}` : '<span class="muted">No plan</span>'}</td>
         <td class="r" style="white-space:nowrap"><button class="btn sm" data-act="feeMsg" data-id="${p.id}">${I.copy}Reminder</button> <button class="btn sm pri" data-act="pay" data-id="${p.id}">Record payment</button></td></tr>`; }).join("") ||
         `<tr><td colspan="5" class="muted" style="padding:20px 12px">Everyone has paid.</td></tr>`}</tbody></table></div></section>
+    <section class="card flush" style="grid-column:1/-1"><div class="ch"><h2>Receipts</h2><span class="sub">Every payment recorded, newest first — open one to copy or resend it</span></div>
+      <div class="tw" style="margin-top:10px"><table><thead><tr><th>Receipt</th><th>Player</th><th class="r">Amount</th><th class="hidemob">How</th><th class="hidemob">What for</th><th>Date</th><th></th></tr></thead><tbody>
+      ${D.payments.filter(x => +x.amount > 0).sort((a,b) => (b.receipt_no || 0) - (a.receipt_no || 0)).slice(0, 25).map(x => { const p = player(x.player_id); if (!p) return "";
+        return `<tr><td class="mono num">${rno(x)}</td><td><a href="#" data-act="player" data-id="${p.id}" style="text-decoration:none;font-weight:500">${esc(pname(p))}</a></td>
+        <td class="r mono num">${money(x.amount)}</td><td class="hidemob">${esc(x.method)}</td><td class="hidemob">${esc(x.note || "")}</td><td style="white-space:nowrap">${fd(x.paid_on)}</td>
+        <td class="r"><button class="btn sm" data-act="receipt" data-id="${x.id}">Receipt</button></td></tr>`; }).join("") ||
+        `<tr><td colspan="7" class="muted" style="padding:20px 12px">No payments recorded yet. Hit “Record payment” when the first money comes in.</td></tr>`}</tbody></table></div></section>
   </div>`;
 }
 
@@ -1000,6 +1020,8 @@ function vSettings(){
   return `${moreNav()}
   <div class="ph"><div><h1>Settings</h1><div class="sub">Club details, season, venues and board rules</div></div></div>
   <div class="grid">
+    <section class="card c6" style="align-self:start"><div class="ch"><h2>Safe to play with</h2></div>
+      <p class="muted" style="font-size:13.5px;line-height:1.6;margin:4px 0 0">Nothing in here sends by itself. Every SMS and email button only opens your own phone's composer — you press send there, or don't. Receipts and messages inside the app reach a family only after they've signed in with the code you give them. So until you hand codes out, you can add players, move teams around and record payments freely — it's all just between the admins.</p></section>
     <section class="card c6"><div class="ch"><h2>Club and season</h2></div>
       <form data-form="org" class="fg">
         <div class="f h"><label>Club name</label><input name="name" value="${esc(o.name)}"></div>
@@ -1103,13 +1125,13 @@ function dPlayer(id){
   const t = team(p.team_id), g = guardianOf(p), at = attOf(p), st = statsOf(p), o = owing(p), T = todayISO();
   const inst = instOf(p), soc = p.socials || {};
   const log = D.logs.filter(x => x.player_id === p.id).map(x => ({d:x.on_date, t:x.body}))
-    .concat(D.payments.filter(x => x.player_id === p.id).map(x => ({d:x.paid_on, t:`Paid ${money(x.amount)} (${x.method.toLowerCase()}).`})))
+    .concat(D.payments.filter(x => x.player_id === p.id && +x.amount > 0).map(x => ({d:x.paid_on, t:`Paid ${money(x.amount)} (${x.method.toLowerCase()}) — receipt ${rno(x)}.`})))
     .concat(D.notes.filter(x => x.player_id === p.id).map(x => ({d:x.created_at.slice(0,10), t:`Note from ${x.by_name}: ${x.body}`})))
     .sort((a,b) => b.d.localeCompare(a.d)).slice(0, 30);
   return dHead(esc(pname(p)), `${t ? tname(t) : "Training squad"}${p.no != null ? " · #" + p.no : ""} · ${ageGroupOf(p.dob)} · ${ageOn(p.dob, T)} years old`,
     `<div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">${moveSelect(p)}
       ${isAdmin() ? `<button class="btn sm" data-act="parentCode" data-id="${p.id}">${I.key}Parent code</button><button class="btn sm" data-act="kidCode" data-id="${p.id}">${I.key}Kid code</button>` : ""}
-      ${isAdmin() && o ? `<button class="btn sm pri" data-act="pay" data-id="${p.id}">Record payment</button>` : ""}</div>`) + `<div class="dbd">
+      ${isAdmin() ? `<button class="btn sm pri" data-act="pay" data-id="${p.id}">Record payment</button>` : ""}</div>`) + `<div class="dbd">
     <div class="sec" style="display:flex;gap:16px;align-items:center">${avatarHtml(p, true)}
       <div style="flex:1"><label class="btn sm" style="cursor:pointer">${I.cam}${p.photo_path ? "Change photo" : "Add photo"}<input type="file" accept="image/*" data-act="avatarUpload" data-id="${p.id}" hidden></label>
       ${!p.photo_consent ? `<div class="st warn" style="margin-top:8px;font-size:12.5px">${I.alert}No photo consent — keep this player out of the gallery and socials.</div>` : ""}</div></div>
@@ -1125,11 +1147,14 @@ function dPlayer(id){
       <dt>Medical</dt><dd>${p.medical ? `<span class="st warn">${I.alert}${esc(p.medical_note || "Note on file")}</span>` : "Nothing on file"}</dd>
       <dt>Photos</dt><dd>${p.photo_consent ? "Consent given" : `<span class="st warn">${I.alert}No consent</span>`}</dd>
       <dt>Socials</dt><dd><div class="socialrow">${["instagram","tiktok","youtube"].filter(k => soc[k]).map(k => `<span class="chip">${k}: ${esc(soc[k])}</span>`).join("") || '<span class="muted">None linked</span>'}</div></dd></dl></div>
-    <div class="sec"><h3>Family</h3><dl class="kv">
-      <dt>${esc(g.rel || "Parent")}</dt><dd>${esc(g.name)} ${isAdmin() ? `<button class="glink" data-act="editGuardian" data-id="${p.family_id}">edit</button>` : ""}</dd>
-      <dt>Mobile</dt><dd><a href="tel:${(g.phone || "").replace(/\s/g, "")}">${esc(g.phone)}</a> · <a href="https://wa.me/61${(g.phone || "").replace(/\s/g, "").replace(/^0/, "")}" target="_blank" rel="noopener">WhatsApp</a></dd>
-      <dt>Email</dt><dd>${g.email ? `<a href="mailto:${esc(g.email)}">${esc(g.email)}</a>` : '<span class="muted">None — needed for the app</span>'}</dd>
-      <dt>Siblings</dt><dd>${active().filter(x => x.family_id === p.family_id && x.id !== p.id).map(x => `<a href="#" data-act="player" data-id="${x.id}" style="color:var(--accent);text-decoration:none">${esc(pname(x))}</a>`).join(", ") || "–"}</dd></dl></div>
+    <div class="sec"><h3>Family${isAdmin() ? `<span class="right"><button class="btn sm" data-act="addParent" data-id="${p.id}">${I.plus}${D.guardians.some(x => x.family_id === p.family_id) ? "Add another parent" : "Add a parent"}</button></span>` : ""}</h3>
+      ${D.guardians.filter(x => x.family_id === p.family_id).map(gg => `<dl class="kv">
+      <dt>${esc(gg.rel || "Parent")}</dt><dd>${esc(gg.name)} ${isAdmin() ? `<button class="glink" data-act="editGuardian" data-id="${gg.id}">edit</button>` : ""}</dd>
+      <dt>Mobile</dt><dd><a href="tel:${(gg.phone || "").replace(/\s/g, "")}">${esc(gg.phone)}</a> · <a href="https://wa.me/61${(gg.phone || "").replace(/\s/g, "").replace(/^0/, "")}" target="_blank" rel="noopener">WhatsApp</a></dd>
+      <dt>Email</dt><dd>${gg.email ? `<a href="mailto:${esc(gg.email)}">${esc(gg.email)}</a>` : '<span class="muted">None — needed for the app</span>'}</dd></dl>`).join("") ||
+      `<div class="empty" style="padding:14px 0">No parent attached yet — add one whenever you're ready.</div>`}
+      <dl class="kv"><dt>Siblings</dt><dd>${active().filter(x => x.family_id === p.family_id && x.id !== p.id).map(x => `<a href="#" data-act="player" data-id="${x.id}" style="color:var(--accent);text-decoration:none">${esc(pname(x))}</a>`).join(", ") || "–"}</dd></dl>
+      ${isAdmin() ? `<p class="muted" style="font-size:12.5px;line-height:1.5;margin:10px 0 0"><b>Parent code</b> signs the parent in to the family app (and resets a forgotten password). <b>Kid code</b> is a six-digit sign-in for ${esc(p.first_name)}'s own device — kids only ever see their own family.</p>` : ""}</div>
     ${isAdmin() ? `<div class="sec"><h3>Payment plan<span class="right"><button class="btn sm" data-act="addInst" data-id="${p.id}">${I.plus}Add instalment</button></span></h3>
       <div class="plist">${inst.map(i => `<div class="pr"><div>${money(i.amount)} due ${fd(i.due, {wd:1, y:1})}${i.note ? ` <span class="muted">· ${esc(i.note)}</span>` : ""}</div><button class="btn sm ghost danger" data-act="delInst" data-id="${i.id}">✕</button></div>`).join("") || `<div class="empty">No plan. Fees are due in one go.</div>`}</div></div>` : ""}
     <div class="sec"><h3>Coach notes (staff only)</h3>
@@ -1235,11 +1260,11 @@ const ACT = {
     await sb.from("players").update({team_id:to}).eq("id", p.id).throwOnError();
     await sb.from("player_log").insert({player_id:p.id, body:`Moved to ${tname(t)}.`}).throwOnError();
     p.team_id = to; D.logs.unshift({player_id:p.id, on_date:todayISO(), body:`Moved to ${tname(t)}.`}); render(); toast(`${p.first_name} moved to ${tname(t)}`); }),
-  newFamily:() => { const teams = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
-    openModal(`<form data-form="family"><h2>Add a family</h2><div class="sub">Creates the parent, the player, and (optionally) their app code in one go.</div><div class="fg">
-      <div class="fsec">Parent or guardian</div>
-      <div class="f h"><label>Name</label><input name="gname" required></div><div class="f h"><label>Relationship</label><select name="grel"><option>Father</option><option>Mother</option><option>Guardian</option></select></div>
-      <div class="f h"><label>Mobile</label><input name="gphone" inputmode="tel" required></div><div class="f h"><label>Email (for the app)</label><input type="email" name="gemail"></div>
+  newPlayer:() => { const teams = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
+    const fams = D.families.filter(fm => D.players.some(p => p.family_id === fm.id && p.status === "active"))
+      .map(fm => { const g = D.guardians.find(x => x.family_id === fm.id);
+      return [fm.id, fm.name + (g ? " · " + g.name : "")]; }).sort((a,b) => a[1].localeCompare(b[1]));
+    openModal(`<form data-form="newPlayer"><h2>Add a player</h2><div class="sub">Just the player is fine — attach the parent now, later, or to a family already in the system.</div><div class="fg">
       <div class="fsec">Player</div>
       <div class="f h"><label>First name</label><input name="first" required></div><div class="f h"><label>Last name</label><input name="last" required></div>
       <div class="f h"><label>Date of birth</label><input type="date" name="dob" required></div><div class="f h"><label>Player mobile</label><input name="phone" inputmode="tel" placeholder="Optional"></div>
@@ -1247,7 +1272,17 @@ const ACT = {
       <div class="f h"><label>Jersey number</label><input type="number" name="no" min="0" max="99"></div>
       <div class="f h"><label>Photo consent</label><select name="photo"><option value="1">Yes</option><option value="0">No</option></select></div>
       <div class="f h"><label>Medical note</label><input name="med" placeholder="Blank if none"></div>
-    </div>${mact("Add family")}</form>`); },
+      <div class="fsec">Parent or guardian</div>
+      <div class="f"><label>Who looks after them?</label><select name="fam" data-famsel>
+        <option value="new">New parent — details below</option>
+        <option value="later">No parent yet — I'll add them later</option>
+        ${fams.map(([v,l]) => `<option value="${v}">Sibling — attach to ${esc(l)}</option>`).join("")}
+      </select></div>
+      <div data-famfields style="display:contents">
+      <div class="f h"><label>Name</label><input name="gname"></div><div class="f h"><label>Relationship</label><select name="grel"><option>Father</option><option>Mother</option><option>Guardian</option></select></div>
+      <div class="f h"><label>Mobile</label><input name="gphone" inputmode="tel"></div><div class="f h"><label>Email (for the app)</label><input type="email" name="gemail"></div>
+      </div>
+    </div>${mact("Add player")}</form>`); },
   editPlayer:el => { const p = player(el.dataset.id);
     openModal(`<form data-form="editPlayer" data-id="${p.id}"><h2>${esc(pname(p))}</h2><div class="fg">
       <div class="f h"><label>Player mobile</label><input name="phone" value="${esc(p.phone)}" inputmode="tel"></div>
@@ -1257,13 +1292,20 @@ const ACT = {
       <div class="f h"><label>Photo consent</label><select name="photo">${opt([["1","Yes"],["0","No"]], p.photo_consent ? "1" : "0")}</select></div>
       <div class="f h"><label>Medical note</label><input name="med" value="${esc(p.medical_note)}"></div>
     </div>${mact("Save")}</form>`); },
-  editGuardian:el => { const g = D.guardians.find(x => x.family_id === el.dataset.id);
+  addParent:el => { const p = player(el.dataset.id);
+    openModal(`<form data-form="addParent" data-id="${p.id}"><h2>Parent for ${esc(pname(p))}</h2><div class="fg">
+      <div class="f h"><label>Name</label><input name="name" required></div><div class="f h"><label>Relationship</label><select name="rel"><option>Father</option><option>Mother</option><option>Guardian</option></select></div>
+      <div class="f h"><label>Mobile</label><input name="phone" inputmode="tel" required></div><div class="f h"><label>Email (for the app)</label><input type="email" name="email"></div>
+    </div>${mact("Attach parent")}</form>`); },
+  editGuardian:el => { const g = D.guardians.find(x => x.id === el.dataset.id) || D.guardians.find(x => x.family_id === el.dataset.id);
     openModal(`<form data-form="guardian" data-id="${g.id}"><h2>${esc(g.name)}</h2><div class="fg">
       <div class="f h"><label>Name</label><input name="name" value="${esc(g.name)}" required></div><div class="f h"><label>Relationship</label><input name="rel" value="${esc(g.rel)}"></div>
       <div class="f h"><label>Mobile</label><input name="phone" value="${esc(g.phone)}"></div><div class="f h"><label>Email</label><input type="email" name="email" value="${esc(g.email || "")}"></div>
     </div>${mact("Save")}</form>`); },
-  parentCode:el => run(async () => { const p = player(el.dataset.id), g = guardianOf(p);
-    if (!g.email) { toast("Add the parent's email first"); ACT.editGuardian({dataset:{id:p.family_id}}); return; }
+  parentCode:el => run(async () => { const p = player(el.dataset.id);
+    const gs = D.guardians.filter(x => x.family_id === p.family_id), g = gs.find(x => x.email) || gs[0];
+    if (!g) { toast("Attach a parent first — the code is their sign-in"); ACT.addParent(el); return; }
+    if (!g.email) { toast("Add the parent's email first"); ACT.editGuardian({dataset:{id:g.id}}); return; }
     const { data, error } = await sb.rpc("create_activation_code", {p_kind:"guardian", p_target:g.id, p_email:g.email});
     if (error) throw error;
     const msg = `Assalamu alaykum ${g.name.split(" ")[0]},\n\nThe Clutch app is ready for your family. Set it up here:\n${FAMILY_URL}\n\n1. Tap "First time here"\n2. Email: ${g.email}\n3. Code: ${data}\n4. Choose your own password\n\nYou'll see ${p.first_name}'s schedule, mark him in or out for games, message the coach, and follow the club board.\n\n${D.org.contact_name}\nClutch Basketball`;
@@ -1287,17 +1329,33 @@ const ACT = {
   newCoach:() => coachForm(null),
   editCoach:el => coachForm(coach(el.dataset.id)),
   pay:el => { const p = player(el.dataset.id);
-    openModal(`<form data-form="pay" data-id="${p.id}"><h2>Record payment</h2><div class="sub">${esc(pname(p))} · ${money(owing(p))} owing</div><div class="fg">
-      <div class="f t"><label>Amount ($)</label><input type="number" name="amt" value="${owing(p)}" min="1" required></div>
+    openModal(`<form data-form="pay" data-id="${p.id}"><h2>Record payment</h2><div class="sub">${esc(pname(p))}${feeOf(p) ? ` · ${money(owing(p))} owing` : " · no roster fee set, record any amount"}</div><div class="fg">
+      <div class="f t"><label>Amount ($)</label><input type="number" name="amt" value="${owing(p) || ""}" min="1" step="0.01" required></div>
       <div class="f t"><label>Date</label><input type="date" name="d" value="${todayISO()}" required></div>
-      <div class="f t"><label>How</label><select name="how"><option>Bank transfer</option><option>Cash</option><option>Card</option></select></div></div>${mact("Save payment")}</form>`); },
+      <div class="f t"><label>How</label><select name="how"><option>Bank transfer</option><option>Cash</option><option>Card</option></select></div>
+      <div class="f"><label>What for (goes on the receipt)</label><input name="note" placeholder="e.g. Season fees, uniform"></div></div>${mact("Save and make the receipt")}</form>`); },
+  payPick:() => { const ps = active().slice().sort((a,b) => pname(a).localeCompare(pname(b)));
+    if (!ps.length) { toast("Add a player first"); return; }
+    openModal(`<form data-form="payPick"><h2>Record payment</h2><div class="sub">Money in — cash, transfer or card. A numbered receipt comes up straight after.</div><div class="fg">
+      <div class="f"><label>Player</label><select name="pid" required>${ps.map(p => `<option value="${p.id}">${esc(pname(p))}${p.team_id ? " · " + tname(team(p.team_id)) : ""}${owing(p) ? " · " + money(owing(p)) + " owing" : ""}</option>`).join("")}</select></div>
+      <div class="f t"><label>Amount ($)</label><input type="number" name="amt" min="1" step="0.01" required></div>
+      <div class="f t"><label>Date</label><input type="date" name="d" value="${todayISO()}" required></div>
+      <div class="f t"><label>How</label><select name="how"><option>Bank transfer</option><option>Cash</option><option>Card</option></select></div>
+      <div class="f"><label>What for (goes on the receipt)</label><input name="note" placeholder="e.g. Season fees, uniform"></div></div>${mact("Save and make the receipt")}</form>`); },
+  receipt:el => { const x = D.payments.find(y => y.id === el.dataset.id); if (x) showReceipt(player(x.player_id), x); },
+  sendReceipt:el => run(async () => { const x = D.payments.find(y => y.id === el.dataset.id), p = player(x.player_id);
+    const { data: convId, error } = await sb.rpc("open_conversation", {p_kind:"family", p_family:p.family_id, p_team:null});
+    if (error) throw error;
+    await sb.from("messages").insert({conversation_id:convId, body:receiptText(p, x)}).throwOnError();
+    toast("Receipt sent — it's waiting in the family's app messages"); await refreshConvs(); }),
   addInst:el => { const p = player(el.dataset.id);
     openModal(`<form data-form="inst" data-id="${p.id}"><h2>Payment plan</h2><div class="sub">${esc(pname(p))} · ${money(owing(p))} owing</div><div class="fg">
       <div class="f t"><label>Amount ($)</label><input type="number" name="amt" min="1" required></div>
       <div class="f t"><label>Due</label><input type="date" name="due" required></div>
       <div class="f t"><label>Note</label><input name="note" placeholder="e.g. 2 of 3"></div></div>${mact("Add instalment")}</form>`); },
   delInst:el => run(async () => { await sb.from("instalments").delete().eq("id", el.dataset.id).throwOnError(); D.instalments = D.instalments.filter(i => i.id !== el.dataset.id); render(); }),
-  feeMsg:el => { const p = player(el.dataset.id), g = guardianOf(p), nx = instOf(p).find(i => i.due >= todayISO());
+  feeMsg:el => { const p = player(el.dataset.id), g = D.guardians.find(x => x.family_id === p.family_id), nx = instOf(p).find(i => i.due >= todayISO());
+    if (!g) { toast("No parent on file for this player yet"); return; }
     copy(`Assalamu alaykum ${g.name.split(" ")[0]},\n\nA quick reminder that ${p.first_name}'s ${tname(team(p.team_id))} fee has ${money(owing(p))} still to pay${nx ? ` — next instalment ${money(nx.amount)} due ${fd(nx.due)}` : ""}.\n\nBank transfer is easiest, or reply here to sort a payment plan.\n\nJazakAllahu khayran,\n${D.org.contact_name}\nClutch Basketball`, "Reminder copied"); },
   regStage:el => run(async () => { const r = D.regs.find(x => x.id === el.dataset.id);
     await sb.from("registrations").update({stage:el.dataset.to}).eq("id", r.id).throwOnError(); r.stage = el.dataset.to; render(); }),
@@ -1396,12 +1454,24 @@ const FORMS = {
   video:async (f, el) => { await sb.from("fixtures").update({video_url:f.url}).eq("id", el.dataset.id).throwOnError();
     D.fixtures.find(x => x.id === el.dataset.id).video_url = f.url; toast("Link saved — families see a Watch button"); },
   fixture:async (f, el) => { const { data } = await sb.from("fixtures").insert({team_id:el.dataset.id, date:f.date, time:f.time, venue_id:f.venue, court:+f.court || 1, opp:f.opp || "To be drawn"}).select().single(); D.fixtures.push(data); },
-  family:async f => {
-    const { data: famRow } = await sb.from("families").insert({name:f.last.trim() + " family"}).select().single().throwOnError();
-    await sb.from("guardians").insert({family_id:famRow.id, name:f.gname.trim(), rel:f.grel, phone:f.gphone, email:f.gemail || null}).throwOnError();
-    await sb.from("players").insert({family_id:famRow.id, first_name:f.first.trim(), last_name:f.last.trim(), dob:f.dob, phone:f.phone || "", team_id:f.team || null,
+  newPlayer:async f => {
+    let famId = f.fam;
+    if (f.fam === "new") {
+      if (!f.gname.trim() || !f.gphone.trim()) { toast("Add the parent's name and mobile, or pick “No parent yet”"); return false; }
+      const { data: famRow } = await sb.from("families").insert({name:f.last.trim() + " family"}).select().single().throwOnError();
+      await sb.from("guardians").insert({family_id:famRow.id, name:f.gname.trim(), rel:f.grel, phone:f.gphone, email:f.gemail || null}).throwOnError();
+      famId = famRow.id;
+    } else if (f.fam === "later") {
+      const { data: famRow } = await sb.from("families").insert({name:f.last.trim() + " family"}).select().single().throwOnError();
+      famId = famRow.id;
+    }
+    await sb.from("players").insert({family_id:famId, first_name:f.first.trim(), last_name:f.last.trim(), dob:f.dob, phone:f.phone || "", team_id:f.team || null,
       no:f.no === "" ? null : +f.no, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || "", source:"Added by staff"}).throwOnError();
-    await reload(); toast("Family added — open the player to send the parent's code");
+    await reload(); toast(f.fam === "later" ? "Player added — attach a parent from their file whenever" : "Player added");
+  },
+  addParent:async (f, el) => { const p = player(el.dataset.id);
+    await sb.from("guardians").insert({family_id:p.family_id, name:f.name.trim(), rel:f.rel, phone:f.phone, email:f.email || null}).throwOnError();
+    await reload(); toast("Parent attached — you can now send their app code");
   },
   editPlayer:async (f, el) => { const p = player(el.dataset.id);
     const socials = {...(p.socials || {})}; socials.instagram = f.ig || undefined; socials.tiktok = f.tk || undefined;
@@ -1410,7 +1480,10 @@ const FORMS = {
     Object.assign(p, {phone:f.phone, no:f.no === "" ? null : +f.no, socials, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || ""}); },
   guardian:async (f, el) => { await sb.from("guardians").update({name:f.name, rel:f.rel, phone:f.phone, email:f.email || null}).eq("id", el.dataset.id).throwOnError();
     Object.assign(D.guardians.find(g => g.id === el.dataset.id), {name:f.name, rel:f.rel, phone:f.phone, email:f.email || null}); },
-  pay:async (f, el) => { const { data } = await sb.from("payments").insert({player_id:el.dataset.id, amount:+f.amt, paid_on:f.d, method:f.how, recorded_by:ME.id}).select().single(); D.payments.push(data); toast(money(+f.amt) + " recorded"); },
+  pay:async (f, el) => { const pid = el.dataset.id || f.pid;
+    const { data } = await sb.from("payments").insert({player_id:pid, amount:+f.amt, paid_on:f.d, method:f.how, note:f.note || "", recorded_by:ME.id}).select().single().throwOnError();
+    D.payments.push(data); render(); showReceipt(player(pid), data); return false; },
+  payPick:async f => FORMS.pay(f, {dataset:{}}),
   inst:async (f, el) => { const { data } = await sb.from("instalments").insert({player_id:el.dataset.id, amount:+f.amt, due:f.due, note:f.note || ""}).select().single(); D.instalments.push(data); },
   rego:async f => { const { data } = await sb.from("registrations").insert({first_name:f.first, last_name:f.last, dob:f.dob || null, phone:f.phone || "", gname:f.gname, gphone:f.gphone, gemail:f.gemail || "", msg:f.msg || ""}).select().single(); D.regs.push(data); },
   join:async (f, el) => { const r = D.regs.find(x => x.id === el.dataset.id);
@@ -1455,6 +1528,8 @@ function coachForm(c){
     <div class="f h"><label>Mobile</label><input name="phone" value="${esc(c.phone)}"></div><div class="f h"><label>Email (for sign-in)</label><input type="email" name="email" value="${esc(c.email || "")}"></div>
     <div class="f h"><label>WWCC number</label><input name="no" value="${esc(c.wwcc_no || "")}"></div><div class="f h"><label>Expires</label><input type="date" name="exp" value="${c.wwcc_exp || ""}"></div></div>${mact("Save")}</form>`);
 }
+document.addEventListener("change", e => { const s = e.target.closest("[data-famsel]"); if (!s) return;
+  const w = s.closest("form").querySelector("[data-famfields]"); if (w) w.style.display = s.value === "new" ? "contents" : "none"; });
 document.addEventListener("submit", e => {
   const el = e.target, k = el.dataset.form; if (!FORMS[k]) return; e.preventDefault();
   const f = Object.fromEntries(new FormData(el).entries());
