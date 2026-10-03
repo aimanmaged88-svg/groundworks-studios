@@ -1,0 +1,1830 @@
+<!doctype html>
+<html lang="{{LOCALE}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="{{C_BG}}">
+<title>{{CLUB_SHORT}} HQ</title>
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --disp:"Big Shoulders Display","IBM Plex Sans",sans-serif;
+  color-scheme:dark;
+  --bg:{{C_BG}}; --side:#0F0D0B; --panel:#15130F; --panel-2:#1B1814; --hover:#221E18;
+  --line:rgba(255,240,220,.07); --line-2:rgba(255,240,220,.14);
+  --ink:#F6F1E9; --ink-2:#BAB1A4; --muted:#857B6F;
+  --accent:{{C_ACCENT}}; --accent-2:{{C_ACCENT_2}}; --accent-ink:{{C_ACCENT_INK}}; --accent-wash:rgba({{C_ACCENT_RGB}},.12); --accent-line:rgba({{C_ACCENT_RGB}},.38);
+  --gold:#E8C21C;
+  --good:#46C272; --warn:#F2B01E; --crit:#F2584B;
+  --good-wash:rgba(70,194,114,.12); --warn-wash:rgba(242,176,30,.12); --crit-wash:rgba(242,88,75,.12);
+  --shadow:0 24px 60px -20px rgba(0,0,0,.75);
+  --r:10px;
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:{{C_LIGHT_BG}}; --side:#EEE9E1; --panel:#FFFFFF; --panel-2:#FAF8F4; --hover:#F3EFE8;
+  --line:rgba(40,25,10,.08); --line-2:rgba(40,25,10,.16);
+  --ink:#17120C; --ink-2:#544A3E; --muted:#85796B;
+  --accent:{{C_LIGHT_ACCENT}}; --accent-2:{{C_LIGHT_ACCENT_2}}; --accent-ink:#FFFFFF; --accent-wash:rgba({{C_LIGHT_ACCENT_RGB}},.08); --accent-line:rgba({{C_LIGHT_ACCENT_RGB}},.35);
+  --gold:#A88400;
+  --good:#1E8A47; --warn:#A86A00; --crit:#C8372D;
+  --good-wash:rgba(30,138,71,.09); --warn-wash:rgba(168,106,0,.09); --crit-wash:rgba(200,55,45,.08);
+  --shadow:0 24px 50px -24px rgba(40,25,10,.35);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.45 var(--sans);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+svg{display:block}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)} .ink2{color:var(--ink-2)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:5px}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:18px 12px}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 18px;text-decoration:none}
+.brand img{width:44px;height:44px;object-fit:contain;flex:none}
+.brand b{display:block;font:800 24px/1 var(--disp);letter-spacing:.01em;text-transform:uppercase}
+.brand span{display:block;font:500 11px var(--mono);color:var(--muted);margin-top:3px;letter-spacing:.04em}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;text-decoration:none;color:var(--ink-2);font-weight:500}
+.nav a svg{width:18px;height:18px;flex:none}
+.nav a:hover{background:var(--hover);color:var(--ink)}
+.nav a.on{background:var(--accent-wash);color:var(--accent)}
+.nav a .ct{margin-left:auto;font:600 11px var(--mono);background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:1px 7px}
+.side .foot{margin-top:auto;padding:12px 8px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.demo{font-size:12px;color:var(--muted);line-height:1.4}
+.demo b{color:var(--warn);font-weight:600}
+.side .row{display:flex;gap:6px}
+
+main{min-width:0;padding:26px 32px 60px}
+.ph{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.ph h1{margin:0;font:800 40px/0.95 var(--disp);letter-spacing:.005em;text-transform:uppercase}
+.ph .sub{color:var(--ink-2);font-size:13.5px;margin-top:6px}
+.ph .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+.btn{height:36px;padding:0 13px;border-radius:8px;border:1px solid var(--line-2);background:var(--panel);cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:500;white-space:nowrap;text-decoration:none}
+.btn:hover{background:var(--hover)}
+.btn svg{width:16px;height:16px;flex:none}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.pri:hover{background:var(--accent-2);border-color:var(--accent-2)}
+.btn.sm{height:30px;padding:0 10px;font-size:12.5px}
+.btn.icon{width:36px;padding:0;justify-content:center}
+.btn.ghost{background:none;border-color:transparent;color:var(--ink-2)}
+.btn.ghost:hover{background:var(--hover);color:var(--ink)}
+.btn.danger{color:var(--crit)}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:8px;overflow:hidden;background:var(--panel)}
+.seg button{border:0;background:none;height:34px;padding:0 12px;cursor:pointer;font-size:13px;color:var(--ink-2)}
+.seg button.on{background:var(--accent-wash);color:var(--accent);font-weight:600}
+.seg button+button{border-left:1px solid var(--line)}
+
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.c12{grid-column:span 12}.c8{grid-column:span 8}.c7{grid-column:span 7}.c6{grid-column:span 6}.c5{grid-column:span 5}.c4{grid-column:span 4}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;min-width:0}
+.card.flush{padding:0}
+.ch{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;margin-bottom:12px}
+.card.flush .ch{padding:16px 20px 0}
+.ch h2{margin:0;font-size:14px;font-weight:600}
+.ch .sub{font-size:12.5px;color:var(--muted)}
+.ch .right{margin-left:auto;font:500 11.5px var(--mono);color:var(--muted)}
+
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;min-width:0;text-align:left;cursor:default}
+button.kpi{cursor:pointer}
+button.kpi:hover{border-color:var(--line-2)}
+.kpi .l{font-size:12.5px;color:var(--ink-2)}
+.kpi .v{font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.15;margin-top:6px}
+.kpi .v small{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:0}
+.kpi .s{font-size:12px;color:var(--muted);margin-top:3px}
+.kpi.hot .v{color:var(--accent)}
+
+/* alerts */
+.alerts{display:flex;flex-direction:column}
+.al{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.al:first-child{border-top:0;padding-top:2px}
+.al svg{width:16px;height:16px}
+.al.crit svg{color:var(--crit)} .al.warn svg{color:var(--warn)} .al.info svg{color:var(--accent)}
+.al .t{font-size:13.5px}
+.al .t b{font-weight:600}
+.al.done{opacity:.65} .al.done svg{color:var(--good)}
+.stepn{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:600 11px var(--mono);background:var(--accent-wash);color:var(--accent);border:1px solid var(--accent-line)}
+.al .m{font-size:12px;color:var(--muted);margin-top:1px}
+
+/* week board */
+.board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+.day{min-width:0;display:flex;flex-direction:column;gap:8px}
+.dh{padding:8px 10px;border-radius:8px;background:var(--panel);border:1px solid var(--line)}
+.dh b{display:block;font:800 20px/1 var(--disp);text-transform:uppercase;letter-spacing:.02em}
+.dh span{display:block;font:400 11px var(--mono);color:var(--muted);margin-top:4px}
+.day.today .dh{border-color:var(--accent-line);background:var(--accent-wash)}
+.day.today .dh b{color:var(--accent)}
+.day.past{opacity:.72}
+.sess{text-align:left;width:100%;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:9px 10px 10px;cursor:pointer;position:relative;
+  border-left:3px solid var(--line-2);display:block}
+.sess:hover{border-color:var(--line-2);background:var(--panel-2)}
+.sess.G{border-left-color:var(--accent)}
+.sess .tm{font:500 11.5px var(--mono);color:var(--ink-2)}
+.sess .tn{font-weight:600;font-size:13.5px;margin-top:2px;line-height:1.25}
+.sess .sm{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.35}
+.sess .flag{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font:600 10.5px var(--mono);letter-spacing:.03em;text-transform:uppercase;border-radius:4px;padding:2px 6px}
+.flag.crit{color:var(--crit);background:var(--crit-wash)} .flag.warn{color:var(--warn);background:var(--warn-wash)} .flag.good{color:var(--good);background:var(--good-wash)}
+.avb{display:flex;height:4px;border-radius:2px;overflow:hidden;background:var(--line-2);margin-top:8px;gap:2px}
+.avb i{display:block;height:100%}
+.avb .in{background:var(--good)} .avb .out{background:var(--crit)}
+.empty{color:var(--muted);font-size:12.5px;padding:8px 2px}
+.dayempty{font-size:12px;color:var(--muted);padding:6px 10px}
+.mg{font:500 11px var(--mono);color:var(--gold);display:flex;align-items:center;gap:5px;margin-top:5px}
+.mg svg{width:12px;height:12px}
+
+/* teams */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.team{border:1px solid var(--line);background:var(--panel);border-radius:var(--r);padding:16px 18px;cursor:pointer;text-align:left;width:100%;display:block}
+.team:hover{border-color:var(--line-2);background:var(--panel-2)}
+.team .tt{display:flex;align-items:baseline;gap:8px}
+.team .tt b{font:800 28px/1 var(--disp);text-transform:uppercase}
+.team .tt span{font-size:12.5px;color:var(--muted)}
+.team .cm{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.team dl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:12px 0 0;font-size:12.5px}
+.team dt{color:var(--muted)} .team dd{margin:0;text-align:right}
+.meter{height:5px;border-radius:3px;background:var(--line-2);overflow:hidden;margin-top:12px}
+.meter i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.meter.low i{background:var(--warn)}
+.team .flags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.team.squad{border-style:dashed}
+.team.add{display:grid;place-items:center;min-height:180px;color:var(--ink-2);border-style:dashed}
+.team.add svg{width:22px;height:22px;margin:0 auto 6px}
+
+/* tables */
+.tw{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font:500 11px var(--mono);letter-spacing:.03em;color:var(--muted);padding:9px 12px;border-bottom:1px solid var(--line-2);white-space:nowrap;background:var(--panel);position:sticky;top:0;z-index:1}
+th.r,td.r{text-align:right}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr.click{cursor:pointer}
+tbody tr.click:hover td{background:var(--hover)}
+.who{display:flex;align-items:center;gap:10px;min-width:0}
+.av{width:30px;height:30px;border-radius:7px;display:grid;place-items:center;font:600 11px var(--sans);flex:none;background:var(--accent-wash);color:var(--accent);border:1px solid var(--accent-line)}
+.who b{display:block;font-weight:500;line-height:1.2;white-space:nowrap}
+.who small{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:5px;font-size:12px;border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+.chip.acc{border-color:var(--accent-line);color:var(--accent);background:var(--accent-wash)}
+.chip.crit{border-color:transparent;color:var(--crit);background:var(--crit-wash)}
+.chip.warn{border-color:transparent;color:var(--warn);background:var(--warn-wash)}
+.chip.good{border-color:transparent;color:var(--good);background:var(--good-wash)}
+.st{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.st svg{width:14px;height:14px}
+.st.good svg{color:var(--good)} .st.warn svg{color:var(--warn)} .st.crit svg{color:var(--crit)}
+.strip{display:flex;gap:2px}
+.strip i{width:7px;height:14px;border-radius:2px;background:var(--line-2)}
+.strip i.p{background:var(--accent)} .strip i.a{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line-2)}
+.fbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.fbar select,.fbar input{height:34px;border:1px solid var(--line-2);border-radius:8px;background:var(--panel);padding:0 10px;font-size:13px}
+.fbar input{min-width:220px}
+.fbar .ct{margin-left:auto;font:500 12px var(--mono);color:var(--muted)}
+
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(5,minmax(230px,1fr));gap:12px;overflow-x:auto;padding-bottom:6px}
+.col{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:10px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.col h3{margin:2px 4px 4px;font:600 12px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);display:flex;justify-content:space-between}
+.col h3 span{color:var(--muted)}
+.rc{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:11px 12px}
+.rc b{font-weight:600}
+.rc .m{font-size:12px;color:var(--muted);margin-top:2px}
+.rc q{display:block;font-size:12.5px;color:var(--ink-2);margin-top:7px;quotes:none;border-left:2px solid var(--line-2);padding-left:8px}
+.rc .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.rc select{height:30px;border:1px solid var(--line-2);border-radius:7px;background:var(--panel);font-size:12.5px;padding:0 6px}
+
+/* tasks */
+.task{display:grid;grid-template-columns:22px 1fr auto auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.task:first-child{border-top:0}
+.task input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}
+.task.done .tx{color:var(--muted);text-decoration:line-through}
+.task .who2{font:500 11px var(--mono);color:var(--muted)}
+.addtask{display:flex;gap:6px;margin-top:10px}
+.addtask input{flex:1;height:34px;border:1px solid var(--line-2);border-radius:8px;background:var(--panel);padding:0 10px;min-width:0}
+.addtask select{height:34px;border:1px solid var(--line-2);border-radius:8px;background:var(--panel);padding:0 6px}
+
+/* drawer + modal */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .18s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(580px,100vw);background:var(--panel);border-left:1px solid var(--line-2);z-index:41;
+  transform:translateX(100%);transition:transform .22s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.drawer.on{transform:none}
+.dhd{display:flex;align-items:flex-start;gap:12px;padding:20px 22px 14px;border-bottom:1px solid var(--line)}
+.dhd h2{margin:0;font:800 30px/1 var(--disp);text-transform:uppercase}
+.dhd .sub{color:var(--ink-2);font-size:13px;margin-top:6px}
+.dhd .x{margin-left:auto}
+.dbd{overflow:auto;padding:16px 22px 40px;flex:1}
+.sec{margin-top:20px}
+.sec:first-child{margin-top:0}
+.sec h3{margin:0 0 10px;font:600 11px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.sec h3 .right{margin-left:auto;text-transform:none;letter-spacing:0}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:7px 16px;margin:0;font-size:13.5px}
+dl.kv dt{color:var(--muted)} dl.kv dd{margin:0;min-width:0}
+dl.kv a{color:var(--accent);text-decoration:none}
+.plist{display:flex;flex-direction:column}
+.pr{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
+.pr:first-child{border-top:0}
+.tog{display:inline-flex;border:1px solid var(--line-2);border-radius:7px;overflow:hidden}
+.tog button{border:0;background:none;height:30px;min-width:46px;padding:0 10px;cursor:pointer;font-size:12.5px;color:var(--ink-2)}
+.tog button+button{border-left:1px solid var(--line)}
+.tog button.on.in{background:var(--good-wash);color:var(--good);font-weight:600}
+.tog button.on.out{background:var(--crit-wash);color:var(--crit);font-weight:600}
+.tl .ev{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:13px}
+.tl .ev:first-child{border-top:0}
+.tl .ev .d{font:400 12px var(--mono);color:var(--muted)}
+.msg{white-space:pre-wrap;font:400 12.5px/1.5 var(--mono);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;color:var(--ink-2)}
+
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-48%);width:min(620px,calc(100vw - 24px));max-height:calc(100vh - 40px);overflow:auto;
+  background:var(--panel);border:1px solid var(--line-2);border-radius:14px;z-index:42;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .16s,transform .16s}
+.modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.modal form{padding:20px 22px 22px}
+.modal h2{margin:0 0 4px;font:800 28px/1 var(--disp);text-transform:uppercase}
+.modal .sub{color:var(--ink-2);font-size:13px;margin-bottom:16px}
+.fg{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.f{display:flex;flex-direction:column;gap:5px;grid-column:span 6}
+.f.h{grid-column:span 3} .f.t{grid-column:span 2}
+.f label{font-size:12px;color:var(--ink-2);font-weight:500}
+.f input,.f select,.f textarea{height:38px;border:1px solid var(--line-2);border-radius:8px;background:var(--panel-2);padding:0 10px;font-size:13.5px;min-width:0}
+.f textarea{height:auto;min-height:74px;padding:9px 10px;resize:vertical}
+.f .hint{font-size:11.5px;color:var(--muted)}
+.fsec{grid-column:span 6;font:600 11px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-top:6px;padding-top:12px;border-top:1px solid var(--line)}
+.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:9px;font-size:13px;font-weight:500;z-index:60;
+  box-shadow:var(--shadow);animation:tin .18s ease-out}
+@keyframes tin{from{opacity:0;transform:translate(-50%,6px)}}
+
+.welcome{position:fixed;inset:0;z-index:70;background:radial-gradient(1200px 600px at 50% -10%,rgba({{C_ACCENT_RGB}},.16),transparent 60%),var(--bg);display:grid;place-items:center;padding:24px;overflow:auto}
+.welcome[hidden]{display:none}
+.wbox{width:min(640px,100%);text-align:center}
+.wbox img{width:150px;height:150px;object-fit:contain;margin:0 auto 6px}
+.wbox h1{margin:0;font:900 64px/0.95 var(--disp);text-transform:uppercase;letter-spacing:.01em}
+.wbox>p{color:var(--ink-2);margin:10px 0 26px;font-size:15px}
+.wopts{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}
+.wopt{border:1px solid var(--line-2);background:var(--panel);border-radius:12px;padding:18px 18px 16px;cursor:pointer}
+.wopt:hover{border-color:var(--accent-line)}
+.wopt b{display:block;font:800 26px/1 var(--disp);text-transform:uppercase}
+.wopt span{display:block;color:var(--ink-2);font-size:13px;margin-top:8px}
+.wopt.pri{border-color:var(--accent);background:var(--accent-wash)}
+.wopt.pri b{color:var(--accent)}
+.wbox .fine{color:var(--muted);font-size:12.5px;margin-top:18px}
+@media (max-width:600px){.wopts{grid-template-columns:1fr}.wbox h1{font-size:48px}.wbox img{width:110px;height:110px}}
+.tabbar{display:none}
+.morenav{display:none;margin-bottom:14px}
+.mtop{display:none}
+
+@media (max-width:1280px){
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .board{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  main{padding:14px 14px calc(84px + env(safe-area-inset-bottom))}
+  .mtop{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;
+    background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .mtop img{width:34px;height:34px;object-fit:contain}
+  .mtop b{font:800 22px/1 var(--disp);text-transform:uppercase}
+  .mtop .r{margin-left:auto;display:flex;gap:6px}
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--side) 94%,transparent);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-size:10.5px;font-weight:600;padding:4px 0;position:relative}
+  .tabbar a svg{width:21px;height:21px}
+  .tabbar a.on{color:var(--accent)}
+  .tabbar a .ct{position:absolute;top:0;left:calc(50% + 6px);font:600 10px var(--mono);background:var(--accent);color:var(--accent-ink);border-radius:9px;padding:0 5px}
+  .ph h1{font-size:34px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .c8,.c7,.c6,.c5,.c4{grid-column:span 12}
+  .board{display:flex;flex-direction:column;gap:14px}
+  .day.past{display:none}
+  .fg .f.h,.fg .f.t{grid-column:span 6}
+  .pipe{grid-template-columns:repeat(5,minmax(250px,82vw));scroll-snap-type:x mandatory}
+  .col{scroll-snap-align:start}
+  .fbar input{min-width:0;flex:1}
+  .morenav{display:inline-flex}
+}
+@media (prefers-reduced-motion:reduce){.drawer,.modal,.scrim{transition:none}.toast{animation:none}}
+
+</style>
+<style>
+/* ---------- staff-app extras ---------- */
+.gate{position:fixed;inset:0;z-index:60;background:radial-gradient(1100px 560px at 50% -8%,rgba({{C_ACCENT_RGB}},.15),transparent 60%),var(--bg);display:grid;place-items:center;padding:24px;overflow:auto}
+.gate[hidden]{display:none!important}
+.gbox{width:min(430px,100%)}
+.gbox .top{text-align:center;margin-bottom:20px}
+.gbox img{width:120px;height:120px;object-fit:contain;margin:0 auto 4px}
+.gbox h1{margin:0;font:900 46px/0.95 var(--disp);text-transform:uppercase}
+.gbox .sub2{color:var(--ink-2);font-size:13.5px;margin-top:6px}
+.gcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.gcard .f{margin-bottom:12px}
+.gcard label{display:block;font-size:12px;color:var(--ink-2);font-weight:500;margin-bottom:5px}
+.gcard input{width:100%;height:42px;border:1px solid var(--line-2);border-radius:9px;background:var(--panel-2);padding:0 12px;font-size:14.5px}
+.gcard .btn{width:100%;height:44px;justify-content:center;font-size:14.5px}
+.gerr{color:var(--crit);font-size:13px;margin:0 0 12px;min-height:1em}
+.glink{background:none;border:0;color:var(--accent);cursor:pointer;font-size:13px;padding:0}
+.gfoot{text-align:center;color:var(--muted);font-size:12.5px;margin-top:16px}
+.loading{position:fixed;inset:0;z-index:55;background:var(--bg);display:grid;place-items:center}
+.loading img{width:90px;height:90px;object-fit:contain;animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.08)}}
+
+.avpic{width:30px;height:30px;border-radius:7px;object-fit:cover;flex:none;border:1px solid var(--line-2)}
+.avpic.big{width:64px;height:64px;border-radius:12px}
+.wl{display:inline-flex;gap:3px}
+.wl i{width:16px;height:16px;border-radius:4px;display:grid;place-items:center;font:600 10px var(--mono);color:#fff}
+.wl i.w{background:var(--good)} .wl i.l{background:var(--crit)} .wl i.d{background:var(--line-2);color:var(--ink-2)}
+.bigcode{font:600 34px/1 var(--mono);letter-spacing:.18em;text-align:center;background:var(--panel-2);border:1px dashed var(--accent-line);border-radius:12px;padding:18px 10px;margin:12px 0;user-select:all}
+.socialrow{display:flex;gap:8px;flex-wrap:wrap}
+.socialrow .chip{cursor:default}
+
+/* messages */
+.chatwrap{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px;height:calc(100vh - 170px);min-height:420px}
+.convlist{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:auto}
+.conv{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;padding:11px 13px;border:0;border-bottom:1px solid var(--line);background:none;cursor:pointer}
+.conv:hover{background:var(--hover)}
+.conv.on{background:var(--accent-wash)}
+.conv .cn{font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conv .cp{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.conv .ct2{font:500 10.5px var(--mono);color:var(--muted)}
+.conv .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);justify-self:end}
+.thread{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;min-width:0}
+.thead{padding:12px 16px;border-bottom:1px solid var(--line)}
+.thead b{font-size:14px}
+.thead .m{font-size:12px;color:var(--muted)}
+.tmsgs{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:78%;border-radius:12px;padding:8px 12px;font-size:13.5px;line-height:1.4;background:var(--panel-2);border:1px solid var(--line);align-self:flex-start;white-space:pre-wrap;word-break:break-word}
+.bubble.me{align-self:flex-end;background:var(--accent-wash);border-color:var(--accent-line)}
+.bubble .who{font:600 11px var(--mono);color:var(--accent);margin-bottom:2px}
+.bubble .when{font:400 10.5px var(--mono);color:var(--muted);margin-top:3px}
+.tcomp{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+.tcomp textarea{flex:1;min-height:42px;max-height:120px;border:1px solid var(--line-2);border-radius:9px;background:var(--panel-2);padding:10px 12px;font-size:13.5px;resize:none}
+.tempty{display:grid;place-items:center;color:var(--muted);font-size:13px;height:100%}
+
+/* community */
+.postcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:12px}
+.postcard .ph2{display:flex;align-items:center;gap:10px}
+.postcard .ph2 b{font-size:13.5px}
+.postcard .body{margin:10px 0 6px;font-size:14px;white-space:pre-wrap;word-break:break-word}
+.postcard .meta{display:flex;gap:14px;align-items:center;color:var(--muted);font-size:12.5px}
+.postcard .meta button{background:none;border:0;color:var(--muted);cursor:pointer;font-size:12.5px;display:inline-flex;gap:5px;align-items:center;padding:0}
+.postcard .meta button.on{color:var(--accent)}
+.cmt{display:grid;grid-template-columns:26px 1fr;gap:9px;padding:8px 0;border-top:1px solid var(--line);font-size:13px}
+.cmt .av{width:26px;height:26px;font-size:10px}
+.cmt .cb{color:var(--ink-2)} .cmt b{color:var(--ink);font-weight:600}
+.modq .postcard{border-left:3px solid var(--warn)}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.gal .gi{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line);aspect-ratio:1;background:var(--panel-2)}
+.gal img,.gal video{width:100%;height:100%;object-fit:cover;display:block}
+.gal .cap{position:absolute;left:0;right:0;bottom:0;padding:16px 8px 6px;font-size:11.5px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.72))}
+.gal .pend{position:absolute;top:6px;left:6px}
+.qs{display:flex;gap:6px}
+.instrow{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:13px}
+.instrow:first-child{border-top:0}
+.pill2{font:500 11px var(--mono);border:1px solid var(--line-2);border-radius:5px;padding:2px 7px;color:var(--ink-2)}
+@media (max-width:760px){
+  .hidemob{display:none!important}
+  .pipe{grid-template-columns:1fr;overflow:visible;padding-bottom:0}
+  .morenav{flex-wrap:wrap;border-radius:10px}
+  .morenav button{flex:1 0 31%;height:38px}
+  th,td{padding:8px 8px;white-space:normal}
+  .tw{max-height:none}
+  .ph .acts{width:100%}
+  .fbar select{flex:1 0 45%}
+}
+@media (max-width:1000px){
+  .chatwrap{grid-template-columns:1fr;height:auto}
+  .convlist{max-height:300px}
+  .thread{height:60vh}
+}
+</style>
+</head>
+<body>
+<div class="loading" id="loading"><img src="logo.png" alt=""></div>
+<div class="gate" id="gate" hidden>
+  <div class="gbox">
+    <div class="top"><img src="logo.png" alt="{{CLUB_SHORT}}"><h1>{{CLUB_SHORT}} HQ</h1><div class="sub2">Staff sign in · admins and coaches</div></div>
+    <div class="gcard" id="gcard"></div>
+    <div class="gfoot">Parents and players use the {{CLUB_SHORT}} app instead:<br><a href="{{FAMILY_URL}}" style="color:var(--accent)">{{FAMILY_HOST}}</a></div>
+  </div>
+</div>
+
+<div class="shell" id="shell" hidden>
+  <aside class="side">
+    <a class="brand" href="#/week"><img src="logo.png" alt="{{CLUB_SHORT}}"><div><b>{{CLUB_SHORT}} HQ</b><span id="whoami">Club operations</span></div></a>
+    <nav class="nav" id="nav"></nav>
+    <div class="foot">
+      <div class="demo" id="demoNote"></div>
+      <div class="row"><button class="btn sm" data-act="theme" id="themeBtn"></button><button class="btn sm ghost" data-act="signout">Sign out</button></div>
+    </div>
+  </aside>
+  <div style="min-width:0">
+    <div class="mtop"><img src="logo.png" alt=""><b>{{CLUB_SHORT}} HQ</b><div class="r"><button class="btn icon sm" data-act="theme" id="themeBtnM" aria-label="Switch theme"></button></div></div>
+    <main id="main"></main>
+  </div>
+</div>
+<nav class="tabbar" id="tabbar"></nav>
+<div class="scrim" id="scrim" data-act="closeAll"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"></aside>
+<div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+"use strict";
+/* =========================================================
+   ClubHQ · staff app (admins and coaches)
+   One file per club, stamped from club.config.json by
+   new-club.mjs. Data lives in Supabase; row-level security
+   does the real gatekeeping — this file is the steering wheel.
+   ========================================================= */
+const CLUB = {{CLUB_JSON}};
+CLUB.staffHost = CLUB.staffUrl.replace(/^https?:\/\//, "");
+CLUB.familyHost = CLUB.familyUrl.replace(/^https?:\/\//, "");
+CLUB.scoreCap = CLUB.scoreWord.charAt(0).toUpperCase() + CLUB.scoreWord.slice(1);
+CLUB.areaCap = CLUB.area.charAt(0).toUpperCase() + CLUB.area.slice(1);
+const SUPA_URL = CLUB.supabaseUrl;
+const SUPA_KEY = CLUB.supabaseKey;
+const FAMILY_URL = CLUB.familyUrl;
+const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+/* ---------- tiny helpers ---------- */
+const $ = (s, e = document) => e.querySelector(s), $$ = (s, e = document) => [...e.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const TZ = CLUB.tz;
+const todayISO = () => new Intl.DateTimeFormat("en-CA", {timeZone: TZ}).format(new Date());
+const U = s => { const [y, m, d] = s.split("-").map(Number); return Date.UTC(y, m - 1, d); };
+const iso = ms => new Date(ms).toISOString().slice(0, 10);
+const addD = (s, n) => iso(U(s) + n * 864e5);
+const dow = s => { const x = new Date(U(s)).getUTCDay(); return x === 0 ? 7 : x; };
+const monday = s => addD(s, 1 - dow(s));
+const between = (a, b) => Math.round((U(b) - U(a)) / 864e5);
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DN = ["","Mon","Tue","Wed","Thu","Fri","Sat","Sun"], DL = ["","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const fd = (s, o = {}) => { if (!s) return "–"; const d = new Date(U(s.slice(0,10))); return (o.wd ? DN[dow(s.slice(0,10))] + " " : "") + d.getUTCDate() + " " + MON[d.getUTCMonth()] + (o.y ? " " + d.getUTCFullYear() : ""); };
+const ftime = ts => new Date(ts).toLocaleString(CLUB.locale, {timeZone:TZ, day:"numeric", month:"short", hour:"numeric", minute:"2-digit"});
+const tm = t => +t.slice(0, 2) * 60 + +t.slice(3, 5);
+const mt = m => String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
+const t12 = (t, ap = true) => { const m = tm(t), h = Math.floor(m / 60), mm = m % 60; return ((h + 11) % 12 + 1) + ":" + String(mm).padStart(2, "0") + (ap ? (h < 12 ? "am" : "pm") : ""); };
+const trange = (a, b) => { const same = (tm(a) < 720) === (tm(b) < 720); return t12(a, !same) + "–" + t12(b); };
+const money = n => CLUB.currency + Math.round(+n).toLocaleString(CLUB.locale);
+const initials = n => (n || "?").split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+const plural = (n, a, b) => n + " " + (n === 1 ? a : (b || a + "s"));
+function sunsetMin(s, lat = CLUB.lat, lon = CLUB.lon){
+  const [Y, M, Dd] = s.split("-").map(Number), r = Math.PI / 180;
+  const n = Math.floor(Date.UTC(Y, M - 1, Dd) / 864e5) - Math.floor(Date.UTC(Y, 0, 1) / 864e5) + 1;
+  const g = 2 * Math.PI / 365 * (n - 1 + 0.25);
+  const eq = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
+  const dec = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g) - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g) - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g);
+  const ha = Math.acos(Math.cos(90.833 * r) / (Math.cos(lat * r) * Math.cos(dec)) - Math.tan(lat * r) * Math.tan(dec)) / r;
+  const utc = new Date(Date.UTC(Y, M - 1, Dd) + (720 - 4 * (lon - ha) - eq) * 60000);
+  const p = new Intl.DateTimeFormat("en-GB", {timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false}).format(utc).split(":");
+  return +p[0] * 60 + +p[1];
+}
+const maghrib = s => mt(sunsetMin(s) + 3);
+function toast(m, ms){ const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), ms || 2600); }
+function copy(text, note){
+  const done = () => toast(note || "Copied");
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fb); else fb();
+  function fb(){ const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (e) { toast("Couldn't copy"); } ta.remove(); }
+}
+
+/* ---------- state ---------- */
+let ME = null;                      // profile row {id, role, full_name, coach_id}
+let D = null;                       // all loaded data
+let VIEW = { r:"week", week:monday(todayISO()), pf:{team:"all", status:"all", q:"", sort:"team"}, comm:"queue", conv:null, season:null };
+let DRAWER = null;
+const SIGNED = {};                  // storage path -> signed url
+
+const isAdmin = () => ME && ME.role === "admin";
+const GORD = CLUB.ageGroups.map(g => g.label);
+const GI = g => GORD.indexOf(String(g).replace("G",""));
+const ageOn = (dob, on) => { const a = dob.split("-").map(Number), b = on.split("-").map(Number); let y = b[0]-a[0]; if (b[1]<a[1]||(b[1]===a[1]&&b[2]<a[2])) y--; return y; };
+const ageGroupOf = dob => { const a = (D ? D.org.season.ageYear : new Date().getFullYear()) - +dob.slice(0,4); const g = CLUB.ageGroups.find(x => a <= x.maxAge); return (g || CLUB.ageGroups[CLUB.ageGroups.length - 1]).label; };
+
+/* ---------- load everything RLS lets us see ---------- */
+async function q(table, sel, order){ let x = sb.from(table).select(sel || "*"); if (order) x = x.order(order.c, {ascending: order.a !== false}); const { data, error } = await x.limit(1e4); if (error) throw new Error(table + ": " + error.message); return data || []; }
+async function fetchAll(){
+  const [org, venues, coaches, teams, families, guardians, players, fixtures, avail, roll, payments, instalments, notes, logs, regs, tasks, convs, posts, comments, media, stats, seasons] = await Promise.all([
+    q("org_settings"), q("venues", "*", {c:"name"}), q("coaches", "*", {c:"name"}), q("teams", "*"),
+    q("families"), q("guardians"), q("players", "*", {c:"last_name"}), q("fixtures", "*", {c:"date"}),
+    q("availability"), q("roll"), q("payments", "*", {c:"paid_on"}), q("instalments", "*", {c:"due"}),
+    q("player_notes", "*", {c:"created_at", a:false}), q("player_log", "*", {c:"on_date", a:false}),
+    isAdmin() ? q("registrations", "*", {c:"at"}) : Promise.resolve([]), q("tasks", "*", {c:"created_at"}),
+    q("conversations", "*", {c:"last_message_at", a:false}), q("posts", "*", {c:"created_at", a:false}),
+    q("comments", "*", {c:"created_at"}), q("media", "*", {c:"created_at", a:false}), q("game_stats"),
+    q("season_archive", "id,name,start_date,end_date,created_at", {c:"created_at", a:false}),
+  ]);
+  const likes = await q("post_likes");
+  D = {org: org[0], venues, coaches, teams, families, guardians, players, fixtures, payments, instalments, notes, logs, regs, tasks, convs, posts, comments, media, stats, seasons, likes,
+       reads:{}, msgs:{}, avail:{}, roll:{}};
+  avail.forEach(r => { (D.avail[r.session_key] = D.avail[r.session_key] || {})[r.player_id] = r.status; });
+  roll.forEach(r => { (D.roll[r.session_key] = D.roll[r.session_key] || {})[r.player_id] = r.present ? 1 : 0; });
+  try { (await q("conversation_reads")).forEach(r => { if (r.profile_id === ME.id) D.reads[r.conversation_id] = r.last_read_at; }); } catch (e) {}
+}
+
+/* ---------- lookups ---------- */
+const team = id => D.teams.find(t => t.id === id);
+const venue = id => D.venues.find(v => v.id === id);
+const coach = id => D.coaches.find(c => c.id === id);
+const player = id => D.players.find(p => p.id === id);
+const fam = id => D.families.find(f => f.id === id);
+const tname = t => t ? `${t.age} ${t.div}` : "Training squad";
+const pname = p => p.first_name + " " + p.last_name;
+const active = () => D.players.filter(p => p.status === "active");
+const roster = tid => active().filter(p => p.team_id === tid).sort((a,b) => a.last_name.localeCompare(b.last_name));
+const guardianOf = p => D.guardians.find(g => g.family_id === p.family_id) || {name:"–", rel:"", phone:"", email:""};
+const payTotal = p => D.payments.filter(x => x.player_id === p.id).reduce((s,x) => s + +x.amount, 0);
+const feeOf = p => { const t = team(p.team_id); return t ? +t.fee : 0; };
+const owing = p => Math.max(0, feeOf(p) - payTotal(p));
+const instOf = p => D.instalments.filter(i => i.player_id === p.id).sort((a,b) => a.due.localeCompare(b.due));
+const rno = x => "#" + String(x.receipt_no ?? "").padStart(4, "0");
+function receiptText(p, x){ const t = team(p.team_id), left = owing(p);
+  return `${CLUB.name} — Receipt ${rno(x)}\n${money(x.amount)} received (${x.method.toLowerCase()}) on ${fd(x.paid_on, {y:1})}\nPlayer: ${pname(p)}${t ? " · " + tname(t) : ""}${x.note ? `\nFor: ${x.note}` : ""}\n${feeOf(p) ? (left ? `Season fees now: ${money(left)} still to pay` : "Season fees: paid in full") : "Thank you!"}\n${CLUB.thanks},\n${D.org.contact_name}`;
+}
+function showReceipt(p, x){ const g = D.guardians.some(y => y.family_id === p.family_id), txt = receiptText(p, x);
+  openModal(`<div style="padding:20px 22px"><h2>Receipt ${rno(x)}</h2>
+    <div class="sub">Saved on ${esc(pname(p))}'s file. Copy it for WhatsApp${g ? ", or send it straight to the family's thread in the app" : ""}.</div>
+    <pre style="white-space:pre-wrap;background:rgba(125,125,125,.12);border-radius:10px;padding:14px;font-size:13px;line-height:1.55;font-family:inherit;margin:0 0 14px">${esc(txt)}</pre>
+    <div class="mact" style="justify-content:flex-start;flex-wrap:wrap"><button class="btn pri" data-act="copyText" data-v="${esc(txt).replace(/"/g, "&quot;")}">${I.copy}Copy receipt</button>
+    ${g ? `<button class="btn" data-act="sendReceipt" data-id="${x.id}">Send in the app</button>` : ""}
+    <button class="btn ghost" data-act="closeAll">Done</button></div></div>`);
+}
+const statsOf = p => { const S = D.stats.filter(s => s.player_id === p.id); const pts = S.reduce((x,s) => x + s.points, 0); return {games:S.length, pts, ppg:S.length ? pts/S.length : null}; };
+function last5(tid){ return D.fixtures.filter(f => f.team_id === tid && f.us != null).sort((a,b) => b.date.localeCompare(a.date)).slice(0,5).map(f => f.us > f.them ? "w" : f.us < f.them ? "l" : "d"); }
+const wlChips = tid => { const L = last5(tid); return L.length ? `<span class="wl">${L.slice().reverse().map(x => `<i class="${x}">${x.toUpperCase()}</i>`).join("")}</span>` : '<span class="muted">–</span>'; };
+function attOf(p){
+  const rec = [];
+  for (const key in D.roll) { if (key.split("|")[0] !== p.team_id) continue; const v = D.roll[key][p.id]; if (v !== undefined) rec.push({d:key.split("|")[1], v}); }
+  rec.sort((a,b) => a.d.localeCompare(b.d));
+  const here = rec.filter(r => r.v === 1).length;
+  return {n:rec.length, here, pct:rec.length ? here/rec.length : null, last8:rec.slice(-8)};
+}
+async function signed(path, bucket = "avatars"){
+  if (!path) return null;
+  if (SIGNED[path]) return SIGNED[path];
+  const { data } = await sb.storage.from(bucket).createSignedUrl(path, 3600);
+  if (data && data.signedUrl) { SIGNED[path] = data.signedUrl; return data.signedUrl; }
+  return null;
+}
+function avatarHtml(p, big){
+  const cls = big ? "avpic big" : "avpic";
+  if (p.photo_path && SIGNED[p.photo_path]) return `<img class="${cls}" src="${SIGNED[p.photo_path]}" alt="">`;
+  if (p.photo_path) { signed(p.photo_path).then(u => { if (u) render(); }); }
+  return `<div class="av${big ? "" : ""}" style="${big ? "width:64px;height:64px;border-radius:12px;font-size:20px" : ""}">${initials(pname(p))}</div>`;
+}
+
+/* ---------- sessions, clashes ---------- */
+function weekSessions(M){
+  const out = [], end = addD(M, 6);
+  D.teams.filter(t => !t.archived).forEach(t => {
+    (t.train || []).forEach((s, i) => {
+      const date = addD(M, s.dow - 1);
+      if (date < D.org.season.start || date > D.org.season.end || (t.created && date < t.created)) return;
+      out.push({key:`${t.id}|${date}|T${i}`, team:t.id, type:"T", date, start:s.start, end:s.end, venue:s.venue, court:s.court, coaches:[t.coach_id, t.asst_id].filter(Boolean)});
+    });
+    D.fixtures.filter(f => f.team_id === t.id && f.date >= M && f.date <= end).forEach(f => {
+      out.push({key:`${t.id}|${f.date}|G`, team:t.id, type:"G", date:f.date, start:f.time, end:mt(tm(f.time) + 50), venue:f.venue_id, court:f.court, opp:f.opp, fx:f, coaches:[t.coach_id, t.asst_id].filter(Boolean)});
+    });
+  });
+  return out.sort((a,b) => a.date.localeCompare(b.date) || tm(a.start) - tm(b.start));
+}
+function conflicts(S){
+  const C = [];
+  for (let i = 0; i < S.length; i++) for (let j = i + 1; j < S.length; j++) {
+    const a = S[i], b = S[j];
+    if (a.date !== b.date || !(tm(a.start) < tm(b.end) && tm(b.start) < tm(a.end))) continue;
+    a.coaches.filter(c => b.coaches.includes(c)).forEach(c => C.push({kind:"coach", a, b, coach:c}));
+    if (a.venue === b.venue && a.court === b.court) C.push({kind:"court", a, b});
+  }
+  return C;
+}
+function availCount(s){ const r = roster(s.team), a = D.avail[s.key] || {}; const inn = r.filter(p => a[p.id] === "in").length, out = r.filter(p => a[p.id] === "out").length; return {inn, out, none:r.length - inn - out, n:r.length}; }
+function rollCount(s){ const r = D.roll[s.key]; if (!r) return null; const v = Object.values(r); return {here:v.filter(x => x === 1).length, n:v.length}; }
+function isPast(s){ const T = todayISO(); return s.date < T || (s.date === T && tm(s.end) <= new Date().getHours() * 60); }
+const gameShort = s => { const a = availCount(s), d = between(todayISO(), s.date); return a.n > 0 && a.inn < D.org.min_game && (d <= 2 || a.inn + a.none < D.org.min_game); };
+const pendingMod = () => D.posts.filter(p => p.status === "pending").length + D.comments.filter(c => c.status === "pending").length + D.media.filter(m => m.status === "pending").length;
+const unreadConvs = () => D.convs.filter(c => c.last_message_at && (!D.reads[c.id] || D.reads[c.id] < c.last_message_at)).length;
+function convLabel(c){
+  const f = fam(c.family_id), t = team(c.team_id);
+  if (c.kind === "family") return (f ? f.name : "Family") + " · private";
+  if (c.kind === "club") return (f ? f.name : "Family") + " ↔ " + CLUB.short;
+  return (f ? f.name : "Family") + " ↔ coach · " + (t ? tname(t) : "");
+}
+
+/* ---------- icons ---------- */
+const sv = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const I = {
+  week:sv('<rect x="3.5" y="5" width="17" height="15.5" rx="2.4"/><path d="M3.5 9.8h17M8.2 3v4M15.8 3v4"/><path d="M7.5 13.5h2M11 13.5h2M14.5 13.5h2M7.5 17h2M11 17h2"/>'),
+  teams:sv('<path d="M12 3.5 4.5 6.5v5.2c0 4.3 3 7.6 7.5 8.8 4.5-1.2 7.5-4.5 7.5-8.8V6.5z"/><path d="M9 12.2l2 2 4-4.2"/>'),
+  players:sv('<circle cx="9" cy="8" r="3.2"/><path d="M3.2 19.5c0-3.3 2.6-5.3 5.8-5.3s5.8 2 5.8 5.3"/><circle cx="17.3" cy="9" r="2.3"/><path d="M16.2 14.2c2.9.2 4.7 1.9 4.7 4.9"/>'),
+  regos:sv('<path d="M4 13.5V6.2A2.2 2.2 0 0 1 6.2 4h11.6A2.2 2.2 0 0 1 20 6.2v7.3"/><path d="M4 13.5h4.3l1.4 2.3h4.6l1.4-2.3H20v4.3a2.2 2.2 0 0 1-2.2 2.2H6.2A2.2 2.2 0 0 1 4 17.8z"/>'),
+  money:sv('<rect x="2.8" y="5.5" width="18.4" height="13" rx="2.4"/><path d="M2.8 10h18.4M7 15h3"/>'),
+  coach:sv('<path d="M5 13.5a5 5 0 0 1 9.4-2.4l5.1-2.2.8 1.9-4.9 2.4a5 5 0 1 1-10.4.3z"/><circle cx="10" cy="13.5" r="1.4"/>'),
+  comm:sv('<path d="M20.4 12.6a7.2 7.2 0 0 1-7.8 7.1L7 21l1-4.1a7.2 7.2 0 1 1 12.4-4.3z"/><path d="M8.6 11h6.8M8.6 14h4.2"/>'),
+  chat:sv('<path d="M4 5.5h16v10.5H9.5L5.5 20v-4H4z"/>'),
+  seasons:sv('<path d="M5 4.5h14v4H5z"/><path d="M6.5 8.5v11h11v-11"/><path d="M10 12.5h4"/>'),
+  settings:sv('<circle cx="12" cy="12" r="3"/><path d="M19.4 14.6a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5v.2a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1h-.2a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3h.1a1.6 1.6 0 0 0 1-1.5V3.3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/>'),
+  more:sv('<circle cx="5.5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="18.5" cy="12" r="1.5"/>'),
+  plus:sv('<path d="M12 5v14M5 12h14"/>'), x:sv('<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>'),
+  prev:sv('<path d="M15 5 8 12l7 7"/>'), next:sv('<path d="m9 5 7 7-7 7"/>'),
+  alert:sv('<path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4M12 16.8v.1"/>'),
+  info:sv('<circle cx="12" cy="12" r="8.6"/><path d="M12 11v5M12 7.9v.1"/>'),
+  ok:sv('<circle cx="12" cy="12" r="8.6"/><path d="m8.2 12.3 2.6 2.6 5-5.3"/>'),
+  wait:sv('<circle cx="12" cy="12" r="8.6"/><path d="M12 7.6V12l2.8 1.8"/>'),
+  copy:sv('<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V6A2 2 0 0 0 13.5 4H6A2 2 0 0 0 4 6v7.5a2 2 0 0 0 2 2h2.5"/>'),
+  moon:sv('<path d="M20 14.6A8.4 8.4 0 0 1 9.4 4a8.4 8.4 0 1 0 10.6 10.6z"/>'),
+  sun:sv('<circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2.1M12 19.1v2.1M2.8 12h2.1M19.1 12h2.1M5.5 5.5 7 7M17 17l1.5 1.5M5.5 18.5 7 17M17 7l1.5-1.5"/>'),
+  crescent:sv('<path d="M15.5 4.2A8.2 8.2 0 1 0 19.8 16 6.6 6.6 0 0 1 15.5 4.2z"/>'),
+  edit:sv('<path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-4-4L4 16z"/>'),
+  send:sv('<path d="M20.4 3.6 3.6 10.4l6.6 2.9 2.9 6.6 7.3-16.3z"/><path d="M10.2 13.3 20.4 3.6"/>'),
+  video:sv('<rect x="3" y="6" width="13" height="12" rx="2.4"/><path d="m16 10 5-3v10l-5-3z"/>'),
+  heart:sv('<path d="M12 20.3S4 15 4 9.6A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 8 2.6c0 5.4-8 10.7-8 10.7z"/>'),
+  mail:sv('<rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="m3.6 7 8.4 6 8.4-6"/>'),
+  phone:sv('<path d="M20.5 16.9v2.6a1.7 1.7 0 0 1-1.9 1.7 17 17 0 0 1-7.4-2.6 16.7 16.7 0 0 1-5.1-5.1A17 17 0 0 1 3.5 6a1.7 1.7 0 0 1 1.7-1.9h2.6a1.7 1.7 0 0 1 1.7 1.5c.1.8.3 1.6.6 2.4a1.7 1.7 0 0 1-.4 1.8l-1.1 1.1a13.6 13.6 0 0 0 5.1 5.1l1.1-1.1a1.7 1.7 0 0 1 1.8-.4c.8.3 1.6.5 2.4.6a1.7 1.7 0 0 1 1.5 1.8z"/>'),
+  key:sv('<circle cx="8" cy="14.5" r="4.2"/><path d="m11 11.5 8.5-8.5M16 6.5l3 3M13.5 9l2 2"/>'),
+  cam:sv('<path d="M4 8h3l1.6-2.4h6.8L17 8h3a1.5 1.5 0 0 1 1.5 1.5V18a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18V9.5A1.5 1.5 0 0 1 4 8z"/><circle cx="12" cy="13.4" r="3.4"/>'),
+  link:sv('<path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.5 1.5"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/>'),
+  archive:sv('<path d="M3.5 5h17v4h-17z"/><path d="M5 9v10.5h14V9"/><path d="M10 13h4"/>'),
+  download:sv('<path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/>'),
+};
+
+/* ---------- shell & routing ---------- */
+const ROUTES = () => {
+  const base = [["week","This week",I.week],["teams","Teams",I.teams],["players","Players",I.players]];
+  if (isAdmin()) base.push(["regos","Registrations",I.regos], ["money","Money",I.money]);
+  base.push(["coaches","Coaches",I.coach], ["messages","Messages",I.chat], ["community","Community",I.comm]);
+  if (isAdmin()) base.push(["seasons","Seasons",I.seasons], ["settings","Settings",I.settings]);
+  return base;
+};
+function parseHash(){ const h = location.hash.replace(/^#\/?/, "").split("/")[0]; return ROUTES().some(r => r[0] === h) ? h : "week"; }
+addEventListener("hashchange", () => { if (!D) return; VIEW.r = parseHash(); render(); scrollTo(0, 0);
+  if (VIEW.r === "community") refreshComm();
+  if (VIEW.r === "messages") refreshConvs(); });
+function shell(){
+  const badges = {regos: D.regs.filter(r => r.stage === "new" && !r.archived).length, community: pendingMod(), messages: unreadConvs()};
+  $("#nav").innerHTML = ROUTES().map(([k, l, i]) => `<a href="#/${k}" class="${VIEW.r === k ? "on" : ""}">${i}${l}${badges[k] ? `<span class="ct">${badges[k]}</span>` : ""}</a>`).join("");
+  const mob = [["week","Week",I.week],["players","Players",I.players],["messages","Chat",I.chat],["community","Club",I.comm],["more","More",I.more]];
+  const inMore = !["week","players","messages","community"].includes(VIEW.r);
+  $("#tabbar").innerHTML = mob.map(([k, l, i]) => `<a href="#/${k === "more" ? "teams" : k}" class="${VIEW.r === k || (k === "more" && inMore) ? "on" : ""}">${i}${l}${badges[k] ? `<span class="ct">${badges[k]}</span>` : ""}</a>`).join("");
+  const th = document.documentElement.dataset.theme;
+  $("#themeBtn").innerHTML = (th === "light" ? I.moon : I.sun) + (th === "light" ? "Dark" : "Light");
+  $("#themeBtnM").innerHTML = th === "light" ? I.moon : I.sun;
+  $("#whoami").textContent = ME.full_name + " · " + (isAdmin() ? "Admin" : "Coach");
+  $("#demoNote").innerHTML = `<b>Live club data.</b> Everything here is shared with the other staff sign-ins.`;
+}
+const moreNav = () => `<div class="seg morenav">${ROUTES().filter(r => !["week","players","messages","community"].includes(r[0])).map(([k, l]) => `<button class="${VIEW.r === k ? "on" : ""}" data-act="go" data-id="${k}">${l}</button>`).join("")}</div>`;
+function render(){
+  if (!D || !ME) return;
+  shell();
+  const V = {week:vWeek, teams:vTeams, players:vPlayers, regos:vRegos, money:vMoney, coaches:vCoaches, messages:vMessages, community:vCommunity, seasons:vSeasons, settings:vSettings}[VIEW.r];
+  $("#main").innerHTML = V();
+  if (VIEW.r === "messages") { const box = $("#tmsgs"); if (box) box.scrollTop = box.scrollHeight; }
+  if (DRAWER) { const html = DRAWER.k === "sess" ? dSession(DRAWER.id) : DRAWER.k === "team" ? dTeam(DRAWER.id) : DRAWER.k === "player" ? dPlayer(DRAWER.id) : DRAWER.k === "season" ? dSeason(DRAWER.id) : "";
+    if (html) { const sc = ($(".dbd") || {}).scrollTop || 0; $("#drawer").innerHTML = html; if ($(".dbd")) $(".dbd").scrollTop = sc; } else closeAll(); }
+}
+
+/* =========================================================
+   Views
+   ========================================================= */
+function vWeek(){
+  const M = VIEW.week, T = todayISO(), S = weekSessions(M), C = conflicts(S);
+  const isThis = M === monday(T);
+  const games = S.filter(s => s.type === "G"), up = games.filter(s => !isPast(s));
+  const av = up.reduce((o, s) => { const a = availCount(s); o.inn += a.inn; o.n += a.n; o.none += a.none; return o; }, {inn:0, n:0, none:0});
+  const A = alerts(M, S, C);
+  const owe = active().reduce((s, p) => s + owing(p), 0);
+  const days = [1,2,3,4,5,6,7].map(d => {
+    const date = addD(M, d - 1), ss = S.filter(s => s.date === date), mg = maghrib(date);
+    return `<div class="day${date === T ? " today" : ""}${date < T ? " past" : ""}">
+      <div class="dh"><b>${DN[d]} ${new Date(U(date)).getUTCDate()}</b>${D.org.prayer ? `<span>${CLUB.prayerLabel} ~${t12(mg)}</span>` : `<span>${MON[new Date(U(date)).getUTCMonth()]}</span>`}</div>
+      ${ss.length ? ss.map(s => sessCard(s, C, mg)).join("") : `<div class="dayempty">Nothing on</div>`}</div>`;
+  }).join("");
+  return `
+  <div class="ph"><div><h1>${isThis ? "This week" : "Week of " + fd(M)}</h1><div class="sub">${fd(M, {wd:1})} to ${fd(addD(M, 6), {wd:1, y:1})} · ${esc(D.org.season.name || "")}</div></div>
+    <div class="acts"><button class="btn icon" data-act="wk" data-d="-7" aria-label="Previous week">${I.prev}</button>
+      ${isThis ? "" : `<button class="btn" data-act="wk" data-d="0">This week</button>`}
+      <button class="btn icon" data-act="wk" data-d="7" aria-label="Next week">${I.next}</button>
+      ${isAdmin() ? `<button class="btn pri" data-act="newTeam">${I.plus}New team</button>` : ""}</div></div>
+  <div class="kpis">
+    <div class="kpi"><div class="l">Sessions</div><div class="v">${S.length}</div><div class="s">${S.length - games.length} training · ${games.length} games</div></div>
+    <div class="kpi"><div class="l">Confirmed for games</div><div class="v">${av.inn}<small> of ${av.n}</small></div><div class="s">${av.none} still to reply</div></div>
+    <button class="kpi${A.some(a => a.lv === "crit") ? " hot" : ""}" data-act="scrollTo" data-id="attn"><div class="l">Needs attention</div><div class="v">${A.length}</div><div class="s">${A.filter(a => a.lv === "crit").length} urgent</div></button>
+    ${isAdmin() ? `<button class="kpi" data-act="go" data-id="money"><div class="l">Fees owing</div><div class="v">${money(owe)}</div><div class="s">${plural(active().filter(p => owing(p) > 0).length, "player")}</div></button>` : `<button class="kpi" data-act="go" data-id="messages"><div class="l">Messages</div><div class="v">${unreadConvs()}</div><div class="s">unread threads</div></button>`}
+    <button class="kpi" data-act="go" data-id="community"><div class="l">Waiting for approval</div><div class="v">${pendingMod()}</div><div class="s">posts, comments and media</div></button>
+  </div>
+  <div class="grid">
+    <section class="card c8" id="attn"><div class="ch"><h2>Needs attention</h2><span class="sub">Sorted by how much it'll hurt if nobody acts</span></div>
+      ${A.length ? `<div class="alerts">${A.map(a => `<div class="al ${a.lv}">${a.lv === "info" ? I.info : I.alert}<div><div class="t">${a.t}</div><div class="m">${a.m}</div></div>
+        <button class="btn sm" data-act="${a.act}" data-id="${esc(a.id ?? "")}">${a.btn}</button></div>`).join("")}</div>` : `<div class="empty">Nothing needs you this week.</div>`}</section>
+    <section class="card c4"><div class="ch"><h2>To do</h2><span class="right">${D.tasks.filter(k => !k.done).length} open</span></div>${tasksHtml()}</section>
+    <section class="c12"><div class="board">${days}</div></section>
+  </div>`;
+}
+function alerts(M, S, C){
+  const A = [], T = todayISO();
+  C.forEach(c => {
+    if (c.kind === "coach") A.push({lv:"crit", t:`<b>${esc(coach(c.coach).name)}</b> is booked for two sessions at once`, m:`${DN[dow(c.a.date)]}: ${tname(team(c.a.team))} ${trange(c.a.start, c.a.end)} and ${tname(team(c.b.team))} ${trange(c.b.start, c.b.end)}. Arrange a fill-in coach.`, act:"go", id:"coaches", btn:"Coaches"});
+    else A.push({lv:"crit", t:`${CLUB.areaCap} clash at <b>${esc((venue(c.a.venue) || {}).short || "?")}</b>, ${CLUB.area} ${c.a.court}`, m:`${DN[dow(c.a.date)]}: ${tname(team(c.a.team))} and ${tname(team(c.b.team))}`, act:"editTeam", id:c.b.team, btn:"Fix times"});
+  });
+  S.filter(s => s.type === "G" && !isPast(s) && gameShort(s)).forEach(s => { const a = availCount(s);
+    A.push({lv:a.inn + a.none < D.org.min_game ? "crit" : "warn", t:`<b>${tname(team(s.team))}</b> has ${a.inn} confirmed for ${DN[dow(s.date)]}'s game`, m:`${D.org.min_game} needed. ${a.none} haven't replied.`, act:"sess", id:s.key, btn:"Open"}); });
+  if (pendingMod()) A.push({lv:"warn", t:`${plural(pendingMod(), "post or comment is", "posts and comments are").replace(/^\d+ /, m => m)} waiting for approval`, m:"Families can't see them until an admin approves.", act:"go", id:"community", btn:"Review"});
+  active().forEach(p => { const t = team(p.team_id); if (t && GI(ageGroupOf(p.dob)) > GI(t.age)) A.push({lv:"crit", t:`<b>${esc(pname(p))}</b> is ${ageGroupOf(p.dob)} age and too old for ${t.age}`, m:`Born ${fd(p.dob, {y:1})}.`, act:"player", id:p.id, btn:"Move"}); });
+  D.coaches.forEach(c => { const w = wwcc(c); if (w.level !== "good" && D.teams.some(t => !t.archived && (t.coach_id === c.id || t.asst_id === c.id)))
+    A.push({lv:w.level, t:`${CLUB.check.name}: <b>${esc(c.name)}</b>`, m:w.text + ".", act:"go", id:"coaches", btn:"Coaches"}); });
+  if (isAdmin()) { const waiting = D.regs.filter(r => r.stage === "new" && !r.archived && between(r.at.slice(0,10), T) >= 3);
+    if (waiting.length) A.push({lv:"warn", t:`${plural(waiting.length, "registration")} waiting more than 3 days`, m:waiting.map(r => r.first_name + " " + r.last_name).join(", "), act:"go", id:"regos", btn:"Reply"}); }
+  S.filter(s => isPast(s) && !D.roll[s.key] && s.date >= addD(T, -6) && roster(s.team).length).forEach(s => A.push({lv:"info", t:`Roll not taken: <b>${tname(team(s.team))}</b>, ${DN[dow(s.date)]} ${s.type === "G" ? "game" : "training"}`, m:"Take it while it's fresh.", act:"sess", id:s.key, btn:"Take roll"}));
+  const order = {crit:0, warn:1, info:2};
+  return A.sort((a,b) => order[a.lv] - order[b.lv]);
+}
+function sessCard(s, C, mg){
+  const t = team(s.team), v = venue(s.venue), past = isPast(s), fl = C.filter(c => c.a.key === s.key || c.b.key === s.key);
+  let foot = "";
+  if (past) { const r = rollCount(s); foot = r ? `<div class="sm">${r.here} of ${r.n} there${s.fx && s.fx.us != null ? ` · ${s.fx.us}–${s.fx.them} ${s.fx.us > s.fx.them ? "W" : "L"}` : ""}</div>` : (roster(s.team).length ? `<span class="flag warn">Roll not taken</span>` : ""); }
+  else if (s.type === "G") { const a = availCount(s); foot = `<div class="avb"><i class="in" style="width:${a.inn / Math.max(1, a.n) * 100}%"></i><i class="out" style="width:${a.out / Math.max(1, a.n) * 100}%"></i></div><div class="sm">${a.inn} in · ${a.out} out · ${a.none} no reply</div>${gameShort(s) ? `<span class="flag warn">Short</span>` : ""}`; }
+  const spans = D.org.prayer && tm(s.start) < tm(mg) && tm(mg) < tm(s.end);
+  return `<button class="sess ${s.type}" data-act="sess" data-id="${s.key}">
+    <div class="tm">${trange(s.start, s.end)}</div><div class="tn">${tname(t)}</div>
+    <div class="sm">${s.type === "G" ? "vs " + esc(s.opp) : "Training"} · ${esc(v ? v.short : "venue TBC")}, ${CLUB.areaShort} ${s.court}</div>
+    <div class="sm muted">${esc(t.coach_name || "No coach")}</div>
+    ${spans ? `<div class="mg">${I.crescent}${CLUB.prayerLabel} break ${t12(mg)}</div>` : ""}${foot}
+    ${fl.map(f => `<span class="flag crit">${f.kind === "coach" ? "Coach clash" : CLUB.areaCap + " clash"}</span>`).join(" ")}</button>`;
+}
+function tasksHtml(){
+  const L = D.tasks.slice().sort((a,b) => a.done - b.done || (a.due || "9").localeCompare(b.due || "9"));
+  return `<div>${L.map(k => `<div class="task${k.done ? " done" : ""}"><input type="checkbox" data-act="task" data-id="${k.id}"${k.done ? " checked" : ""} aria-label="Done">
+    <div class="tx">${esc(k.body)}</div><span class="who2">${esc(k.who)}</span><span class="who2">${k.due ? fd(k.due, {wd:1}) : ""}</span></div>`).join("") || `<div class="empty">Nothing on the list.</div>`}</div>
+    <form class="addtask" data-form="task"><input name="t" placeholder="Add a job" required autocomplete="off"><select name="who">${CLUB.taskOwners.map(o => `<option>${esc(o)}</option>`).join("")}</select><button class="btn icon" aria-label="Add">${I.plus}</button></form>`;
+}
+
+/* ---------- teams ---------- */
+function vTeams(){
+  const L = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
+  const squad = active().filter(p => !p.team_id);
+  return `${moreNav()}
+  <div class="ph"><div><h1>Teams</h1><div class="sub">${plural(L.length, "team")} · ${active().filter(p => p.team_id).length} rostered · ${squad.length} in the training squad</div></div>
+    ${isAdmin() ? `<div class="acts"><button class="btn pri" data-act="newTeam">${I.plus}New team</button></div>` : ""}</div>
+  <div class="tgrid">
+    ${L.map(t => { const r = roster(t.id); const fx = D.fixtures.filter(f => f.team_id === t.id && f.us != null); const w = fx.filter(f => f.us > f.them).length;
+      return `<button class="team" data-act="team" data-id="${t.id}">
+        <div class="tt"><b>${t.age}</b><b style="color:var(--accent)">${esc(t.div)}</b></div>
+        <div class="cm"><b style="font-weight:600;color:var(--ink)">Coach ${esc(t.coach_name || "TBC")}</b>${t.asst_name ? " + " + esc(t.asst_name) : ""} · ${esc(t.comp)}</div>
+        <div class="meter${r.length < D.org.min_roster ? " low" : ""}"><i style="width:${Math.min(100, r.length / t.cap * 100)}%"></i></div>
+        <dl><dt>Roster</dt><dd class="num">${r.length} of ${t.cap}</dd>
+          <dt>Record</dt><dd class="num">${w}–${fx.length - w} ${wlChips(t.id)}</dd>
+          <dt>Owing</dt><dd class="num">${r.reduce((s,p) => s + owing(p), 0) ? money(r.reduce((s,p) => s + owing(p), 0)) : "Nothing"}</dd></dl>
+      </button>`; }).join("")}
+    <button class="team squad" data-act="squadDrawer"><div class="tt"><b>Training</b><b style="color:var(--accent)">squad</b></div>
+      <div class="cm">Registered and training, no roster yet</div><dl><dt>Players</dt><dd class="num">${squad.length}</dd></dl></button>
+  </div>`;
+}
+
+/* ---------- players ---------- */
+function vPlayers(){
+  const F = VIEW.pf;
+  let L = active().slice();
+  if (F.team === "squad") L = L.filter(p => !p.team_id); else if (F.team !== "all") L = L.filter(p => p.team_id === F.team);
+  if (F.status === "owing") L = L.filter(p => owing(p) > 0);
+  if (F.status === "med") L = L.filter(p => p.medical);
+  if (F.q) { const s = F.q.toLowerCase(); L = L.filter(p => (pname(p) + " " + guardianOf(p).name + " " + guardianOf(p).phone).toLowerCase().includes(s)); }
+  const sorters = {
+    name:(a,b) => a.last_name.localeCompare(b.last_name) || a.first_name.localeCompare(b.first_name),
+    team:(a,b) => (team(a.team_id) ? GI(team(a.team_id).age) : 9) - (team(b.team_id) ? GI(team(b.team_id).age) : 9) || tname(team(a.team_id)).localeCompare(tname(team(b.team_id))) || a.last_name.localeCompare(b.last_name),
+    jersey:(a,b) => (a.no ?? 999) - (b.no ?? 999) || a.last_name.localeCompare(b.last_name),
+    age:(a,b) => a.dob.localeCompare(b.dob),
+    attendance:(a,b) => (attOf(b).pct ?? -1) - (attOf(a).pct ?? -1),
+  };
+  L.sort(sorters[F.sort] || sorters.team);
+  const teams = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
+  return `
+  <div class="ph"><div><h1>Players</h1><div class="sub">${active().length} active · age groups use age on 31 December ${D.org.season.ageYear}</div></div>
+    <div class="acts"><button class="btn" data-act="exportPlayers">${I.download}Excel</button>${isAdmin() ? `<button class="btn" data-act="inviteFamily">${I.key}Invite a family</button><button class="btn pri" data-act="newPlayer">${I.plus}Add player</button>` : ""}</div></div>
+  <div class="fbar">
+    <input type="search" placeholder="Search name, parent or phone" value="${esc(F.q)}" data-f="q" aria-label="Search">
+    <select data-f="team"><option value="all">All teams</option>${teams.map(t => `<option value="${t.id}"${F.team === t.id ? " selected" : ""}>${tname(t)}</option>`).join("")}<option value="squad"${F.team === "squad" ? " selected" : ""}>Training squad</option></select>
+    <select data-f="sort">${[["team","By team"],["name","A to Z"],["jersey","By jersey number"],["age","By age"],["attendance","By attendance"]].map(([v,l]) => `<option value="${v}"${F.sort === v ? " selected" : ""}>${l}</option>`).join("")}</select>
+    <select data-f="status">${[["all","Everyone"],["owing","Owing fees"],["med","Medical note"]].map(([v,l]) => `<option value="${v}"${F.status === v ? " selected" : ""}>${l}</option>`).join("")}</select>
+    <span class="ct">${L.length} shown</span></div>
+  <section class="card flush"><div class="tw"><table>
+    <thead><tr><th>Player</th><th>Team</th><th class="hidemob">Last 5 games</th><th class="r hidemob">Season ${CLUB.scoreAbbr}</th><th class="r hidemob">Attendance</th><th class="r">Fees</th><th class="hidemob">Parent</th><th class="hidemob">Phone</th></tr></thead>
+    <tbody>${L.map(p => { const t = team(p.team_id), g = guardianOf(p), st = statsOf(p), at = attOf(p), o = owing(p);
+      return `<tr class="click" data-act="player" data-id="${p.id}">
+        <td><div class="who">${avatarHtml(p)}<div><b>${esc(pname(p))}</b><small>${p.no != null ? "#" + p.no + " · " : ""}${ageGroupOf(p.dob)} · ${ageOn(p.dob, todayISO())}</small></div></div></td>
+        <td>${t ? tname(t) : '<span class="muted">Squad</span>'}</td>
+        <td class="hidemob">${t ? wlChips(t.id) : '<span class="muted">–</span>'}</td>
+        <td class="r mono num hidemob">${st.games ? `${st.pts} <span class="muted">· ${st.ppg.toFixed(1)}/g</span>` : '<span class="muted">–</span>'}</td>
+        <td class="r mono num hidemob">${at.pct != null ? Math.round(at.pct * 100) + "%" : "–"}</td>
+        <td class="r">${!t ? '<span class="muted">–</span>' : o ? `<span class="st crit">${money(o)}</span>` : `<span class="st good">${I.ok}Paid</span>`}</td>
+        <td class="hidemob">${g ? esc(g.name) : '<span class="muted">–</span>'}</td><td class="mono num hidemob" style="font-size:12.5px">${g ? esc(g.phone) : ""}</td></tr>`; }).join("") ||
+      `<tr><td colspan="8" class="muted" style="padding:24px 12px">Nobody matches.</td></tr>`}</tbody></table></div></section>`;
+}
+
+/* ---------- registrations ---------- */
+const STAGES = [["new","New"],["contacted","Contacted"],["tryout","Tryout booked"],["offered","Offered a spot"],["notnow","Not now"]];
+function vRegos(){
+  const T = todayISO(), showArch = VIEW.pf.regArch;
+  const tr = D.org.tryout || {};
+  const L = D.regs.filter(r => !!r.archived === !!showArch && r.stage !== "joined");
+  return `${moreNav()}
+  <div class="ph"><div><h1>Registrations</h1><div class="sub">${tr.date ? `Next tryout ${fd(tr.date, {wd:1})}, ${t12(tr.time || "10:00")}` : "No tryout date set"} · ${D.regs.filter(r => r.stage === "joined").length} joined this season</div></div>
+    <div class="acts"><button class="btn" data-act="blast">${I.send}Message everyone</button><button class="btn" data-act="editTryout">Tryout details</button>
+      <button class="btn${showArch ? " pri" : ""}" data-act="toggleRegArch">${I.archive}${showArch ? "Back to the pipeline" : "Archive"}</button>
+      <button class="btn pri" data-act="newRego">${I.plus}Add by hand</button></div></div>
+  ${showArch ? `<section class="card flush"><div class="ch"><h2>Archived registrations</h2><span class="sub">Out of the pipeline, kept for the record</span></div>
+    <div class="tw" style="margin-top:10px"><table><thead><tr><th>Player</th><th class="hidemob">Parent</th><th class="hidemob">Phone</th><th>Stage</th><th class="hidemob">Sent</th><th></th></tr></thead><tbody>
+    ${L.map(r => `<tr><td><b>${esc(r.first_name + " " + r.last_name)}</b></td><td class="hidemob">${esc(r.gname)}</td><td class="mono hidemob">${esc(r.gphone)}</td><td>${esc(r.stage)}</td><td class="hidemob">${fd(r.at.slice(0,10))}</td>
+      <td class="r"><button class="btn sm" data-act="regArch" data-id="${r.id}" data-v="0">Restore</button></td></tr>`).join("") || `<tr><td colspan="6" class="muted" style="padding:20px 12px">Nothing archived.</td></tr>`}</tbody></table></div></section>`
+  : `<div class="pipe">${STAGES.map(([k, l]) => { const R = L.filter(r => r.stage === k).sort((a,b) => a.at.localeCompare(b.at));
+    return `<div class="col"><h3>${l}<span>${R.length}</span></h3>${R.map(r => regoCard(r, T)).join("") || `<div class="empty" style="padding:4px 6px">Empty</div>`}</div>`; }).join("")}</div>`}`;
+}
+function regoCard(r, T){
+  const w = between(r.at.slice(0,10), T);
+  const next = {new:["contacted","Mark contacted"], contacted:["tryout","Book tryout"], tryout:["offered","Offer a spot"], offered:null, notnow:["new","Reopen"]}[r.stage];
+  return `<div class="rc"><b>${esc(r.first_name + " " + r.last_name)}</b>
+    <div class="m">${r.dob ? ageOn(r.dob, T) + " years · " + ageGroupOf(r.dob) + " · " : ""}${esc(r.gname)}</div>
+    <div class="m mono">${esc(r.gphone)}${r.gemail ? " · " + esc(r.gemail) : ""}</div>
+    ${r.msg ? `<q>${esc(r.msg)}</q>` : ""}
+    <div class="m" style="margin-top:8px">Sent ${w === 0 ? "today" : w === 1 ? "yesterday" : w + " days ago"}${r.stage === "new" && w >= 3 ? ' · <span style="color:var(--warn)">waiting</span>' : ""}</div>
+    <div class="acts">
+      ${next ? `<button class="btn sm${r.stage === "new" ? " pri" : ""}" data-act="regStage" data-id="${r.id}" data-to="${next[0]}">${next[1]}</button>` : ""}
+      ${["offered","tryout"].includes(r.stage) ? `<button class="btn sm pri" data-act="regJoin" data-id="${r.id}">Add to the club</button>` : ""}
+      <button class="btn sm" data-act="regMsg" data-id="${r.id}">${I.copy}Message</button>
+      <button class="btn sm ghost" data-act="regArch" data-id="${r.id}" data-v="1">Archive</button>
+    </div></div>`;
+}
+
+/* ---------- money ---------- */
+function vMoney(){
+  const L = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
+  const rows = L.map(t => { const r = roster(t.id); return {t, due:r.length * +t.fee, got:r.reduce((s,p) => s + Math.min(payTotal(p), +t.fee), 0)}; });
+  const due = rows.reduce((s,x) => s + x.due, 0), got = rows.reduce((s,x) => s + x.got, 0);
+  const owe = active().filter(p => owing(p) > 0).sort((a,b) => owing(b) - owing(a));
+  const T = todayISO();
+  const coming = D.instalments.filter(i => { const p = player(i.player_id); return p && owing(p) > 0 && i.due >= addD(T, -7); }).sort((a,b) => a.due.localeCompare(b.due)).slice(0, 12);
+  return `${moreNav()}
+  <div class="ph"><div><h1>Money</h1><div class="sub">Season fees for ${esc(D.org.season.name || "")} · looked after by ${esc(D.org.contact_name)}</div></div>
+    <div class="acts"><button class="btn pri" data-act="payPick">${I.plus}Record payment</button></div></div>
+  <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+    <div class="kpi"><div class="l">Expected</div><div class="v">${money(due)}</div></div>
+    <div class="kpi"><div class="l">Collected</div><div class="v">${money(got)}</div><div class="s">${due ? Math.round(got / due * 100) : 0}% of expected</div></div>
+    <div class="kpi hot"><div class="l">Owing</div><div class="v">${money(due - got)}</div><div class="s">${plural(owe.length, "player")}</div></div>
+    <div class="kpi"><div class="l">Coming in</div><div class="v">${money(coming.reduce((s,i) => s + +i.amount, 0))}</div><div class="s">agreed instalments</div></div>
+  </div>
+  <div class="grid">
+    <section class="card c5" style="align-self:start"><div class="ch"><h2>Payment plans</h2><span class="sub">What's due next from families paying in parts</span></div>
+      <div>${coming.map(i => { const p = player(i.player_id); return `<div class="instrow"><div><b style="font-weight:600">${esc(pname(p))}</b><div class="muted" style="font-size:12px">${tname(team(p.team_id))}${i.note ? " · " + esc(i.note) : ""}</div></div>
+        <span class="pill2">${fd(i.due, {wd:1})}</span><span class="mono num">${money(i.amount)}</span></div>`; }).join("") || `<div class="empty">No payment plans set up. Add one from a player's file.</div>`}</div></section>
+    <section class="card flush c7"><div class="ch"><h2>Still owing</h2><span class="sub">Largest first</span></div><div class="tw" style="margin-top:10px"><table><thead><tr><th>Player</th><th class="hidemob">Team</th><th class="r">Owing</th><th class="hidemob">Next instalment</th><th></th></tr></thead><tbody>
+      ${owe.map(p => { const nx = instOf(p).find(i => i.due >= T); return `<tr><td><a href="#" data-act="player" data-id="${p.id}" style="text-decoration:none;font-weight:500">${esc(pname(p))}</a><div class="muted mono" style="font-size:12px">${esc((guardianOf(p) || {}).phone || "")}</div></td>
+        <td class="hidemob" style="white-space:nowrap">${tname(team(p.team_id))}</td><td class="r mono num">${money(owing(p))}</td>
+        <td class="hidemob">${nx ? `${money(nx.amount)} on ${fd(nx.due)}` : '<span class="muted">No plan</span>'}</td>
+        <td class="r" style="white-space:nowrap"><button class="btn sm" data-act="feeMsg" data-id="${p.id}">${I.copy}Reminder</button> <button class="btn sm pri" data-act="pay" data-id="${p.id}">Record payment</button></td></tr>`; }).join("") ||
+        `<tr><td colspan="5" class="muted" style="padding:20px 12px">Everyone has paid.</td></tr>`}</tbody></table></div></section>
+    <section class="card flush" style="grid-column:1/-1"><div class="ch"><h2>Receipts</h2><span class="sub">Every payment recorded, newest first — open one to copy or resend it</span></div>
+      <div class="tw" style="margin-top:10px"><table><thead><tr><th>Receipt</th><th>Player</th><th class="r">Amount</th><th class="hidemob">How</th><th class="hidemob">What for</th><th>Date</th><th></th></tr></thead><tbody>
+      ${D.payments.filter(x => +x.amount > 0).sort((a,b) => (b.receipt_no || 0) - (a.receipt_no || 0)).slice(0, 25).map(x => { const p = player(x.player_id); if (!p) return "";
+        return `<tr><td class="mono num">${rno(x)}</td><td><a href="#" data-act="player" data-id="${p.id}" style="text-decoration:none;font-weight:500">${esc(pname(p))}</a></td>
+        <td class="r mono num">${money(x.amount)}</td><td class="hidemob">${esc(x.method)}</td><td class="hidemob">${esc(x.note || "")}</td><td style="white-space:nowrap">${fd(x.paid_on)}</td>
+        <td class="r"><button class="btn sm" data-act="receipt" data-id="${x.id}">Receipt</button></td></tr>`; }).join("") ||
+        `<tr><td colspan="7" class="muted" style="padding:20px 12px">No payments recorded yet. Hit “Record payment” when the first money comes in.</td></tr>`}</tbody></table></div></section>
+  </div>`;
+}
+
+/* ---------- coaches ---------- */
+function wwcc(c){
+  if (!c.wwcc_exp) return {level:"crit", text:"Not on file"};
+  const d = between(todayISO(), c.wwcc_exp);
+  if (d < 0) return {level:"crit", text:"Expired " + fd(c.wwcc_exp, {y:1})};
+  if (d <= 60) return {level:"warn", text:`Expires in ${d} days`};
+  return {level:"good", text:"Valid to " + fd(c.wwcc_exp, {y:1})};
+}
+function vCoaches(){
+  const M = monday(todayISO()), S = weekSessions(M), C = conflicts(S).filter(c => c.kind === "coach");
+  return `${moreNav()}
+  <div class="ph"><div><h1>Coaches</h1><div class="sub">Every coach needs a current ${CLUB.check.name} before they run a session.</div></div>
+    ${isAdmin() ? `<div class="acts"><button class="btn" data-act="inviteCoach">${I.key}Invite link</button><button class="btn pri" data-act="newCoach">${I.plus}Add coach</button></div>` : ""}</div>
+  ${C.length ? `<section class="card" style="margin-bottom:16px;border-left:3px solid var(--crit)"><div class="ch"><h2>Clashes this week — arrange a fill-in</h2></div>
+    ${C.map(x => `<div class="al crit">${I.alert}<div><div class="t"><b>${esc(coach(x.coach).name)}</b> · ${DL[dow(x.a.date)]}</div>
+      <div class="m">${tname(team(x.a.team))} ${x.a.type === "G" ? "game" : "training"} ${trange(x.a.start, x.a.end)} and ${tname(team(x.b.team))} ${x.b.type === "G" ? "game" : "training"} ${trange(x.b.start, x.b.end)}. One of these needs another coach.</div></div><span></span></div>`).join("")}</section>` : ""}
+  <section class="card flush"><div class="tw"><table><thead><tr><th>Coach</th><th class="hidemob">Teams</th><th class="r hidemob">This week</th><th>${CLUB.check.abbr}</th><th class="hidemob">Contact</th><th></th></tr></thead><tbody>
+    ${D.coaches.filter(c => c.name !== "(removed test)").map(c => { const T2 = D.teams.filter(t => !t.archived && (t.coach_id === c.id || t.asst_id === c.id)), w = wwcc(c), n = S.filter(s => s.coaches.includes(c.id)).length, cl = C.filter(x => x.coach === c.id);
+      return `<tr><td><div class="who"><div class="av">${initials(c.name)}</div><div><b>${esc(c.name)}</b><small>${esc(c.role)}${c.profile_id ? "" : " · not signed in yet"}</small></div></div></td>
+        <td class="hidemob">${T2.map(t => `<span class="chip" style="margin:2px 4px 2px 0">${tname(t)}${t.asst_id === c.id ? " (asst)" : ""}</span>`).join("") || '<span class="muted">None</span>'}</td>
+        <td class="r mono num hidemob">${n}${cl.length ? ` <span class="chip crit">clash</span>` : ""}</td>
+        <td><span class="st ${w.level}">${w.level === "good" ? I.ok : I.alert}${w.text}</span></td>
+        <td class="mono num hidemob" style="font-size:12.5px">${esc(c.phone || "")}<div class="muted" style="font-size:11.5px">${esc(c.email || "")}</div></td>
+        <td class="r" style="white-space:nowrap">${isAdmin() ? `<button class="btn sm" data-act="coachCode" data-id="${c.id}">${I.key}Code</button> <button class="btn sm" data-act="editCoach" data-id="${c.id}">${I.edit}Edit</button>` : ""}</td></tr>`; }).join("")}
+  </tbody></table></div></section>`;
+}
+
+/* ---------- messages ---------- */
+function vMessages(){
+  const convs = D.convs.filter(c => (fam(c.family_id) || {}).name !== "(removed test)")
+    .sort((a,b) => (b.last_message_at || b.created_at).localeCompare(a.last_message_at || a.created_at));
+  const open = VIEW.conv ? D.convs.find(c => c.id === VIEW.conv) : null;
+  const msgs = open ? (D.msgs[open.id] || []) : [];
+  return `
+  <div class="ph"><div><h1>Messages</h1><div class="sub">Family threads stay private to each family. Coach threads always include the parents.</div></div>
+    <div class="acts">${isAdmin() ? `<button class="btn pri" data-act="newConv">${I.plus}New thread</button>` : ""}</div></div>
+  <div class="chatwrap">
+    <div class="convlist">${convs.map(c => { const unread = c.last_message_at && (!D.reads[c.id] || D.reads[c.id] < c.last_message_at);
+      return `<button class="conv${VIEW.conv === c.id ? " on" : ""}" data-act="openConv" data-id="${c.id}">
+        <div class="av" style="width:34px;height:34px">${initials((fam(c.family_id) || {name:"?"}).name)}</div>
+        <div style="min-width:0"><div class="cn">${esc(convLabel(c))}</div><div class="cp">${esc(c.last_preview || "No messages yet")}</div></div>
+        ${unread ? `<span class="dot"></span>` : `<span class="ct2">${c.last_message_at ? fd(c.last_message_at.slice(0,10)) : ""}</span>`}</button>`; }).join("") || `<div class="empty" style="padding:16px">No threads yet.</div>`}</div>
+    <div class="thread">${open ? `
+      <div class="thead"><b>${esc(convLabel(open))}</b><div class="m">${open.kind === "family" ? "The family's private chat — staff can't read family threads, this one is visible because you're in it" : open.kind === "club" ? "This family and the " + CLUB.short + " admins" : "Family, player and the team coach"}</div></div>
+      <div class="tmsgs" id="tmsgs">${msgs.map(m => `<div class="bubble${m.sender_id === ME.id ? " me" : ""}">${m.sender_id === ME.id ? "" : `<div class="who">${esc(m.sender_name)} · ${m.sender_role}</div>`}${esc(m.body)}<div class="when">${ftime(m.created_at)}</div></div>`).join("") || `<div class="tempty">No messages yet. ${CLUB.chatEmptyStaff}</div>`}</div>
+      <form class="tcomp" data-form="msg" data-id="${open.id}"><textarea name="body" placeholder="Write a message" required maxlength="4000"></textarea><button class="btn pri icon" aria-label="Send">${I.send}</button></form>`
+    : `<div class="tempty">Pick a thread${isAdmin() ? ", or start one with a family" : ""}.</div>`}</div>
+  </div>`;
+}
+
+/* ---------- community ---------- */
+function vCommunity(){
+  const seg = VIEW.comm;
+  const pendP = D.posts.filter(p => p.status === "pending"), pendC = D.comments.filter(c => c.status === "pending"), pendM = D.media.filter(m => m.status === "pending");
+  const nPend = pendP.length + pendC.length + pendM.length;
+  const segs = `<div class="seg" style="margin-bottom:16px">
+    ${[["queue", `Approval queue${nPend ? " · " + nPend : ""}`], ["board", "Board"], ["gallery", "Gallery"]].map(([k, l]) => `<button class="${seg === k ? "on" : ""}" data-act="commSeg" data-id="${k}">${l}</button>`).join("")}</div>`;
+  let body = "";
+  if (seg === "queue") {
+    body = nPend ? `<div class="modq">
+      ${pendP.map(p => `<div class="postcard"><div class="ph2"><div class="av">${initials(p.author_name)}</div><div><b>${esc(p.author_name)}</b> <span class="chip">${p.author_role}</span> <span class="muted" style="font-size:12px">post · ${ftime(p.created_at)}</span></div></div>
+        <div class="body">${esc(p.body)}</div><div class="qs"><button class="btn sm pri" data-act="mod" data-t="posts" data-id="${p.id}" data-v="approved">Approve</button><button class="btn sm danger" data-act="mod" data-t="posts" data-id="${p.id}" data-v="rejected">Reject</button></div></div>`).join("")}
+      ${pendC.map(c => { const on = D.posts.find(p => p.id === c.post_id); return `<div class="postcard"><div class="ph2"><div class="av">${initials(c.author_name)}</div><div><b>${esc(c.author_name)}</b> <span class="chip">${c.author_role}</span> <span class="muted" style="font-size:12px">comment on “${esc((on ? on.body : "").slice(0, 40))}…”</span></div></div>
+        <div class="body">${esc(c.body)}</div><div class="qs"><button class="btn sm pri" data-act="mod" data-t="comments" data-id="${c.id}" data-v="approved">Approve</button><button class="btn sm danger" data-act="mod" data-t="comments" data-id="${c.id}" data-v="rejected">Reject</button></div></div>`; }).join("")}
+      ${pendM.map(m => `<div class="postcard"><div class="ph2"><div class="av">${initials(m.author_name)}</div><div><b>${esc(m.author_name)}</b> <span class="muted" style="font-size:12px">${m.kind} for the gallery${m.caption ? " · " + esc(m.caption) : ""}</span></div></div>
+        <div style="margin:10px 0;max-width:280px" id="mq-${m.id}">${mediaTag(m, "mq")}</div>
+        <div class="qs"><button class="btn sm pri" data-act="mod" data-t="media" data-id="${m.id}" data-v="approved">Approve</button><button class="btn sm danger" data-act="mod" data-t="media" data-id="${m.id}" data-v="rejected">Reject</button></div></div>`).join("")}
+    </div>` : `<section class="card"><div class="empty">Nothing waiting. Anything a parent or player posts lands here first.</div></section>`;
+  } else if (seg === "board") {
+    const feed = D.posts.filter(p => p.status === "approved");
+    body = `<section class="card" style="margin-bottom:14px"><form data-form="post" class="addtask" style="margin:0"><input name="body" placeholder="Post to the whole club (goes up straight away as ${isAdmin() ? "admin" : "coach — admins approve it first"})" required maxlength="4000"><button class="btn pri icon" aria-label="Post">${I.send}</button></form></section>
+      ${feed.map(p => postCard(p)).join("") || `<section class="card"><div class="empty">No posts yet.</div></section>`}`;
+  } else {
+    const gal = D.media.filter(m => m.status === "approved" || m.author_id === ME.id);
+    body = `<section class="card" style="margin-bottom:14px"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <label class="btn pri" style="cursor:pointer">${I.cam}Add photo or clip<input type="file" accept="image/*,video/mp4,video/quicktime" data-act="galUpload" hidden></label>
+      <span class="muted" style="font-size:12.5px">Staff uploads show straight away. Family uploads wait for an admin. Respect photo consent — check the player list first.</span></div></section>
+      <div class="gal">${gal.map(m => `<div class="gi" id="g-${m.id}">${mediaTag(m, "g")}${m.status === "pending" ? `<span class="chip warn pend">Waiting</span>` : ""}
+        <div class="cap">${esc(m.caption || m.author_name)}${isAdmin() ? ` <button class="glink" data-act="delMedia" data-id="${m.id}" style="color:#fff;float:right">✕</button>` : ""}</div></div>`).join("") || `<div class="empty">Nothing in the gallery yet.</div>`}</div>`;
+  }
+  return `${moreNav()}
+  <div class="ph"><div><h1>Community</h1><div class="sub">Every post, comment and family photo is approved by an admin before the club sees it.</div></div></div>
+  ${segs}${body}`;
+}
+function mediaTag(m, pre){
+  const url = SIGNED["media:" + m.path];
+  if (!url) { signed(m.path, "media").then(u => { if (u) { SIGNED["media:" + m.path] = u; render(); } }); return `<div style="aspect-ratio:1;display:grid;place-items:center;color:var(--muted);font-size:12px">Loading…</div>`; }
+  return m.kind === "video" ? `<video src="${url}" controls playsinline preload="metadata"></video>` : `<img src="${url}" alt="" loading="lazy">`;
+}
+function postCard(p){
+  const cms = D.comments.filter(c => c.post_id === p.id && c.status === "approved");
+  const likes = D.likes.filter(l => l.post_id === p.id);
+  const mine = likes.some(l => l.profile_id === ME.id);
+  return `<div class="postcard"><div class="ph2"><div class="av">${initials(p.author_name)}</div><div><b>${esc(p.author_name)}</b> <span class="chip${["admin","coach"].includes(p.author_role) ? " acc" : ""}">${p.author_role === "admin" ? CLUB.short : p.author_role}</span><div class="muted" style="font-size:11.5px">${ftime(p.created_at)}</div></div>
+    ${isAdmin() ? `<button class="btn sm ghost danger" style="margin-left:auto" data-act="delPost" data-id="${p.id}">Remove</button>` : ""}</div>
+  <div class="body">${esc(p.body)}</div>
+  <div class="meta"><button class="${mine ? "on" : ""}" data-act="like" data-id="${p.id}">${I.heart}${likes.length || ""}</button><span>${plural(cms.length, "comment")}</span></div>
+  ${cms.map(c => `<div class="cmt"><div class="av">${initials(c.author_name)}</div><div class="cb"><b>${esc(c.author_name)}</b> ${esc(c.body)}</div></div>`).join("")}
+  <form class="addtask" data-form="comment" data-id="${p.id}" style="margin-top:10px"><input name="body" placeholder="Comment" required maxlength="2000"><button class="btn icon sm" aria-label="Send">${I.send}</button></form></div>`;
+}
+
+/* ---------- seasons ---------- */
+function vSeasons(){
+  const s = D.org.season, teams = D.teams.filter(t => !t.archived);
+  return `${moreNav()}
+  <div class="ph"><div><h1>Seasons</h1><div class="sub">Close a season to freeze its rosters and results, then start the next one in Settings.</div></div></div>
+  <div class="grid">
+    <section class="card c6"><div class="ch"><h2>${esc(s.name || "Current season")}</h2><span class="sub">${fd(s.start, {y:1})} to ${fd(s.end, {y:1})}</span></div>
+      <dl class="kv"><dt>Teams</dt><dd>${teams.length}</dd><dt>Players</dt><dd>${active().filter(p => p.team_id).length} rostered · ${active().filter(p => !p.team_id).length} in the squad</dd>
+      <dt>Games played</dt><dd>${D.fixtures.filter(f => f.us != null).length}</dd></dl>
+      <div style="margin-top:16px"><button class="btn pri" data-act="closeSeason">${I.archive}Close and archive this season</button></div>
+      <p class="muted" style="font-size:12.5px;margin-bottom:0">Archiving saves a snapshot of every team, roster and record. Nothing is deleted — after archiving, update the season dates in Settings for the new season.</p></section>
+    <section class="card c6"><div class="ch"><h2>Archived seasons</h2></div>
+      <div class="plist">${D.seasons.map(a => `<div class="pr"><div><b style="font-weight:600">${esc(a.name)}</b><div class="muted" style="font-size:12px">${fd(a.start_date, {y:1})} – ${fd(a.end_date, {y:1})} · saved ${fd(a.created_at.slice(0,10), {y:1})}</div></div>
+        <button class="btn sm" data-act="season" data-id="${a.id}">Open</button></div>`).join("") || `<div class="empty">No archived seasons yet.</div>`}</div></section>
+  </div>`;
+}
+
+/* ---------- settings ---------- */
+function vSettings(){
+  const o = D.org;
+  return `${moreNav()}
+  <div class="ph"><div><h1>Settings</h1><div class="sub">Club details, season, venues and board rules</div></div></div>
+  <div class="grid">
+    <section class="card c6" style="align-self:start"><div class="ch"><h2>Safe to play with</h2></div>
+      <p class="muted" style="font-size:13.5px;line-height:1.6;margin:4px 0 0">Nothing in here sends by itself. Every SMS and email button only opens your own phone's composer — you press send there, or don't. Receipts and messages inside the app reach a family only after they've signed in with the code you give them. So until you hand codes out, you can add players, move teams around and record payments freely — it's all just between the admins.</p></section>
+    <section class="card c6" style="align-self:start"><div class="ch"><h2>Bring in a spreadsheet</h2></div>
+      <p class="muted" style="font-size:13.5px;line-height:1.6;margin:4px 0 14px">Got the old player list in Excel? Drop it here. It reads your headings, guesses which column is which — you check the guesses and hit import. Anyone already in the system gets skipped, team names get matched where they line up, and the rest land in the Training squad for you to sort.</p>
+      <label class="btn pri" style="cursor:pointer">${I.download}Choose the file<input type="file" accept=".xlsx,.xls,.csv" data-act="sheetUpload" hidden></label>
+      <p class="muted" style="font-size:12.5px;margin-top:10px">Takes .xlsx, .xls and .csv. One season per file works best.</p></section>
+    <section class="card c6"><div class="ch"><h2>Club and season</h2></div>
+      <form data-form="org" class="fg">
+        <div class="f h"><label>Club name</label><input name="name" value="${esc(o.name)}"></div>
+        <div class="f h"><label>Name on messages</label><input name="contact" value="${esc(o.contact_name)}"></div>
+        <div class="f h"><label>Email</label><input name="email" value="${esc(o.email)}"></div>
+        <div class="f h"><label>Phone</label><input name="phone" value="${esc(o.phone)}"></div>
+        <div class="f"><label>Season name</label><input name="sname" value="${esc(o.season.name || "")}"></div>
+        <div class="f t"><label>Starts</label><input type="date" name="start" value="${o.season.start || ""}"></div>
+        <div class="f t"><label>Ends</label><input type="date" name="end" value="${o.season.end || ""}"></div>
+        <div class="f t"><label>Age groups from</label><input type="number" name="ageYear" value="${o.season.ageYear || ""}"></div>
+        <div class="f t"><label>Smallest safe roster</label><input type="number" name="minRoster" value="${o.min_roster}" min="3"></div>
+        <div class="f t"><label>Players for a game</label><input type="number" name="minGame" value="${o.min_game}" min="3"></div>
+        <div class="f t"><label>${CLUB.prayerLabel} times</label><select name="prayer"><option value="1"${o.prayer ? " selected" : ""}>Show</option><option value="0"${!o.prayer ? " selected" : ""}>Hide</option></select></div>
+        <div class="f"><label>Community board rules (families see this)</label><textarea name="guidelines">${esc(o.guidelines)}</textarea></div>
+        <div class="f" style="align-items:flex-start"><button class="btn pri">Save</button></div>
+      </form></section>
+    <section class="card c6"><div class="ch"><h2>Venues</h2></div>
+      <div class="plist">${D.venues.map(v => `<div class="pr"><div><b style="font-weight:500">${esc(v.name)}</b><div class="muted" style="font-size:12px">${plural(v.courts, CLUB.area)} · shown as ${esc(v.short)}</div></div></div>`).join("") || `<div class="empty">No venues yet.</div>`}</div>
+      <form data-form="venue" class="fg" style="margin-top:14px">
+        <div class="f h"><label>New venue</label><input name="name" placeholder="Full name" required></div>
+        <div class="f t"><label>Short name</label><input name="short" required></div>
+        <div class="f" style="grid-column:span 1"><label>${CLUB.areaCap}s</label><input type="number" name="courts" value="1" min="1"></div>
+        <div class="f"><button class="btn">${I.plus}Add venue</button></div></form>
+      <div class="ch" style="margin-top:22px"><h2>Staff access</h2></div>
+      <p class="muted" style="font-size:12.5px;margin-top:0">Coaches get codes from the Coaches page. To add another admin:</p>
+      <form data-form="adminCode" class="addtask" style="margin-top:0"><input type="email" name="email" placeholder="Their email" required><button class="btn">${I.key}Admin code</button></form>
+    </section>
+  </div>`;
+}
+
+/* =========================================================
+   Drawers
+   ========================================================= */
+function openDrawer(k, id){ DRAWER = {k, id}; render(); $("#drawer").classList.add("on"); $("#drawer").setAttribute("aria-hidden", "false"); $("#scrim").classList.add("on"); }
+function closeAll(){ DRAWER = null; $("#drawer").classList.remove("on"); $("#drawer").setAttribute("aria-hidden", "true"); $("#modal").classList.remove("on"); $("#scrim").classList.remove("on"); }
+const dHead = (title, sub, extra = "") => `<div class="dhd"><div style="min-width:0"><h2>${title}</h2><div class="sub">${sub}</div>${extra}</div><button class="btn icon ghost x" data-act="closeAll" aria-label="Close">${I.x}</button></div>`;
+function findSession(key){ return weekSessions(monday(key.split("|")[1])).find(s => s.key === key); }
+
+function dSession(key){
+  const s = findSession(key); if (!s) return "";
+  const t = team(s.team), v = venue(s.venue), past = isPast(s), R = roster(s.team), a = D.avail[key] || {}, r = D.roll[key] || {};
+  const mg = maghrib(s.date), spans = D.org.prayer && tm(s.start) < tm(mg) && tm(mg) < tm(s.end);
+  const cnt = past ? rollCount(s) : availCount(s);
+  return dHead(tname(t), `${s.type === "G" ? "Game vs " + esc(s.opp) : "Training"} · ${fd(s.date, {wd:1})} · ${trange(s.start, s.end)}`) + `<div class="dbd">
+    <div class="sec"><dl class="kv"><dt>Where</dt><dd>${esc(v ? v.name : "TBC")}, ${CLUB.area} ${s.court}</dd><dt>Coach</dt><dd>${esc(t.coach_name || "Not set")}${t.asst_name ? ", " + esc(t.asst_name) : ""}</dd>
+      ${spans ? `<dt>${CLUB.prayerLabel}</dt><dd>~${t12(mg)}. Plan a short break.</dd>` : ""}
+      ${s.fx && s.fx.us != null ? `<dt>Result</dt><dd>${s.fx.us}–${s.fx.them} ${s.fx.us > s.fx.them ? "win" : "loss"}</dd>` : ""}
+      ${s.fx ? `<dt>Game video</dt><dd>${s.fx.video_url ? `<a href="${esc(s.fx.video_url)}" target="_blank" rel="noopener">${I.video ? "" : ""}Watch on ${CLUB.film.name || "video"} ↗</a>` : `<button class="glink" data-act="setVideo" data-id="${s.fx.id}">Add ${CLUB.film.name || "video"} link</button>`}</dd>` : ""}</dl></div>
+    ${s.fx && past ? `<div class="sec"><h3>Score${s.fx.us == null ? " — not entered" : ""}<span class="right"><button class="btn sm" data-act="score" data-id="${s.fx.id}">${I.edit}${s.fx.us == null ? "Enter" : "Edit"}</button></span></h3></div>` : ""}
+    <div class="sec"><h3>${past ? "Roll call" : s.type === "G" ? "Who's playing" : "Expected"}<span class="right mono">${past ? (cnt ? `${cnt.here} of ${R.length} there` : "not taken") : s.type === "G" ? `${cnt.inn} in · ${cnt.out} out · ${cnt.none} no reply` : R.length + " on the roster"}</span></h3>
+      ${past ? `<div style="display:flex;gap:6px;margin-bottom:8px"><button class="btn sm" data-act="rollAll" data-id="${key}">Everyone was there</button></div>` : ""}
+      <div class="plist">${R.map(p => { const val = past ? r[p.id] : a[p.id];
+        return `<div class="pr"><div class="who">${avatarHtml(p)}<div><b>${esc(pname(p))}</b><small>${p.no != null ? "#" + p.no : ""}</small></div></div>
+          ${past ? `<div class="tog"><button class="${val === 1 ? "on in" : ""}" data-act="roll" data-id="${key}" data-p="${p.id}" data-v="1">Here</button><button class="${val === 0 ? "on out" : ""}" data-act="roll" data-id="${key}" data-p="${p.id}" data-v="0">Away</button></div>`
+          : s.type === "G" ? `<div class="tog"><button class="${val === "in" ? "on in" : ""}" data-act="avail" data-id="${key}" data-p="${p.id}" data-v="in">In</button><button class="${val === "out" ? "on out" : ""}" data-act="avail" data-id="${key}" data-p="${p.id}" data-v="out">Out</button></div>` : ""}</div>`; }).join("") || `<div class="empty">Nobody on this roster yet.</div>`}</div></div>
+    ${s.fx && past ? `<div class="sec"><h3>${CLUB.scoreCap}<span class="right muted">typed from the ${CLUB.scoresheet} sheet</span></h3><div class="plist">
+      ${R.map(p => { const st = D.stats.find(x => x.fixture_id === s.fx.id && x.player_id === p.id);
+        return `<div class="pr"><div class="who"><div class="av">${initials(pname(p))}</div><b style="font-weight:500">${esc(pname(p))}</b></div>
+        <input type="number" min="0" max="99" value="${st ? st.points : ""}" placeholder="0" data-act="ptsIn" data-fx="${s.fx.id}" data-p="${p.id}" style="width:70px;height:32px;border:1px solid var(--line-2);border-radius:7px;background:var(--panel-2);padding:0 8px;text-align:right"></div>`; }).join("")}</div></div>` : ""}
+    <div class="sec"><h3>Message for the team chat<span class="right"><button class="btn sm" data-act="copyTeamMsg" data-id="${t.id}" data-w="${monday(s.date)}">${I.copy}Copy</button></span></h3><div class="msg">${esc(teamMsg(t, monday(s.date)))}</div></div>
+  </div>`;
+}
+function teamMsg(t, M){
+  const S = weekSessions(M).filter(s => s.team === t.id);
+  const lines = S.map(s => `${s.type === "G" ? "Game" : "Training"}: ${DL[dow(s.date)]} ${fd(s.date)}, ${trange(s.start, s.end)} at ${(venue(s.venue) || {short:"TBC"}).short}, ${CLUB.area} ${s.court}${s.opp ? ` vs ${s.opp}` : ""}`);
+  return `${CLUB.greetLong} ${tname(t)} families,\n\nThis week:\n${lines.join("\n") || "No sessions."}\n\n${S.some(s => s.type === "G") ? "Please reply IN or OUT in the ${CLUB.short} app so we can plan the rotation.\n\n" : ""}${t.coach_name ? "Coach " + t.coach_name : D.org.contact_name}`;
+}
+function dTeam(id){
+  const t = team(id); if (!t) return "";
+  const R = roster(t.id), fx = D.fixtures.filter(f => f.team_id === t.id).sort((a,b) => a.date.localeCompare(b.date));
+  const past = fx.filter(f => f.date <= todayISO()).slice(-5).reverse(), next = fx.filter(f => f.date > todayISO()).slice(0, 3);
+  const w = fx.filter(f => f.us != null && f.us > f.them).length, l = fx.filter(f => f.us != null && f.us < f.them).length;
+  const tr = (t.train || [])[0];
+  return dHead(tname(t), `Coach ${esc(t.coach_name || "TBC")}${t.asst_name ? " + " + esc(t.asst_name) : ""} · ${esc(t.comp)}`,
+    `<div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">${isAdmin() ? `<button class="btn sm" data-act="editTeam" data-id="${t.id}">${I.edit}Edit team</button>` : ""}<button class="btn sm" data-act="copyTeamMsg" data-id="${t.id}" data-w="${monday(todayISO())}">${I.copy}Weekly message</button></div>`) + `<div class="dbd">
+    <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:0">
+      <div class="kpi"><div class="l">Roster</div><div class="v">${R.length}<small> / ${t.cap}</small></div></div>
+      <div class="kpi"><div class="l">Record</div><div class="v">${w}–${l}</div><div class="s">${wlChips(t.id)}</div></div>
+      <div class="kpi"><div class="l">Fee</div><div class="v">${money(t.fee)}</div></div></div>
+    <div class="sec" style="margin-top:20px"><h3>Every week</h3><dl class="kv">
+      ${tr ? `<dt>Training</dt><dd>${DL[tr.dow]}s, ${trange(tr.start, tr.end)}, ${(venue(tr.venue) || {short:"TBC"}).short} ${CLUB.areaShort} ${tr.court}</dd>` : ""}
+      <dt>Games</dt><dd>${DL[(t.game || {}).dow || 5]}s from about ${t12((t.game || {}).time || "18:00")}, ${(venue((t.game || {}).venue) || {short:"TBC"}).short}</dd></dl></div>
+    <div class="sec"><h3>Roster</h3><div class="plist">
+      ${R.map(p => `<div class="pr"><div class="who">${avatarHtml(p)}<div><b><a href="#" data-act="player" data-id="${p.id}" style="text-decoration:none">${esc(pname(p))}</a></b><small>${p.no != null ? "#" + p.no + " · " : ""}${ageGroupOf(p.dob)}${owing(p) ? ` · <span style="color:var(--crit)">${money(owing(p))} owing</span>` : ""}</small></div></div>${moveSelect(p)}</div>`).join("") || `<div class="empty">No players yet.</div>`}</div></div>
+    <div class="sec"><h3>Recent games</h3><div class="plist">${past.map(f => `<div class="pr"><div>${fd(f.date, {wd:1})} · vs ${esc(f.opp)}${f.us != null ? ` · <b class="mono">${f.us}–${f.them}</b> <span class="chip ${f.us > f.them ? "good" : "crit"}">${f.us > f.them ? "W" : "L"}</span>` : ""}</div>
+      <div style="display:flex;gap:6px">${f.video_url ? `<a class="btn sm" href="${esc(f.video_url)}" target="_blank" rel="noopener">${I.video}${CLUB.film.name || "Video"}</a>` : `<button class="btn sm ghost" data-act="setVideo" data-id="${f.id}">${I.link}Video</button>`}<button class="btn sm" data-act="score" data-id="${f.id}">${f.us == null ? "Score" : I.edit + "Edit"}</button></div></div>`).join("") || `<div class="empty">No games yet.</div>`}</div></div>
+    <div class="sec"><h3>Coming up</h3><div class="plist">${next.map(f => `<div class="pr"><div>${fd(f.date, {wd:1})} · vs ${esc(f.opp)}</div><div class="mono" style="font-size:12.5px">${t12(f.time)} · ${CLUB.areaShort} ${f.court}</div></div>`).join("") || `<div class="empty">No fixtures yet.</div>${isAdmin() ? `<button class="btn sm" data-act="addFixture" data-id="${t.id}" style="margin-top:8px">${I.plus}Add fixture</button>` : ""}`}</div>
+    ${next.length && isAdmin() ? `<button class="btn sm" data-act="addFixture" data-id="${t.id}" style="margin-top:8px">${I.plus}Add fixture</button>` : ""}</div>
+    ${isAdmin() ? `<div class="sec"><button class="btn sm ghost danger" data-act="archiveTeam" data-id="${t.id}">Archive this team</button></div>` : ""}
+  </div>`;
+}
+function moveSelect(p){
+  if (!isAdmin()) return "";
+  const teams = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
+  return `<select class="btn sm" style="padding:0 6px" data-act="move" data-id="${p.id}" aria-label="Move">
+    <option value="">${p.team_id ? "Move to…" : "Add to team…"}</option>${teams.filter(t => t.id !== p.team_id).map(t => `<option value="${t.id}">${tname(t)}</option>`).join("")}
+    ${p.team_id ? `<option value="squad">Training squad</option>` : ""}</select>`;
+}
+function dPlayer(id){
+  const p = player(id); if (!p) return "";
+  const t = team(p.team_id), g = guardianOf(p), at = attOf(p), st = statsOf(p), o = owing(p), T = todayISO();
+  const inst = instOf(p), soc = p.socials || {};
+  const log = D.logs.filter(x => x.player_id === p.id).map(x => ({d:x.on_date, t:x.body}))
+    .concat(D.payments.filter(x => x.player_id === p.id && +x.amount > 0).map(x => ({d:x.paid_on, t:`Paid ${money(x.amount)} (${x.method.toLowerCase()}) — receipt ${rno(x)}.`})))
+    .concat(D.notes.filter(x => x.player_id === p.id).map(x => ({d:x.created_at.slice(0,10), t:`Note from ${x.by_name}: ${x.body}`})))
+    .sort((a,b) => b.d.localeCompare(a.d)).slice(0, 30);
+  return dHead(esc(pname(p)), `${t ? tname(t) : "Training squad"}${p.no != null ? " · #" + p.no : ""} · ${ageGroupOf(p.dob)} · ${ageOn(p.dob, T)} years old`,
+    `<div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">${moveSelect(p)}
+      ${isAdmin() ? `<button class="btn sm" data-act="parentCode" data-id="${p.id}">${I.key}Parent code</button><button class="btn sm" data-act="kidCode" data-id="${p.id}">${I.key}Kid code</button>` : ""}
+      ${isAdmin() ? `<button class="btn sm pri" data-act="pay" data-id="${p.id}">Record payment</button>` : ""}</div>`) + `<div class="dbd">
+    <div class="sec" style="display:flex;gap:16px;align-items:center">${avatarHtml(p, true)}
+      <div style="flex:1"><label class="btn sm" style="cursor:pointer">${I.cam}${p.photo_path ? "Change photo" : "Add photo"}<input type="file" accept="image/*" data-act="avatarUpload" data-id="${p.id}" hidden></label>
+      ${!p.photo_consent ? `<div class="st warn" style="margin-top:8px;font-size:12.5px">${I.alert}No photo consent — keep this player out of the gallery and socials.</div>` : ""}</div></div>
+    <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:0">
+      <div class="kpi"><div class="l">Attendance</div><div class="v">${at.pct != null ? Math.round(at.pct * 100) + "%" : "–"}</div><div class="s">${at.here} of ${at.n} sessions</div></div>
+      <div class="kpi"><div class="l">Season ${CLUB.scoreWord}</div><div class="v">${st.pts}</div><div class="s">${st.games ? st.ppg.toFixed(1) + " a game · " + plural(st.games, "game") : "no games entered"}</div></div>
+      <div class="kpi"><div class="l">Fees</div><div class="v">${t ? (o ? money(o) : "Paid") : "–"}</div><div class="s">${t ? money(payTotal(p)) + " received" : "no roster fee"}</div></div></div>
+    <div class="sec" style="margin-top:18px"><h3>Player</h3><dl class="kv">
+      <dt>Born</dt><dd>${fd(p.dob, {y:1})}</dd>
+      <dt>Mobile</dt><dd>${p.phone ? `<a href="tel:${p.phone.replace(/\s/g, "")}">${esc(p.phone)}</a>` : '<span class="muted">None on file</span>'} ${isAdmin() ? `<button class="glink" data-act="editPlayer" data-id="${p.id}">edit</button>` : ""}</dd>
+      <dt>Last 5 games</dt><dd>${t ? wlChips(t.id) : "–"}</dd>
+      <dt>Joined</dt><dd>${fd(p.joined, {y:1})} · ${esc(p.source || "")}</dd>
+      <dt>Medical</dt><dd>${p.medical ? `<span class="st warn">${I.alert}${esc(p.medical_note || "Note on file")}</span>` : "Nothing on file"}</dd>
+      <dt>Photos</dt><dd>${p.photo_consent ? "Consent given" : `<span class="st warn">${I.alert}No consent</span>`}</dd>
+      <dt>Socials</dt><dd><div class="socialrow">${["instagram","tiktok","youtube"].filter(k => soc[k]).map(k => `<span class="chip">${k}: ${esc(soc[k])}</span>`).join("") || '<span class="muted">None linked</span>'}</div></dd></dl></div>
+    <div class="sec"><h3>Family${isAdmin() ? `<span class="right"><button class="btn sm" data-act="addParent" data-id="${p.id}">${I.plus}${D.guardians.some(x => x.family_id === p.family_id) ? "Add another parent" : "Add a parent"}</button></span>` : ""}</h3>
+      ${D.guardians.filter(x => x.family_id === p.family_id).map(gg => `<dl class="kv">
+      <dt>${esc(gg.rel || "Parent")}</dt><dd>${esc(gg.name)} ${isAdmin() ? `<button class="glink" data-act="editGuardian" data-id="${gg.id}">edit</button>` : ""}</dd>
+      <dt>Mobile</dt><dd><a href="tel:${(gg.phone || "").replace(/\s/g, "")}">${esc(gg.phone)}</a> · <a href="https://wa.me/${CLUB.cc}${(gg.phone || "").replace(/\s/g, "").replace(/^0/, "")}" target="_blank" rel="noopener">WhatsApp</a></dd>
+      <dt>Email</dt><dd>${gg.email ? `<a href="mailto:${esc(gg.email)}">${esc(gg.email)}</a>` : '<span class="muted">None — needed for the app</span>'}</dd></dl>`).join("") ||
+      `<div class="empty" style="padding:14px 0">No parent attached yet — add one whenever you're ready.</div>`}
+      <dl class="kv"><dt>Siblings</dt><dd>${active().filter(x => x.family_id === p.family_id && x.id !== p.id).map(x => `<a href="#" data-act="player" data-id="${x.id}" style="color:var(--accent);text-decoration:none">${esc(pname(x))}</a>`).join(", ") || "–"}</dd></dl>
+      ${isAdmin() ? `<p class="muted" style="font-size:12.5px;line-height:1.5;margin:10px 0 0"><b>Parent code</b> signs the parent in to the family app (and resets a forgotten password). <b>Kid code</b> is a six-digit sign-in for ${esc(p.first_name)}'s own device — kids only ever see their own family.</p>` : ""}</div>
+    ${isAdmin() ? `<div class="sec"><h3>Payment plan<span class="right"><button class="btn sm" data-act="addInst" data-id="${p.id}">${I.plus}Add instalment</button></span></h3>
+      <div class="plist">${inst.map(i => `<div class="pr"><div>${money(i.amount)} due ${fd(i.due, {wd:1, y:1})}${i.note ? ` <span class="muted">· ${esc(i.note)}</span>` : ""}</div><button class="btn sm ghost danger" data-act="delInst" data-id="${i.id}">✕</button></div>`).join("") || `<div class="empty">No plan. Fees are due in one go.</div>`}</div></div>` : ""}
+    <div class="sec"><h3>Coach notes (staff only)</h3>
+      <form data-form="note" data-id="${p.id}" class="addtask" style="margin-top:0"><input name="t" placeholder="Add a note" required autocomplete="off"><button class="btn icon" aria-label="Add">${I.plus}</button></form>
+      <div class="tl" style="margin-top:8px">${D.notes.filter(n => n.player_id === p.id).slice(0, 6).map(n => `<div class="ev"><div class="d">${fd(n.created_at.slice(0,10))}</div><div>${esc(n.body)} <span class="by">${esc(n.by_name)}</span></div></div>`).join("")}</div></div>
+    <div class="sec"><h3>History</h3><div class="tl">${log.map(x => `<div class="ev"><div class="d">${fd(x.d, {y:1})}</div><div>${esc(x.t)}</div></div>`).join("") || `<div class="empty">Nothing yet.</div>`}</div></div>
+  </div>`;
+}
+function dSeason(id){
+  const a = VIEW.seasonData; if (!a || a.id !== id) { loadSeason(id); return dHead("Loading…", "") + `<div class="dbd"><div class="empty">Opening the archive…</div></div>`; }
+  const s = a.snapshot || {};
+  return dHead(esc(a.name), `${fd(a.start_date, {y:1})} – ${fd(a.end_date, {y:1})}`) + `<div class="dbd">
+    ${(s.teams || []).map(t => `<div class="sec"><h3>${esc(t.name)} · coach ${esc(t.coach || "–")}<span class="right mono">${t.record || ""}${t.attendance != null ? " · " + t.attendance + "% attendance" : ""}</span></h3>
+      <div class="muted" style="font-size:13px">${(t.roster || []).map(esc).join(", ") || "No roster saved"}</div></div>`).join("") || `<div class="empty">Empty snapshot.</div>`}</div>`;
+}
+async function loadSeason(id){
+  const { data } = await sb.from("season_archive").select("*").eq("id", id).single();
+  VIEW.seasonData = data; render();
+}
+
+/* =========================================================
+   Modals & forms
+   ========================================================= */
+function openModal(html){ $("#modal").innerHTML = html; $("#modal").classList.add("on"); $("#scrim").classList.add("on"); const f = $("#modal input,#modal select,#modal textarea"); if (f) setTimeout(() => f.focus(), 60); }
+const opt = (list, val) => list.map(([v, l]) => `<option value="${esc(v)}"${String(v) === String(val ?? "") ? " selected" : ""}>${esc(l)}</option>`).join("");
+const venueOpts = v => opt(D.venues.map(x => [x.id, x.short]), v);
+const coachOpts = (v, none) => (none ? `<option value="">${none}</option>` : "") + opt(D.coaches.map(c => [c.id, c.name]), v);
+const dowOpts = v => opt([1,2,3,4,5,6,7].map(d => [d, DL[d]]), v);
+const mact = label => `<div class="mact"><button type="button" class="btn ghost" data-act="closeAll">Cancel</button><button class="btn pri">${label}</button></div>`;
+function teamForm(t){
+  const n = !t; t = t || {age:GORD[1] || GORD[0], div:"", comp:CLUB.defaultComp, coach_id:"", asst_id:"", cap:10, fee:CLUB.defaultFee, train:[{dow:2, start:"18:00", end:"19:30", venue:(D.venues[0] || {}).id, court:1}], game:{dow:5, venue:(D.venues[0] || {}).id, time:"18:00"}};
+  if (!D.venues.length) { toast("Add a venue in Settings first"); location.hash = "#/settings"; return; }
+  const tr = (t.train || [])[0] || {dow:2, start:"18:00", end:"19:30", venue:D.venues[0].id, court:1};
+  openModal(`<form data-form="team" data-id="${n ? "" : t.id}"><h2>${n ? "New team" : "Edit " + tname(t)}</h2><div class="sub">Everyone signed in sees the change straight away.</div>
+    <div class="fg">
+      <div class="f t"><label>Age group</label><select name="age">${opt(GORD.map(x => [x, x]), t.age)}</select></div>
+      <div class="f t"><label>Division</label><input name="div" value="${esc(t.div)}" required></div>
+      <div class="f t"><label>Competition</label><input name="comp" value="${esc(t.comp)}" required></div>
+      <div class="f h"><label>Coach</label><select name="coach">${coachOpts(t.coach_id, "Not set")}</select></div>
+      <div class="f h"><label>Assistant</label><select name="asst">${coachOpts(t.asst_id, "None")}</select></div>
+      <div class="f t"><label>Roster cap</label><input type="number" name="cap" value="${t.cap}" min="5"></div>
+      <div class="f t"><label>Season fee (${CLUB.currency})</label><input type="number" name="fee" value="${t.fee}" min="0"></div>
+      <div class="fsec">Training</div>
+      <div class="f t"><label>Day</label><select name="tdow">${dowOpts(tr.dow)}</select></div>
+      <div class="f t"><label>Starts</label><input type="time" name="tstart" value="${tr.start}"></div>
+      <div class="f t"><label>Ends</label><input type="time" name="tend" value="${tr.end}"></div>
+      <div class="f h"><label>Venue</label><select name="tvenue">${venueOpts(tr.venue)}</select></div>
+      <div class="f h"><label>${CLUB.areaCap}</label><input type="number" name="tcourt" value="${tr.court}" min="1"></div>
+      <div class="fsec">Games</div>
+      <div class="f t"><label>Day</label><select name="gdow">${dowOpts((t.game || {}).dow || 5)}</select></div>
+      <div class="f t"><label>Usual time</label><input type="time" name="gtime" value="${(t.game || {}).time || "18:00"}"></div>
+      <div class="f t"><label>Venue</label><select name="gvenue">${venueOpts((t.game || {}).venue)}</select></div>
+    </div>${mact(n ? "Create team" : "Save changes")}</form>`);
+}
+
+/* ---------- actions ---------- */
+async function run(fn){ try { await fn(); } catch (e) { console.error(e); toast(e.message || "That didn't save. Try again."); } }
+async function reload(tables){ await fetchAll(); render(); }
+const ACT = {
+  go:el => { closeAll(); location.hash = "#/" + el.dataset.id; },
+  wk:el => { const d = +el.dataset.d; VIEW.week = d === 0 ? monday(todayISO()) : addD(VIEW.week, d); render(); },
+  scrollTo:el => { const x = document.getElementById(el.dataset.id); if (x) x.scrollIntoView({behavior:"smooth"}); },
+  closeAll:() => closeAll(),
+  theme:() => setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light"),
+  signout:async () => { await sb.auth.signOut(); location.reload(); },
+  sess:el => openDrawer("sess", el.dataset.id),
+  team:el => openDrawer("team", el.dataset.id),
+  player:(el, e) => { if (e) e.preventDefault(); openDrawer("player", el.dataset.id); },
+  season:el => { VIEW.seasonData = null; openDrawer("season", el.dataset.id); },
+  squadDrawer:() => { VIEW.pf.team = "squad"; location.hash = "#/players"; },
+  newTeam:() => teamForm(null),
+  editTeam:el => teamForm(team(el.dataset.id)),
+  archiveTeam:el => run(async () => { const t = team(el.dataset.id); if (!confirm(`Archive ${tname(t)}? Its players move to the training squad.`)) return;
+    await sb.from("teams").update({archived:true}).eq("id", t.id).throwOnError();
+    await sb.from("players").update({team_id:null}).eq("team_id", t.id).throwOnError();
+    closeAll(); await reload(); toast(tname(t) + " archived"); }),
+  avail:el => run(async () => { const cur = (D.avail[el.dataset.id] || {})[el.dataset.p];
+    if (cur === el.dataset.v) { await sb.from("availability").delete().eq("session_key", el.dataset.id).eq("player_id", el.dataset.p).throwOnError(); delete D.avail[el.dataset.id][el.dataset.p]; }
+    else { await sb.from("availability").upsert({session_key:el.dataset.id, player_id:el.dataset.p, status:el.dataset.v, set_by:ME.id}).throwOnError(); (D.avail[el.dataset.id] = D.avail[el.dataset.id] || {})[el.dataset.p] = el.dataset.v; }
+    render(); }),
+  roll:el => run(async () => { await sb.from("roll").upsert({session_key:el.dataset.id, player_id:el.dataset.p, present:el.dataset.v === "1", taken_by:ME.id}).throwOnError();
+    (D.roll[el.dataset.id] = D.roll[el.dataset.id] || {})[el.dataset.p] = +el.dataset.v; render(); }),
+  rollAll:el => run(async () => { const s = findSession(el.dataset.id); const rows = roster(s.team).map(p => ({session_key:s.key, player_id:p.id, present:true, taken_by:ME.id}));
+    await sb.from("roll").upsert(rows).throwOnError(); rows.forEach(r => { (D.roll[s.key] = D.roll[s.key] || {})[r.player_id] = 1; }); render(); toast("Roll saved"); }),
+  copyTeamMsg:el => copy(teamMsg(team(el.dataset.id), el.dataset.w), "Copied. Paste it into WhatsApp."),
+  task:el => run(async () => { await sb.from("tasks").update({done:el.checked}).eq("id", el.dataset.id).throwOnError(); D.tasks.find(t => t.id === el.dataset.id).done = el.checked; render(); }),
+  score:el => { const f = D.fixtures.find(x => x.id === el.dataset.id);
+    openModal(`<form data-form="score" data-id="${f.id}"><h2>Score</h2><div class="sub">${tname(team(f.team_id))} vs ${esc(f.opp)}, ${fd(f.date, {wd:1})}</div>
+      <div class="fg"><div class="f t"><label>${CLUB.short}</label><input type="number" name="us" value="${f.us ?? ""}" min="0" required></div>
+      <div class="f t"><label>${esc(f.opp)}</label><input type="number" name="them" value="${f.them ?? ""}" min="0" required></div></div>${mact("Save score")}</form>`); },
+  setVideo:el => { const f = D.fixtures.find(x => x.id === el.dataset.id);
+    openModal(`<form data-form="video" data-id="${f.id}"><h2>Game video</h2><div class="sub">Paste the ${CLUB.film.name || "video"} link for this game. Families get a Watch button.</div>
+      <div class="fg"><div class="f"><label>Link</label><input type="url" name="url" value="${esc(f.video_url || "")}" placeholder="${CLUB.film.urlHint}" required></div></div>${mact("Save link")}</form>`); },
+  addFixture:el => { const t = team(el.dataset.id);
+    openModal(`<form data-form="fixture" data-id="${t.id}"><h2>Add fixture</h2><div class="sub">${tname(t)}</div><div class="fg">
+      <div class="f t"><label>Date</label><input type="date" name="date" required></div><div class="f t"><label>Time</label><input type="time" name="time" value="${(t.game || {}).time || "18:00"}" required></div>
+      <div class="f t"><label>${CLUB.areaCap}</label><input type="number" name="court" value="1" min="1"></div>
+      <div class="f h"><label>Venue</label><select name="venue">${venueOpts((t.game || {}).venue)}</select></div>
+      <div class="f h"><label>Opponent</label><input name="opp" placeholder="To be drawn"></div></div>${mact("Add fixture")}</form>`); },
+  ptsIn:() => {},
+  move:el => run(async () => { if (!el.value) return; const p = player(el.dataset.id); const to = el.value === "squad" ? null : el.value; const t = team(to);
+    if (t && GI(ageGroupOf(p.dob)) > GI(t.age) && !confirm(`${pname(p)} is ${ageGroupOf(p.dob)} age — too old for ${t.age}. Move anyway?`)) { el.value = ""; return; }
+    await sb.from("players").update({team_id:to}).eq("id", p.id).throwOnError();
+    await sb.from("player_log").insert({player_id:p.id, body:`Moved to ${tname(t)}.`}).throwOnError();
+    p.team_id = to; D.logs.unshift({player_id:p.id, on_date:todayISO(), body:`Moved to ${tname(t)}.`}); render(); toast(`${p.first_name} moved to ${tname(t)}`); }),
+  newPlayer:() => { const teams = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
+    const fams = D.families.filter(fm => D.players.some(p => p.family_id === fm.id && p.status === "active"))
+      .map(fm => { const g = D.guardians.find(x => x.family_id === fm.id);
+      return [fm.id, fm.name + (g ? " · " + g.name : "")]; }).sort((a,b) => a[1].localeCompare(b[1]));
+    openModal(`<form data-form="newPlayer"><h2>Add a player</h2><div class="sub">Just the player is fine — attach the parent now, later, or to a family already in the system.</div><div class="fg">
+      <div class="fsec">Player</div>
+      <div class="f h"><label>First name</label><input name="first" required></div><div class="f h"><label>Last name</label><input name="last" required></div>
+      <div class="f h"><label>Date of birth</label><input type="date" name="dob" required></div><div class="f h"><label>Player mobile</label><input name="phone" inputmode="tel" placeholder="Optional"></div>
+      <div class="f h"><label>Team</label><select name="team"><option value="">Training squad</option>${opt(teams.map(t => [t.id, tname(t)]), "")}</select></div>
+      <div class="f h"><label>Jersey number</label><input type="number" name="no" min="0" max="99"></div>
+      <div class="f h"><label>Photo consent</label><select name="photo"><option value="1">Yes</option><option value="0">No</option></select></div>
+      <div class="f h"><label>Medical note</label><input name="med" placeholder="Blank if none"></div>
+      <div class="fsec">Parent or guardian</div>
+      <div class="f"><label>Who looks after them?</label><select name="fam" data-famsel>
+        <option value="new">New parent — details below</option>
+        <option value="later">No parent yet — I'll add them later</option>
+        ${fams.map(([v,l]) => `<option value="${v}">Sibling — attach to ${esc(l)}</option>`).join("")}
+      </select></div>
+      <div data-famfields style="display:contents">
+      <div class="f h"><label>Name</label><input name="gname"></div><div class="f h"><label>Relationship</label><select name="grel"><option>Father</option><option>Mother</option><option>Guardian</option></select></div>
+      <div class="f h"><label>Mobile</label><input name="gphone" inputmode="tel"></div><div class="f h"><label>Email (for the app)</label><input type="email" name="gemail"></div>
+      </div>
+    </div>${mact("Add player")}</form>`); },
+  editPlayer:el => { const p = player(el.dataset.id);
+    openModal(`<form data-form="editPlayer" data-id="${p.id}"><h2>${esc(pname(p))}</h2><div class="fg">
+      <div class="f h"><label>Player mobile</label><input name="phone" value="${esc(p.phone)}" inputmode="tel"></div>
+      <div class="f h"><label>Jersey number</label><input type="number" name="no" value="${p.no ?? ""}" min="0" max="99"></div>
+      <div class="f h"><label>Instagram</label><input name="ig" value="${esc((p.socials || {}).instagram || "")}" placeholder="@handle"></div>
+      <div class="f h"><label>TikTok</label><input name="tk" value="${esc((p.socials || {}).tiktok || "")}" placeholder="@handle"></div>
+      <div class="f h"><label>Photo consent</label><select name="photo">${opt([["1","Yes"],["0","No"]], p.photo_consent ? "1" : "0")}</select></div>
+      <div class="f h"><label>Medical note</label><input name="med" value="${esc(p.medical_note)}"></div>
+    </div>${mact("Save")}</form>`); },
+  addParent:el => { const p = player(el.dataset.id);
+    openModal(`<form data-form="addParent" data-id="${p.id}"><h2>Parent for ${esc(pname(p))}</h2><div class="fg">
+      <div class="f h"><label>Name</label><input name="name" required></div><div class="f h"><label>Relationship</label><select name="rel"><option>Father</option><option>Mother</option><option>Guardian</option></select></div>
+      <div class="f h"><label>Mobile</label><input name="phone" inputmode="tel" required></div><div class="f h"><label>Email (for the app)</label><input type="email" name="email"></div>
+    </div>${mact("Attach parent")}</form>`); },
+  editGuardian:el => { const g = D.guardians.find(x => x.id === el.dataset.id) || D.guardians.find(x => x.family_id === el.dataset.id);
+    openModal(`<form data-form="guardian" data-id="${g.id}"><h2>${esc(g.name)}</h2><div class="fg">
+      <div class="f h"><label>Name</label><input name="name" value="${esc(g.name)}" required></div><div class="f h"><label>Relationship</label><input name="rel" value="${esc(g.rel)}"></div>
+      <div class="f h"><label>Mobile</label><input name="phone" value="${esc(g.phone)}"></div><div class="f h"><label>Email</label><input type="email" name="email" value="${esc(g.email || "")}"></div>
+    </div>${mact("Save")}</form>`); },
+  parentCode:el => run(async () => { const p = player(el.dataset.id);
+    const gs = D.guardians.filter(x => x.family_id === p.family_id), g = gs.find(x => x.email) || gs[0];
+    if (!g) { toast("Attach a parent first — the code is their sign-in"); ACT.addParent(el); return; }
+    if (!g.email) { toast("Add the parent's email first"); ACT.editGuardian({dataset:{id:g.id}}); return; }
+    const { data, error } = await sb.rpc("create_activation_code", {p_kind:"guardian", p_target:g.id, p_email:g.email});
+    if (error) throw error;
+    const msg = `${CLUB.greetLong} ${g.name.split(" ")[0]},\n\nThe ${CLUB.short} app is ready for your family. Set it up here:\n${FAMILY_URL}\n\n1. Tap "First time here"\n2. Email: ${g.email}\n3. Code: ${data}\n4. Choose your own password\n\nYou'll see ${p.first_name}'s schedule, mark them in or out for games, message the coach, and follow the club board.\n\n${D.org.contact_name}\n${CLUB.name}`;
+    openModal(`<div style="padding:20px 22px"><h2>Parent code for ${esc(g.name)}</h2><div class="sub">One use, 14 days. Send it to ${esc(g.phone)}. This is also how you fix a forgotten password — a fresh code lets them set a new one.</div>
+      <div class="bigcode">${data}</div>
+      <div class="mact" style="justify-content:flex-start"><button class="btn pri" data-act="copyText" data-v="${esc(msg).replace(/"/g, "&quot;")}">${I.copy}Copy WhatsApp message</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); }),
+  kidCode:el => run(async () => { const p = player(el.dataset.id);
+    const { data, error } = await sb.rpc("create_player_code", {p_player:p.id});
+    if (error) throw error;
+    openModal(`<div style="padding:20px 22px"><h2>Kid code for ${esc(p.first_name)}</h2><div class="sub">${esc(p.first_name)} opens ${FAMILY_URL.replace("https://","")}, taps "I'm a player" and types this. One use, 7 days.</div>
+      <div class="bigcode">${data}</div>
+      <div class="mact" style="justify-content:flex-start"><button class="btn pri" data-act="copyText" data-v="${data}">${I.copy}Copy code</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); }),
+  coachCode:el => run(async () => { const c = coach(el.dataset.id);
+    if (!c.email) { toast("Add the coach's email first"); ACT.editCoach(el); return; }
+    const { data, error } = await sb.rpc("create_activation_code", {p_kind:"coach", p_target:c.id, p_email:c.email});
+    if (error) throw error;
+    const msg = `${CLUB.greet} ${c.name.split(" ")[0]},\n\nYour ${CLUB.hq} coach sign-in:\n${CLUB.staffUrl}\n\n1. Tap "First time here"\n2. Email: ${c.email}\n3. Code: ${data}\n4. Choose a password\n\nYou'll see your teams, take the roll, enter scores and message your families.\n\n${D.org.contact_name}`;
+    openModal(`<div style="padding:20px 22px"><h2>Coach code for ${esc(c.name)}</h2><div class="sub">One use, 14 days. Also fixes a forgotten password.</div><div class="bigcode">${data}</div>
+      <div class="mact" style="justify-content:flex-start"><button class="btn pri" data-act="copyText" data-v="${esc(msg).replace(/"/g, "&quot;")}">${I.copy}Copy message</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); }),
+  copyText:el => copy(el.dataset.v, "Copied"),
+  inviteCoach:() => run(async () => {
+    const { data: tok, error } = await sb.rpc("create_invite", {p_kind:"coach", p_label:"coach"});
+    if (error) throw error;
+    const link = `${CLUB.staffUrl}/#join=${tok}`;
+    const msg = `${CLUB.greet}! You're coaching with ${CLUB.short} ${CLUB.emoji}\n\nSet yourself up here — takes two minutes:\n${link}\n\nFill in your details (${CLUB.check.abbr} too), pick a password, and you're straight into ${CLUB.hq}.\n\n${D.org.contact_name}`;
+    openModal(`<div style="padding:20px 22px"><h2>Coach invite link</h2><div class="sub">One use, 14 days. They fill in their own name, mobile, ${CLUB.check.abbr} and password — no typing on your end.</div>
+      <div style="background:rgba(125,125,125,.12);border-radius:10px;padding:12px 14px;font-size:12.5px;word-break:break-all;margin-bottom:14px" class="mono">${link}</div>
+      <div class="mact" style="justify-content:flex-start;flex-wrap:wrap"><button class="btn pri" data-act="copyText" data-v="${esc(msg).replace(/"/g, "&quot;")}">${I.copy}Copy WhatsApp message</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); }),
+  inviteFamily:() => run(async () => {
+    const { data: tok, error } = await sb.rpc("create_invite", {p_kind:"family", p_label:"family"});
+    if (error) throw error;
+    const link = `${FAMILY_URL}/#join=${tok}`;
+    const msg = `${CLUB.greet}! Welcome to ${CLUB.name} ${CLUB.emoji}\n\nSet your family up here — takes two minutes:\n${link}\n\nFill in your details and your player's, pick a password, and you'll have the schedule, fees and club board in your pocket.\n\n${D.org.contact_name}`;
+    openModal(`<div style="padding:20px 22px"><h2>Family invite link</h2><div class="sub">One use, 14 days. The parent fills in their own details and the player's — the family lands in the system ready to go.</div>
+      <div style="background:rgba(125,125,125,.12);border-radius:10px;padding:12px 14px;font-size:12.5px;word-break:break-all;margin-bottom:14px" class="mono">${link}</div>
+      <div class="mact" style="justify-content:flex-start;flex-wrap:wrap"><button class="btn pri" data-act="copyText" data-v="${esc(msg).replace(/"/g, "&quot;")}">${I.copy}Copy WhatsApp message</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); }),
+  newCoach:() => coachForm(null),
+  editCoach:el => coachForm(coach(el.dataset.id)),
+  pay:el => { const p = player(el.dataset.id);
+    openModal(`<form data-form="pay" data-id="${p.id}"><h2>Record payment</h2><div class="sub">${esc(pname(p))}${feeOf(p) ? ` · ${money(owing(p))} owing` : " · no roster fee set, record any amount"}</div><div class="fg">
+      <div class="f t"><label>Amount (${CLUB.currency})</label><input type="number" name="amt" value="${owing(p) || ""}" min="1" step="0.01" required></div>
+      <div class="f t"><label>Date</label><input type="date" name="d" value="${todayISO()}" required></div>
+      <div class="f t"><label>How</label><select name="how"><option>Bank transfer</option><option>Cash</option><option>Card</option></select></div>
+      <div class="f"><label>What for (goes on the receipt)</label><input name="note" placeholder="e.g. Season fees, uniform"></div></div>${mact("Save and make the receipt")}</form>`); },
+  payPick:() => { const ps = active().slice().sort((a,b) => pname(a).localeCompare(pname(b)));
+    if (!ps.length) { toast("Add a player first"); return; }
+    openModal(`<form data-form="payPick"><h2>Record payment</h2><div class="sub">Money in — cash, transfer or card. A numbered receipt comes up straight after.</div><div class="fg">
+      <div class="f"><label>Player</label><select name="pid" required>${ps.map(p => `<option value="${p.id}">${esc(pname(p))}${p.team_id ? " · " + tname(team(p.team_id)) : ""}${owing(p) ? " · " + money(owing(p)) + " owing" : ""}</option>`).join("")}</select></div>
+      <div class="f t"><label>Amount (${CLUB.currency})</label><input type="number" name="amt" min="1" step="0.01" required></div>
+      <div class="f t"><label>Date</label><input type="date" name="d" value="${todayISO()}" required></div>
+      <div class="f t"><label>How</label><select name="how"><option>Bank transfer</option><option>Cash</option><option>Card</option></select></div>
+      <div class="f"><label>What for (goes on the receipt)</label><input name="note" placeholder="e.g. Season fees, uniform"></div></div>${mact("Save and make the receipt")}</form>`); },
+  receipt:el => { const x = D.payments.find(y => y.id === el.dataset.id); if (x) showReceipt(player(x.player_id), x); },
+  sendReceipt:el => run(async () => { const x = D.payments.find(y => y.id === el.dataset.id), p = player(x.player_id);
+    const { data: convId, error } = await sb.rpc("open_conversation", {p_kind:"family", p_family:p.family_id, p_team:null});
+    if (error) throw error;
+    await sb.from("messages").insert({conversation_id:convId, body:receiptText(p, x)}).throwOnError();
+    toast("Receipt sent — it's waiting in the family's app messages"); await refreshConvs(); }),
+  addInst:el => { const p = player(el.dataset.id);
+    openModal(`<form data-form="inst" data-id="${p.id}"><h2>Payment plan</h2><div class="sub">${esc(pname(p))} · ${money(owing(p))} owing</div><div class="fg">
+      <div class="f t"><label>Amount (${CLUB.currency})</label><input type="number" name="amt" min="1" required></div>
+      <div class="f t"><label>Due</label><input type="date" name="due" required></div>
+      <div class="f t"><label>Note</label><input name="note" placeholder="e.g. 2 of 3"></div></div>${mact("Add instalment")}</form>`); },
+  delInst:el => run(async () => { await sb.from("instalments").delete().eq("id", el.dataset.id).throwOnError(); D.instalments = D.instalments.filter(i => i.id !== el.dataset.id); render(); }),
+  feeMsg:el => { const p = player(el.dataset.id), g = D.guardians.find(x => x.family_id === p.family_id), nx = instOf(p).find(i => i.due >= todayISO());
+    if (!g) { toast("No parent on file for this player yet"); return; }
+    copy(`${CLUB.greetLong} ${g.name.split(" ")[0]},\n\nA quick reminder that ${p.first_name}'s ${tname(team(p.team_id))} fee has ${money(owing(p))} still to pay${nx ? ` — next instalment ${money(nx.amount)} due ${fd(nx.due)}` : ""}.\n\nBank transfer is easiest, or reply here to sort a payment plan.\n\n${CLUB.thanks},\n${D.org.contact_name}\n${CLUB.name}`, "Reminder copied"); },
+  regStage:el => run(async () => { const r = D.regs.find(x => x.id === el.dataset.id);
+    await sb.from("registrations").update({stage:el.dataset.to}).eq("id", r.id).throwOnError(); r.stage = el.dataset.to; render(); }),
+  regArch:el => run(async () => { const r = D.regs.find(x => x.id === el.dataset.id); const v = el.dataset.v === "1";
+    await sb.from("registrations").update({archived:v}).eq("id", r.id).throwOnError(); r.archived = v; render(); }),
+  toggleRegArch:() => { VIEW.pf.regArch = !VIEW.pf.regArch; render(); },
+  regMsg:el => { const r = D.regs.find(x => x.id === el.dataset.id), tr = D.org.tryout || {};
+    copy(`${CLUB.greetLong} ${r.gname.split(" ")[0]},\n\nThanks for registering ${r.first_name} with ${CLUB.name}.${tr.date ? ` We'd love to see them at our next tryout:\n\n${DL[dow(tr.date)]} ${fd(tr.date)}, ${t12(tr.time || "10:00")}\n${(venue(tr.venue) || {name:"Venue to be confirmed"}).name}\n\nBring a water bottle and runners.` : " We'll be in touch with a tryout time shortly."}\n\n${D.org.contact_name}\n${CLUB.name} · ${D.org.phone}`, "Message copied"); },
+  newRego:() => openModal(`<form data-form="rego"><h2>Add a registration</h2><div class="sub">For a family who called instead of using the website.</div><div class="fg">
+      <div class="f h"><label>Player first name</label><input name="first" required></div><div class="f h"><label>Player last name</label><input name="last" required></div>
+      <div class="f h"><label>Date of birth</label><input type="date" name="dob"></div><div class="f h"><label>Player phone</label><input name="phone"></div>
+      <div class="f h"><label>Parent name</label><input name="gname" required></div><div class="f h"><label>Parent phone</label><input name="gphone" required></div>
+      <div class="f"><label>Parent email</label><input type="email" name="gemail"></div><div class="f"><label>Message</label><textarea name="msg"></textarea></div></div>${mact("Add")}</form>`),
+  regJoin:el => { const r = D.regs.find(x => x.id === el.dataset.id); const teams = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
+    openModal(`<form data-form="join" data-id="${r.id}"><h2>Add ${esc(r.first_name)}</h2><div class="sub">Creates the family and player. You can send the parent's app code straight after.</div><div class="fg">
+      <div class="f"><label>Team</label><select name="team"><option value="">Training squad</option>${teams.map(t => `<option value="${t.id}">${tname(t)} · ${roster(t.id).length}/${t.cap}</option>`).join("")}</select></div>
+      <div class="f h"><label>Jersey number</label><input type="number" name="no" min="0" max="99"></div>
+      <div class="f h"><label>Guardian relationship</label><select name="grel"><option>Father</option><option>Mother</option><option>Guardian</option></select></div></div>${mact("Add to the club")}</form>`); },
+  blast:() => { const R = D.regs.filter(r => !r.archived && r.stage !== "joined");
+    const emails = [...new Set(R.map(r => r.gemail).filter(Boolean))], phones = [...new Set(R.map(r => r.gphone).filter(Boolean))];
+    openModal(`<form data-form="blast"><h2>Message everyone</h2><div class="sub">${plural(R.length, "family", "families")} in the pipeline · ${emails.length} with email · ${phones.length} with a mobile</div>
+      <div class="fg"><div class="f"><label>Message</label><textarea name="body" required placeholder="Tryouts are on ${D.org.tryout && D.org.tryout.date ? fd(D.org.tryout.date, {wd:1}) : "…"} — reply to lock in a spot."></textarea>
+      <span class="hint">Email opens your mail app with everyone in BCC, so families never see each other's addresses. For texts, copy the numbers and paste the message into your phone's group SMS. A one-tap bulk SMS needs an SMS provider — say the word and it can be added later.</span></div></div>
+      <div class="mact"><button type="button" class="btn ghost" data-act="closeAll">Cancel</button>
+        <button type="button" class="btn" data-act="blastNums" data-v="${esc(phones.join(", ")).replace(/"/g, "&quot;")}">${I.copy}Copy ${phones.length} numbers</button>
+        <button class="btn pri">${I.mail}Open email to all</button></div></form>`); },
+  blastNums:el => copy(el.dataset.v, "Numbers copied"),
+  editTryout:() => { const tr = D.org.tryout || {};
+    openModal(`<form data-form="tryout"><h2>Tryout details</h2><div class="fg">
+      <div class="f t"><label>Date</label><input type="date" name="date" value="${tr.date || ""}" required></div>
+      <div class="f t"><label>Time</label><input type="time" name="time" value="${tr.time || "10:00"}" required></div>
+      <div class="f t"><label>Venue</label><select name="venue"><option value="">TBC</option>${venueOpts(tr.venue)}</select></div></div>${mact("Save")}</form>`); },
+  openConv:el => run(async () => { VIEW.conv = el.dataset.id; await loadMsgs(el.dataset.id); render(); }),
+  newConv:() => { const fams = D.families.slice().sort((a,b) => a.name.localeCompare(b.name));
+    openModal(`<form data-form="newConv"><h2>New thread</h2><div class="sub">A club thread reaches the parents. A coach thread includes the player too.</div><div class="fg">
+      <div class="f h"><label>Family</label><select name="family" required>${fams.map(f => `<option value="${f.id}">${esc(f.name)}</option>`).join("")}</select></div>
+      <div class="f h"><label>Kind</label><select name="kind"><option value="club">${CLUB.short} ↔ family</option><option value="coach">Coach thread</option></select></div>
+      <div class="f"><label>Team (for a coach thread)</label><select name="team"><option value="">–</option>${D.teams.filter(t => !t.archived).map(t => `<option value="${t.id}">${tname(t)}</option>`).join("")}</select></div>
+    </div>${mact("Open thread")}</form>`); },
+  commSeg:el => { VIEW.comm = el.dataset.id; render(); },
+  mod:el => run(async () => { await sb.from(el.dataset.t).update({status:el.dataset.v, reviewed_by:ME.id, reviewed_at:new Date().toISOString()}).eq("id", el.dataset.id).throwOnError();
+    const list = {posts:D.posts, comments:D.comments, media:D.media}[el.dataset.t];
+    const row = list.find(x => x.id === el.dataset.id); if (row) row.status = el.dataset.v;
+    render(); toast(el.dataset.v === "approved" ? "Approved — the club can see it now" : "Rejected"); }),
+  like:el => run(async () => { const mine = D.likes.find(l => l.post_id === el.dataset.id && l.profile_id === ME.id);
+    if (mine) { await sb.from("post_likes").delete().eq("post_id", el.dataset.id).eq("profile_id", ME.id).throwOnError(); D.likes = D.likes.filter(l => l !== mine); }
+    else { await sb.from("post_likes").insert({post_id:el.dataset.id, profile_id:ME.id}).throwOnError(); D.likes.push({post_id:el.dataset.id, profile_id:ME.id}); }
+    render(); }),
+  delPost:el => run(async () => { if (!confirm("Remove this post for everyone?")) return; await sb.from("posts").delete().eq("id", el.dataset.id).throwOnError(); D.posts = D.posts.filter(p => p.id !== el.dataset.id); render(); }),
+  delMedia:el => run(async () => { if (!confirm("Remove this from the gallery?")) return; const m = D.media.find(x => x.id === el.dataset.id);
+    await sb.from("media").delete().eq("id", m.id).throwOnError(); await sb.storage.from("media").remove([m.path]); D.media = D.media.filter(x => x.id !== m.id); render(); }),
+  closeSeason:() => run(async () => {
+    const s = D.org.season;
+    if (!confirm(`Archive ${s.name}? A snapshot of every team, roster and record is saved. Nothing else changes.`)) return;
+    const snap = {teams:D.teams.filter(t => !t.archived).map(t => { const fx = D.fixtures.filter(f => f.team_id === t.id && f.us != null); const w = fx.filter(f => f.us > f.them).length;
+      const rs = roster(t.id); const att = rs.map(p => attOf(p)).filter(a => a.n);
+      return {name:tname(t), coach:t.coach_name, roster:rs.map(pname), record:`${w}–${fx.length - w}`,
+        attendance:att.length ? Math.round(att.reduce((x,a) => x + a.here, 0) / att.reduce((x,a) => x + a.n, 0) * 100) : null}; })};
+    await sb.from("season_archive").insert({name:s.name || "Season", start_date:s.start, end_date:s.end, snapshot:snap}).throwOnError();
+    await reload(); toast("Season archived. Set the new season dates in Settings."); }),
+};
+document.addEventListener("click", e => { const el = e.target.closest("[data-act]"); if (!el || el.tagName === "SELECT" || el.type === "checkbox" || el.type === "file" || el.type === "number") return;
+  const fn = ACT[el.dataset.act]; if (fn) { if (el.tagName === "A") e.preventDefault(); fn(el, e); } });
+document.addEventListener("change", e => { const el = e.target;
+  if (el.dataset.act === "task") return ACT.task(el);
+  if (el.dataset.act === "move") return ACT.move(el);
+  if (el.dataset.act === "sheetUpload" && el.files[0]) return importSheet(el.files[0]);
+  if (el.dataset.act === "avatarUpload" && el.files[0]) return uploadAvatar(el.dataset.id, el.files[0]);
+  if (el.dataset.act === "galUpload" && el.files[0]) return uploadMedia(el.files[0]);
+  if (el.dataset.act === "ptsIn") return run(async () => { const pts = Math.max(0, +el.value || 0);
+    await sb.from("game_stats").upsert({fixture_id:el.dataset.fx, player_id:el.dataset.p, points:pts, entered_by:ME.id}).throwOnError();
+    const ex = D.stats.find(s => s.fixture_id === el.dataset.fx && s.player_id === el.dataset.p);
+    if (ex) ex.points = pts; else D.stats.push({fixture_id:el.dataset.fx, player_id:el.dataset.p, points:pts});
+    toast("Points saved"); });
+  if (el.dataset.f) { VIEW.pf[el.dataset.f] = el.value; render(); } });
+document.addEventListener("input", e => { const el = e.target; if (el.dataset.f === "q") { VIEW.pf.q = el.value; const pos = el.selectionStart; render(); const n = $('[data-f="q"]'); if (n) { n.focus(); n.setSelectionRange(pos, pos); } } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { if ($("#modal").classList.contains("on")) { $("#modal").classList.remove("on"); if (!DRAWER) $("#scrim").classList.remove("on"); } else closeAll(); } });
+
+const FORMS = {
+  task:async f => { const { data } = await sb.from("tasks").insert({body:f.t, who:f.who}).select().single(); D.tasks.push(data); },
+  note:async (f, el) => { const { data } = await sb.from("player_notes").insert({player_id:el.dataset.id, body:f.t, by_name:ME.full_name}).select().single(); D.notes.unshift(data); },
+  team:async (f, el) => {
+    if (tm(f.tend) <= tm(f.tstart)) { toast("Training has to end after it starts"); return false; }
+    const row = {age:f.age, div:f.div.trim(), comp:f.comp.trim(), coach_id:f.coach || null, asst_id:f.asst && f.asst !== f.coach ? f.asst : null, cap:+f.cap || 10, fee:+f.fee || 0,
+      train:[{dow:+f.tdow, start:f.tstart, end:f.tend, venue:f.tvenue, court:+f.tcourt || 1}], game:{dow:+f.gdow, venue:f.gvenue, time:f.gtime}};
+    if (el.dataset.id) { await sb.from("teams").update(row).eq("id", el.dataset.id).throwOnError();
+      await sb.from("fixtures").update({time:f.gtime, venue_id:f.gvenue}).eq("team_id", el.dataset.id).gte("date", todayISO()).throwOnError(); }
+    else { const { data } = await sb.from("teams").insert({...row, created:todayISO()}).select().single();
+      // seed weekly fixtures to season end
+      const rows = []; let M = monday(todayISO()), round = 0;
+      while (addD(M, +f.gdow - 1) <= D.org.season.end && rows.length < 30) { const date = addD(M, +f.gdow - 1); if (date >= todayISO()) rows.push({team_id:data.id, date, time:f.gtime, venue_id:f.gvenue, court:1, opp:"To be drawn", round:++round}); M = addD(M, 7); }
+      if (rows.length) await sb.from("fixtures").insert(rows).throwOnError(); }
+    await reload(); toast("Saved");
+  },
+  score:async (f, el) => { await sb.from("fixtures").update({us:+f.us, them:+f.them}).eq("id", el.dataset.id).throwOnError();
+    const fx = D.fixtures.find(x => x.id === el.dataset.id); fx.us = +f.us; fx.them = +f.them; },
+  video:async (f, el) => { await sb.from("fixtures").update({video_url:f.url}).eq("id", el.dataset.id).throwOnError();
+    D.fixtures.find(x => x.id === el.dataset.id).video_url = f.url; toast("Link saved — families see a Watch button"); },
+  fixture:async (f, el) => { const { data } = await sb.from("fixtures").insert({team_id:el.dataset.id, date:f.date, time:f.time, venue_id:f.venue, court:+f.court || 1, opp:f.opp || "To be drawn"}).select().single(); D.fixtures.push(data); },
+  newPlayer:async f => {
+    let famId = f.fam;
+    if (f.fam === "new") {
+      if (!f.gname.trim() || !f.gphone.trim()) { toast("Add the parent's name and mobile, or pick “No parent yet”"); return false; }
+      const { data: famRow } = await sb.from("families").insert({name:f.last.trim() + " family"}).select().single().throwOnError();
+      await sb.from("guardians").insert({family_id:famRow.id, name:f.gname.trim(), rel:f.grel, phone:f.gphone, email:f.gemail || null}).throwOnError();
+      famId = famRow.id;
+    } else if (f.fam === "later") {
+      const { data: famRow } = await sb.from("families").insert({name:f.last.trim() + " family"}).select().single().throwOnError();
+      famId = famRow.id;
+    }
+    await sb.from("players").insert({family_id:famId, first_name:f.first.trim(), last_name:f.last.trim(), dob:f.dob, phone:f.phone || "", team_id:f.team || null,
+      no:f.no === "" ? null : +f.no, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || "", source:"Added by staff"}).throwOnError();
+    await reload(); toast(f.fam === "later" ? "Player added — attach a parent from their file whenever" : "Player added");
+  },
+  addParent:async (f, el) => { const p = player(el.dataset.id);
+    await sb.from("guardians").insert({family_id:p.family_id, name:f.name.trim(), rel:f.rel, phone:f.phone, email:f.email || null}).throwOnError();
+    await reload(); toast("Parent attached — you can now send their app code");
+  },
+  editPlayer:async (f, el) => { const p = player(el.dataset.id);
+    const socials = {...(p.socials || {})}; socials.instagram = f.ig || undefined; socials.tiktok = f.tk || undefined;
+    Object.keys(socials).forEach(k => socials[k] === undefined && delete socials[k]);
+    await sb.from("players").update({phone:f.phone, no:f.no === "" ? null : +f.no, socials, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || ""}).eq("id", p.id).throwOnError();
+    Object.assign(p, {phone:f.phone, no:f.no === "" ? null : +f.no, socials, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || ""}); },
+  guardian:async (f, el) => { await sb.from("guardians").update({name:f.name, rel:f.rel, phone:f.phone, email:f.email || null}).eq("id", el.dataset.id).throwOnError();
+    Object.assign(D.guardians.find(g => g.id === el.dataset.id), {name:f.name, rel:f.rel, phone:f.phone, email:f.email || null}); },
+  pay:async (f, el) => { const pid = el.dataset.id || f.pid;
+    const { data } = await sb.from("payments").insert({player_id:pid, amount:+f.amt, paid_on:f.d, method:f.how, note:f.note || "", recorded_by:ME.id}).select().single().throwOnError();
+    D.payments.push(data); render(); showReceipt(player(pid), data); return false; },
+  payPick:async f => FORMS.pay(f, {dataset:{}}),
+  importGo:async f => {
+    if (!IMP) return;
+    const col = k => f[k] === "" || f[k] == null ? -1 : +f[k];
+    const S = v => String(v ?? "").trim();
+    const get = (r, k) => col(k) < 0 ? "" : S(r[col(k)]);
+    const raw = (r, k) => col(k) < 0 ? "" : r[col(k)];
+    const live = D.teams.filter(t => !t.archived);
+    const teamFor = v => { if (!v) return null; const s = v.toLowerCase().replace(/\s+/g, " ").trim();
+      let t = live.find(t => tname(t).toLowerCase() === s) || live.find(t => (t.age + " " + t.div).toLowerCase() === s);
+      if (!t) { const byAge = live.filter(t => t.age.toLowerCase() === s); if (byAge.length === 1) t = byAge[0]; }
+      return t ? t.id : null; };
+    let added = 0, dupes = 0, noName = 0, noTeam = 0, badDob = 0;
+    const famCache = {};
+    for (const r of IMP.rows) {
+      let first = get(r, "first"), last = get(r, "last");
+      if (!first) { const full = get(r, "full"); if (full) { const parts = full.split(/\s+/);
+        first = parts.length > 1 ? parts.slice(0, -1).join(" ") : parts[0]; last = parts.length > 1 ? parts[parts.length - 1] : last; } }
+      if (!first) { noName++; continue; }
+      last = last || "";
+      const dob = parseDob(raw(r, "dob"));
+      if (D.players.some(p => p.first_name.toLowerCase() === first.toLowerCase() && p.last_name.toLowerCase() === last.toLowerCase())) { dupes++; continue; }
+      const gname = get(r, "gname"), gphone = get(r, "gphone"), gemail = get(r, "gemail");
+      const key = (gemail || gphone || (gname ? gname + "|" + last : "one-off|" + first + "|" + last)).toLowerCase();
+      let famId = famCache[key];
+      if (!famId) {
+        const { data: fam } = await sb.from("families").insert({name:(last || first) + " family"}).select().single().throwOnError();
+        famId = famCache[key] = fam.id;
+        if (gname || gphone || gemail) await sb.from("guardians").insert({family_id:famId, name:gname || "Parent", rel:"Guardian", phone:gphone, email:gemail || null}).throwOnError();
+      }
+      const tv = get(r, "team"), team_id = teamFor(tv);
+      if (tv && !team_id) noTeam++;
+      if (!dob) badDob++;
+      const med = get(r, "med"), jersey = get(r, "no");
+      await sb.from("players").insert({family_id:famId, first_name:first, last_name:last, dob:dob || "2012-01-01",
+        phone:get(r, "phone"), team_id, no:/^\d+$/.test(jersey) ? +jersey : null, medical:!!med, medical_note:med,
+        source:dob ? "Imported from spreadsheet" : "Imported — check date of birth"}).throwOnError();
+      added++;
+    }
+    IMP = null; await reload();
+    toast(`${added} players in` + (dupes ? ` · ${dupes} already here, skipped` : "") + (noName ? ` · ${noName} rows had no name` : "")
+      + (noTeam ? ` · ${noTeam} team names didn't match (Training squad)` : "") + (badDob ? ` · ${badDob} birthdays to check` : ""), 9000);
+  },
+  inst:async (f, el) => { const { data } = await sb.from("instalments").insert({player_id:el.dataset.id, amount:+f.amt, due:f.due, note:f.note || ""}).select().single(); D.instalments.push(data); },
+  rego:async f => { const { data } = await sb.from("registrations").insert({first_name:f.first, last_name:f.last, dob:f.dob || null, phone:f.phone || "", gname:f.gname, gphone:f.gphone, gemail:f.gemail || "", msg:f.msg || ""}).select().single(); D.regs.push(data); },
+  join:async (f, el) => { const r = D.regs.find(x => x.id === el.dataset.id);
+    const { data: famRow } = await sb.from("families").insert({name:r.last_name + " family"}).select().single().throwOnError();
+    await sb.from("guardians").insert({family_id:famRow.id, name:r.gname, rel:f.grel, phone:r.gphone, email:r.gemail || null}).throwOnError();
+    const { data: pl } = await sb.from("players").insert({family_id:famRow.id, first_name:r.first_name, last_name:r.last_name, dob:r.dob || "2012-01-01", phone:r.phone || "",
+      team_id:f.team || null, no:f.no === "" ? null : +f.no, source:"Website registration"}).select().single().throwOnError();
+    await sb.from("registrations").update({stage:"joined", player_id:pl.id}).eq("id", r.id).throwOnError();
+    await reload(); toast(`${r.first_name} is in — send the parent code from his player file`); },
+  tryout:async f => { const tryout = {date:f.date, time:f.time, venue:f.venue || null};
+    await sb.from("org_settings").update({tryout}).eq("id", 1).throwOnError(); D.org.tryout = tryout; },
+  blast:async f => { const R = D.regs.filter(r => !r.archived && r.stage !== "joined");
+    const emails = [...new Set(R.map(r => r.gemail).filter(Boolean))];
+    location.href = `mailto:?bcc=${encodeURIComponent(emails.join(","))}&subject=${encodeURIComponent(CLUB.name)}&body=${encodeURIComponent(f.body)}`;
+    copy(f.body, "Message copied too — paste it anywhere"); },
+  newConv:async f => { const { data, error } = await sb.rpc("open_conversation", {p_kind:f.kind, p_family:f.family, p_team:f.kind === "coach" ? (f.team || null) : null});
+    if (error) throw error; await reload(); VIEW.conv = data; await loadMsgs(data); location.hash = "#/messages"; },
+  msg:async (f, el) => { const { data } = await sb.from("messages").insert({conversation_id:el.dataset.id, body:f.body}).select().single().throwOnError();
+    (D.msgs[el.dataset.id] = D.msgs[el.dataset.id] || []).push(data);
+    const c = D.convs.find(x => x.id === el.dataset.id); if (c) { c.last_message_at = data.created_at; c.last_preview = data.body.slice(0, 120); }
+    markRead(el.dataset.id); },
+  post:async f => { const { data } = await sb.from("posts").insert({body:f.body}).select().single().throwOnError(); D.posts.unshift(data);
+    if (data.status === "pending") toast("Sent — an admin approves it before the club sees it"); },
+  comment:async (f, el) => { const { data } = await sb.from("comments").insert({post_id:el.dataset.id, body:f.body}).select().single().throwOnError(); D.comments.push(data);
+    if (data.status === "pending") toast("Sent for approval"); },
+  org:async f => { const season = {...D.org.season, name:f.sname, start:f.start, end:f.end, ageYear:+f.ageYear};
+    await sb.from("org_settings").update({name:f.name, contact_name:f.contact, email:f.email, phone:f.phone, season, min_roster:+f.minRoster, min_game:+f.minGame, prayer:f.prayer === "1", guidelines:f.guidelines}).eq("id", 1).throwOnError();
+    Object.assign(D.org, {name:f.name, contact_name:f.contact, email:f.email, phone:f.phone, season, min_roster:+f.minRoster, min_game:+f.minGame, prayer:f.prayer === "1", guidelines:f.guidelines}); toast("Saved"); },
+  venue:async f => { const { data } = await sb.from("venues").insert({name:f.name.trim(), short:f.short.trim(), courts:+f.courts || 1}).select().single(); D.venues.push(data); toast(f.short + " added"); },
+  adminCode:async f => { const { data, error } = await sb.rpc("create_activation_code", {p_kind:"admin", p_target:null, p_email:f.email});
+    if (error) throw error;
+    openModal(`<div style="padding:20px 22px"><h2>Admin code</h2><div class="sub">For ${esc(f.email)} at ${CLUB.staffHost} → First time here. One use, 14 days.</div>
+      <div class="bigcode">${data}</div><div class="mact" style="justify-content:flex-start"><button class="btn pri" data-act="copyText" data-v="${data}">${I.copy}Copy</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); return false; },
+  coach:async (f, el) => { const row = {name:f.name.trim(), role:f.role || "Coach", phone:f.phone, email:f.email || null, wwcc_no:f.no || null, wwcc_exp:f.exp || null};
+    if (el.dataset.id) { await sb.from("coaches").update(row).eq("id", el.dataset.id).throwOnError(); Object.assign(coach(el.dataset.id), row); }
+    else { const { data } = await sb.from("coaches").insert(row).select().single(); D.coaches.push(data); } },
+};
+function coachForm(c){
+  const n = !c; c = c || {name:"", role:"Coach", phone:"", email:"", wwcc_no:"", wwcc_exp:""};
+  openModal(`<form data-form="coach" data-id="${n ? "" : c.id}"><h2>${n ? "Add coach" : esc(c.name)}</h2><div class="sub">The email is what they sign in with. The check number comes from ${CLUB.check.authority}.</div><div class="fg">
+    <div class="f h"><label>Name</label><input name="name" value="${esc(c.name)}" required></div><div class="f h"><label>Role</label><input name="role" value="${esc(c.role)}"></div>
+    <div class="f h"><label>Mobile</label><input name="phone" value="${esc(c.phone)}"></div><div class="f h"><label>Email (for sign-in)</label><input type="email" name="email" value="${esc(c.email || "")}"></div>
+    <div class="f h"><label>${CLUB.check.abbr} number</label><input name="no" value="${esc(c.wwcc_no || "")}"></div><div class="f h"><label>Expires</label><input type="date" name="exp" value="${c.wwcc_exp || ""}"></div></div>${mact("Save")}</form>`);
+}
+document.addEventListener("change", e => { const s = e.target.closest("[data-famsel]"); if (!s) return;
+  const w = s.closest("form").querySelector("[data-famfields]"); if (w) w.style.display = s.value === "new" ? "contents" : "none"; });
+document.addEventListener("submit", e => {
+  const el = e.target, k = el.dataset.form; if (!FORMS[k]) return; e.preventDefault();
+  const f = Object.fromEntries(new FormData(el).entries());
+  run(async () => { const r = await FORMS[k](f, el); if (r === false) return;
+    if (el.closest("#modal")) { $("#modal").classList.remove("on"); if (!DRAWER) $("#scrim").classList.remove("on"); }
+    if (el.dataset.form === "msg" || el.dataset.form === "task" || el.dataset.form === "note" || el.dataset.form === "comment" || el.dataset.form === "post") el.reset();
+    render(); });
+});
+
+/* ---------- spreadsheet import ---------- */
+// The reader library only loads when someone actually picks a file.
+let IMP = null;
+async function needXLSX(){ if (window.XLSX) return;
+  await new Promise((ok, no) => { const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+    s.onload = ok; s.onerror = () => no(new Error("Couldn't load the spreadsheet reader — check the connection"));
+    document.head.appendChild(s); });
+}
+function importSheet(file){ run(async () => {
+  await needXLSX();
+  // raw:true keeps CSV cells as the text that was typed — otherwise the reader
+  // guesses dates American-style and 12/03 (12 March) turns into December 3.
+  const wb = XLSX.read(await file.arrayBuffer(), {type:"array", raw:true});
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const all = XLSX.utils.sheet_to_json(ws, {header:1, raw:true, defval:""});
+  const hi = all.findIndex(r => r.filter(c => typeof c === "string" && c.trim()).length >= 2);
+  if (hi < 0) throw new Error("Couldn't find a heading row in that file");
+  const headers = all[hi].map(h => String(h).trim());
+  const rows = all.slice(hi + 1).filter(r => r.some(c => String(c).trim()));
+  if (!rows.length) throw new Error("No rows under the headings");
+  IMP = {headers, rows};
+  importMap();
+}); }
+// What we can file, and how a heading usually spells it.
+const IMP_FIELDS = [
+  ["first", "Player first name", /first|given/i],
+  ["last", "Player last name", /last ?name|surname|family name/i],
+  ["full", "Player full name (one column)", /^(player ?|child ?|full ?)?names?$/i],
+  ["dob", "Date of birth", /d\.? ?o\.? ?b|birth/i],
+  ["team", "Team or age group", /team|squad|age ?group|division|div/i],
+  ["no", "Jersey number", /jersey|singlet|^#$|^no\.?$|^(shirt|top) ?(no|number)$/i],
+  ["gname", "Parent name", /(parent|guardian|mother|father|mum|dad)(?!.*(mob|phone|mail|numb))/i],
+  ["gphone", "Parent mobile", /(parent|guardian|contact|emergency).*(mob|phone|number)|^(mobile|phone|contact)( number)?$/i],
+  ["gemail", "Parent email", /mail/i],
+  ["phone", "Player mobile", /player.*(mob|phone)/i],
+  ["med", "Medical note", /medical|allerg|health|condition/i],
+];
+function importMap(){
+  const used = new Set(), guess = {};
+  for (const [k, , re] of IMP_FIELDS) { const i = IMP.headers.findIndex((h, ix) => h && re.test(h) && !used.has(ix));
+    if (i >= 0) { guess[k] = i; used.add(i); } }
+  const opts = ci => `<option value="">— not in this sheet —</option>` + IMP.headers.map((h, i) =>
+    `<option value="${i}"${ci === i ? " selected" : ""}>${esc(h || "column " + (i + 1))}</option>`).join("");
+  openModal(`<form data-form="importGo"><h2>Import ${IMP.rows.length} rows</h2>
+    <div class="sub">The headings have been matched up automatically — fix any that look wrong, then import. Already-known players are skipped.</div><div class="fg">
+    ${IMP_FIELDS.map(([k, label]) => `<div class="f h"><label>${label}</label><select name="${k}">${opts(guess[k])}</select></div>`).join("")}
+    </div>${mact("Import players")}</form>`);
+}
+function parseDob(v){
+  if (v === "" || v == null) return null;
+  if (typeof v === "number" && v > 20000 && v < 60000) return new Date(Date.UTC(1899, 11, 30) + v * 86400000).toISOString().slice(0, 10);
+  const s = String(v).trim();
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/); if (m) return m[0];
+  m = s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/); // day-first by default; set dateOrder:"mdy" in club.config.json for US-style sheets
+  if (m) { let y = +m[3]; if (y < 100) y += y > 30 ? 1900 : 2000;
+    let d = +m[1], mo = +m[2];
+    if (CLUB.dateOrder === "mdy") { const t2 = d; d = mo; mo = t2; }
+    if (mo > 12 && d <= 12) { const t = mo; mo = d; d = t; } // clearly month-first, flip it
+    if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+    return `${y}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}`; }
+  return null;
+}
+
+/* ---------- uploads ---------- */
+function shrink(file, max){ return new Promise(res => { const img = new Image(); img.onload = () => { const k = Math.min(1, max / Math.max(img.width, img.height));
+  const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+  c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); c.toBlob(b => res(b), "image/jpeg", .86); }; img.src = URL.createObjectURL(file); }); }
+function uploadAvatar(pid, file){ run(async () => {
+  const blob = await shrink(file, 512); const path = `players/${pid}.jpg`;
+  const { error } = await sb.storage.from("avatars").upload(path, blob, {upsert:true, contentType:"image/jpeg"});
+  if (error) throw error;
+  await sb.from("players").update({photo_path:path}).eq("id", pid).throwOnError();
+  player(pid).photo_path = path; delete SIGNED[path]; render(); toast("Photo saved"); }); }
+function uploadMedia(file){ run(async () => {
+  const isVideo = file.type.startsWith("video");
+  if (file.size > 50 * 1024 * 1024) { toast("Keep clips under 50MB"); return; }
+  const blob = isVideo ? file : await shrink(file, 1600);
+  const path = `gallery/${Date.now()}-${Math.random().toString(36).slice(2, 8)}${isVideo ? ".mp4" : ".jpg"}`;
+  const { error } = await sb.storage.from("media").upload(path, blob, {contentType:isVideo ? file.type : "image/jpeg"});
+  if (error) throw error;
+  const cap = prompt("Caption (optional)") || "";
+  const { data } = await sb.from("media").insert({path, kind:isVideo ? "video" : "image", caption:cap}).select().single().throwOnError();
+  D.media.unshift(data); render(); toast("Added to the gallery"); }); }
+
+/* ---------- messages plumbing ---------- */
+async function loadMsgs(cid){
+  const { data } = await sb.from("messages").select("*").eq("conversation_id", cid).order("created_at").limit(300);
+  D.msgs[cid] = data || []; markRead(cid);
+}
+function markRead(cid){ D.reads[cid] = new Date().toISOString(); sb.from("conversation_reads").upsert({conversation_id:cid, profile_id:ME.id, last_read_at:D.reads[cid]}).then(() => {}); }
+function startRealtime(){
+  sb.channel("staff")
+    .on("postgres_changes", {event:"INSERT", schema:"public", table:"messages"}, pl => { const m = pl.new;
+      if (D.msgs[m.conversation_id] && !D.msgs[m.conversation_id].some(x => x.id === m.id)) D.msgs[m.conversation_id].push(m);
+      const c = D.convs.find(x => x.id === m.conversation_id);
+      if (c) { c.last_message_at = m.created_at; c.last_preview = m.body.slice(0, 120); if (VIEW.conv === m.conversation_id) markRead(c.id); }
+      else sb.from("conversations").select("*").eq("id", m.conversation_id).single().then(({data}) => { if (data) { D.convs.unshift(data); render(); } });
+      render(); })
+    .on("postgres_changes", {event:"*", schema:"public", table:"posts"}, () => refreshComm())
+    .on("postgres_changes", {event:"*", schema:"public", table:"comments"}, () => refreshComm())
+    .on("postgres_changes", {event:"*", schema:"public", table:"media"}, () => refreshComm())
+    .subscribe();
+}
+async function refreshConvs(){ try { const c = await q("conversations", "*", {c:"last_message_at", a:false}); D.convs = c; render(); } catch (e) {} }
+let commT = null;
+function refreshComm(){ clearTimeout(commT); commT = setTimeout(async () => {
+  const [p, c, m, l] = await Promise.all([q("posts", "*", {c:"created_at", a:false}), q("comments", "*", {c:"created_at"}), q("media", "*", {c:"created_at", a:false}), q("post_likes")]);
+  D.posts = p; D.comments = c; D.media = m; D.likes = l; render(); }, 400); }
+
+/* ---------- theme ---------- */
+function setTheme(t){ document.documentElement.dataset.theme = t; try { localStorage.setItem(CLUB.slug + "_staff_theme", t); } catch (e) {} const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = t === "light" ? "{{C_LIGHT_BG}}" : "{{C_BG}}"; render(); }
+(() => { let t = null; try { t = localStorage.getItem(CLUB.slug + "_staff_theme"); } catch (e) {} document.documentElement.dataset.theme = t || "dark"; })();
+
+/* ---------- gate ---------- */
+function gate(mode, err){
+  $("#loading").hidden = true; $("#shell").hidden = true; $("#gate").hidden = false;
+  const g = $("#gcard");
+  if (mode === "wrongApp") { g.innerHTML = `<p style="margin:0 0 14px;font-size:14px">This sign-in belongs to the family app, not the staff one.</p>
+    <a class="btn pri" href="${FAMILY_URL}">Open the ${CLUB.short} app</a><div style="height:8px"></div><button class="btn" data-act="signout" style="width:100%">Sign out</button>`; return; }
+  if (mode === "forgot") { g.innerHTML = `<p style="margin:0 0 8px;font-size:14.5px;font-weight:600">Forgot your password?</p>
+    <p style="margin:0 0 16px;font-size:13.5px;color:var(--ink-2)">No stress — message ${CLUB.short} and an admin sends you a fresh code. When it arrives, tap “I have a code” and pick a new password.</p>
+    <a class="btn pri" style="width:100%" href="https://wa.me/${CLUB.wa}?text=${encodeURIComponent(CLUB.greet + ", I forgot my " + CLUB.hq + " password. My email is: ")}" target="_blank" rel="noopener">WhatsApp ${CLUB.short} for a reset code</a>
+    <div style="height:8px"></div>
+    <button class="btn" style="width:100%" data-g="toActivate">I have a code</button>
+    <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toSignin">Back to sign in</button></p>`; return; }
+  if (mode === "join") { g.innerHTML = `<form id="gform" data-g="join">
+    <p style="margin:0 0 8px;font-size:14.5px;font-weight:600">Welcome to the ${CLUB.short} coaching staff 👋</p>
+    <p style="margin:0 0 16px;font-size:13.5px;color:var(--ink-2)">Fill in your details once and you're in. The ${CLUB.check.abbr} number comes from ${CLUB.check.authority}.</p>
+    <div class="gerr">${esc(err || "")}</div>
+    <div class="f"><label>Full name</label><input name="name" required autocomplete="name"></div>
+    <div class="f"><label>Mobile</label><input name="phone" inputmode="tel" required autocomplete="tel"></div>
+    <div class="f"><label>Email (your sign-in)</label><input name="email" type="email" required autocomplete="email"></div>
+    <div class="f"><label>${CLUB.check.abbr} number</label><input name="wwcc_no" placeholder="${CLUB.check.placeholder}"></div>
+    <div class="f"><label>${CLUB.check.abbr} expiry</label><input name="wwcc_exp" type="date"></div>
+    <div class="f"><label>Choose a password (8+ characters)</label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
+    <button class="btn pri">Save my details and go in</button>
+    <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toSignin">I already have an account</button></p></form>`; return; }
+  if (mode === "welcome") { g.innerHTML = `<form id="gform" data-g="welcome">
+    <p style="margin:0 0 8px;font-size:14.5px;font-weight:600">Welcome to ${CLUB.hq} 👋</p>
+    <p style="margin:0 0 16px;font-size:13.5px;color:var(--ink-2)">One step and you're in: pick a password. Next time you open the app it's just your email and this password.</p>
+    <div class="gerr">${esc(err || "")}</div>
+    <div class="f"><label>Choose a password (8+ characters)</label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
+    <button class="btn pri">Set my password and go in</button>
+    <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toSignin">I already have a password</button></p></form>`; return; }
+  if (mode === "activate") { g.innerHTML = `<form id="gform" data-g="activate">
+    <div class="gerr">${esc(err || "")}</div>
+    <div class="f"><label>Email</label><input name="email" type="email" required autocomplete="username"></div>
+    <div class="f"><label>Code from ${CLUB.short}</label><input name="code" required autocomplete="one-time-code" style="text-transform:uppercase"></div>
+    <div class="f"><label>Choose a password (8+ characters)</label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
+    <button class="btn pri">Set password and sign in</button>
+    <p style="text-align:center;margin:14px 0 0"><button type="button" class="glink" data-g="toSignin">Back to sign in</button></p></form>`; return; }
+  g.innerHTML = `<form id="gform" data-g="signin">
+    <div class="gerr">${esc(err || "")}</div>
+    <div class="f"><label>Email</label><input name="email" type="email" required autocomplete="username"></div>
+    <div class="f"><label>Password</label><input name="password" type="password" required autocomplete="current-password"></div>
+    <button class="btn pri">Sign in</button>
+    <p style="text-align:center;margin:14px 0 0;display:flex;justify-content:space-between"><button type="button" class="glink" data-g="toActivate">I have a code</button><button type="button" class="glink" data-g="toForgot">Forgot password?</button></p></form>`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-g]"); if (!b || b.tagName === "FORM") return;
+  if (b.dataset.g === "toActivate") gate("activate"); if (b.dataset.g === "toSignin") { WELCOME = null; JOIN = null; gate("signin"); } if (b.dataset.g === "toForgot") gate("forgot"); });
+document.addEventListener("submit", async e => {
+  const f = e.target; if (!f.dataset.g) return; e.preventDefault();
+  const v = Object.fromEntries(new FormData(f).entries());
+  f.querySelector("button.pri").disabled = true;
+  if (f.dataset.g === "join") {
+    const r = await fetch(`${SUPA_URL}/functions/v1/join`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify({...v, token:JOIN})});
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { gate("join", j.error || "That didn't work"); return; }
+    JOIN = null;
+    const { error } = await sb.auth.signInWithPassword({email:j.email, password:v.password});
+    if (error) { gate("signin", error.message); return; }
+    boot(); return;
+  }
+  if (f.dataset.g === "welcome") {
+    const r = await fetch(`${SUPA_URL}/functions/v1/setup`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify({token:WELCOME, password:v.password})});
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { gate("welcome", j.error || "That didn't work"); return; }
+    if (!["admin","coach"].includes(j.role)) { gate("signin", "That link is for the family app: " + FAMILY_URL); return; }
+    WELCOME = null;
+    const { error } = await sb.auth.signInWithPassword({email:j.email, password:v.password});
+    if (error) { gate("signin", error.message); return; }
+    boot(); return;
+  }
+  if (f.dataset.g === "activate") {
+    const r = await fetch(`${SUPA_URL}/functions/v1/activate`, {method:"POST", headers:{"Content-Type":"application/json", apikey:SUPA_KEY}, body:JSON.stringify(v)});
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { gate("activate", j.error || "That didn't work"); return; }
+    if (!["admin","coach"].includes(j.role)) { gate("signin", "That code is for the family app: " + FAMILY_URL); return; }
+  }
+  const { error } = await sb.auth.signInWithPassword({email:v.email, password:v.password});
+  if (error) { gate(f.dataset.g === "activate" ? "signin" : "signin", error.message === "Invalid login credentials" ? "Wrong email or password." : error.message); return; }
+  boot();
+});
+
+/* ---------- boot ---------- */
+// A welcome link (<staff url>/#welcome=TOKEN) skips the whole gate:
+// the token is lifted out of the URL before anything else sees it.
+let WELCOME = null, JOIN = null;
+{ const m = location.hash.match(/^#welcome=([A-Za-z0-9_-]{16,64})$/); if (m) { WELCOME = m[1]; history.replaceState(null, "", location.pathname + location.search); } }
+{ const m = location.hash.match(/^#join=([A-Za-z0-9_-]{16,64})$/); if (m) { JOIN = m[1]; history.replaceState(null, "", location.pathname + location.search); } }
+async function boot(){
+  if (WELCOME) { $("#loading").hidden = true; gate("welcome"); return; }
+  if (JOIN) { $("#loading").hidden = true; gate("join"); return; }
+  $("#gate").hidden = true; $("#loading").hidden = false;
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { gate("signin"); return; }
+  const { data: prof, error } = await sb.from("profiles").select("*").eq("id", session.user.id).single();
+  if (error || !prof) { gate("signin", "Couldn't load your profile. Try again."); return; }
+  ME = prof;
+  if (!["admin","coach"].includes(ME.role)) { gate("wrongApp"); return; }
+  try { await fetchAll(); } catch (e) { console.error(e); gate("signin", "Couldn't load the club data: " + e.message); return; }
+  $("#loading").hidden = true; $("#shell").hidden = false;
+  VIEW.r = parseHash(); render(); startRealtime();
+}
+boot();
+</script>
+</body>
+</html>

@@ -2,6 +2,14 @@
 
 The home for all Groundworks Studios projects. Each project lives in its own folder. Files were pulled from the live Netlify sites on 2026-07-12.
 
+## ClubHQ — white-label club OS (subscription product)
+
+| Project | Folder | Live site |
+|---------|--------|-----------|
+| ClubHQ — template, stamping script and docs | [`clubhq/`](clubhq/) | — |
+| Clutch Basketball — staff app (first ClubHQ instance) | [`clubhq/clubs/clutch/staff/`](clubhq/clubs/clutch/staff/) | [clutch-hq.netlify.app](https://clutch-hq.netlify.app) |
+| Clutch Basketball — family app (first ClubHQ instance) | [`clubhq/clubs/clutch/family/`](clubhq/clubs/clutch/family/) | [clutch-basketball.netlify.app](https://clutch-basketball.netlify.app) |
+
 ## Studio & Business
 
 | Project | Folder | Live site |
