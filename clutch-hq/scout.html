@@ -15,7 +15,7 @@
   --disp:'Big Shoulders Display',sans-serif;--sans:'IBM Plex Sans',system-ui,sans-serif}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);min-height:100dvh}
-.wrap{max-width:640px;margin:0 auto;padding:0 14px 320px} /* clears the fixed add form so the bottom buttons stay tappable */
+.wrap{max-width:640px;margin:0 auto;padding:0 14px 110px} /* clears the floating Mark-a-player button */
 header{display:flex;align-items:center;gap:10px;padding:14px 2px 10px}
 header img{width:40px;height:40px;border-radius:10px}
 header h1{font:800 22px var(--disp);letter-spacing:.04em;text-transform:uppercase;line-height:1}
@@ -55,8 +55,19 @@ header .sub{font-size:11.5px;color:var(--ink2);margin-top:3px}
 .agree.did{color:var(--acc);border-color:var(--acc)}
 .zap{position:absolute;top:8px;right:10px;border:0;background:none;color:var(--dim);font-size:15px;cursor:pointer;padding:4px}
 .empty{color:var(--dim);text-align:center;padding:34px 10px 20px;font-size:13.5px}
-.add{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,transparent,rgba(11,10,8,.88) 24%);padding:18px 14px calc(12px + env(safe-area-inset-bottom))}
-.add .in{max-width:640px;margin:0 auto;background:var(--card2);border:1px solid var(--line2);border-radius:16px;padding:12px;box-shadow:0 -10px 40px rgba(0,0,0,.5)}
+.add{position:fixed;left:0;right:0;bottom:0;padding:10px 14px calc(12px + env(safe-area-inset-bottom));pointer-events:none}
+.add .in{max-width:640px;margin:0 auto;background:var(--card2);border:1px solid var(--line2);border-radius:16px;padding:12px;box-shadow:0 -10px 40px rgba(0,0,0,.6);display:none;pointer-events:auto}
+.add.open{background:linear-gradient(180deg,transparent,rgba(11,10,8,.9) 20%)}
+.add.open .in{display:block}
+#openAdd{display:block;max-width:640px;margin:0 auto;width:100%;border:0;background:var(--acc);color:#1A0C00;
+  border-radius:999px;padding:15px;font:800 15px var(--sans);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+  box-shadow:0 10px 30px rgba(0,0,0,.55);pointer-events:auto}
+#openAdd:active{transform:scale(.985)}
+.add.open #openAdd{display:none}
+.addhead{display:flex;align-items:center;margin-bottom:9px}
+.addhead b{font:800 15px var(--disp);letter-spacing:.06em;text-transform:uppercase}
+.addhead button{margin-left:auto;border:1px solid var(--line);background:transparent;color:var(--ink2);
+  border-radius:8px;width:32px;height:32px;font-size:15px;cursor:pointer}
 .add .closedmsg{display:none;text-align:center;color:var(--ink2);font-size:13.5px;padding:6px}
 .row{display:flex;gap:8px}
 .add input,.add select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);
@@ -116,7 +127,10 @@ header .sub{font-size:11.5px;color:var(--ink2);margin-top:3px}
   </div>
 </div>
 
-<div class="add" id="add"><div class="in">
+<div class="add" id="add">
+<button id="openAdd" type="button">➕ Mark a player</button>
+<div class="in">
+  <div class="addhead"><b>Mark a player</b><button type="button" id="closeAdd" aria-label="Close">✕</button></div>
   <div class="closedmsg" id="closedmsg">Board's closed — good work out there.</div>
   <form id="f">
     <div class="row"><input id="player" placeholder="Player name (or 'name unknown')" maxlength="80" autocomplete="off">
@@ -187,7 +201,7 @@ function render(){
     </div>`).join("") || `<div class="empty">${TAB === "All" ? "Nothing on the board yet — first standout goes up in seconds." : "No standouts in " + esc(TAB) + " yet. You watching them? 👀"}</div>`;
   ROWS.forEach(r => SEEN.add(r.id));
   if (!$("#regos").hidden) renderMarked(); // shortlist stays live too
-  if (!open()) { $("#closed").style.display = "block"; $("#f").style.display = "none"; $("#closedmsg").style.display = "block"; }
+  if (!open()) { $("#closed").style.display = "block"; $("#f").style.display = "none"; $("#closedmsg").style.display = "block"; $("#openAdd").style.display = "none"; $("#add").classList.remove("open"); }
 }
 async function refresh(){
   const { data, error } = await sb.rpc("scout_list", {p_key:KEY});
@@ -217,6 +231,7 @@ $("#f").addEventListener("submit", async e => {
   $("#go").disabled = false;
   if (error) { toast(error.message || "Didn't save — try again"); return; }
   $("#player").value = ""; $("#look").value = ""; $("#note").value = ""; $("#bib").value = ""; $("#pos").value = "";
+  $("#add").classList.remove("open"); // tuck the form away so the board is clear again
   toast("On the board 🏀 every coach can see it now");
   refresh();
 });
@@ -270,6 +285,8 @@ $("#dl").addEventListener("click", async () => {
   toast("Spreadsheet saved — opens straight into Excel");
 });
 
+$("#openAdd").addEventListener("click", () => { $("#add").classList.add("open"); setTimeout(() => $("#player").focus(), 60); });
+$("#closeAdd").addEventListener("click", () => $("#add").classList.remove("open"));
 $("#me").value = localStorage.getItem("scout_name") || "";
 $("#me").addEventListener("input", () => localStorage.setItem("scout_name", $("#me").value));
 $("#grp").innerHTML = GROUPS.map(g => `<option${TAB === g ? " selected" : ""}>${g}</option>`).join("");
