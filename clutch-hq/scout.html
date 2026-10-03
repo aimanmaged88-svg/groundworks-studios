@@ -44,6 +44,12 @@ header .sub{font-size:11.5px;color:var(--ink2);margin-top:3px}
 .card .look{color:var(--ink2);font-size:13px;margin-top:3px}
 .card .note{margin-top:7px;font-size:14px}
 .card .meta{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11.5px;color:var(--dim)}
+.coachchip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 10px 3px 4px;
+  font-size:11px;font-weight:700;letter-spacing:.04em;background:rgba(255,244,230,.06);border:1px solid var(--line)}
+.coachchip i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font:800 9.5px var(--sans);font-style:normal;color:#0B0A08}
+.poschip{font-size:10.5px;font-weight:700;background:rgba(255,244,230,.07);border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--ink2)}
+@keyframes landed{0%{box-shadow:0 0 0 2px var(--acc);background:var(--accw)}100%{box-shadow:none}}
+.card.new{animation:landed 2.4s ease-out}
 .agree{margin-left:auto;border:1px solid var(--line);background:transparent;color:var(--ink2);border-radius:999px;
   padding:5px 12px;font:600 12px var(--sans);cursor:pointer}
 .agree.did{color:var(--acc);border-color:var(--acc)}
@@ -98,8 +104,10 @@ header .sub{font-size:11.5px;color:var(--ink2);margin-top:3px}
   <form id="f">
     <div class="row"><input id="player" placeholder="Player name (or 'name unknown')" maxlength="80" autocomplete="off">
       <select id="grp" style="flex:0 0 108px"></select></div>
-    <input id="look" placeholder="What they look like — bib number, shoes, top…" maxlength="120" autocomplete="off">
-    <input id="note" placeholder="What stood out — handles, motor, vision…" maxlength="300" autocomplete="off">
+    <div class="row"><input id="bib" placeholder="Bib # (optional)" inputmode="numeric" maxlength="6" autocomplete="off" style="flex:0 0 118px">
+      <select id="pos"><option value="">Position? (optional)</option><option>Guard</option><option>Wing</option><option>Big</option></select></div>
+    <input id="look" placeholder="Spot them: shoes, top, hair… (optional)" maxlength="120" autocomplete="off">
+    <input id="note" placeholder="What stood out — handles, motor, vision… (optional)" maxlength="300" autocomplete="off">
     <div class="seg" id="seg">
       <button type="button" data-r="1">⭐ Solid</button>
       <button type="button" data-r="2" class="on">⭐⭐ Strong</button>
@@ -117,7 +125,9 @@ header .sub{font-size:11.5px;color:var(--ink2);margin-top:3px}
     <li><div class="n">2</div><div><b>Kid stands out? Add them.</b> Name if you caught it, or what they're wearing — "bib 14, red Jordans" works.</div></li>
     <li><div class="n">3</div><div><b>Rate it:</b> ⭐ solid · ⭐⭐ strong · ⭐⭐⭐ special. See someone else's pick balling out? Tap <b>“Saw it too”</b>.</div></li>
   </ol>
-  <p>Every coach sees the same board, updating live. Type your name first so we know whose eyes are whose.</p>
+  <p>Every coach sees the same board, updating live — your name goes on every call you make.</p>
+  <input id="tutname" placeholder="First up — what's your name, coach?" maxlength="30" autocomplete="off"
+    style="width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:10px;color:var(--ink);font:600 15px var(--sans);padding:12px;outline:0;margin-bottom:10px">
   <button class="go" id="gotit">Got it — let's scout</button>
 </div></div>
 
@@ -133,6 +143,10 @@ const CUTOFF = Date.UTC(2026, 9, 3, 14, 0, 0); // midnight Sydney, end of tryout
 const GROUPS = ["10–11", "12–13", "14–15", "16–17", "Not sure"];
 let DEV = localStorage.getItem("scout_dev"); if (!DEV) { DEV = crypto.randomUUID(); localStorage.setItem("scout_dev", DEV); }
 let TAB = localStorage.getItem("scout_tab") || "All", TOP = false, ROWS = [], RATING = 2;
+const SEEN = new Set();
+// a steady colour per coach name, so each coach's calls are scannable at a glance
+function coachHue(name){ let h = 0; for (const c of String(name || "?")) h = (h * 31 + c.charCodeAt(0)) % 360;
+  return `hsl(${h} 70% 62%)`; }
 
 function toast(m){ const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 3200); }
 const open = () => Date.now() < CUTOFF;
@@ -146,14 +160,15 @@ function render(){
   if (TOP) L = L.filter(r => r.rating === 3);
   $("#count").textContent = L.length ? `${L.length} standout${L.length > 1 ? "s" : ""}` : "";
   $("#list").innerHTML = L.map(r => `
-    <div class="card${r.rating === 3 ? " hot" : ""}">
+    <div class="card${r.rating === 3 ? " hot" : ""}${SEEN.size && !SEEN.has(r.id) ? " new" : ""}">
       ${r.device === DEV && open() ? `<button class="zap" data-del="${r.id}" title="Remove">✕</button>` : ""}
-      <div class="top"><b>${esc(r.player)}</b><span class="stars">${"★".repeat(r.rating)}</span><span class="grpchip">${esc(r.grp)}</span></div>
+      <div class="top"><b>${r.bib ? "#" + esc(r.bib) + " · " : ""}${esc(r.player)}</b><span class="stars">${"★".repeat(r.rating)}</span><span class="grpchip">${esc(r.grp)}</span>${r.pos ? `<span class="poschip">${esc(r.pos)}</span>` : ""}</div>
       ${r.look ? `<div class="look">${esc(r.look)}</div>` : ""}
       ${r.note ? `<div class="note">${esc(r.note)}</div>` : ""}
-      <div class="meta">${esc(r.coach || "A coach")} · ${when(r.created_at)}
+      <div class="meta"><span class="coachchip"><i style="background:${coachHue(r.coach)}">${esc((r.coach || "?").trim().slice(0, 2).toUpperCase())}</i>Coach ${esc(r.coach || "?")}</span> ${when(r.created_at)}
         <button class="agree${r.agreed.includes(DEV) ? " did" : ""}" data-agree="${r.id}" ${open() ? "" : "disabled"}>👍 Saw it too${r.agreed.length ? " · " + r.agreed.length : ""}</button></div>
     </div>`).join("") || `<div class="empty">${TAB === "All" ? "Nothing on the board yet — first standout goes up in seconds." : "No standouts in " + esc(TAB) + " yet. You watching them? 👀"}</div>`;
+  ROWS.forEach(r => SEEN.add(r.id));
   if (!open()) { $("#closed").style.display = "block"; $("#f").style.display = "none"; $("#closedmsg").style.display = "block"; }
 }
 async function refresh(){
@@ -179,17 +194,23 @@ $("#f").addEventListener("submit", async e => {
   if (!coach) { toast("Put your name up top first so the others know whose call it is."); $("#me").focus(); return; }
   $("#go").disabled = true;
   const { error } = await sb.rpc("scout_add", {p_key:KEY, p_grp:$("#grp").value, p_player:player,
-    p_look:$("#look").value.trim(), p_note:$("#note").value.trim(), p_rating:RATING, p_coach:coach, p_device:DEV});
+    p_look:$("#look").value.trim(), p_note:$("#note").value.trim(), p_rating:RATING, p_coach:coach, p_device:DEV,
+    p_bib:$("#bib").value.trim(), p_pos:$("#pos").value});
   $("#go").disabled = false;
   if (error) { toast(error.message || "Didn't save — try again"); return; }
-  $("#player").value = ""; $("#look").value = ""; $("#note").value = "";
+  $("#player").value = ""; $("#look").value = ""; $("#note").value = ""; $("#bib").value = ""; $("#pos").value = "";
   toast("On the board 🏀 every coach can see it now");
   refresh();
 });
 $("#me").value = localStorage.getItem("scout_name") || "";
 $("#me").addEventListener("input", () => localStorage.setItem("scout_name", $("#me").value));
 $("#grp").innerHTML = GROUPS.map(g => `<option${TAB === g ? " selected" : ""}>${g}</option>`).join("");
-$("#gotit").addEventListener("click", () => { $("#tut").hidden = true; localStorage.setItem("scout_tut", "1"); $("#me").value || $("#me").focus(); });
+$("#gotit").addEventListener("click", () => {
+  const n = $("#tutname").value.trim();
+  if (!n && !$("#me").value.trim()) { $("#tutname").focus(); $("#tutname").style.borderColor = "var(--acc)"; return; }
+  if (n) { $("#me").value = n; localStorage.setItem("scout_name", n); }
+  $("#tut").hidden = true; localStorage.setItem("scout_tut", "1");
+});
 if (!KEY) { document.body.innerHTML = '<div style="display:grid;place-items:center;min-height:100dvh;padding:30px;text-align:center;color:#B9B0A2;font-family:sans-serif">This link is missing its key.<br>Ask Aiman for the full tryout-board link.</div>'; }
 else {
   if (!localStorage.getItem("scout_tut")) $("#tut").hidden = false;
