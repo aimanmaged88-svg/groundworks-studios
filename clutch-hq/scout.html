@@ -202,6 +202,7 @@ function render(){
       <div class="meta"><span class="coachchip"><i style="background:${coachHue(r.coach)}">${esc((r.coach || "?").trim().slice(0, 2).toUpperCase())}</i>Coach ${esc(r.coach || "?")}</span> ${when(r.created_at)}
         ${open() ? `<button class="agree" data-edit="${r.id}">✎ Edit</button>` : ""}
         <button class="agree${r.agreed.includes(DEV) ? " did" : ""}" data-agree="${r.id}" ${open() ? "" : "disabled"}>👍 Saw it too${r.agreed.length ? " · " + r.agreed.length : ""}</button></div>
+      ${(r.agreed_names || []).filter(Boolean).length ? `<div style="margin-top:7px;font-size:12px;color:var(--acc)">👍 Also seen by ${esc([...new Set(r.agreed_names.filter(Boolean))].join(", "))}</div>` : ""}
     </div>`).join("") || `<div class="empty">${TAB === "All" ? "Nothing on the board yet — first standout goes up in seconds." : "No standouts in " + esc(TAB) + " yet. You watching them? 👀"}</div>`;
   ROWS.forEach(r => SEEN.add(r.id));
   if (!$("#regos").hidden) renderMarked(); // shortlist stays live too
@@ -232,7 +233,7 @@ document.addEventListener("click", async e => {
   if (t.dataset.g) { TAB = t.dataset.g; localStorage.setItem("scout_tab", TAB); render(); }
   if (t.dataset.r) { RATING = +t.dataset.r; document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", b === t)); }
   if (t.dataset.agree) { t.disabled = true;
-    await sb.rpc("scout_agree", {p_key:KEY, p_id:t.dataset.agree, p_device:DEV}); refresh(); }
+    await sb.rpc("scout_agree", {p_key:KEY, p_id:t.dataset.agree, p_device:DEV, p_coach:$("#me").value.trim()}); refresh(); }
   if (t.dataset.del && confirm("Take this one off the board?")) {
     await sb.rpc("scout_del", {p_key:KEY, p_id:t.dataset.del, p_device:DEV}); refresh(); }
 });
@@ -268,6 +269,7 @@ function shortlist(){
     e.rating = Math.max(e.rating, r.rating);
     if (r.bib && !e.bib) e.bib = r.bib;
     if (r.coach) e.backers.add(r.coach);
+    (r.agreed_names || []).filter(Boolean).forEach(n => e.backers.add(n));
     e.votes += 1 + r.agreed.length;
     e.ids.push(r.id);
   }
