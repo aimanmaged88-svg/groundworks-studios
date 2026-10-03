@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Clutch Tryout Board</title>
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B0A08;--card:#161310;--card2:#1C1813;--line:rgba(255,244,230,.09);--line2:rgba(255,244,230,.2);
+  --ink:#F7F2EA;--ink2:#B9B0A2;--dim:#857C6E;--acc:#FF8A1E;--acc2:#E36F00;--accw:rgba(255,138,30,.13);
+  --disp:'Big Shoulders Display',sans-serif;--sans:'IBM Plex Sans',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);min-height:100dvh}
+.wrap{max-width:640px;margin:0 auto;padding:0 14px 120px}
+header{display:flex;align-items:center;gap:10px;padding:14px 2px 10px}
+header img{width:40px;height:40px;border-radius:10px}
+header h1{font:800 22px var(--disp);letter-spacing:.04em;text-transform:uppercase;line-height:1}
+header .sub{font-size:11.5px;color:var(--ink2);margin-top:3px}
+.live{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.14em;color:var(--acc)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.me{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+.me label{font-size:12px;color:var(--ink2);white-space:nowrap}
+.me input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--ink);font:600 15px var(--sans)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink2);border-radius:999px;
+  padding:8px 14px;font:600 13px var(--sans);cursor:pointer}
+.tabs button.on{background:var(--accw);border-color:var(--acc);color:var(--acc)}
+.tabs button b{font-weight:700}
+.filters{display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:12px;color:var(--dim)}
+.filters button{border:1px solid var(--line);background:transparent;color:var(--ink2);border-radius:8px;padding:5px 10px;font:600 12px var(--sans);cursor:pointer}
+.filters button.on{color:var(--acc);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:10px;position:relative}
+.card.hot{border-color:rgba(255,138,30,.5);background:linear-gradient(180deg,var(--card2),var(--card))}
+.card .top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.card .top b{font:700 16.5px var(--sans)}
+.stars{color:var(--acc);font-size:13px;letter-spacing:1px}
+.grpchip{font-size:10.5px;font-weight:700;letter-spacing:.08em;background:var(--accw);color:var(--acc);border-radius:6px;padding:2px 7px}
+.card .look{color:var(--ink2);font-size:13px;margin-top:3px}
+.card .note{margin-top:7px;font-size:14px}
+.card .meta{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11.5px;color:var(--dim)}
+.agree{margin-left:auto;border:1px solid var(--line);background:transparent;color:var(--ink2);border-radius:999px;
+  padding:5px 12px;font:600 12px var(--sans);cursor:pointer}
+.agree.did{color:var(--acc);border-color:var(--acc)}
+.zap{position:absolute;top:8px;right:10px;border:0;background:none;color:var(--dim);font-size:15px;cursor:pointer;padding:4px}
+.empty{color:var(--dim);text-align:center;padding:34px 10px 20px;font-size:13.5px}
+.add{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,transparent,rgba(11,10,8,.88) 24%);padding:18px 14px calc(12px + env(safe-area-inset-bottom))}
+.add .in{max-width:640px;margin:0 auto;background:var(--card2);border:1px solid var(--line2);border-radius:16px;padding:12px;box-shadow:0 -10px 40px rgba(0,0,0,.5)}
+.add .closedmsg{display:none;text-align:center;color:var(--ink2);font-size:13.5px;padding:6px}
+.row{display:flex;gap:8px}
+.add input,.add select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);
+  font:500 14px var(--sans);padding:10px 11px;outline:0;margin-bottom:8px;min-width:0}
+.add input:focus{border-color:var(--acc)}
+.seg{display:flex;gap:6px;margin-bottom:8px}
+.seg button{flex:1;border:1px solid var(--line);background:var(--bg);color:var(--ink2);border-radius:10px;padding:9px 4px;font:600 12px var(--sans);cursor:pointer}
+.seg button.on{background:var(--accw);border-color:var(--acc);color:var(--acc)}
+.go{width:100%;border:0;background:var(--acc);color:#1A0C00;border-radius:11px;padding:13px;font:800 14px var(--sans);
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.go:active{transform:scale(.985)}
+.go:disabled{opacity:.5}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#241C12;border:1px solid var(--acc);color:var(--ink);
+  border-radius:10px;padding:10px 16px;font-size:13.5px;z-index:90;max-width:92vw}
+.tut{position:fixed;inset:0;background:rgba(5,4,3,.92);z-index:100;display:grid;place-items:center;padding:20px}
+.tut[hidden]{display:none}
+.tut .box{max-width:420px;background:var(--card2);border:1px solid var(--line2);border-radius:18px;padding:22px}
+.tut h2{font:800 24px var(--disp);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.tut .when{color:var(--acc);font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.tut ol{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.tut li{display:flex;gap:11px;font-size:14px;color:var(--ink2)}
+.tut li b{color:var(--ink)}
+.tut li .n{flex:0 0 26px;height:26px;border-radius:50%;background:var(--accw);color:var(--acc);display:grid;place-items:center;font:800 13px var(--sans)}
+.tut p{font-size:12.5px;color:var(--dim);margin-bottom:16px}
+.banner{background:var(--accw);border:1px solid var(--acc);color:var(--acc);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;margin-bottom:12px;display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="logo.png" alt="">
+    <div><h1>Tryout board</h1><div class="sub">Summer Comp tryouts · Sat 3 Oct · Bankstown</div></div>
+    <div class="live"><i></i>LIVE</div>
+  </header>
+  <div class="banner" id="closed">Tryouts are wrapped — the board is now read-only. Screenshot or export what you need.</div>
+  <div class="me"><label>You're scouting as</label><input id="me" placeholder="your name" maxlength="30" autocomplete="off"></div>
+  <div class="tabs" id="tabs"></div>
+  <div class="filters"><span id="count"></span><span style="flex:1"></span>
+    <button id="fAll" class="on">Everyone</button><button id="fTop">⭐⭐⭐ only</button></div>
+  <div id="list"></div>
+</div>
+
+<div class="add" id="add"><div class="in">
+  <div class="closedmsg" id="closedmsg">Board's closed — good work out there.</div>
+  <form id="f">
+    <div class="row"><input id="player" placeholder="Player name (or 'name unknown')" maxlength="80" autocomplete="off">
+      <select id="grp" style="flex:0 0 108px"></select></div>
+    <input id="look" placeholder="What they look like — bib number, shoes, top…" maxlength="120" autocomplete="off">
+    <input id="note" placeholder="What stood out — handles, motor, vision…" maxlength="300" autocomplete="off">
+    <div class="seg" id="seg">
+      <button type="button" data-r="1">⭐ Solid</button>
+      <button type="button" data-r="2" class="on">⭐⭐ Strong</button>
+      <button type="button" data-r="3">⭐⭐⭐ Special</button>
+    </div>
+    <button class="go" id="go">Put them on the board</button>
+  </form>
+</div></div>
+
+<div class="tut" id="tut" hidden><div class="box">
+  <h2>Eyes up, coaches 🏀</h2>
+  <div class="when">Just for today · 2pm till we're done</div>
+  <ol>
+    <li><div class="n">1</div><div><b>Pick the age group</b> you're watching up top.</div></li>
+    <li><div class="n">2</div><div><b>Kid stands out? Add them.</b> Name if you caught it, or what they're wearing — "bib 14, red Jordans" works.</div></li>
+    <li><div class="n">3</div><div><b>Rate it:</b> ⭐ solid · ⭐⭐ strong · ⭐⭐⭐ special. See someone else's pick balling out? Tap <b>“Saw it too”</b>.</div></li>
+  </ol>
+  <p>Every coach sees the same board, updating live. Type your name first so we know whose eyes are whose.</p>
+  <button class="go" id="gotit">Got it — let's scout</button>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPA_URL = "https://egffberfhnnkhtiscaol.supabase.co";
+const SUPA_KEY = "sb_publishable_dsJ4eroFRHB2zD_s9jojag_oJM5HklH";
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const KEY = (location.hash.match(/k=([A-Za-z0-9_-]+)/) || [])[1] || "";
+const CUTOFF = Date.UTC(2026, 9, 3, 14, 0, 0); // midnight Sydney, end of tryout day
+const GROUPS = ["10–11", "12–13", "14–15", "16–17", "Not sure"];
+let DEV = localStorage.getItem("scout_dev"); if (!DEV) { DEV = crypto.randomUUID(); localStorage.setItem("scout_dev", DEV); }
+let TAB = localStorage.getItem("scout_tab") || "All", TOP = false, ROWS = [], RATING = 2;
+
+function toast(m){ const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 3200); }
+const open = () => Date.now() < CUTOFF;
+const when = iso => new Date(iso).toLocaleTimeString("en-AU", {hour:"numeric", minute:"2-digit", timeZone:"Australia/Sydney"}).toLowerCase().replace(" ", "");
+
+function render(){
+  const tabs = ["All", ...GROUPS];
+  $("#tabs").innerHTML = tabs.map(g => { const n = g === "All" ? ROWS.length : ROWS.filter(r => r.grp === g).length;
+    return `<button data-g="${esc(g)}" class="${TAB === g ? "on" : ""}">${esc(g)}${n ? ` <b>· ${n}</b>` : ""}</button>`; }).join("");
+  let L = TAB === "All" ? ROWS : ROWS.filter(r => r.grp === TAB);
+  if (TOP) L = L.filter(r => r.rating === 3);
+  $("#count").textContent = L.length ? `${L.length} standout${L.length > 1 ? "s" : ""}` : "";
+  $("#list").innerHTML = L.map(r => `
+    <div class="card${r.rating === 3 ? " hot" : ""}">
+      ${r.device === DEV && open() ? `<button class="zap" data-del="${r.id}" title="Remove">✕</button>` : ""}
+      <div class="top"><b>${esc(r.player)}</b><span class="stars">${"★".repeat(r.rating)}</span><span class="grpchip">${esc(r.grp)}</span></div>
+      ${r.look ? `<div class="look">${esc(r.look)}</div>` : ""}
+      ${r.note ? `<div class="note">${esc(r.note)}</div>` : ""}
+      <div class="meta">${esc(r.coach || "A coach")} · ${when(r.created_at)}
+        <button class="agree${r.agreed.includes(DEV) ? " did" : ""}" data-agree="${r.id}" ${open() ? "" : "disabled"}>👍 Saw it too${r.agreed.length ? " · " + r.agreed.length : ""}</button></div>
+    </div>`).join("") || `<div class="empty">${TAB === "All" ? "Nothing on the board yet — first standout goes up in seconds." : "No standouts in " + esc(TAB) + " yet. You watching them? 👀"}</div>`;
+  if (!open()) { $("#closed").style.display = "block"; $("#f").style.display = "none"; $("#closedmsg").style.display = "block"; }
+}
+async function refresh(){
+  const { data, error } = await sb.rpc("scout_list", {p_key:KEY});
+  if (error) return;
+  ROWS = data || []; render();
+}
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-g],[data-agree],[data-del],[data-r]");
+  if (!t) return;
+  if (t.dataset.g) { TAB = t.dataset.g; localStorage.setItem("scout_tab", TAB); render(); }
+  if (t.dataset.r) { RATING = +t.dataset.r; document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", b === t)); }
+  if (t.dataset.agree) { t.disabled = true;
+    await sb.rpc("scout_agree", {p_key:KEY, p_id:t.dataset.agree, p_device:DEV}); refresh(); }
+  if (t.dataset.del && confirm("Take this one off the board?")) {
+    await sb.rpc("scout_del", {p_key:KEY, p_id:t.dataset.del, p_device:DEV}); refresh(); }
+});
+$("#f").addEventListener("submit", async e => {
+  e.preventDefault();
+  const player = $("#player").value.trim();
+  if (!player) { toast("Who stood out? A name or 'bib 14' is enough."); return; }
+  const coach = $("#me").value.trim();
+  if (!coach) { toast("Put your name up top first so the others know whose call it is."); $("#me").focus(); return; }
+  $("#go").disabled = true;
+  const { error } = await sb.rpc("scout_add", {p_key:KEY, p_grp:$("#grp").value, p_player:player,
+    p_look:$("#look").value.trim(), p_note:$("#note").value.trim(), p_rating:RATING, p_coach:coach, p_device:DEV});
+  $("#go").disabled = false;
+  if (error) { toast(error.message || "Didn't save — try again"); return; }
+  $("#player").value = ""; $("#look").value = ""; $("#note").value = "";
+  toast("On the board 🏀 every coach can see it now");
+  refresh();
+});
+$("#me").value = localStorage.getItem("scout_name") || "";
+$("#me").addEventListener("input", () => localStorage.setItem("scout_name", $("#me").value));
+$("#grp").innerHTML = GROUPS.map(g => `<option${TAB === g ? " selected" : ""}>${g}</option>`).join("");
+$("#gotit").addEventListener("click", () => { $("#tut").hidden = true; localStorage.setItem("scout_tut", "1"); $("#me").value || $("#me").focus(); });
+if (!KEY) { document.body.innerHTML = '<div style="display:grid;place-items:center;min-height:100dvh;padding:30px;text-align:center;color:#B9B0A2;font-family:sans-serif">This link is missing its key.<br>Ask Aiman for the full tryout-board link.</div>'; }
+else {
+  if (!localStorage.getItem("scout_tut")) $("#tut").hidden = false;
+  refresh(); setInterval(refresh, 5000);
+}
+</script>
+</body>
+</html>
