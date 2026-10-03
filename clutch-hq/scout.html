@@ -192,7 +192,7 @@ function render(){
   $("#count").textContent = L.length ? `${L.length} standout${L.length > 1 ? "s" : ""}` : "";
   $("#list").innerHTML = L.map(r => `
     <div class="card${r.rating === 3 ? " hot" : ""}${SEEN.size && !SEEN.has(r.id) ? " new" : ""}">
-      ${r.device === DEV && open() ? `<button class="zap" data-del="${r.id}" title="Remove">✕</button>` : ""}
+      ${open() ? `<button class="zap" data-del="${r.id}" title="Remove">✕</button>` : ""}
       <div class="top"><b>${r.bib ? "#" + esc(r.bib) + " · " : ""}${esc(r.player)}</b><span class="stars">${"★".repeat(r.rating)}</span><span class="grpchip">${esc(r.grp)}</span>${r.pos ? `<span class="poschip">${esc(r.pos)}</span>` : ""}</div>
       ${r.look ? `<div class="look">${esc(r.look)}</div>` : ""}
       ${r.note ? `<div class="note">${esc(r.note)}</div>` : ""}
