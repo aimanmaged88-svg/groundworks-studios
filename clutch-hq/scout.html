@@ -105,6 +105,9 @@ header .sub{font-size:11.5px;color:var(--ink2);margin-top:3px}
   padding:10px 13px;margin-bottom:6px;font-size:14px}
 .rrow b{font-weight:600}
 .rrow .stage{margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
+.rrow .rx{flex:0 0 auto;border:1px solid var(--line);background:transparent;color:var(--dim);border-radius:8px;
+  width:30px;height:30px;font-size:13px;cursor:pointer}
+.rrow .rx:active{color:var(--acc);border-color:var(--acc)}
 </style>
 </head>
 <body>
@@ -211,8 +214,12 @@ async function refresh(){
 }
 let EDIT_ID = null;
 document.addEventListener("click", async e => {
-  const t = e.target.closest("[data-g],[data-agree],[data-del],[data-r],[data-edit]");
+  const t = e.target.closest("[data-g],[data-agree],[data-del],[data-r],[data-edit],[data-delmark]");
   if (!t) return;
+  if (t.dataset.delmark) { if (!confirm("Take this player off the board?")) return;
+    t.disabled = true;
+    for (const id of t.dataset.delmark.split(",")) await sb.rpc("scout_del", {p_key:KEY, p_id:id, p_device:DEV});
+    await refresh(); return; }
   if (t.dataset.edit) { const r = ROWS.find(x => x.id === t.dataset.edit); if (!r) return;
     EDIT_ID = r.id;
     $("#player").value = r.player; $("#bib").value = r.bib || ""; $("#pos").value = r.pos || "";
@@ -257,11 +264,12 @@ function shortlist(){
   const byKey = {};
   for (const r of ROWS) {
     const k = r.grp + "|" + r.player.trim().toLowerCase();
-    const e = byKey[k] || (byKey[k] = {grp:r.grp, player:r.player, bib:r.bib, rating:0, backers:new Set(), votes:0});
+    const e = byKey[k] || (byKey[k] = {grp:r.grp, player:r.player, bib:r.bib, rating:0, backers:new Set(), votes:0, ids:[]});
     e.rating = Math.max(e.rating, r.rating);
     if (r.bib && !e.bib) e.bib = r.bib;
     if (r.coach) e.backers.add(r.coach);
     e.votes += 1 + r.agreed.length;
+    e.ids.push(r.id);
   }
   return Object.values(byKey).sort((a, b) => b.rating - a.rating || b.votes - a.votes);
 }
@@ -272,7 +280,8 @@ function renderMarked(){
   $("#regoList").innerHTML = order.map(g => { const L = all.filter(e => e.grp === g);
     return L.length ? `<div style="font:800 13px var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin:12px 2px 7px">${esc(g)} · ${L.length}</div>` +
       L.map(e => `<div class="rrow"><span class="stars">${"★".repeat(e.rating)}</span><b>${e.bib ? "#" + esc(e.bib) + " " : ""}${esc(e.player)}</b>
-        <span class="stage">${esc([...e.backers].join(", "))}${e.votes > 1 ? " · " + e.votes + " 👍" : ""}</span></div>`).join("") : ""; }).join("") ||
+        <span class="stage">${esc([...e.backers].join(", "))}${e.votes > 1 ? " · " + e.votes + " 👍" : ""}</span>
+        ${open() ? `<button class="rx" data-delmark="${e.ids.join(",")}" title="Remove">✕</button>` : ""}</div>`).join("") : ""; }).join("") ||
     `<div class="empty">${q ? "Nobody matching that name." : "Nobody marked yet — the shortlist builds itself as coaches post."}</div>`;
   if (!q) $("#regoToggle").innerHTML = `📝 Marked players <small>${shortlist().length} marked — tap to close</small>`;
 }
