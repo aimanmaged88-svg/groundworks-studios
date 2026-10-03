@@ -174,9 +174,10 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const KEY = (location.hash.match(/k=([A-Za-z0-9_-]+)/) || [])[1] || "";
 const CUTOFF = Date.UTC(2026, 9, 3, 14, 0, 0); // midnight Sydney, end of tryout day
-const GROUPS = ["10–11", "12–13", "14–15", "16–17", "Not sure"];
+const GROUPS = ["U18s", "U16s", "U14s", "U12s"];
 let DEV = localStorage.getItem("scout_dev"); if (!DEV) { DEV = crypto.randomUUID(); localStorage.setItem("scout_dev", DEV); }
 let TAB = localStorage.getItem("scout_tab") || "All", TOP = false, ROWS = [], RATING = 2;
+if (TAB !== "All" && !GROUPS.includes(TAB)) TAB = "All"; // old age-group names fall back cleanly
 const SEEN = new Set();
 // a steady colour per coach name, so each coach's calls are scannable at a glance
 function coachHue(name){ let h = 0; for (const c of String(name || "?")) h = (h * 31 + c.charCodeAt(0)) % 360;
