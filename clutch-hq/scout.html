@@ -197,6 +197,7 @@ function render(){
       ${r.look ? `<div class="look">${esc(r.look)}</div>` : ""}
       ${r.note ? `<div class="note">${esc(r.note)}</div>` : ""}
       <div class="meta"><span class="coachchip"><i style="background:${coachHue(r.coach)}">${esc((r.coach || "?").trim().slice(0, 2).toUpperCase())}</i>Coach ${esc(r.coach || "?")}</span> ${when(r.created_at)}
+        ${open() ? `<button class="agree" data-edit="${r.id}">✎ Edit</button>` : ""}
         <button class="agree${r.agreed.includes(DEV) ? " did" : ""}" data-agree="${r.id}" ${open() ? "" : "disabled"}>👍 Saw it too${r.agreed.length ? " · " + r.agreed.length : ""}</button></div>
     </div>`).join("") || `<div class="empty">${TAB === "All" ? "Nothing on the board yet — first standout goes up in seconds." : "No standouts in " + esc(TAB) + " yet. You watching them? 👀"}</div>`;
   ROWS.forEach(r => SEEN.add(r.id));
@@ -208,9 +209,19 @@ async function refresh(){
   if (error) return;
   ROWS = data || []; render();
 }
+let EDIT_ID = null;
 document.addEventListener("click", async e => {
-  const t = e.target.closest("[data-g],[data-agree],[data-del],[data-r]");
+  const t = e.target.closest("[data-g],[data-agree],[data-del],[data-r],[data-edit]");
   if (!t) return;
+  if (t.dataset.edit) { const r = ROWS.find(x => x.id === t.dataset.edit); if (!r) return;
+    EDIT_ID = r.id;
+    $("#player").value = r.player; $("#bib").value = r.bib || ""; $("#pos").value = r.pos || "";
+    $("#look").value = r.look || ""; $("#note").value = r.note || ""; $("#grp").value = r.grp;
+    RATING = r.rating; document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", +b.dataset.r === r.rating));
+    document.querySelector(".addhead b").textContent = "Edit " + r.player;
+    $("#go").textContent = "Save changes";
+    $("#add").classList.add("open"); setTimeout(() => $("#note").focus(), 60);
+    return; }
   if (t.dataset.g) { TAB = t.dataset.g; localStorage.setItem("scout_tab", TAB); render(); }
   if (t.dataset.r) { RATING = +t.dataset.r; document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", b === t)); }
   if (t.dataset.agree) { t.disabled = true;
@@ -225,14 +236,18 @@ $("#f").addEventListener("submit", async e => {
   const coach = $("#me").value.trim();
   if (!coach) { toast("Put your name up top first so the others know whose call it is."); $("#me").focus(); return; }
   $("#go").disabled = true;
-  const { error } = await sb.rpc("scout_add", {p_key:KEY, p_grp:$("#grp").value, p_player:player,
-    p_look:$("#look").value.trim(), p_note:$("#note").value.trim(), p_rating:RATING, p_coach:coach, p_device:DEV,
-    p_bib:$("#bib").value.trim(), p_pos:$("#pos").value});
+  const fields = {p_key:KEY, p_grp:$("#grp").value, p_player:player, p_look:$("#look").value.trim(),
+    p_note:$("#note").value.trim(), p_rating:RATING, p_bib:$("#bib").value.trim(), p_pos:$("#pos").value};
+  const { error } = EDIT_ID
+    ? await sb.rpc("scout_edit", {...fields, p_id:EDIT_ID})
+    : await sb.rpc("scout_add", {...fields, p_coach:coach, p_device:DEV});
   $("#go").disabled = false;
   if (error) { toast(error.message || "Didn't save — try again"); return; }
+  toast(EDIT_ID ? "Updated ✎ everyone sees the new version" : "On the board 🏀 every coach can see it now");
+  EDIT_ID = null;
   $("#player").value = ""; $("#look").value = ""; $("#note").value = ""; $("#bib").value = ""; $("#pos").value = "";
+  document.querySelector(".addhead b").textContent = "Mark a player"; $("#go").textContent = "Put them on the board";
   $("#add").classList.remove("open"); // tuck the form away so the board is clear again
-  toast("On the board 🏀 every coach can see it now");
   refresh();
 });
 /* ---- marked players: the shortlist, straight off the board ---- */
@@ -286,7 +301,9 @@ $("#dl").addEventListener("click", async () => {
 });
 
 $("#openAdd").addEventListener("click", () => { $("#add").classList.add("open"); setTimeout(() => $("#player").focus(), 60); });
-$("#closeAdd").addEventListener("click", () => $("#add").classList.remove("open"));
+$("#closeAdd").addEventListener("click", () => { $("#add").classList.remove("open");
+  if (EDIT_ID) { EDIT_ID = null; $("#player").value = ""; $("#look").value = ""; $("#note").value = ""; $("#bib").value = ""; $("#pos").value = "";
+    document.querySelector(".addhead b").textContent = "Mark a player"; $("#go").textContent = "Put them on the board"; } });
 $("#me").value = localStorage.getItem("scout_name") || "";
 $("#me").addEventListener("input", () => localStorage.setItem("scout_name", $("#me").value));
 $("#grp").innerHTML = GROUPS.map(g => `<option${TAB === g ? " selected" : ""}>${g}</option>`).join("");
