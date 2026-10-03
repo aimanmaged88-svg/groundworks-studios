@@ -82,6 +82,18 @@ header .sub{font-size:11.5px;color:var(--ink2);margin-top:3px}
 .tut li .n{flex:0 0 26px;height:26px;border-radius:50%;background:var(--accw);color:var(--acc);display:grid;place-items:center;font:800 13px var(--sans)}
 .tut p{font-size:12.5px;color:var(--dim);margin-bottom:16px}
 .banner{background:var(--accw);border:1px solid var(--acc);color:var(--acc);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;margin-bottom:12px;display:none}
+.bottombar{display:flex;flex-direction:column;gap:8px;margin:26px 0 8px;border-top:1px solid var(--line);padding-top:18px}
+.btnline{display:flex;align-items:center;gap:10px;width:100%;border:1px solid var(--line);background:var(--card);
+  color:var(--ink);border-radius:12px;padding:13px 15px;font:600 14px var(--sans);cursor:pointer;text-align:left}
+.btnline:active{transform:scale(.99)}
+.btnline small{margin-left:auto;color:var(--dim);font-weight:500;font-size:12px}
+#regos{margin-top:10px}
+#regos input{width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;color:var(--ink);
+  font:500 14px var(--sans);padding:10px 12px;outline:0;margin-bottom:8px}
+.rrow{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);border-radius:11px;
+  padding:10px 13px;margin-bottom:6px;font-size:14px}
+.rrow b{font-weight:600}
+.rrow .stage{margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -97,6 +109,11 @@ header .sub{font-size:11.5px;color:var(--ink2);margin-top:3px}
   <div class="filters"><span id="count"></span><span style="flex:1"></span>
     <button id="fAll" class="on">Everyone</button><button id="fTop">⭐⭐⭐ only</button></div>
   <div id="list"></div>
+  <div class="bottombar">
+    <button class="btnline" id="regoToggle">📋 Our registrations <small>who's signed up — tap to open</small></button>
+    <div id="regos" hidden><input id="regoSearch" placeholder="Search a name…" autocomplete="off"><div id="regoList"></div></div>
+    <button class="btnline" id="dl">⬇️ Download the board <small>spreadsheet of every standout</small></button>
+  </div>
 </div>
 
 <div class="add" id="add"><div class="in">
@@ -202,6 +219,47 @@ $("#f").addEventListener("submit", async e => {
   toast("On the board 🏀 every coach can see it now");
   refresh();
 });
+/* ---- our registrations ---- */
+let REGOS = null;
+const ageGrp = dob => { if (!dob) return "—"; const a = Math.floor((Date.now() - new Date(dob)) / 31557600000);
+  return a <= 11 ? "10–11" : a <= 13 ? "12–13" : a <= 15 ? "14–15" : a <= 17 ? "16–17" : "18+"; };
+const STAGE = {new:"New", contacted:"Contacted", tryout:"Tryout booked", offered:"Offered", notnow:"Not now", joined:"Joined"};
+function renderRegos(){
+  const q = ($("#regoSearch").value || "").toLowerCase();
+  const L = (REGOS || []).filter(r => (r.first_name + " " + r.last_name).toLowerCase().includes(q));
+  $("#regoList").innerHTML = (REGOS === null ? `<div class="empty">Loading…</div>` :
+    L.map(r => `<div class="rrow"><b>${esc(r.first_name)} ${esc(r.last_name)}</b><span class="grpchip">${ageGrp(r.dob)}</span>
+      ${r.gname ? `<span style="color:var(--dim);font-size:12px">· ${esc(r.gname)}</span>` : ""}
+      <span class="stage">${esc(STAGE[r.stage] || r.stage || "")}</span></div>`).join("") ||
+    `<div class="empty">${q ? "Nobody matching that name." : "No registrations in the system yet — add them in Clutch HQ (Regos) or import the sign-up sheet, and they'll show here straight away."}</div>`);
+  if (REGOS !== null && !q) $("#regoToggle").innerHTML = `📋 Our registrations <small>${REGOS.length} signed up — tap to close</small>`;
+}
+$("#regoToggle").addEventListener("click", async () => {
+  const box = $("#regos");
+  if (!box.hidden) { box.hidden = true; $("#regoToggle").innerHTML = `📋 Our registrations <small>who's signed up — tap to open</small>`; return; }
+  box.hidden = false; REGOS = null; renderRegos();
+  const { data, error } = await sb.rpc("scout_regos", {p_key:KEY});
+  REGOS = error ? [] : (data || []); renderRegos();
+});
+$("#regoSearch").addEventListener("input", renderRegos);
+
+/* ---- download the board as a spreadsheet ---- */
+$("#dl").addEventListener("click", async () => {
+  // pull the freshest board first so the file never misses a last-second entry
+  const { data } = await sb.rpc("scout_list", {p_key:KEY});
+  if (data) { ROWS = data; render(); }
+  const cell = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const rows = [["Age group","Bib","Player","Position","Stars","Looks like","What stood out","Coach","Saw it too","Time"]]
+    .concat(ROWS.slice().reverse().map(r => [r.grp, r.bib, r.player, r.pos, r.rating, r.look, r.note, r.coach, r.agreed.length, new Date(r.created_at).toLocaleString("en-AU", {timeZone:"Australia/Sydney"})]));
+  const csv = "﻿" + rows.map(r => r.map(cell).join(",")).join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8"}));
+  a.download = "clutch-tryouts-3-oct.csv";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast("Spreadsheet saved — opens straight into Excel");
+});
+
 $("#me").value = localStorage.getItem("scout_name") || "";
 $("#me").addEventListener("input", () => localStorage.setItem("scout_name", $("#me").value));
 $("#grp").innerHTML = GROUPS.map(g => `<option${TAB === g ? " selected" : ""}>${g}</option>`).join("");
