@@ -182,15 +182,34 @@ summary::after{content:"+";font-size:26px;font-weight:600;color:var(--yellow-dee
 details[open] summary::after{content:"–"}
 details p{padding:0 22px 20px;color:var(--muted);font-size:16px;max-width:65ch}
 
-/* ---------- final cta ---------- */
-.cta-band{background:var(--ink);color:var(--paper);text-align:center}
+/* ---------- contact ---------- */
+.cta-band{background:var(--ink);color:var(--paper)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
 .cta-band h2{color:var(--paper)}
-.cta-band .sub{color:var(--muted-dark);font-size:18px;margin-top:12px}
-.big-phone{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(44px,8vw,80px);letter-spacing:3px;color:var(--yellow);margin-block:26px 6px;font-variant-numeric:tabular-nums;user-select:all}
-.cta-band .hours{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:3px;text-transform:uppercase;color:var(--paper)}
-.copy-note{margin-top:22px}
+.cta-band .sub{color:var(--muted-dark);font-size:17px;margin-top:12px;max-width:46ch}
+.big-phone{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(40px,6vw,62px);letter-spacing:3px;color:var(--yellow);margin-block:22px 4px;font-variant-numeric:tabular-nums;user-select:all}
+.cta-band .hours{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:3px;text-transform:uppercase;color:var(--paper)}
+.copy-note{margin-top:18px}
 .copy-btn{background:none;border:1px solid rgba(246,245,240,.4);color:var(--paper);font-family:var(--body);font-size:14px;padding:8px 16px;cursor:pointer}
 .copy-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+.contact-details{list-style:none;margin-top:26px;display:grid;gap:12px;border-top:1px solid rgba(246,245,240,.18);padding-top:22px}
+.contact-details li{display:flex;gap:12px;font-size:15.5px;color:var(--muted-dark)}
+.contact-details b{color:var(--paper);font-weight:600;flex:none;min-width:84px;font-family:var(--display);text-transform:uppercase;letter-spacing:1px;font-size:15px}
+.contact-details a{color:var(--paper);border-bottom:1px solid var(--yellow)}
+.form-card{background:var(--card);color:var(--ink);border:2px solid var(--ink);box-shadow:6px 6px 0 var(--yellow)}
+.form-card-head{background:var(--yellow);color:var(--ink);padding:14px 22px;border-bottom:2px solid var(--ink)}
+.form-card-head h3{font-size:22px;font-weight:700;letter-spacing:1px}
+.form-card-head p{font-size:14px;font-weight:500}
+.form-card form{padding:22px;display:grid;gap:16px}
+.field{display:grid;gap:6px}
+.field label{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:1.5px;text-transform:uppercase}
+.field label small{font-family:var(--body);text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400}
+.field input,.field textarea{font-family:var(--body);font-size:16px;padding:12px 14px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);width:100%}
+.field input:focus,.field textarea:focus{outline:3px solid var(--yellow)}
+.field textarea{resize:vertical;min-height:110px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.form-note{font-size:13.5px;color:var(--muted)}
 
 /* ---------- footer ---------- */
 footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font-size:14px}
@@ -204,6 +223,7 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
   .truck-grid{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr 1fr}
   .reviews-grid{grid-template-columns:1fr;gap:36px}
+  .contact-grid{grid-template-columns:1fr;gap:44px}
 }
 @media (max-width:720px){
   nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--ink);flex-direction:column;align-items:flex-start;gap:0;padding:10px 20px 18px;border-bottom:4px solid var(--yellow)}
@@ -215,6 +235,7 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
   .section{padding-block:56px}
   .rate-plate{top:-30px}
   .rate-plate .amount{font-size:34px}
+  .field-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -243,6 +264,7 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
       <a href="#areas">Areas</a>
       <a href="#reviews">Reviews</a>
       <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
     </nav>
     <a class="call-btn" href="tel:+61432683643">☎ 0432 683 643</a>
   </div>
@@ -475,16 +497,60 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
     </div>
   </section>
 
-  <!-- FINAL CTA -->
+  <!-- CONTACT -->
   <section class="section cta-band" id="contact">
-    <div class="wrap">
-      <span class="eyebrow" style="color:var(--muted-dark)">Book your truck</span>
-      <h2 style="margin-top:12px">Ready when you are</h2>
-      <p class="sub">One call books your truck — day or night.</p>
-      <a class="big-phone" href="tel:+61432683643">0432 683 643</a>
-      <div class="hours">Open 24 hours · 7 days · Mt Druitt NSW</div>
-      <div class="copy-note">
-        <button class="copy-btn" onclick="copyPhone(this)">Copy phone number</button>
+    <div class="wrap contact-grid">
+      <div>
+        <span class="eyebrow" style="color:var(--muted-dark)">Contact</span>
+        <h2 style="margin-top:12px">Ready when you are</h2>
+        <p class="sub">The fastest way to book is a phone call — we answer around the clock. Prefer to write? Send an enquiry and the owner will call you back.</p>
+        <a class="big-phone" href="tel:+61432683643">0432 683 643</a>
+        <div class="hours">Open 24 hours · 7 days</div>
+        <div class="copy-note">
+          <button class="copy-btn" onclick="copyPhone(this)">Copy phone number</button>
+        </div>
+        <ul class="contact-details">
+          <li><b>Phone</b><span><a href="tel:+61432683643">0432 683 643</a> — calls answered 24/7</span></li>
+          <li><b>Base</b><span>Mt Druitt, Western Sydney NSW — pick-up address given when you book</span></li>
+          <li><b>Hours</b><span>Open 24 hours, 7 days a week</span></li>
+          <li><b>Google</b><span><a href="https://www.google.com/search?q=Sydney+Truck+Hire+Mt+Druitt" target="_blank" rel="noopener">Sydney Truck Hire</a> — rated 5.0 from 85 reviews</span></li>
+        </ul>
+      </div>
+      <div class="form-card">
+        <div class="form-card-head">
+          <h3>Send an enquiry</h3>
+          <p>Goes straight to the owner — you'll get a call back.</p>
+        </div>
+        <form name="enquiry" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="company">
+          <input type="hidden" name="form-name" value="enquiry">
+          <p class="hp" aria-hidden="true">
+            <label>Don't fill this out if you're human: <input name="company" tabindex="-1" autocomplete="off"></label>
+          </p>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-email">Email <small>(optional)</small></label>
+            <input id="f-email" name="email" type="email" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="f-date">When do you need the truck?</label>
+            <input id="f-date" name="date-needed" type="text" placeholder="e.g. Saturday 18 Oct, 2 days">
+          </div>
+          <div class="field">
+            <label for="f-msg">What are you moving?</label>
+            <textarea id="f-msg" name="message" required placeholder="e.g. 3-bedroom house from Penrith to Liverpool, need auto with tail lift"></textarea>
+          </div>
+          <button class="btn" type="submit" style="justify-self:start">Send enquiry</button>
+          <p class="form-note">We never share your details. In a hurry? Call 0432 683 643 — we're open now.</p>
+        </form>
       </div>
     </div>
   </section>

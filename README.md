@@ -61,7 +61,7 @@ The home for all Groundworks Studios projects. Each project lives in its own fol
 | Eagles Gym — Membership Portal | [`eaglesgym-demo-2026/`](eaglesgym-demo-2026/) | [eaglesgym-demo-2026.netlify.app](https://eaglesgym-demo-2026.netlify.app) |
 | I-BLAST — Pest Control & Pressure Cleaning | [`iblast-demo-2026/`](iblast-demo-2026/) | [iblast-demo-2026.netlify.app](https://iblast-demo-2026.netlify.app) |
 | Kahil Meats — Bass Hill Plaza | [`kahilmeats-demo-2026/`](kahilmeats-demo-2026/) | [kahilmeats-demo-2026.netlify.app](https://kahilmeats-demo-2026.netlify.app) |
-| Sydney Truck Hire — Truck Rental (Mt Druitt) | [`sydneytruckhire-demo-2026/`](sydneytruckhire-demo-2026/) | — |
+| Sydney Truck Hire — Truck Rental (Mt Druitt) | [`sydneytruckhire-demo-2026/`](sydneytruckhire-demo-2026/) | [sydneytruckhire-demo-2026.netlify.app](https://sydneytruckhire-demo-2026.netlify.app) |
 | Trained by Zee — App Concept | [`trainedbyzee-demo-2026/`](trainedbyzee-demo-2026/) | [trainedbyzee-demo-2026.netlify.app](https://trainedbyzee-demo-2026.netlify.app) |
 
 ## Adding a new project

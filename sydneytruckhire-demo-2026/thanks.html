@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enquiry Sent | Sydney Truck Hire</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --yellow:#FFC400; --ink:#17181A; --asphalt:#1E2023; --paper:#F6F5F0; --muted-dark:#A8AAA4;
+  --display:'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--asphalt);color:var(--paper);min-height:100vh;display:flex;flex-direction:column;line-height:1.6}
+.hazard{height:12px;background:repeating-linear-gradient(-45deg,var(--yellow) 0 16px,var(--ink) 16px 32px)}
+main{flex:1;display:grid;place-items:center;padding:40px 20px}
+.card{max-width:560px;text-align:center}
+.tick{width:72px;height:72px;margin:0 auto 26px;background:var(--yellow);border:3px solid var(--ink);display:grid;place-items:center;font-size:36px;font-weight:700;color:var(--ink);box-shadow:5px 5px 0 rgba(0,0,0,.45)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,8vw,60px);text-transform:uppercase;line-height:1.02;letter-spacing:.5px}
+p{color:var(--muted-dark);font-size:17px;margin-top:16px}
+p strong{color:var(--paper)}
+.phone{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(32px,6vw,44px);letter-spacing:2px;color:var(--yellow);margin-top:18px;text-decoration:none}
+.back{display:inline-flex;margin-top:32px;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:1px;text-transform:uppercase;padding:13px 26px;background:var(--yellow);color:var(--ink);text-decoration:none;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.back:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<main>
+  <div class="card">
+    <div class="tick">✓</div>
+    <h1>Enquiry sent</h1>
+    <p>Thanks — your message has gone <strong>straight to the owner</strong> and you'll get a call back shortly.</p>
+    <p>Need the truck sooner? We're open 24 hours:</p>
+    <a class="phone" href="tel:+61432683643">0432 683 643</a>
+    <br>
+    <a class="back" href="/">← Back to the site</a>
+  </div>
+</main>
+<div class="hazard"></div>
+</body>
+</html>
