@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sydney Truck Hire | Truck Rental Mt Druitt & Western Sydney</title>
+<meta name="description" content="Sydney Truck Hire — truck rental from $150 a day, based in Mt Druitt and serving all of Sydney. Drive on a car licence. Tail lift, trolley & straps included. Open 24 hours. Call 0432 683 643.">
+<meta name="keywords" content="truck hire Sydney, truck rental Mt Druitt, moving truck hire Western Sydney, cheap truck hire Sydney, pantech hire, tail lift truck hire, car licence truck hire">
+<meta property="og:title" content="Sydney Truck Hire — From $150 a Day, Open 24 Hours">
+<meta property="og:description" content="Hire a moving truck on your car licence. Tail lift, trolley & straps included. Based in Mt Druitt, serving all of Sydney. 5.0★ on Google. Call 0432 683 643.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_AU">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Sydney Truck Hire",
+  "description": "Truck rental agency based in Mt Druitt, Western Sydney. Moving trucks from $150 a day that can be driven on a standard car licence. Tail lift, trolley and straps included. Open 24 hours.",
+  "telephone": "+61432683643",
+  "priceRange": "From $150 per day",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bidwill",
+    "addressRegion": "NSW",
+    "addressCountry": "AU"
+  },
+  "areaServed": "Sydney NSW",
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "00:00",
+    "closes": "23:59"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "85"
+  }
+}
+</script>
+<style>
+/* Layout concept: road-freight signage — strong horizontal bands, hazard-stripe rules,
+   big condensed caps, one hazard-yellow accent on asphalt neutrals. Single deliberate theme. */
+:root{
+  --yellow:#FFC400;          /* hazard / tail-lift yellow */
+  --yellow-deep:#E6AF00;
+  --ink:#17181A;             /* asphalt */
+  --asphalt:#1E2023;         /* dark band background */
+  --asphalt-2:#26282C;
+  --paper:#F6F5F0;           /* page ground */
+  --card:#FFFFFF;
+  --line:#E2E0D6;
+  --muted:#5C5E57;
+  --muted-dark:#A8AAA4;      /* muted text on dark bands */
+  --display:'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1140px;margin:0 auto;padding-inline:20px}
+:focus-visible{outline:3px solid var(--yellow-deep);outline-offset:2px}
+
+/* ---------- shared pieces ---------- */
+.hazard{height:12px;background:repeating-linear-gradient(-45deg,var(--yellow) 0 16px,var(--ink) 16px 32px)}
+.eyebrow{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.eyebrow::before{content:"";display:inline-block;width:26px;height:4px;background:var(--yellow);margin-right:10px;vertical-align:middle}
+h1,h2,h3{font-family:var(--display);text-transform:uppercase;line-height:1.02;text-wrap:balance}
+h2{font-size:clamp(34px,5vw,52px);font-weight:800;letter-spacing:.5px}
+.section{padding-block:72px}
+.section-head{display:flex;flex-direction:column;gap:12px;margin-bottom:40px;max-width:640px}
+.section-head p{color:var(--muted);font-size:17px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:1px;text-transform:uppercase;padding:15px 28px;background:var(--yellow);color:var(--ink);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);transition:transform .15s,box-shadow .15s;cursor:pointer}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn.ghost{background:transparent;color:var(--paper);border-color:var(--paper);box-shadow:4px 4px 0 rgba(246,245,240,.35)}
+.btn.ghost:hover{box-shadow:6px 6px 0 rgba(246,245,240,.35)}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:50;background:var(--ink);color:var(--paper);border-bottom:4px solid var(--yellow)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:46px;height:34px;flex:none}
+.logo-word{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:1.5px;text-transform:uppercase;line-height:1}
+.logo-word span{color:var(--yellow)}
+.logo-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted-dark)}
+nav{display:flex;align-items:center;gap:26px}
+nav a{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:1.5px;text-transform:uppercase;color:var(--paper);opacity:.85}
+nav a:hover{opacity:1;color:var(--yellow)}
+.call-btn{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--ink);font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:1px;padding:9px 16px;white-space:nowrap}
+.call-btn:hover{background:var(--yellow-deep)}
+.menu-toggle{display:none;background:none;border:2px solid var(--paper);color:var(--paper);font-family:var(--display);font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:7px 12px;cursor:pointer}
+
+/* ---------- hero ---------- */
+.hero{background:var(--asphalt);color:var(--paper);overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding-block:76px 64px}
+.hero .eyebrow{color:var(--muted-dark)}
+.hero h1{font-size:clamp(46px,7vw,84px);font-weight:800;letter-spacing:.5px;margin-block:14px 18px}
+.hero h1 em{font-style:normal;color:var(--yellow)}
+.hero-sub{font-size:19px;color:var(--muted-dark);max-width:52ch}
+.hero-sub strong{color:var(--paper);font-weight:600}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:16px;margin-top:30px}
+.hero-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(246,245,240,.25);padding:8px 14px;font-size:14px;font-weight:500;color:var(--paper)}
+.chip .star{color:var(--yellow)}
+.hero-art{position:relative}
+.rate-plate{position:absolute;right:0;top:-18px;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);padding:10px 18px;text-align:center;transform:rotate(3deg);box-shadow:5px 5px 0 rgba(0,0,0,.45)}
+.rate-plate .from{font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase}
+.rate-plate .amount{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
+.rate-plate .per{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:2px;text-transform:uppercase}
+
+/* ---------- ticker strip ---------- */
+.ticker{background:var(--yellow);border-block:3px solid var(--ink);overflow:hidden}
+.ticker-track{display:flex;width:max-content;animation:ticker 32s linear infinite}
+.ticker-row{display:flex;gap:0;white-space:nowrap}
+.ticker span{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:2px;text-transform:uppercase;color:var(--ink);padding:11px 0}
+.ticker span::after{content:"▲";margin-inline:22px;font-size:11px;vertical-align:2px}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){.ticker-track{animation:none}}
+
+/* ---------- truck / included ---------- */
+.truck-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.spec-card{background:var(--card);border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.spec-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--ink);color:var(--paper);padding:16px 22px}
+.spec-card-head h3{font-size:24px;font-weight:700;letter-spacing:1px}
+.spec-price{font-family:var(--display);font-weight:800;font-size:24px;color:var(--yellow);white-space:nowrap;font-variant-numeric:tabular-nums}
+.spec-list{list-style:none;padding:10px 22px 22px}
+.spec-list li{display:flex;gap:14px;align-items:flex-start;padding-block:13px;border-bottom:1px dashed var(--line)}
+.spec-list li:last-child{border-bottom:none}
+.tick{flex:none;width:26px;height:26px;background:var(--yellow);border:2px solid var(--ink);display:grid;place-items:center;font-weight:700;font-size:14px;margin-top:2px}
+.spec-list b{display:block;font-size:16px}
+.spec-list small{color:var(--muted);font-size:14.5px;line-height:1.5;display:block}
+.truck-copy p{color:var(--muted);font-size:17px;margin-bottom:16px;max-width:58ch}
+.truck-copy p strong{color:var(--ink)}
+.truck-copy .btn{margin-top:10px}
+
+/* ---------- how it works ---------- */
+.dark-band{background:var(--asphalt);color:var(--paper)}
+.dark-band .eyebrow{color:var(--muted-dark)}
+.dark-band .section-head p{color:var(--muted-dark)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(246,245,240,.18);border:1px solid rgba(246,245,240,.18)}
+.step{background:var(--asphalt-2);padding:26px 22px 30px}
+.step-no{font-family:var(--display);font-weight:800;font-size:40px;color:var(--yellow);line-height:1;font-variant-numeric:tabular-nums}
+.step h3{font-size:21px;font-weight:700;letter-spacing:1px;margin-block:12px 8px}
+.step p{font-size:15px;color:var(--muted-dark);line-height:1.55}
+
+/* ---------- areas ---------- */
+.areas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.area{background:var(--card);border:1px solid var(--line);padding:12px 16px;font-weight:500;font-size:15.5px;display:flex;align-items:center;gap:10px}
+.area::before{content:"";flex:none;width:8px;height:8px;background:var(--yellow);border:1px solid var(--ink)}
+.area.home{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.areas-note{margin-top:18px;color:var(--muted);font-size:15.5px}
+
+/* ---------- reviews ---------- */
+.reviews-grid{display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:start}
+.score-block{text-align:left}
+.score{font-family:var(--display);font-weight:800;font-size:112px;line-height:.9;font-variant-numeric:tabular-nums}
+.stars{color:var(--yellow-deep);font-size:26px;letter-spacing:4px;margin-block:8px}
+.score-block p{color:var(--muted);font-size:15.5px}
+.score-block .g-link{display:inline-block;margin-top:14px;font-weight:600;font-size:15px;border-bottom:2px solid var(--yellow);padding-bottom:1px}
+.review-themes{display:grid;gap:14px}
+.theme{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--yellow);padding:18px 22px}
+.theme b{font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px}
+.theme p{color:var(--muted);font-size:15.5px;line-height:1.55}
+
+/* ---------- faq ---------- */
+.faq-list{max-width:760px;display:grid;gap:12px}
+details{background:var(--card);border:1px solid var(--line)}
+details[open]{border-color:var(--ink)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:.5px;text-transform:uppercase}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:26px;font-weight:600;color:var(--yellow-deep);flex:none;line-height:1}
+details[open] summary::after{content:"–"}
+details p{padding:0 22px 20px;color:var(--muted);font-size:16px;max-width:65ch}
+
+/* ---------- final cta ---------- */
+.cta-band{background:var(--ink);color:var(--paper);text-align:center}
+.cta-band h2{color:var(--paper)}
+.cta-band .sub{color:var(--muted-dark);font-size:18px;margin-top:12px}
+.big-phone{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(44px,8vw,80px);letter-spacing:3px;color:var(--yellow);margin-block:26px 6px;font-variant-numeric:tabular-nums;user-select:all}
+.cta-band .hours{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:3px;text-transform:uppercase;color:var(--paper)}
+.copy-note{margin-top:22px}
+.copy-btn{background:none;border:1px solid rgba(246,245,240,.4);color:var(--paper);font-family:var(--body);font-size:14px;padding:8px 16px;cursor:pointer}
+.copy-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+
+/* ---------- footer ---------- */
+footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font-size:14px}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px}
+.foot b{color:var(--paper);font-family:var(--display);letter-spacing:1px;text-transform:uppercase;font-size:16px}
+
+/* ---------- responsive ---------- */
+@media (max-width:920px){
+  .hero-grid{grid-template-columns:1fr;padding-block:56px 48px}
+  .hero-art{max-width:560px}
+  .truck-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .reviews-grid{grid-template-columns:1fr;gap:36px}
+}
+@media (max-width:720px){
+  nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--ink);flex-direction:column;align-items:flex-start;gap:0;padding:10px 20px 18px;border-bottom:4px solid var(--yellow)}
+  nav.open{display:flex}
+  nav a{padding-block:10px;width:100%;border-bottom:1px solid rgba(246,245,240,.12)}
+  .menu-toggle{display:inline-block}
+  .topbar .call-btn{display:none}
+  .steps{grid-template-columns:1fr}
+  .section{padding-block:56px}
+  .rate-plate{top:-30px}
+  .rate-plate .amount{font-size:34px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap topbar">
+    <a class="logo" href="#top" aria-label="Sydney Truck Hire — home">
+      <svg class="logo-mark" viewBox="0 0 46 34" aria-hidden="true">
+        <rect x="1" y="3" width="28" height="20" fill="#F6F5F0"/>
+        <rect x="1" y="11" width="28" height="5" fill="#FFC400"/>
+        <path d="M29 9h9l6 7v7H29V9z" fill="#F6F5F0"/>
+        <rect x="31" y="11" width="6" height="5" fill="#17181A"/>
+        <circle cx="10" cy="26" r="5" fill="#F6F5F0"/><circle cx="10" cy="26" r="2.2" fill="#17181A"/>
+        <circle cx="36" cy="26" r="5" fill="#F6F5F0"/><circle cx="36" cy="26" r="2.2" fill="#17181A"/>
+      </svg>
+      <span>
+        <span class="logo-word">Sydney <span>Truck</span> Hire</span><br>
+        <span class="logo-sub">Mt Druitt · Open 24 Hours</span>
+      </span>
+    </a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" onclick="toggleNav(this)">Menu</button>
+    <nav id="site-nav">
+      <a href="#truck">The Truck</a>
+      <a href="#how">How It Works</a>
+      <a href="#areas">Areas</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="call-btn" href="tel:+61432683643">☎ 0432 683 643</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Mt Druitt · Western Sydney · 7 Days</span>
+        <h1>Hire a truck.<br>Drive it on your <em>car licence</em>.</h1>
+        <p class="hero-sub">Moving house, picking up furniture, shifting stock — grab one of our trucks from <strong>$150 a day</strong>. Tail lift, trolley and straps included, <strong>open 24 hours</strong>, based in Mt Druitt and serving all of Sydney.</p>
+        <div class="hero-ctas">
+          <a class="btn" href="tel:+61432683643">Call 0432 683 643</a>
+          <a class="btn ghost" href="#truck">What's included</a>
+        </div>
+        <div class="hero-chips">
+          <span class="chip"><span class="star">★★★★★</span> 5.0 · 85 Google reviews</span>
+          <span class="chip">Open 24 hours</span>
+          <span class="chip">No truck licence needed</span>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="rate-plate" aria-label="From 150 dollars per day">
+          <div class="from">From</div>
+          <div class="amount">$150</div>
+          <div class="per">Per day</div>
+        </div>
+        <svg viewBox="0 0 560 330" role="img" aria-label="Box truck with yellow stripe and tail lift">
+          <rect x="0" y="286" width="560" height="8" fill="#101113"/>
+          <rect x="24" y="294" width="42" height="5" fill="#FFC400"/><rect x="110" y="294" width="42" height="5" fill="#FFC400"/><rect x="196" y="294" width="42" height="5" fill="#FFC400"/><rect x="282" y="294" width="42" height="5" fill="#FFC400"/><rect x="368" y="294" width="42" height="5" fill="#FFC400"/><rect x="454" y="294" width="42" height="5" fill="#FFC400"/>
+          <!-- box body -->
+          <rect x="40" y="48" width="330" height="178" fill="#F6F5F0" stroke="#101113" stroke-width="5"/>
+          <rect x="40" y="118" width="330" height="34" fill="#FFC400"/>
+          <text x="205" y="142" text-anchor="middle" font-family="'Barlow Condensed',Arial,sans-serif" font-size="27" font-weight="800" letter-spacing="3" fill="#17181A">SYDNEY TRUCK HIRE</text>
+          <text x="205" y="98" text-anchor="middle" font-family="'Barlow Condensed',Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="4" fill="#9B9C96">0432 683 643</text>
+          <!-- tail lift -->
+          <rect x="22" y="100" width="18" height="126" fill="#2E3034" stroke="#101113" stroke-width="4"/>
+          <rect x="6" y="222" width="34" height="10" fill="#FFC400" stroke="#101113" stroke-width="3"/>
+          <!-- cab -->
+          <path d="M370 110 h98 l52 56 v60 h-150 z" fill="#F6F5F0" stroke="#101113" stroke-width="5"/>
+          <path d="M386 126 h72 l40 44 h-112 z" fill="#2E3034"/>
+          <rect x="370" y="192" width="150" height="16" fill="#FFC400"/>
+          <rect x="516" y="196" width="14" height="30" fill="#2E3034" stroke="#101113" stroke-width="3"/>
+          <!-- underside + wheels -->
+          <rect x="40" y="226" width="480" height="18" fill="#2E3034"/>
+          <circle cx="120" cy="256" r="34" fill="#17181A" stroke="#101113" stroke-width="4"/><circle cx="120" cy="256" r="15" fill="#9B9C96"/>
+          <circle cx="196" cy="256" r="34" fill="#17181A" stroke="#101113" stroke-width="4"/><circle cx="196" cy="256" r="15" fill="#9B9C96"/>
+          <circle cx="448" cy="256" r="34" fill="#17181A" stroke="#101113" stroke-width="4"/><circle cx="448" cy="256" r="15" fill="#9B9C96"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <div class="ticker-row">
+        <span>From $150 a day</span><span>Drive on a car licence</span><span>Tail lift</span><span>Trolley &amp; straps included</span><span>Auto &amp; manual</span><span>Open 24 hours</span><span>All over Sydney</span>
+      </div>
+      <div class="ticker-row">
+        <span>From $150 a day</span><span>Drive on a car licence</span><span>Tail lift</span><span>Trolley &amp; straps included</span><span>Auto &amp; manual</span><span>Open 24 hours</span><span>All over Sydney</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE TRUCK -->
+  <section class="section" id="truck">
+    <div class="wrap truck-grid">
+      <div class="truck-copy">
+        <div class="section-head" style="margin-bottom:24px">
+          <span class="eyebrow">The truck</span>
+          <h2>Everything you need to move, in one hire</h2>
+        </div>
+        <p>Our box trucks are made for moving: a big enclosed body that keeps your gear dry and secure, and a <strong>tail lift</strong> on the back so fridges, washing machines and couches go up on the platform instead of on your back.</p>
+        <p>Every hire comes with a <strong>trolley and straps included</strong> — no add-ons, no surprise extras at pick-up. Choose <strong>automatic or manual</strong>, whatever you're comfortable driving.</p>
+        <p>Best of all, you don't need a truck licence. If you can legally drive a car in NSW, <strong>you can drive this truck</strong>.</p>
+        <a class="btn" href="tel:+61432683643">Check availability — 0432 683 643</a>
+      </div>
+      <div class="spec-card">
+        <div class="spec-card-head">
+          <h3>What's included</h3>
+          <span class="spec-price">From $150/day</span>
+        </div>
+        <ul class="spec-list">
+          <li><span class="tick">✓</span><div><b>Tail lift</b><small>Hydraulic rear platform — load heavy items without lifting them.</small></div></li>
+          <li><span class="tick">✓</span><div><b>Trolley &amp; straps</b><small>Included with every hire, so your load stays put on the road.</small></div></li>
+          <li><span class="tick">✓</span><div><b>Auto &amp; manual options</b><small>Pick the transmission you already know.</small></div></li>
+          <li><span class="tick">✓</span><div><b>Drive on a car licence</b><small>No truck licence required — a standard NSW car licence is all you need.</small></div></li>
+          <li><span class="tick">✓</span><div><b>Open 24 hours</b><small>Early start or late finish — pick up and drop off around the clock.</small></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="hazard" aria-hidden="true"></div>
+
+  <!-- HOW IT WORKS -->
+  <section class="section dark-band" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How it works</span>
+        <h2>Booked in one phone call</h2>
+        <p>No forms, no waiting on quotes. Call, lock in your truck, and get moving.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-no">1</div>
+          <h3>Call us</h3>
+          <p>Ring 0432 683 643 any time — we're open 24 hours. Tell us when you need the truck and for how long.</p>
+        </div>
+        <div class="step">
+          <div class="step-no">2</div>
+          <h3>Pick it up</h3>
+          <p>Collect your truck from our Mt Druitt base in Western Sydney, with the trolley and straps already on board.</p>
+        </div>
+        <div class="step">
+          <div class="step-no">3</div>
+          <h3>Do the move</h3>
+          <p>Drive it anywhere in Sydney on your car licence. The tail lift does the heavy lifting.</p>
+        </div>
+        <div class="step">
+          <div class="step-no">4</div>
+          <h3>Bring it back</h3>
+          <p>Return the truck when you're done. Around-the-clock hours mean no racing the clock.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREAS -->
+  <section class="section" id="areas">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Service area</span>
+        <h2>Based in Mt Druitt, driven all over Sydney</h2>
+        <p>Our trucks are picked up from Mt Druitt and hired by people right across Sydney, including:</p>
+      </div>
+      <div class="areas-grid">
+        <span class="area home">Mt Druitt — home base</span>
+        <span class="area">Blacktown</span>
+        <span class="area">Penrith</span>
+        <span class="area">Parramatta</span>
+        <span class="area">The Hills District</span>
+        <span class="area">Liverpool</span>
+        <span class="area">Fairfield</span>
+        <span class="area">Campbelltown</span>
+        <span class="area">Inner West</span>
+        <span class="area">Sydney CBD</span>
+        <span class="area">Eastern Suburbs</span>
+        <span class="area">Northern Beaches</span>
+        <span class="area">North Shore</span>
+        <span class="area">Sutherland Shire</span>
+        <span class="area">Hawkesbury</span>
+        <span class="area">Blue Mountains</span>
+      </div>
+      <p class="areas-note">Not on the list? If it's in or around Sydney, the truck can get there — give us a call.</p>
+    </div>
+  </section>
+
+  <div class="hazard" aria-hidden="true"></div>
+
+  <!-- REVIEWS -->
+  <section class="section" id="reviews" style="background:var(--card)">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Reviews</span>
+        <h2>Rated 5.0 on Google</h2>
+      </div>
+      <div class="reviews-grid">
+        <div class="score-block">
+          <div class="score">5.0</div>
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p>From 85 Google reviews</p>
+          <a class="g-link" href="https://www.google.com/search?q=Sydney+Truck+Hire+Mt+Druitt+reviews" target="_blank" rel="noopener">Read our reviews on Google →</a>
+        </div>
+        <div class="review-themes">
+          <div class="theme">
+            <b>Standout customer service</b>
+            <p>Reviewers consistently praise the high standard of customer service — easy to deal with from the first call to drop-off.</p>
+          </div>
+          <div class="theme">
+            <b>Very competitive rates</b>
+            <p>Customers keep coming back for pricing that beats the big rental chains, with no hidden extras.</p>
+          </div>
+          <div class="theme">
+            <b>Clean, reliable trucks</b>
+            <p>Trucks turn up clean, well-maintained and ready to work — exactly what you want on moving day.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Quick answers</h2>
+      </div>
+      <div class="faq-list">
+        <details>
+          <summary>Do I need a truck licence?</summary>
+          <p>No. Our trucks can be driven on a standard car licence, so anyone who can legally drive a car in NSW can hire one.</p>
+        </details>
+        <details>
+          <summary>How much does it cost?</summary>
+          <p>Hire starts from $150 a day. Call 0432 683 643 with your dates and we'll give you an exact price on the spot.</p>
+        </details>
+        <details>
+          <summary>What comes with the truck?</summary>
+          <p>Every truck has a tail lift, and a trolley and straps are included with every hire — everything you need for a typical house or furniture move.</p>
+        </details>
+        <details>
+          <summary>When can I pick up and drop off?</summary>
+          <p>We're open 24 hours, so pick-up and drop-off can work around your schedule — early mornings, late nights and weekends included.</p>
+        </details>
+        <details>
+          <summary>Automatic or manual?</summary>
+          <p>Both. Tell us which you'd prefer when you book and we'll sort you out, subject to availability.</p>
+        </details>
+        <details>
+          <summary>Where are you located?</summary>
+          <p>We're based in Mt Druitt in Western Sydney, and our trucks are hired for moves right across the Sydney region.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="section cta-band" id="contact">
+    <div class="wrap">
+      <span class="eyebrow" style="color:var(--muted-dark)">Book your truck</span>
+      <h2 style="margin-top:12px">Ready when you are</h2>
+      <p class="sub">One call books your truck — day or night.</p>
+      <a class="big-phone" href="tel:+61432683643">0432 683 643</a>
+      <div class="hours">Open 24 hours · 7 days · Mt Druitt NSW</div>
+      <div class="copy-note">
+        <button class="copy-btn" onclick="copyPhone(this)">Copy phone number</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div><b>Sydney Truck Hire</b><br>Truck rental · Mt Druitt, Western Sydney NSW</div>
+    <div>Open 24 hours · <a href="tel:+61432683643" style="color:var(--paper);font-weight:600">0432 683 643</a></div>
+    <div>© <span id="year">2026</span> Sydney Truck Hire</div>
+  </div>
+</footer>
+
+<script>
+function toggleNav(btn){
+  var nav = document.getElementById('site-nav');
+  var open = nav.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+document.querySelectorAll('#site-nav a').forEach(function(a){
+  a.addEventListener('click', function(){
+    document.getElementById('site-nav').classList.remove('open');
+    document.querySelector('.menu-toggle').setAttribute('aria-expanded','false');
+  });
+});
+function copyPhone(btn){
+  var done = function(){ btn.textContent = 'Copied: 0432 683 643'; };
+  var fail = function(){
+    var el = document.querySelector('.big-phone');
+    var r = document.createRange(); r.selectNodeContents(el);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    btn.textContent = 'Number selected — press copy';
+  };
+  try { navigator.clipboard.writeText('0432 683 643').then(done, fail); }
+  catch(e){ fail(); }
+}
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
