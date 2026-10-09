@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Owner Dashboard | Sydney Truck Hire</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FDFBF6; --cream:#F7EFE2; --ink:#241D18; --ink-soft:#352C25;
+  --red:#B9342B; --red-deep:#9A2921; --orange:#E0801F; --yellow:#F0A42A; --magenta:#C94281;
+  --line:#E9DFCE; --muted:#6E645A; --muted-dark:#C9BEB2;
+  --ok:#2E7D43; --display:'Poppins',system-ui,Arial,sans-serif;
+  --body:'Mulish',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --r:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px 60px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+header{background:var(--ink);color:var(--paper);padding:14px 0;border-bottom:4px solid var(--yellow)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;padding-bottom:0;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:17px}
+.brand svg{width:34px;height:28px}
+.brand small{display:block;font-family:var(--body);font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted-dark)}
+.hbtns{display:flex;gap:8px}
+.hbtn{background:none;border:1px solid rgba(253,251,246,.35);color:var(--paper);font-family:var(--body);font-weight:600;font-size:13px;padding:7px 14px;border-radius:999px;cursor:pointer}
+.hbtn:hover{border-color:var(--yellow);color:var(--yellow)}
+
+/* login */
+.login{max-width:420px;margin:60px auto;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:0 14px 34px rgba(36,29,24,.12);padding:28px}
+.login h1{font-family:var(--display);font-size:24px;font-weight:800;margin-bottom:4px}
+.login p{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+.login label{display:block;font-family:var(--display);font-weight:600;font-size:13px;margin:12px 0 5px}
+.login input{width:100%;font-family:var(--body);font-size:16px;padding:11px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper)}
+.login input:focus{outline:3px solid var(--yellow);border-color:var(--ink)}
+.lbtns{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-weight:700;font-size:15px;padding:12px 24px;background:var(--red);color:#fff;border:none;border-radius:999px;cursor:pointer}
+.btn:hover{background:var(--red-deep)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.msg{margin-top:14px;font-size:14px;color:var(--muted);min-height:20px}
+.msg.err{color:var(--red)}
+
+/* dashboard */
+#dash{padding-top:26px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 20px}
+.stat b{font-family:var(--display);font-weight:800;font-size:32px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted);font-weight:600}
+.stat.hot b{color:var(--red)}
+h2{font-family:var(--display);font-weight:800;font-size:20px;margin:26px 0 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{font-family:var(--display);font-weight:600;font-size:13.5px;padding:7px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;cursor:pointer;color:var(--muted)}
+.tab.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.cards{display:grid;gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;border-left:8px solid var(--yellow)}
+.card.new{border-left-color:var(--red)}
+.card.confirmed{border-left-color:var(--ok)}
+.card.declined{border-left-color:var(--muted-dark)}
+.card.done{border-left-color:var(--muted-dark)}
+.card-top{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;justify-content:space-between}
+.card-top b{font-family:var(--display);font-size:17px;font-weight:700}
+.badge{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:var(--cream)}
+.card.new .badge{background:var(--red);color:#fff}
+.card.confirmed .badge{background:var(--ok);color:#fff}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted);margin-top:6px}
+.meta b{color:var(--ink);font-weight:700}
+.meta a{font-weight:800;color:var(--red);text-decoration:none;border-bottom:2px solid var(--yellow)}
+.note{margin-top:10px;font-size:15px;background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:10px 14px;white-space:pre-wrap;word-break:break-word}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.act{font-family:var(--display);font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;border:none;cursor:pointer;background:var(--cream);color:var(--ink)}
+.act.ok{background:var(--ok);color:#fff}
+.act.no{background:var(--red);color:#fff}
+.act:hover{filter:brightness(.93)}
+.when{font-size:12.5px;color:var(--muted)}
+.empty{background:#fff;border:1px dashed var(--line);border-radius:var(--r);padding:26px;text-align:center;color:var(--muted);font-size:15px}
+
+/* fleet */
+.fleet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.truck{background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:14px;text-align:center;cursor:pointer;user-select:none}
+.truck b{font-family:var(--display);font-size:14.5px;font-weight:700;display:block;word-break:break-word}
+.truck .st{display:inline-block;margin-top:8px;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:999px}
+.truck.in .st{background:#E4F2E8;color:var(--ok)}
+.truck.out .st{background:var(--yellow);color:var(--ink)}
+.truck.service .st{background:var(--red);color:#fff}
+.truck small{display:block;margin-top:7px;font-size:11.5px;color:var(--muted)}
+.hint{font-size:13px;color:var(--muted);margin-top:10px}
+@media(max-width:640px){.stats{grid-template-columns:1fr 1fr 1fr;gap:8px}.stat{padding:12px 14px}.stat b{font-size:24px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="brand">
+      <svg viewBox="0 0 52 44" aria-hidden="true">
+        <path d="M10 36 a16 16 0 0 1 32 0" fill="none" stroke="#B9342B" stroke-width="5" stroke-linecap="round"/>
+        <path d="M17 36 a9 9 0 0 1 18 0" fill="none" stroke="#E0801F" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="26" cy="35" r="4.5" fill="#F0A42A" stroke="#FDFBF6" stroke-width="2"/>
+        <line x1="26" y1="10" x2="26" y2="3" stroke="#FDFBF6" stroke-width="4" stroke-linecap="round"/>
+        <line x1="13" y1="14" x2="8" y2="9" stroke="#FDFBF6" stroke-width="4" stroke-linecap="round"/>
+        <line x1="39" y1="14" x2="44" y2="9" stroke="#FDFBF6" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <span>Sydney Truck Hire<small>Owner dashboard</small></span>
+    </span>
+    <div class="hbtns" id="hbtns" hidden>
+      <button class="hbtn" id="refresh">↻ Refresh</button>
+      <button class="hbtn" id="logout">Log out</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="login" id="login">
+    <h1>Owner login</h1>
+    <p>Bookings, enquiries and the fleet board live here. Only approved owner emails can see anything.</p>
+    <label for="li-email">Email</label>
+    <input id="li-email" type="email" autocomplete="email">
+    <label for="li-pass">Password</label>
+    <input id="li-pass" type="password" autocomplete="current-password">
+    <div class="lbtns">
+      <button class="btn" id="li-go">Log in</button>
+      <button class="btn ghost" id="li-signup">First time? Create login</button>
+    </div>
+    <div class="msg" id="li-msg"></div>
+  </div>
+
+  <div id="dash" hidden>
+    <div class="stats">
+      <div class="stat hot"><b id="s-new">–</b><br><span>New requests</span></div>
+      <div class="stat"><b id="s-conf">–</b><br><span>Confirmed upcoming</span></div>
+      <div class="stat"><b id="s-out">–</b><br><span>Trucks out</span></div>
+    </div>
+
+    <h2>Booking requests</h2>
+    <div class="tabs" id="tabs">
+      <button class="tab on" data-f="new">New</button>
+      <button class="tab" data-f="confirmed">Confirmed</button>
+      <button class="tab" data-f="all">All</button>
+    </div>
+    <div class="cards" id="list"></div>
+
+    <h2>Fleet board</h2>
+    <div class="fleet-grid" id="fleet"></div>
+    <p class="hint">Tap a truck to cycle its status: In the yard → Out on hire → In the shop. Tap and hold (or double-click) to rename it.</p>
+  </div>
+
+</div>
+
+<script>
+(() => {
+  const SUPA_URL = 'https://ymuwuhvqqftgpxwhzoub.supabase.co';
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltdXd1aHZxcWZ0Z3B4d2h6b3ViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NjUyMzgsImV4cCI6MjA5OTI0MTIzOH0.sOkWQpulWj_ZSqMNSV7YP55T70UFSm2mP5e5xapQyQo';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+  let token = localStorage.getItem('sth-admin-token') || '';
+  let bookings = [], trucks = [], filter = 'new';
+
+  const msg = (t, err) => { const m = $('li-msg'); m.textContent = t; m.className = 'msg' + (err ? ' err' : ''); };
+
+  async function auth(path, body) {
+    const r = await fetch(`${SUPA_URL}/auth/v1/${path}`, {
+      method: 'POST',
+      headers: { apikey: SUPA_KEY, 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    return { ok: r.ok, data: await r.json().catch(() => ({})) };
+  }
+
+  $('li-go').addEventListener('click', async () => {
+    msg('Logging in…');
+    const { ok, data } = await auth('token?grant_type=password', { email: $('li-email').value.trim(), password: $('li-pass').value });
+    if (ok && data.access_token) {
+      token = data.access_token;
+      localStorage.setItem('sth-admin-token', token);
+      show();
+    } else msg(data.error_description || data.msg || 'Login failed — check email and password.', true);
+  });
+
+  $('li-signup').addEventListener('click', async () => {
+    const pass = $('li-pass').value;
+    if (pass.length < 8) return msg('Pick a password of at least 8 characters first, then tap this again.', true);
+    msg('Creating your login…');
+    const { ok, data } = await auth('signup', { email: $('li-email').value.trim(), password: pass });
+    if (!ok) return msg(data.error_description || data.msg || 'Could not create login.', true);
+    if (data.access_token) { token = data.access_token; localStorage.setItem('sth-admin-token', token); show(); }
+    else msg('Almost there — check your email for a confirmation link, click it, then come back and log in.');
+  });
+
+  $('li-pass').addEventListener('keydown', e => { if (e.key === 'Enter') $('li-go').click(); });
+
+  function logout() {
+    token = '';
+    localStorage.removeItem('sth-admin-token');
+    $('dash').hidden = true; $('hbtns').hidden = true; $('login').hidden = false;
+    msg('');
+  }
+  $('logout').addEventListener('click', logout);
+  $('refresh').addEventListener('click', () => load());
+
+  async function api(path, opts = {}) {
+    const r = await fetch(`${SUPA_URL}/rest/v1/${path}`, {
+      ...opts,
+      headers: { apikey: SUPA_KEY, authorization: `Bearer ${token}`, 'content-type': 'application/json', prefer: 'return=minimal', ...(opts.headers || {}) },
+    });
+    if (r.status === 401) { logout(); throw new Error('401'); }
+    return r;
+  }
+
+  const fmtD = d => d ? new Date(d + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' }) : '';
+  const fmtTs = ts => new Date(ts).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' }) + ' · ' + new Date(ts).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit' });
+
+  async function load() {
+    const [rb, rt] = await Promise.all([
+      api('sth_bookings?select=*&order=created_at.desc&limit=300'),
+      api('sth_trucks?select=*&order=created_at'),
+    ]);
+    bookings = await rb.json();
+    trucks = await rt.json();
+    if (!Array.isArray(bookings)) bookings = [];
+    if (!Array.isArray(trucks)) trucks = [];
+    render();
+  }
+
+  function render() {
+    $('s-new').textContent = bookings.filter(b => b.status === 'new').length;
+    $('s-conf').textContent = bookings.filter(b => b.status === 'confirmed').length;
+    $('s-out').textContent = trucks.filter(t => t.status === 'out').length + '/' + trucks.length;
+
+    const rows = filter === 'all' ? bookings : bookings.filter(b => b.status === filter);
+    $('list').innerHTML = rows.length ? rows.map(card).join('') :
+      `<div class="empty">${filter === 'new' ? 'No new requests — all caught up. New bookings from the website land here.' : 'Nothing here yet.'}</div>`;
+
+    $('fleet').innerHTML = trucks.map(t => `
+      <div class="truck ${t.status}" data-id="${t.id}" title="Tap to change status">
+        <b>${esc(t.name)}</b>
+        <span class="st">${t.status === 'in' ? 'In the yard' : t.status === 'out' ? 'Out on hire' : 'In the shop'}</span>
+        ${t.note ? `<small>${esc(t.note)}</small>` : ''}
+      </div>`).join('');
+  }
+
+  function card(b) {
+    const when = [fmtD(b.start_date), b.days ? b.days + ' day' + (b.days > 1 ? 's' : '') : '', b.transmission !== 'either' ? b.transmission : '']
+      .filter(Boolean).join(' · ');
+    return `<div class="card ${b.status}" data-id="${b.id}">
+      <div class="card-top"><b>${esc(b.name)}</b><span class="badge">${b.status}</span></div>
+      <div class="meta">
+        <span>📞 <a href="tel:${esc(b.phone.replace(/[^+\d]/g, ''))}">${esc(b.phone)}</a></span>
+        ${b.email ? `<span>✉️ ${esc(b.email)}</span>` : ''}
+        ${when ? `<span><b>${esc(when)}</b></span>` : ''}
+        <span class="when">asked ${fmtTs(b.created_at)}</span>
+      </div>
+      <div class="note">${esc(b.message)}</div>
+      ${b.owner_note ? `<div class="note" style="border-style:solid">📝 ${esc(b.owner_note)}</div>` : ''}
+      <div class="acts">
+        ${b.status !== 'confirmed' ? `<button class="act ok" data-set="confirmed">✓ Confirm</button>` : ''}
+        ${b.status === 'confirmed' ? `<button class="act" data-set="done">Finished</button>` : ''}
+        ${b.status === 'new' ? `<button class="act no" data-set="declined">Decline</button>` : ''}
+        <button class="act" data-note="1">Add note</button>
+      </div>
+    </div>`;
+  }
+
+  $('list').addEventListener('click', async e => {
+    const btn = e.target.closest('button.act'); if (!btn) return;
+    const id = btn.closest('.card').dataset.id;
+    if (btn.dataset.set) {
+      await api(`sth_bookings?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify({ status: btn.dataset.set }) });
+    } else if (btn.dataset.note) {
+      const b = bookings.find(x => x.id === id);
+      const n = prompt('Note for this booking (truck assigned, deposit paid, etc.):', b ? b.owner_note : '');
+      if (n === null) return;
+      await api(`sth_bookings?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify({ owner_note: n.slice(0, 2000) }) });
+    }
+    load();
+  });
+
+  $('tabs').addEventListener('click', e => {
+    const t = e.target.closest('.tab'); if (!t) return;
+    filter = t.dataset.f;
+    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === t));
+    render();
+  });
+
+  const NEXT = { in: 'out', out: 'service', service: 'in' };
+  let pressTimer = null, longPressed = false;
+  $('fleet').addEventListener('pointerdown', e => {
+    const el = e.target.closest('.truck'); if (!el) return;
+    longPressed = false;
+    pressTimer = setTimeout(() => { longPressed = true; renameTruck(el.dataset.id); }, 650);
+  });
+  ['pointerup', 'pointerleave'].forEach(ev => $('fleet').addEventListener(ev, () => clearTimeout(pressTimer)));
+  $('fleet').addEventListener('click', async e => {
+    const el = e.target.closest('.truck'); if (!el || longPressed) return;
+    const t = trucks.find(x => x.id === el.dataset.id); if (!t) return;
+    await api(`sth_trucks?id=eq.${t.id}`, { method: 'PATCH', body: JSON.stringify({ status: NEXT[t.status] || 'in' }) });
+    load();
+  });
+  $('fleet').addEventListener('dblclick', e => {
+    const el = e.target.closest('.truck'); if (el) renameTruck(el.dataset.id);
+  });
+  async function renameTruck(id) {
+    const t = trucks.find(x => x.id === id); if (!t) return;
+    const n = prompt('Truck name:', t.name);
+    if (!n || n === t.name) return;
+    await api(`sth_trucks?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify({ name: n.slice(0, 80) }) });
+    load();
+  }
+
+  async function show() {
+    $('login').hidden = true; $('dash').hidden = false; $('hbtns').hidden = false;
+    try { await load(); } catch (e) {}
+  }
+
+  if (token) show();
+})();
+</script>
+
+</body>
+</html>

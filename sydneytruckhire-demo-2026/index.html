@@ -249,8 +249,8 @@ details p{padding:0 22px 20px;color:var(--muted);font-size:16px;max-width:65ch}
 .field{display:grid;gap:6px}
 .field label{font-family:var(--display);font-weight:600;font-size:13.5px}
 .field label small{color:var(--muted);font-weight:500}
-.field input,.field textarea{font-family:var(--body);font-size:16px;padding:12px 16px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);width:100%}
-.field input:focus,.field textarea:focus{outline:3px solid var(--yellow);border-color:var(--ink)}
+.field input,.field textarea,.field select{font-family:var(--body);font-size:16px;padding:12px 16px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);width:100%}
+.field input:focus,.field textarea:focus,.field select:focus{outline:3px solid var(--yellow);border-color:var(--ink)}
 .field textarea{resize:vertical;min-height:110px}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
@@ -566,8 +566,8 @@ footer{background:var(--ink-soft);color:var(--muted-dark);padding-block:30px;fon
       </div>
       <div class="form-card">
         <div class="form-card-head">
-          <h3>Send an enquiry</h3>
-          <p>Goes straight to the owner — you'll get a call back.</p>
+          <h3>Book a truck</h3>
+          <p>Request your dates — the owner confirms with a quick call back.</p>
         </div>
         <form name="enquiry" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="company">
           <input type="hidden" name="form-name" value="enquiry">
@@ -588,15 +588,29 @@ footer{background:var(--ink-soft);color:var(--muted-dark);padding-block:30px;fon
             <label for="f-email">Email <small>(optional)</small></label>
             <input id="f-email" name="email" type="email" autocomplete="email">
           </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-date">First day you need it</label>
+              <input id="f-date" name="date-needed" type="date">
+            </div>
+            <div class="field">
+              <label for="f-days">How many days?</label>
+              <input id="f-days" name="days" type="number" min="1" max="60" inputmode="numeric" placeholder="e.g. 2">
+            </div>
+          </div>
           <div class="field">
-            <label for="f-date">When do you need the truck?</label>
-            <input id="f-date" name="date-needed" type="text" placeholder="e.g. Saturday 18 Oct, 2 days">
+            <label for="f-trans">Auto or manual?</label>
+            <select id="f-trans" name="transmission">
+              <option value="either">Either — whatever's available</option>
+              <option value="auto">Automatic</option>
+              <option value="manual">Manual</option>
+            </select>
           </div>
           <div class="field">
             <label for="f-msg">What are you moving?</label>
             <textarea id="f-msg" name="message" required placeholder="e.g. 3-bedroom house from Penrith to Liverpool, need auto with tail lift"></textarea>
           </div>
-          <button class="btn" type="submit" style="justify-self:start">Send enquiry</button>
+          <button class="btn" type="submit" style="justify-self:start">Send booking request</button>
           <p class="form-note">We never share your details. In a hurry? Call 0432 683 643 — we're open now.</p>
         </form>
       </div>
@@ -609,7 +623,7 @@ footer{background:var(--ink-soft);color:var(--muted-dark);padding-block:30px;fon
   <div class="wrap foot">
     <div><b>Sydney Truck Hire</b><br>Truck rental · Mt Druitt, Western Sydney NSW</div>
     <div>Open 24 hours · <a href="tel:+61432683643" style="color:var(--paper);font-weight:700">0432 683 643</a></div>
-    <div>© <span id="year">2026</span> Sydney Truck Hire</div>
+    <div>© <span id="year">2026</span> Sydney Truck Hire · <a href="/admin.html" style="color:var(--muted-dark)">Owner login</a></div>
   </div>
 </footer>
 
@@ -637,6 +651,43 @@ function copyPhone(btn){
   catch(e){ fail(); }
 }
 document.getElementById('year').textContent = new Date().getFullYear();
+
+/* Booking requests go to the booking system; if that's ever unreachable,
+   the form falls back to its native Netlify submission so nothing is lost. */
+(function(){
+  var SUPA_URL = 'https://ymuwuhvqqftgpxwhzoub.supabase.co';
+  var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltdXd1aHZxcWZ0Z3B4d2h6b3ViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NjUyMzgsImV4cCI6MjA5OTI0MTIzOH0.sOkWQpulWj_ZSqMNSV7YP55T70UFSm2mP5e5xapQyQo';
+  var form = document.querySelector('form[name="enquiry"]');
+  if (!form) return;
+  var fallingBack = false;
+  form.addEventListener('submit', function(e){
+    if (fallingBack) return;
+    e.preventDefault();
+    var el = form.elements;
+    if (el['company'] && el['company'].value) return; // honeypot
+    var btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true; btn.textContent = 'Sending…';
+    var payload = {
+      name: el['name'].value.trim(),
+      phone: el['phone'].value.trim(),
+      email: (el['email'].value || '').trim(),
+      start_date: el['date-needed'].value || null,
+      days: el['days'].value ? parseInt(el['days'].value, 10) : null,
+      transmission: el['transmission'].value || 'either',
+      message: el['message'].value.trim()
+    };
+    fetch(SUPA_URL + '/rest/v1/sth_bookings', {
+      method: 'POST',
+      headers: { apikey: SUPA_KEY, 'content-type': 'application/json', prefer: 'return=minimal' },
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      if (r.ok) { location.href = '/thanks.html'; } else { throw 0; }
+    }).catch(function(){
+      fallingBack = true;
+      form.submit();
+    });
+  });
+})();
 </script>
 
 </body>
