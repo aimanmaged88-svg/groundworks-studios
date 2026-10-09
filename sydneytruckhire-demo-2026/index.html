@@ -4,15 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sydney Truck Hire | Truck Rental Mt Druitt & Western Sydney</title>
-<meta name="description" content="Sydney Truck Hire — truck rental from $150 a day, based in Mt Druitt and serving all of Sydney. Drive on a car licence. Tail lift, trolley & straps included. Open 24 hours. Call 0432 683 643.">
+<meta name="description" content="Sydney Truck Hire — truck rental from $150 a day, based in Mt Druitt and serving all of Sydney. Drive on a car licence. Tail lift, trolley & straps included. Open 24 hours. Rated 5.0★ on Google. Call 0432 683 643.">
 <meta name="keywords" content="truck hire Sydney, truck rental Mt Druitt, moving truck hire Western Sydney, cheap truck hire Sydney, pantech hire, tail lift truck hire, car licence truck hire">
 <meta property="og:title" content="Sydney Truck Hire — From $150 a Day, Open 24 Hours">
 <meta property="og:description" content="Hire a moving truck on your car licence. Tail lift, trolley & straps included. Based in Mt Druitt, serving all of Sydney. 5.0★ on Google. Call 0432 683 643.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_AU">
+<meta property="og:image" content="img/truck.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -21,6 +22,7 @@
   "description": "Truck rental agency based in Mt Druitt, Western Sydney. Moving trucks from $150 a day that can be driven on a standard car licence. Tail lift, trolley and straps included. Open 24 hours.",
   "telephone": "+61432683643",
   "priceRange": "From $150 per day",
+  "image": "img/truck.jpg",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Bidwill",
@@ -42,21 +44,26 @@
 }
 </script>
 <style>
-/* Layout concept: road-freight signage — strong horizontal bands, hazard-stripe rules,
-   big condensed caps, one hazard-yellow accent on asphalt neutrals. Single deliberate theme. */
+/* Layout concept: themed on the fleet's own livery — black line art and warm
+   earth colours (red, orange, golden yellow, magenta) on truck-box white,
+   rounded organic shapes, arc and dot motifs. Single deliberate light theme. */
 :root{
-  --yellow:#FFC400;          /* hazard / tail-lift yellow */
-  --yellow-deep:#E6AF00;
-  --ink:#17181A;             /* asphalt */
-  --asphalt:#1E2023;         /* dark band background */
-  --asphalt-2:#26282C;
-  --paper:#F6F5F0;           /* page ground */
-  --card:#FFFFFF;
-  --line:#E2E0D6;
-  --muted:#5C5E57;
-  --muted-dark:#A8AAA4;      /* muted text on dark bands */
-  --display:'Barlow Condensed','Arial Narrow',Arial,sans-serif;
-  --body:'Barlow',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --paper:#FDFBF6;         /* truck-box white, slightly warm */
+  --cream:#F7EFE2;         /* alt section ground */
+  --ink:#241D18;           /* the artwork's black line work */
+  --ink-soft:#352C25;
+  --red:#B9342B;           /* deep ochre red */
+  --red-deep:#9A2921;
+  --orange:#E0801F;        /* burnt orange */
+  --yellow:#F0A42A;        /* golden yellow */
+  --magenta:#C94281;       /* pink ribbon in the artwork */
+  --line:#E9DFCE;
+  --muted:#6E645A;
+  --muted-dark:#C9BEB2;    /* muted text on ink bands */
+  --display:'Poppins',system-ui,Arial,sans-serif;
+  --body:'Mulish',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --r:22px;
+  --shadow:0 14px 34px rgba(36,29,24,.14);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -64,121 +71,158 @@ html{scroll-behavior:smooth}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
-body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
 img,svg{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1140px;margin:0 auto;padding-inline:20px}
-:focus-visible{outline:3px solid var(--yellow-deep);outline-offset:2px}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 
 /* ---------- shared pieces ---------- */
-.hazard{height:12px;background:repeating-linear-gradient(-45deg,var(--yellow) 0 16px,var(--ink) 16px 32px)}
-.eyebrow{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
-.eyebrow::before{content:"";display:inline-block;width:26px;height:4px;background:var(--yellow);margin-right:10px;vertical-align:middle}
-h1,h2,h3{font-family:var(--display);text-transform:uppercase;line-height:1.02;text-wrap:balance}
-h2{font-size:clamp(34px,5vw,52px);font-weight:800;letter-spacing:.5px}
-.section{padding-block:72px}
-.section-head{display:flex;flex-direction:column;gap:12px;margin-bottom:40px;max-width:640px}
+.dots{height:14px;background-image:
+  radial-gradient(circle at 7px 7px, var(--red) 4px, transparent 5px),
+  radial-gradient(circle at 7px 7px, var(--orange) 4px, transparent 5px),
+  radial-gradient(circle at 7px 7px, var(--yellow) 4px, transparent 5px),
+  radial-gradient(circle at 7px 7px, var(--magenta) 4px, transparent 5px);
+  background-size:96px 14px,96px 14px,96px 14px,96px 14px;
+  background-position:0 0,24px 0,48px 0,72px 0;background-repeat:repeat-x}
+.eyebrow{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--red)}
+.eyebrow::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--yellow);border:2px solid var(--ink);margin-right:10px;vertical-align:-1px}
+h1,h2,h3{font-family:var(--display);line-height:1.08;text-wrap:balance}
+h2{font-size:clamp(30px,4.6vw,44px);font-weight:800;letter-spacing:-.5px}
+.section{padding-block:76px}
+.section-head{display:flex;flex-direction:column;gap:12px;margin-bottom:42px;max-width:640px}
 .section-head p{color:var(--muted);font-size:17px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:1px;text-transform:uppercase;padding:15px 28px;background:var(--yellow);color:var(--ink);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);transition:transform .15s,box-shadow .15s;cursor:pointer}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
-.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
-.btn.ghost{background:transparent;color:var(--paper);border-color:var(--paper);box-shadow:4px 4px 0 rgba(246,245,240,.35)}
-.btn.ghost:hover{box-shadow:6px 6px 0 rgba(246,245,240,.35)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:.3px;padding:15px 30px;background:var(--red);color:#fff;border:none;border-radius:999px;box-shadow:0 10px 22px rgba(185,52,43,.32);transition:transform .15s,box-shadow .15s,background .15s;cursor:pointer}
+.btn:hover{background:var(--red-deep);transform:translateY(-2px);box-shadow:0 14px 28px rgba(185,52,43,.4)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);box-shadow:none}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.btn.light{background:var(--yellow);color:var(--ink);box-shadow:0 10px 22px rgba(240,164,42,.35)}
+.btn.light:hover{background:#E09720}
 
 /* ---------- header ---------- */
-header{position:sticky;top:0;z-index:50;background:var(--ink);color:var(--paper);border-bottom:4px solid var(--yellow)}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+header{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);box-shadow:0 2px 14px rgba(36,29,24,.06)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
 .logo{display:flex;align-items:center;gap:12px}
-.logo-mark{width:46px;height:34px;flex:none}
-.logo-word{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:1.5px;text-transform:uppercase;line-height:1}
-.logo-word span{color:var(--yellow)}
-.logo-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted-dark)}
-nav{display:flex;align-items:center;gap:26px}
-nav a{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:1.5px;text-transform:uppercase;color:var(--paper);opacity:.85}
-nav a:hover{opacity:1;color:var(--yellow)}
-.call-btn{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--ink);font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:1px;padding:9px 16px;white-space:nowrap}
-.call-btn:hover{background:var(--yellow-deep)}
-.menu-toggle{display:none;background:none;border:2px solid var(--paper);color:var(--paper);font-family:var(--display);font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:7px 12px;cursor:pointer}
+.logo-mark{width:48px;height:40px;flex:none}
+.logo-word{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.2px;line-height:1.1}
+.logo-word span{color:var(--red)}
+.logo-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);font-weight:700}
+nav{display:flex;align-items:center;gap:24px}
+nav a{font-family:var(--display);font-weight:600;font-size:14.5px;color:var(--ink-soft)}
+nav a:hover{color:var(--red)}
+.call-btn{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;font-family:var(--display);font-weight:700;font-size:15px;padding:10px 18px;border-radius:999px;white-space:nowrap}
+.call-btn:hover{background:var(--red-deep)}
+.menu-toggle{display:none;background:none;border:2px solid var(--ink);color:var(--ink);font-family:var(--display);font-size:14px;font-weight:700;padding:8px 14px;border-radius:999px;cursor:pointer}
 
 /* ---------- hero ---------- */
-.hero{background:var(--asphalt);color:var(--paper);overflow:hidden}
-.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding-block:76px 64px}
-.hero .eyebrow{color:var(--muted-dark)}
-.hero h1{font-size:clamp(46px,7vw,84px);font-weight:800;letter-spacing:.5px;margin-block:14px 18px}
-.hero h1 em{font-style:normal;color:var(--yellow)}
-.hero-sub{font-size:19px;color:var(--muted-dark);max-width:52ch}
-.hero-sub strong{color:var(--paper);font-weight:600}
-.hero-ctas{display:flex;flex-wrap:wrap;gap:16px;margin-top:30px}
-.hero-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
-.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(246,245,240,.25);padding:8px 14px;font-size:14px;font-weight:500;color:var(--paper)}
-.chip .star{color:var(--yellow)}
-.hero-art{position:relative}
-.rate-plate{position:absolute;right:0;top:-18px;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);padding:10px 18px;text-align:center;transform:rotate(3deg);box-shadow:5px 5px 0 rgba(0,0,0,.45)}
-.rate-plate .from{font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase}
-.rate-plate .amount{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
-.rate-plate .per{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:2px;text-transform:uppercase}
+.hero{background:linear-gradient(180deg,var(--cream),var(--paper));overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;padding-block:72px 64px}
+.hero h1{font-size:clamp(38px,5.6vw,62px);font-weight:800;letter-spacing:-1px;margin-block:16px 18px}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero-sub{font-size:18px;color:var(--muted);max-width:52ch}
+.hero-sub strong{color:var(--ink);font-weight:700}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.hero-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600;color:var(--ink-soft);box-shadow:0 3px 10px rgba(36,29,24,.06)}
+.chip .star{color:var(--yellow);letter-spacing:1px}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--orange)}
+.chip:nth-child(2)::before{background:var(--magenta)}
+.chip:nth-child(3)::before{background:var(--red)}
+.hero-art{position:relative;padding:10px}
+.hero-photo{border-radius:var(--r);border:6px solid #fff;box-shadow:var(--shadow);width:100%;object-fit:cover;aspect-ratio:1/1.02}
+.rate-plate{position:absolute;right:-6px;top:-18px;width:132px;height:132px;border-radius:50%;background:var(--yellow);border:4px solid var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transform:rotate(6deg);box-shadow:0 12px 26px rgba(36,29,24,.25);z-index:2}
+.rate-plate .from{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase}
+.rate-plate .amount{font-family:var(--display);font-weight:800;font-size:38px;line-height:1;font-variant-numeric:tabular-nums}
+.rate-plate .per{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase}
+.hero-arcs{position:absolute;left:-14px;bottom:-10px;z-index:2;width:92px;height:auto}
 
 /* ---------- ticker strip ---------- */
-.ticker{background:var(--yellow);border-block:3px solid var(--ink);overflow:hidden}
+.ticker{background:var(--ink);overflow:hidden}
 .ticker-track{display:flex;width:max-content;animation:ticker 32s linear infinite}
-.ticker-row{display:flex;gap:0;white-space:nowrap}
-.ticker span{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:2px;text-transform:uppercase;color:var(--ink);padding:11px 0}
-.ticker span::after{content:"▲";margin-inline:22px;font-size:11px;vertical-align:2px}
+.ticker-row{display:flex;white-space:nowrap}
+.ticker span{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:1px;color:var(--paper);padding:12px 0}
+.ticker span::after{content:"●";margin-inline:20px;font-size:10px;vertical-align:2px}
+.ticker-row span:nth-child(4n+1)::after{color:var(--red)}
+.ticker-row span:nth-child(4n+2)::after{color:var(--orange)}
+.ticker-row span:nth-child(4n+3)::after{color:var(--yellow)}
+.ticker-row span:nth-child(4n+4)::after{color:var(--magenta)}
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion: reduce){.ticker-track{animation:none}}
 
 /* ---------- truck / included ---------- */
-.truck-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
-.spec-card{background:var(--card);border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink)}
-.spec-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--ink);color:var(--paper);padding:16px 22px}
-.spec-card-head h3{font-size:24px;font-weight:700;letter-spacing:1px}
-.spec-price{font-family:var(--display);font-weight:800;font-size:24px;color:var(--yellow);white-space:nowrap;font-variant-numeric:tabular-nums}
-.spec-list{list-style:none;padding:10px 22px 22px}
-.spec-list li{display:flex;gap:14px;align-items:flex-start;padding-block:13px;border-bottom:1px dashed var(--line)}
+.truck-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
+.spec-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.spec-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--ink);color:var(--paper);padding:18px 24px}
+.spec-card-head h3{font-size:20px;font-weight:700}
+.spec-price{font-family:var(--display);font-weight:800;font-size:20px;color:var(--yellow);white-space:nowrap;font-variant-numeric:tabular-nums}
+.spec-list{list-style:none;padding:12px 24px 24px}
+.spec-list li{display:flex;gap:14px;align-items:flex-start;padding-block:14px;border-bottom:1px dashed var(--line)}
 .spec-list li:last-child{border-bottom:none}
-.tick{flex:none;width:26px;height:26px;background:var(--yellow);border:2px solid var(--ink);display:grid;place-items:center;font-weight:700;font-size:14px;margin-top:2px}
-.spec-list b{display:block;font-size:16px}
-.spec-list small{color:var(--muted);font-size:14.5px;line-height:1.5;display:block}
+.tick{flex:none;width:28px;height:28px;border-radius:50%;background:var(--yellow);border:2px solid var(--ink);display:grid;place-items:center;font-weight:800;font-size:13px;margin-top:2px}
+.spec-list li:nth-child(2) .tick{background:var(--orange)}
+.spec-list li:nth-child(3) .tick{background:var(--magenta);color:#fff}
+.spec-list li:nth-child(4) .tick{background:var(--red);color:#fff}
+.spec-list li:nth-child(5) .tick{background:var(--yellow)}
+.spec-list b{display:block;font-size:16px;font-family:var(--display);font-weight:700}
+.spec-list small{color:var(--muted);font-size:14.5px;line-height:1.55;display:block}
 .truck-copy p{color:var(--muted);font-size:17px;margin-bottom:16px;max-width:58ch}
 .truck-copy p strong{color:var(--ink)}
 .truck-copy .btn{margin-top:10px}
 
+/* ---------- fleet ---------- */
+.fleet{background:var(--cream)}
+.fleet-frame{position:relative;border-radius:var(--r);overflow:hidden;border:6px solid #fff;box-shadow:var(--shadow)}
+.fleet-frame img{width:100%;object-fit:cover}
+.fleet-caption{position:absolute;left:16px;bottom:16px;background:rgba(36,29,24,.82);color:var(--paper);font-family:var(--display);font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px}
+.fleet-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+
 /* ---------- how it works ---------- */
-.dark-band{background:var(--asphalt);color:var(--paper)}
-.dark-band .eyebrow{color:var(--muted-dark)}
+.dark-band{background:var(--ink);color:var(--paper)}
+.dark-band .eyebrow{color:var(--yellow)}
 .dark-band .section-head p{color:var(--muted-dark)}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(246,245,240,.18);border:1px solid rgba(246,245,240,.18)}
-.step{background:var(--asphalt-2);padding:26px 22px 30px}
-.step-no{font-family:var(--display);font-weight:800;font-size:40px;color:var(--yellow);line-height:1;font-variant-numeric:tabular-nums}
-.step h3{font-size:21px;font-weight:700;letter-spacing:1px;margin-block:12px 8px}
-.step p{font-size:15px;color:var(--muted-dark);line-height:1.55}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.step{background:var(--ink-soft);border-radius:var(--r);padding:26px 22px 30px}
+.step-no{font-family:var(--display);font-weight:800;font-size:19px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink);background:var(--yellow);font-variant-numeric:tabular-nums}
+.step:nth-child(1) .step-no{background:var(--yellow)}
+.step:nth-child(2) .step-no{background:var(--orange)}
+.step:nth-child(3) .step-no{background:var(--magenta);color:#fff}
+.step:nth-child(4) .step-no{background:var(--red);color:#fff}
+.step h3{font-size:19px;font-weight:700;margin-block:14px 8px}
+.step p{font-size:15px;color:var(--muted-dark);line-height:1.6}
 
 /* ---------- areas ---------- */
-.areas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
-.area{background:var(--card);border:1px solid var(--line);padding:12px 16px;font-weight:500;font-size:15.5px;display:flex;align-items:center;gap:10px}
-.area::before{content:"";flex:none;width:8px;height:8px;background:var(--yellow);border:1px solid var(--ink)}
+.areas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:10px}
+.area{background:#fff;border:1px solid var(--line);border-radius:999px;padding:11px 18px;font-weight:600;font-size:15px;display:flex;align-items:center;gap:10px}
+.area::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;background:var(--orange)}
+.area:nth-child(4n+2)::before{background:var(--red)}
+.area:nth-child(4n+3)::before{background:var(--magenta)}
+.area:nth-child(4n)::before{background:var(--yellow)}
 .area.home{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.area.home::before{background:var(--yellow)}
 .areas-note{margin-top:18px;color:var(--muted);font-size:15.5px}
 
 /* ---------- reviews ---------- */
 .reviews-grid{display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:start}
-.score-block{text-align:left}
-.score{font-family:var(--display);font-weight:800;font-size:112px;line-height:.9;font-variant-numeric:tabular-nums}
-.stars{color:var(--yellow-deep);font-size:26px;letter-spacing:4px;margin-block:8px}
+.score{font-family:var(--display);font-weight:800;font-size:104px;line-height:.9;font-variant-numeric:tabular-nums;color:var(--red)}
+.stars{color:var(--yellow);font-size:26px;letter-spacing:4px;margin-block:8px;-webkit-text-stroke:1px var(--ink)}
 .score-block p{color:var(--muted);font-size:15.5px}
-.score-block .g-link{display:inline-block;margin-top:14px;font-weight:600;font-size:15px;border-bottom:2px solid var(--yellow);padding-bottom:1px}
+.score-block .g-link{display:inline-block;margin-top:14px;font-weight:700;font-size:15px;border-bottom:3px solid var(--yellow);padding-bottom:1px}
 .review-themes{display:grid;gap:14px}
-.theme{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--yellow);padding:18px 22px}
-.theme b{font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px}
-.theme p{color:var(--muted);font-size:15.5px;line-height:1.55}
+.theme{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px 24px;box-shadow:0 4px 14px rgba(36,29,24,.05)}
+.theme{border-left:8px solid var(--yellow)}
+.theme:nth-child(2){border-left-color:var(--orange)}
+.theme:nth-child(3){border-left-color:var(--magenta)}
+.theme b{font-family:var(--display);font-size:17px;font-weight:700;display:block;margin-bottom:4px}
+.theme p{color:var(--muted);font-size:15.5px;line-height:1.6}
 
 /* ---------- faq ---------- */
 .faq-list{max-width:760px;display:grid;gap:12px}
-details{background:var(--card);border:1px solid var(--line)}
+details{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
 details[open]{border-color:var(--ink)}
-summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:.5px;text-transform:uppercase}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;font-family:var(--display);font-weight:700;font-size:17px}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-size:26px;font-weight:600;color:var(--yellow-deep);flex:none;line-height:1}
+summary::after{content:"+";font-size:26px;font-weight:600;color:var(--red);flex:none;line-height:1}
 details[open] summary::after{content:"–"}
 details p{padding:0 22px 20px;color:var(--muted);font-size:16px;max-width:65ch}
 
@@ -187,54 +231,55 @@ details p{padding:0 22px 20px;color:var(--muted);font-size:16px;max-width:65ch}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
 .cta-band h2{color:var(--paper)}
 .cta-band .sub{color:var(--muted-dark);font-size:17px;margin-top:12px;max-width:46ch}
-.big-phone{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(40px,6vw,62px);letter-spacing:3px;color:var(--yellow);margin-block:22px 4px;font-variant-numeric:tabular-nums;user-select:all}
-.cta-band .hours{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:3px;text-transform:uppercase;color:var(--paper)}
+.big-phone{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(36px,5.4vw,56px);letter-spacing:1px;color:var(--yellow);margin-block:22px 4px;font-variant-numeric:tabular-nums;user-select:all}
+.cta-band .hours{font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--paper)}
 .copy-note{margin-top:18px}
-.copy-btn{background:none;border:1px solid rgba(246,245,240,.4);color:var(--paper);font-family:var(--body);font-size:14px;padding:8px 16px;cursor:pointer}
+.copy-btn{background:none;border:1px solid rgba(253,251,246,.4);color:var(--paper);font-family:var(--body);font-size:14px;padding:8px 18px;border-radius:999px;cursor:pointer}
 .copy-btn:hover{border-color:var(--yellow);color:var(--yellow)}
-.contact-details{list-style:none;margin-top:26px;display:grid;gap:12px;border-top:1px solid rgba(246,245,240,.18);padding-top:22px}
+.contact-details{list-style:none;margin-top:26px;display:grid;gap:12px;border-top:1px solid rgba(253,251,246,.18);padding-top:22px}
 .contact-details li{display:flex;gap:12px;font-size:15.5px;color:var(--muted-dark)}
-.contact-details b{color:var(--paper);font-weight:600;flex:none;min-width:84px;font-family:var(--display);text-transform:uppercase;letter-spacing:1px;font-size:15px}
-.contact-details a{color:var(--paper);border-bottom:1px solid var(--yellow)}
-.form-card{background:var(--card);color:var(--ink);border:2px solid var(--ink);box-shadow:6px 6px 0 var(--yellow)}
-.form-card-head{background:var(--yellow);color:var(--ink);padding:14px 22px;border-bottom:2px solid var(--ink)}
-.form-card-head h3{font-size:22px;font-weight:700;letter-spacing:1px}
-.form-card-head p{font-size:14px;font-weight:500}
-.form-card form{padding:22px;display:grid;gap:16px}
+.contact-details b{color:var(--paper);font-weight:700;flex:none;min-width:84px;font-family:var(--display);font-size:14px;letter-spacing:1px;text-transform:uppercase}
+.contact-details a{color:var(--paper);border-bottom:2px solid var(--yellow)}
+.form-card{background:#fff;color:var(--ink);border-radius:var(--r);box-shadow:0 18px 44px rgba(0,0,0,.35);overflow:hidden}
+.form-card-head{background:var(--cream);padding:18px 24px;border-bottom:1px solid var(--line)}
+.form-card-head h3{font-size:20px;font-weight:700;display:flex;align-items:center;gap:10px}
+.form-card-head h3::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:16px 0 0 var(--orange),32px 0 0 var(--yellow),48px 0 0 var(--magenta);margin-left:4px}
+.form-card-head p{font-size:14px;color:var(--muted);font-weight:500;margin-top:2px}
+.form-card form{padding:24px;display:grid;gap:16px}
 .field{display:grid;gap:6px}
-.field label{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:1.5px;text-transform:uppercase}
-.field label small{font-family:var(--body);text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400}
-.field input,.field textarea{font-family:var(--body);font-size:16px;padding:12px 14px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);width:100%}
-.field input:focus,.field textarea:focus{outline:3px solid var(--yellow)}
+.field label{font-family:var(--display);font-weight:600;font-size:13.5px}
+.field label small{color:var(--muted);font-weight:500}
+.field input,.field textarea{font-family:var(--body);font-size:16px;padding:12px 16px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);width:100%}
+.field input:focus,.field textarea:focus{outline:3px solid var(--yellow);border-color:var(--ink)}
 .field textarea{resize:vertical;min-height:110px}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .form-note{font-size:13.5px;color:var(--muted)}
 
 /* ---------- footer ---------- */
-footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font-size:14px}
+footer{background:var(--ink-soft);color:var(--muted-dark);padding-block:30px;font-size:14px}
 .foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px}
-.foot b{color:var(--paper);font-family:var(--display);letter-spacing:1px;text-transform:uppercase;font-size:16px}
+.foot b{color:var(--paper);font-family:var(--display);font-size:15px}
 
 /* ---------- responsive ---------- */
 @media (max-width:920px){
-  .hero-grid{grid-template-columns:1fr;padding-block:56px 48px}
-  .hero-art{max-width:560px}
+  .hero-grid{grid-template-columns:1fr;padding-block:52px 48px}
+  .hero-art{max-width:520px}
   .truck-grid{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr 1fr}
   .reviews-grid{grid-template-columns:1fr;gap:36px}
   .contact-grid{grid-template-columns:1fr;gap:44px}
 }
 @media (max-width:720px){
-  nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--ink);flex-direction:column;align-items:flex-start;gap:0;padding:10px 20px 18px;border-bottom:4px solid var(--yellow)}
+  nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--paper);flex-direction:column;align-items:flex-start;gap:0;padding:10px 20px 18px;border-bottom:3px solid var(--red);box-shadow:0 14px 24px rgba(36,29,24,.12)}
   nav.open{display:flex}
-  nav a{padding-block:10px;width:100%;border-bottom:1px solid rgba(246,245,240,.12)}
+  nav a{padding-block:12px;width:100%;border-bottom:1px solid var(--line)}
   .menu-toggle{display:inline-block}
   .topbar .call-btn{display:none}
   .steps{grid-template-columns:1fr}
   .section{padding-block:56px}
-  .rate-plate{top:-30px}
-  .rate-plate .amount{font-size:34px}
+  .rate-plate{width:108px;height:108px;top:-14px}
+  .rate-plate .amount{font-size:30px}
   .field-row{grid-template-columns:1fr}
 }
 </style>
@@ -244,13 +289,13 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
 <header>
   <div class="wrap topbar">
     <a class="logo" href="#top" aria-label="Sydney Truck Hire — home">
-      <svg class="logo-mark" viewBox="0 0 46 34" aria-hidden="true">
-        <rect x="1" y="3" width="28" height="20" fill="#F6F5F0"/>
-        <rect x="1" y="11" width="28" height="5" fill="#FFC400"/>
-        <path d="M29 9h9l6 7v7H29V9z" fill="#F6F5F0"/>
-        <rect x="31" y="11" width="6" height="5" fill="#17181A"/>
-        <circle cx="10" cy="26" r="5" fill="#F6F5F0"/><circle cx="10" cy="26" r="2.2" fill="#17181A"/>
-        <circle cx="36" cy="26" r="5" fill="#F6F5F0"/><circle cx="36" cy="26" r="2.2" fill="#17181A"/>
+      <svg class="logo-mark" viewBox="0 0 52 44" aria-hidden="true">
+        <path d="M10 36 a16 16 0 0 1 32 0" fill="none" stroke="#B9342B" stroke-width="5" stroke-linecap="round"/>
+        <path d="M17 36 a9 9 0 0 1 18 0" fill="none" stroke="#E0801F" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="26" cy="35" r="4.5" fill="#F0A42A" stroke="#241D18" stroke-width="2"/>
+        <line x1="26" y1="10" x2="26" y2="3" stroke="#241D18" stroke-width="4" stroke-linecap="round"/>
+        <line x1="13" y1="14" x2="8" y2="9" stroke="#241D18" stroke-width="4" stroke-linecap="round"/>
+        <line x1="39" y1="14" x2="44" y2="9" stroke="#241D18" stroke-width="4" stroke-linecap="round"/>
       </svg>
       <span>
         <span class="logo-word">Sydney <span>Truck</span> Hire</span><br>
@@ -260,6 +305,7 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
     <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" onclick="toggleNav(this)">Menu</button>
     <nav id="site-nav">
       <a href="#truck">The Truck</a>
+      <a href="#fleet">Our Fleet</a>
       <a href="#how">How It Works</a>
       <a href="#areas">Areas</a>
       <a href="#reviews">Reviews</a>
@@ -295,27 +341,11 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
           <div class="amount">$150</div>
           <div class="per">Per day</div>
         </div>
-        <svg viewBox="0 0 560 330" role="img" aria-label="Box truck with yellow stripe and tail lift">
-          <rect x="0" y="286" width="560" height="8" fill="#101113"/>
-          <rect x="24" y="294" width="42" height="5" fill="#FFC400"/><rect x="110" y="294" width="42" height="5" fill="#FFC400"/><rect x="196" y="294" width="42" height="5" fill="#FFC400"/><rect x="282" y="294" width="42" height="5" fill="#FFC400"/><rect x="368" y="294" width="42" height="5" fill="#FFC400"/><rect x="454" y="294" width="42" height="5" fill="#FFC400"/>
-          <!-- box body -->
-          <rect x="40" y="48" width="330" height="178" fill="#F6F5F0" stroke="#101113" stroke-width="5"/>
-          <rect x="40" y="118" width="330" height="34" fill="#FFC400"/>
-          <text x="205" y="142" text-anchor="middle" font-family="'Barlow Condensed',Arial,sans-serif" font-size="27" font-weight="800" letter-spacing="3" fill="#17181A">SYDNEY TRUCK HIRE</text>
-          <text x="205" y="98" text-anchor="middle" font-family="'Barlow Condensed',Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="4" fill="#9B9C96">0432 683 643</text>
-          <!-- tail lift -->
-          <rect x="22" y="100" width="18" height="126" fill="#2E3034" stroke="#101113" stroke-width="4"/>
-          <rect x="6" y="222" width="34" height="10" fill="#FFC400" stroke="#101113" stroke-width="3"/>
-          <!-- cab -->
-          <path d="M370 110 h98 l52 56 v60 h-150 z" fill="#F6F5F0" stroke="#101113" stroke-width="5"/>
-          <path d="M386 126 h72 l40 44 h-112 z" fill="#2E3034"/>
-          <rect x="370" y="192" width="150" height="16" fill="#FFC400"/>
-          <rect x="516" y="196" width="14" height="30" fill="#2E3034" stroke="#101113" stroke-width="3"/>
-          <!-- underside + wheels -->
-          <rect x="40" y="226" width="480" height="18" fill="#2E3034"/>
-          <circle cx="120" cy="256" r="34" fill="#17181A" stroke="#101113" stroke-width="4"/><circle cx="120" cy="256" r="15" fill="#9B9C96"/>
-          <circle cx="196" cy="256" r="34" fill="#17181A" stroke="#101113" stroke-width="4"/><circle cx="196" cy="256" r="15" fill="#9B9C96"/>
-          <circle cx="448" cy="256" r="34" fill="#17181A" stroke="#101113" stroke-width="4"/><circle cx="448" cy="256" r="15" fill="#9B9C96"/>
+        <img class="hero-photo" src="img/truck.jpg" alt="Sydney Truck Hire box truck painted with colourful Aboriginal artwork, parked on the grass in Mt Druitt" width="720" height="770">
+        <svg class="hero-arcs" viewBox="0 0 92 54" aria-hidden="true">
+          <path d="M8 50 a38 38 0 0 1 76 0" fill="none" stroke="#C94281" stroke-width="7" stroke-linecap="round"/>
+          <path d="M22 50 a24 24 0 0 1 48 0" fill="none" stroke="#F0A42A" stroke-width="7" stroke-linecap="round"/>
+          <path d="M36 50 a10 10 0 0 1 20 0" fill="none" stroke="#241D18" stroke-width="7" stroke-linecap="round"/>
         </svg>
       </div>
     </div>
@@ -362,7 +392,25 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
     </div>
   </section>
 
-  <div class="hazard" aria-hidden="true"></div>
+  <!-- FLEET -->
+  <section class="section fleet" id="fleet">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Our fleet</span>
+        <h2>Real trucks, ready when you are</h2>
+        <p>You can't miss them — our trucks wear their own artwork. Here's part of the fleet lined up at home base in Mt Druitt.</p>
+      </div>
+      <div class="fleet-frame">
+        <img src="img/fleet.jpg" alt="Row of Sydney Truck Hire box trucks parked at dusk at the Mt Druitt home base" width="1200" height="600" loading="lazy">
+        <span class="fleet-caption">The fleet at home base, Mt Druitt</span>
+      </div>
+      <div class="fleet-chips">
+        <span class="chip">Box trucks with tail lifts</span>
+        <span class="chip">Auto &amp; manual</span>
+        <span class="chip">Clean &amp; well maintained</span>
+      </div>
+    </div>
+  </section>
 
   <!-- HOW IT WORKS -->
   <section class="section dark-band" id="how">
@@ -427,10 +475,10 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
     </div>
   </section>
 
-  <div class="hazard" aria-hidden="true"></div>
+  <div class="dots" aria-hidden="true"></div>
 
   <!-- REVIEWS -->
-  <section class="section" id="reviews" style="background:var(--card)">
+  <section class="section" id="reviews" style="background:var(--cream)">
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">Reviews</span>
@@ -501,7 +549,7 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
   <section class="section cta-band" id="contact">
     <div class="wrap contact-grid">
       <div>
-        <span class="eyebrow" style="color:var(--muted-dark)">Contact</span>
+        <span class="eyebrow" style="color:var(--yellow)">Contact</span>
         <h2 style="margin-top:12px">Ready when you are</h2>
         <p class="sub">The fastest way to book is a phone call — we answer around the clock. Prefer to write? Send an enquiry and the owner will call you back.</p>
         <a class="big-phone" href="tel:+61432683643">0432 683 643</a>
@@ -560,7 +608,7 @@ footer{background:var(--asphalt);color:var(--muted-dark);padding-block:30px;font
 <footer>
   <div class="wrap foot">
     <div><b>Sydney Truck Hire</b><br>Truck rental · Mt Druitt, Western Sydney NSW</div>
-    <div>Open 24 hours · <a href="tel:+61432683643" style="color:var(--paper);font-weight:600">0432 683 643</a></div>
+    <div>Open 24 hours · <a href="tel:+61432683643" style="color:var(--paper);font-weight:700">0432 683 643</a></div>
     <div>© <span id="year">2026</span> Sydney Truck Hire</div>
   </div>
 </footer>

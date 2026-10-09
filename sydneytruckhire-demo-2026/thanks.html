@@ -7,32 +7,43 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --yellow:#FFC400; --ink:#17181A; --asphalt:#1E2023; --paper:#F6F5F0; --muted-dark:#A8AAA4;
-  --display:'Barlow Condensed','Arial Narrow',Arial,sans-serif;
-  --body:'Barlow',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --paper:#FDFBF6; --ink:#241D18; --ink-soft:#352C25; --red:#B9342B; --red-deep:#9A2921;
+  --orange:#E0801F; --yellow:#F0A42A; --magenta:#C94281; --muted-dark:#C9BEB2;
+  --display:'Poppins',system-ui,Arial,sans-serif;
+  --body:'Mulish',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--body);background:var(--asphalt);color:var(--paper);min-height:100vh;display:flex;flex-direction:column;line-height:1.6}
-.hazard{height:12px;background:repeating-linear-gradient(-45deg,var(--yellow) 0 16px,var(--ink) 16px 32px)}
+body{font-family:var(--body);background:var(--ink);color:var(--paper);min-height:100vh;display:flex;flex-direction:column;line-height:1.65}
+.dots{height:14px;background-image:
+  radial-gradient(circle at 7px 7px, var(--red) 4px, transparent 5px),
+  radial-gradient(circle at 7px 7px, var(--orange) 4px, transparent 5px),
+  radial-gradient(circle at 7px 7px, var(--yellow) 4px, transparent 5px),
+  radial-gradient(circle at 7px 7px, var(--magenta) 4px, transparent 5px);
+  background-size:96px 14px,96px 14px,96px 14px,96px 14px;
+  background-position:0 0,24px 0,48px 0,72px 0;background-repeat:repeat-x}
 main{flex:1;display:grid;place-items:center;padding:40px 20px}
 .card{max-width:560px;text-align:center}
-.tick{width:72px;height:72px;margin:0 auto 26px;background:var(--yellow);border:3px solid var(--ink);display:grid;place-items:center;font-size:36px;font-weight:700;color:var(--ink);box-shadow:5px 5px 0 rgba(0,0,0,.45)}
-h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,8vw,60px);text-transform:uppercase;line-height:1.02;letter-spacing:.5px}
+.arcs{width:96px;height:auto;margin:0 auto 26px;display:block}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(36px,7vw,54px);line-height:1.05;letter-spacing:-.5px}
 p{color:var(--muted-dark);font-size:17px;margin-top:16px}
 p strong{color:var(--paper)}
-.phone{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(32px,6vw,44px);letter-spacing:2px;color:var(--yellow);margin-top:18px;text-decoration:none}
-.back{display:inline-flex;margin-top:32px;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:1px;text-transform:uppercase;padding:13px 26px;background:var(--yellow);color:var(--ink);text-decoration:none;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
-.back:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.phone{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(30px,5.5vw,42px);letter-spacing:1px;color:var(--yellow);margin-top:18px;text-decoration:none}
+.back{display:inline-flex;margin-top:32px;font-family:var(--display);font-weight:700;font-size:16px;padding:14px 30px;background:var(--red);color:#fff;text-decoration:none;border-radius:999px;box-shadow:0 10px 24px rgba(185,52,43,.4)}
+.back:hover{background:var(--red-deep)}
 </style>
 </head>
 <body>
-<div class="hazard"></div>
+<div class="dots"></div>
 <main>
   <div class="card">
-    <div class="tick">✓</div>
+    <svg class="arcs" viewBox="0 0 92 54" aria-hidden="true">
+      <path d="M8 50 a38 38 0 0 1 76 0" fill="none" stroke="#C94281" stroke-width="7" stroke-linecap="round"/>
+      <path d="M22 50 a24 24 0 0 1 48 0" fill="none" stroke="#F0A42A" stroke-width="7" stroke-linecap="round"/>
+      <path d="M36 50 a10 10 0 0 1 20 0" fill="none" stroke="#E0801F" stroke-width="7" stroke-linecap="round"/>
+    </svg>
     <h1>Enquiry sent</h1>
     <p>Thanks — your message has gone <strong>straight to the owner</strong> and you'll get a call back shortly.</p>
     <p>Need the truck sooner? We're open 24 hours:</p>
@@ -41,6 +52,6 @@ p strong{color:var(--paper)}
     <a class="back" href="/">← Back to the site</a>
   </div>
 </main>
-<div class="hazard"></div>
+<div class="dots"></div>
 </body>
 </html>
