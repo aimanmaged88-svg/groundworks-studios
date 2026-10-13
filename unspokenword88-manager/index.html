@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0D14">
+<title>unspoken word · studio</title>
+<style>
+  :root{
+    --bg:#0E0D14; --surface:#17161F; --surface2:#1E1C28; --line:#2C2A38;
+    --text:#EDEBF3; --muted:#9A94A8; --faint:#6D6878;
+    --lilac:#B49DF2; --teal:#6FD6C6; --amber:#F2C56F;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{background:var(--bg);color:var(--text)}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       -webkit-font-smoothing:antialiased;line-height:1.55;padding-bottom:84px}
+  .wrap{max-width:620px;margin:0 auto;padding:22px 16px 24px}
+
+  /* Header */
+  header{padding:4px 2px 10px}
+  .brand{font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--lilac);font-weight:600}
+  h1{font-size:27px;font-weight:700;letter-spacing:-.02em;margin-top:6px}
+  .sub{color:var(--muted);font-size:14px;margin-top:6px}
+  .handle{color:var(--teal);font-weight:600}
+
+  /* Tabs content */
+  section.tab{display:none;animation:fade .25s ease}
+  section.tab.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h2.secttl{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);
+            margin:26px 2px 12px;font-weight:700}
+  h2.secttl:first-of-type{margin-top:16px}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+        padding:16px;margin-bottom:14px}
+  .card h3{font-size:17px;font-weight:700;letter-spacing:-.01em}
+  .card .meta{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:14.5px;margin-top:8px}
+  .card p strong,.card li strong{color:var(--text)}
+  .pill{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+        color:var(--lilac);border:1px solid var(--line);background:var(--surface2);
+        border-radius:999px;padding:3px 10px;margin:0 6px 6px 0;font-weight:600}
+  .pill.teal{color:var(--teal)}
+  .pill.amber{color:var(--amber)}
+
+  .hook{background:var(--surface2);border-left:3px solid var(--lilac);border-radius:0 10px 10px 0;
+        padding:12px 14px;margin-top:10px;font-size:16px;font-weight:600;color:var(--text);line-height:1.45}
+  .label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);
+         margin:14px 0 6px;font-weight:700}
+  ul.clean{list-style:none;margin-top:4px}
+  ul.clean li{font-size:14px;color:var(--muted);padding:5px 0 5px 20px;position:relative;line-height:1.5}
+  ul.clean li::before{content:"";position:absolute;left:3px;top:12px;width:6px;height:6px;
+                      border-radius:50%;background:var(--teal)}
+  ul.clean li.dash::before{background:none;content:"–";left:2px;top:4px;color:var(--faint)}
+
+  .onscreen{font-size:14px;color:var(--text);background:var(--bg);border:1px dashed var(--line);
+            border-radius:10px;padding:10px 12px;margin-top:4px;font-weight:600;letter-spacing:.01em}
+
+  button{font-family:inherit;cursor:pointer}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%;
+       padding:13px;border-radius:11px;border:1px solid var(--lilac);background:transparent;
+       color:var(--lilac);font-size:14.5px;font-weight:600;letter-spacing:.02em;margin-top:10px}
+  .btn:active{background:var(--lilac);color:#0E0D14}
+  .btn.teal{border-color:var(--teal);color:var(--teal)}
+  .btn.teal:active{background:var(--teal);color:#0E0D14}
+  .btn.ghost{border-color:var(--line);color:var(--muted)}
+  .btn.ghost:active{background:var(--surface2);color:var(--text)}
+  .btn.solid{background:var(--lilac);color:#0E0D14;border-color:var(--lilac);font-weight:700}
+  .btn.solid:active{opacity:.85}
+  .btnrow{display:flex;gap:10px}
+  .btnrow .btn{margin-top:10px}
+
+  .cap{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;
+       font-size:14px;line-height:1.6;color:var(--text);white-space:pre-wrap;margin-top:10px}
+  .tags{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--faint);
+        margin-top:10px;word-break:break-word;line-height:1.7}
+
+  .note{font-size:12.5px;color:var(--faint);line-height:1.5;margin-top:10px;
+        border-top:1px solid var(--line);padding-top:10px}
+  .lead{color:var(--muted);font-size:15px;margin:2px 2px 4px;line-height:1.6}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mini{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px}
+  .mini .n{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:700}
+  .mini .d{font-size:13.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+
+  .week{display:flex;flex-direction:column;gap:8px}
+  .day{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;align-items:flex-start}
+  .day .dn{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--amber);text-transform:uppercase;min-width:42px;padding-top:2px}
+  .day .dt{font-size:14px;color:var(--text);font-weight:600}
+  .day .dd{font-size:13px;color:var(--muted);margin-top:2px}
+
+  .check{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
+  .check:last-child{border-bottom:none}
+  .check .box{min-width:22px;height:22px;border:2px solid var(--faint);border-radius:7px;margin-top:1px;
+              display:flex;align-items:center;justify-content:center;font-size:13px;color:#0E0D14;transition:.15s}
+  .check.done .box{background:var(--teal);border-color:var(--teal)}
+  .check .ct{font-size:14.5px;color:var(--text)}
+  .check.done .ct{color:var(--faint);text-decoration:line-through}
+
+  .disc{background:rgba(242,197,111,.08);border:1px solid rgba(242,197,111,.35);border-radius:12px;
+        padding:13px 14px;margin:16px 0;font-size:13px;color:var(--amber);line-height:1.55}
+  .disc strong{color:var(--amber)}
+
+  /* Bottom nav */
+  nav{position:fixed;bottom:0;left:0;right:0;background:rgba(14,13,20,.92);
+      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);
+      display:flex;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom)) 4px;z-index:40}
+  nav button{background:none;border:none;color:var(--faint);font-size:10.5px;font-weight:600;
+             letter-spacing:.04em;display:flex;flex-direction:column;align-items:center;gap:3px;
+             padding:4px 8px;min-width:52px;transition:color .15s}
+  nav button .ic{font-size:19px;line-height:1}
+  nav button.on{color:var(--lilac)}
+
+  /* Teleprompter overlay */
+  .tp{position:fixed;inset:0;background:#000;z-index:100;display:none;flex-direction:column}
+  .tp.show{display:flex}
+  .tp .tpscroll{flex:1;overflow:hidden;position:relative}
+  .tp .tptext{position:absolute;left:0;right:0;padding:0 26px;font-size:30px;line-height:1.6;
+              font-weight:700;color:#fff;text-align:center;will-change:transform}
+  .tp .tptext .tphook{color:var(--amber)}
+  .tp .tpbar{display:flex;align-items:center;gap:8px;padding:12px 14px calc(14px + env(safe-area-inset-bottom));
+             background:#0A0910;border-top:1px solid #222}
+  .tp .tpbar button{flex:1;padding:14px 6px;border-radius:10px;border:1px solid #333;background:#15141c;
+                    color:#eee;font-size:14px;font-weight:600}
+  .tp .tpbar button.play{background:var(--lilac);color:#0A0910;border-color:var(--lilac)}
+  .tp .tpbar button.close{flex:0 0 54px;color:var(--muted)}
+  .tp .tpspeed{position:absolute;top:calc(12px + env(safe-area-inset-top));right:16px;color:#6a6878;font-size:12px;
+               font-family:ui-monospace,monospace;background:#0A0910;padding:5px 9px;border-radius:999px;border:1px solid #222}
+  .tp .tpguide{position:absolute;top:34%;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);opacity:.5}
+
+  .toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(10px);
+         background:var(--teal);color:#0A0910;font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;
+         opacity:0;transition:.2s;z-index:120;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">Instagram Studio</div>
+    <h1>unspoken word</h1>
+    <div class="sub">Your control room for <span class="handle">@unspokenword88</span> — scripts, teleprompter, captions &amp; the plan. Open it on your phone and film.</div>
+  </header>
+
+  <!-- ===================== PLAN ===================== -->
+  <section class="tab active" id="tab-plan">
+    <div class="disc">
+      <strong>Your one job this week:</strong> batch-film 4 short talk-to-camera clips on one day, then post across the week. Everything you need is in the <strong>Film</strong> tab — tap the teleprompter and talk.
+    </div>
+
+    <h2 class="secttl">The rhythm</h2>
+    <p class="lead">Don't post daily from scratch — you'll burn out (the opposite of the brand). Batch once, drip all week.</p>
+    <div class="grid2">
+      <div class="mini"><div class="n">1 · Batch</div><div class="d">Pick a calm hour. Film 3–5 clips back to back using the scripts.</div></div>
+      <div class="mini"><div class="n">2 · Cut</div><div class="d">Edit in CapCut: trim dead air, burn in captions, add soft music.</div></div>
+      <div class="mini"><div class="n">3 · Caption</div><div class="d">Copy a caption + hashtag set from the Captions tab.</div></div>
+      <div class="mini"><div class="n">4 · Drip</div><div class="d">Post 4–5× that week. Reply to every comment in the first hour.</div></div>
+    </div>
+
+    <h2 class="secttl">A gentle week</h2>
+    <div class="week">
+      <div class="day"><div class="dn">Mon</div><div><div class="dt">Teaching reel</div><div class="dd">A "foods that regulate" tutorial — talk to camera + the food as b-roll.</div></div></div>
+      <div class="day"><div class="dn">Tue</div><div><div class="dt">Validation / story</div><div class="dd">Short lived-experience clip or a text-on-screen post. Low effort, high connection.</div></div></div>
+      <div class="day"><div class="dn">Wed</div><div><div class="dt">Teaching reel</div><div class="dd">Second tutorial from your batch.</div></div></div>
+      <div class="day"><div class="dn">Thu</div><div><div class="dt">Quick tip</div><div class="dd">One idea, under 20s. A single swap, a single win.</div></div></div>
+      <div class="day"><div class="dn">Fri</div><div><div class="dt">Teaching reel</div><div class="dd">Third tutorial. Fridays save well for the weekend shop.</div></div></div>
+      <div class="day"><div class="dn">Wknd</div><div><div class="dt">Rest or repost</div><div class="dd">Reply to DMs, or turn your best reel into a carousel. No pressure.</div></div></div>
+    </div>
+
+    <h2 class="secttl">Your 4 content pillars</h2>
+    <div class="card">
+      <span class="pill">Regulate</span><span class="pill teal">Validate</span><span class="pill amber">Teach</span><span class="pill">Myth-bust</span>
+      <ul class="clean">
+        <li><strong>Regulate</strong> — the food &amp; regulation tutorials. Your signature series.</li>
+        <li><strong>Validate</strong> — "you're not imagining it" lived-experience moments. These get shared.</li>
+        <li><strong>Teach</strong> — one practical tool, swap or tip per post.</li>
+        <li><strong>Myth-bust</strong> — gently correct the "fussy / naughty / just needs discipline" takes.</li>
+      </ul>
+      <p class="note">Rotate them. If a week is all "Regulate", break it with a "Validate" so it doesn't feel like a lecture.</p>
+    </div>
+
+    <h2 class="secttl">Batch-day checklist</h2>
+    <div class="card" id="checklist">
+      <!-- rendered -->
+      <p class="note">Tap to tick. Resets each batch day — it's a rhythm, not a scoreboard.</p>
+    </div>
+  </section>
+
+  <!-- ===================== FILM ===================== -->
+  <section class="tab" id="tab-film">
+    <p class="lead">Ready-to-film talk-to-camera scripts for your <strong>Foods that regulate</strong> series. Prop your phone at eye height, tap <strong>▶ Teleprompter</strong>, and talk to one person — not "everyone".</p>
+    <div class="disc" id="healthdisc">
+      <strong>Keep it safe &amp; honest:</strong> share what helps <em>you</em> — your lived experience — not medical instructions. Avoid "cures/treats". Add the disclaimer line (Captions tab) so people trust you and you stay protected. Tap to copy it.
+    </div>
+    <div id="scripts"><!-- rendered --></div>
+  </section>
+
+  <!-- ===================== HOOKS ===================== -->
+  <section class="tab" id="tab-hooks">
+    <p class="lead">The first 2 seconds decide everything. Steal a first line, or tap shuffle for a random one. Every hook is copyable.</p>
+    <button class="btn solid" onclick="shuffleHook()">🎲 &nbsp;Give me a random hook</button>
+    <div class="card" id="randomhook" style="display:none">
+      <div class="meta">Your hook</div>
+      <div class="hook" id="rhtext"></div>
+      <button class="btn teal" onclick="copyText(this,document.getElementById('rhtext').innerText)">Copy this hook</button>
+    </div>
+    <h2 class="secttl">Hook bank</h2>
+    <div id="hooks"><!-- rendered --></div>
+  </section>
+
+  <!-- ===================== CAPTIONS ===================== -->
+  <section class="tab" id="tab-captions">
+    <p class="lead">Copy a caption, tweak one line so it's true for you, paste into Instagram. Drop the hashtags in the <strong>first comment</strong> (button for that too).</p>
+    <div class="card">
+      <div class="meta">Reusable · paste at the end of health posts</div>
+      <div class="cap" id="disctext">Sharing what helps us — not medical advice. Every brain and body is different; check any big changes with your GP or a dietitian. 💜</div>
+      <button class="btn" onclick="copyText(this,document.getElementById('disctext').innerText)">Copy disclaimer line</button>
+    </div>
+    <h2 class="secttl">Caption templates</h2>
+    <div id="captions"><!-- rendered --></div>
+    <h2 class="secttl">Hashtag sets</h2>
+    <div id="tagsets"><!-- rendered --></div>
+  </section>
+
+  <!-- ===================== KIT ===================== -->
+  <section class="tab" id="tab-kit">
+    <p class="lead">You already own the gear — it's your phone. These are the small things that make a talk-to-camera clip look and sound like you meant it.</p>
+
+    <h2 class="secttl">Talking to camera</h2>
+    <div class="card">
+      <ul class="clean">
+        <li><strong>Talk to one person.</strong> Imagine the exact parent who needs this. Warmer than "hey guys".</li>
+        <li><strong>Lead with the hook — cut the intro.</strong> No "so today I wanted to…". First words = the Hook line.</li>
+        <li><strong>Eyes at the lens.</strong> Prop the phone at eye height and look at the little camera dot, not yourself.</li>
+        <li><strong>Glance, don't read.</strong> Use the teleprompter for the shape; let the words be yours. A tiny stumble reads as honest.</li>
+        <li><strong>One idea per clip.</strong> If you have two tips, that's two reels.</li>
+      </ul>
+    </div>
+
+    <h2 class="secttl">Look &amp; sound</h2>
+    <div class="grid2">
+      <div class="mini"><div class="n">Light</div><div class="d">Face a window. Light <em>in front</em> of you, never behind. Daytime is free studio light.</div></div>
+      <div class="mini"><div class="n">Sound</div><div class="d">Quiet, soft room (beds, curtains kill echo). Phone within ~50cm, or a cheap clip-on mic.</div></div>
+      <div class="mini"><div class="n">Frame</div><div class="d">Vertical. Your eyes in the top third. Lean in slightly — presence beats distance.</div></div>
+      <div class="mini"><div class="n">Steady</div><div class="d">Lean the phone on books/a mug. Use the self-timer or a cheap remote so you're not reaching.</div></div>
+    </div>
+
+    <h2 class="secttl">The teleprompter trick</h2>
+    <div class="card">
+      <ul class="clean">
+        <li>Open a script → tap <strong>▶ Teleprompter</strong>. The text auto-scrolls past the <span style="color:var(--teal)">teal line</span>.</li>
+        <li>Prop <em>this</em> phone right beside your filming camera, line near the lens — your eyes stay close to the lens.</li>
+        <li>Set the speed to match your natural pace with <strong>− / +</strong>. Hit pause anytime.</li>
+        <li>Short on hands? Film on one phone, run the prompter on another — or just read it twice, then film from memory.</li>
+      </ul>
+    </div>
+
+    <h2 class="secttl">Editing (free)</h2>
+    <div class="card">
+      <ul class="clean">
+        <li><strong>CapCut</strong> (free) — trim, cut dead air, add music. The one app to learn.</li>
+        <li><strong>Burn in captions — always.</strong> Most people watch on mute, and it's an accessibility win for your audience. CapCut → Auto captions → check spelling.</li>
+        <li><strong>Keep tutorials under ~45s.</strong> Cut every pause and "um". Tight = re-watchable = the algorithm notices.</li>
+        <li><strong>B-roll the food.</strong> Film the plate, the pour, the lunchbox while you talk — lay it over your voice so it's not just a talking head.</li>
+        <li><strong>Trending audio, low.</strong> Add a popular sound at ~15% volume under your voice for a small reach bump.</li>
+      </ul>
+    </div>
+
+    <h2 class="secttl">60-second pre-film check</h2>
+    <div class="card" id="filmcheck"><p class="note">Tap to tick before you hit record.</p></div>
+  </section>
+
+  <!-- ===================== GROW ===================== -->
+  <section class="tab" id="tab-grow">
+    <p class="lead">Growth here isn't luck — it's saves and shares. Teach something worth keeping, say something worth tagging a friend in.</p>
+
+    <h2 class="secttl">The growth loop</h2>
+    <div class="card">
+      <ul class="clean">
+        <li><strong>Hook (0–2s)</strong> → stop the scroll with a real pain or a bold line.</li>
+        <li><strong>Value (middle)</strong> → one clear, usable idea. Make them feel seen <em>and</em> helped.</li>
+        <li><strong>CTA (end)</strong> → "Save this for tomorrow's breakfast" / "Send to a parent who needs it." Saves + shares &gt; likes.</li>
+        <li><strong>First hour</strong> → reply to every comment. Early engagement tells Instagram to push it.</li>
+      </ul>
+    </div>
+
+    <h2 class="secttl">Make it a series</h2>
+    <div class="card">
+      <p><strong>Foods that regulate — Part 1, 2, 3…</strong> Number them. Series make people follow (they want the next one) and bingeable content keeps them on your page.</p>
+      <ul class="clean">
+        <li>Same opening frame or first word each time — a tiny signature.</li>
+        <li>End with "Part 4 tomorrow 💜" to pull them back.</li>
+        <li>Pin your best one to the top of your profile.</li>
+      </ul>
+    </div>
+
+    <h2 class="secttl">Turn 1 reel into 3 posts</h2>
+    <div class="grid2">
+      <div class="mini"><div class="n">Reel</div><div class="d">The talk-to-camera tutorial.</div></div>
+      <div class="mini"><div class="n">Carousel</div><div class="d">The same tips as 5 swipeable slides. Saves brilliantly.</div></div>
+      <div class="mini"><div class="n">Story</div><div class="d">A poll: "Does your kid crash at 3pm?" → drives people to the reel.</div></div>
+      <div class="mini"><div class="n">Note/caption</div><div class="d">The hook line as a text-only post or Story.</div></div>
+    </div>
+
+    <h2 class="secttl">Dignity &amp; safety rules</h2>
+    <div class="card">
+      <ul class="clean">
+        <li><strong>Kids' faces — your call, set it once.</strong> Backs of heads, hands, from behind, or faces in: decide a rule and keep to it. It's their identity on a public page.</li>
+        <li><strong>You're sharing, not prescribing.</strong> No "cure", no "you must". "Here's what helped us" is powerful and honest.</li>
+        <li><strong>In DMs, don't diagnose or give medical advice.</strong> "I'm not a professional, but here's what we tried — worth asking your GP/dietitian."</li>
+        <li><strong>Protect your own energy.</strong> You can turn off comments on a heavy post. You don't owe anyone the hard days.</li>
+      </ul>
+    </div>
+
+    <div class="disc">
+      <strong>Why this page matters:</strong> you're giving words to things families live and never say out loud. Consistency beats perfection. One honest clip a week, every week, will build this.
+    </div>
+  </section>
+</div>
+
+<!-- Bottom nav -->
+<nav>
+  <button class="on" data-tab="plan"><span class="ic">🗓️</span>Plan</button>
+  <button data-tab="film"><span class="ic">🎬</span>Film</button>
+  <button data-tab="hooks"><span class="ic">🪝</span>Hooks</button>
+  <button data-tab="captions"><span class="ic">✍️</span>Captions</button>
+  <button data-tab="kit"><span class="ic">🎒</span>Kit</button>
+  <button data-tab="grow"><span class="ic">📈</span>Grow</button>
+</nav>
+
+<!-- Teleprompter -->
+<div class="tp" id="tp">
+  <div class="tpscroll" id="tpscroll">
+    <div class="tpguide"></div>
+    <div class="tptext" id="tptext"></div>
+  </div>
+  <div class="tpspeed" id="tpspeed">1.0×</div>
+  <div class="tpbar">
+    <button class="close" onclick="tpClose()">✕</button>
+    <button onclick="tpSpeed(-1)">− Slower</button>
+    <button class="play" id="tpplay" onclick="tpToggle()">▶ Play</button>
+    <button onclick="tpSpeed(1)">Faster +</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied ✓</div>
+
+<script>
+/* ---------- DATA ---------- */
+var DISCLAIMER = "Sharing what helps us — not medical advice. Every brain and body is different; check any big changes with your GP or a dietitian. 💜";
+
+var SCRIPTS = [
+ {
+   series:"Foods that regulate · 01", title:"Protein-first mornings", len:"~35s",
+   hook:"If your kid melts down by 10am, look at breakfast — not their behaviour.",
+   say:[
+     "If your kid melts down by 10am, look at breakfast — not their behaviour.",
+     "A sugary cereal spikes their blood sugar, then drops it off a cliff an hour later — and that crash doesn't come out as a tummy ache. It comes out as a meltdown.",
+     "So we flipped it. Protein first. Eggs, Greek yoghurt, nut butter on toast — before anything sweet.",
+     "Protein slows the whole thing down, so the energy is steady instead of a rollercoaster.",
+     "You're not fixing your child. You're just taking away the spike.",
+     "Try protein-first for three mornings and watch what happens around ten."
+   ],
+   onscreen:["10am meltdown?","Check breakfast, not behaviour","Protein FIRST","Steady > spike"],
+   broll:["Cracking eggs / yoghurt bowl","A calm kitchen morning","Plate of protein breakfast"],
+   cta:"Save this and try it for 3 mornings. Comment how it went."
+ },
+ {
+   series:"Foods that regulate · 02", title:"The 3pm crash", len:"~30s",
+   hook:"The 3pm crash isn't tiredness. It's sugar wearing off.",
+   say:[
+     "The 3pm crash isn't tiredness. It's sugar wearing off.",
+     "That juice box and the 'kid snacks' at lunch burn fast — and by mid-afternoon there's nothing left in the tank.",
+     "What filled the tank back up for us wasn't more sugar. It was slow fuel: a boiled egg, cheese, oat crackers, a handful of nuts.",
+     "Same snack time, steadier afternoon.",
+     "The behaviour you're bracing for at 3pm might just be an empty tank."
+   ],
+   onscreen:["3pm crash ≠ tired","= sugar wearing off","Swap: slow fuel","egg · cheese · oats · nuts"],
+   broll:["Juice box vs a boiled egg","Packing an afternoon snack","Clock at 3pm"],
+   cta:"What's your kid's 3pm snack? Tell me below and I'll suggest a swap."
+ },
+ {
+   series:"Foods that regulate · 03", title:"The one thing we cut", len:"~35s",
+   hook:"We cut one thing for two weeks and the difference honestly scared me.",
+   say:[
+     "We cut one thing for two weeks, and the difference honestly scared me.",
+     "Bright artificial colours and some additives — the stuff in the loud-coloured snacks and drinks.",
+     "Now — I'm not saying it's the same for every child. Bodies are different.",
+     "But here's what you can do: pick one thing, take it out for two weeks, keep a note on your phone, then bring it back and watch.",
+     "Let your own kid be the evidence. Not me, not a headline.",
+     "You know your child better than any label does."
+   ],
+   onscreen:["Cut ONE thing · 2 weeks","Keep a note 📱","Bring it back · watch","Your kid = the evidence"],
+   broll:["Brightly coloured snacks","Writing a note on phone","A calmer evening"],
+   cta:"This isn't medical advice — it's our experience. Save it and try your own test."
+ },
+ {
+   series:"Foods that regulate · 04", title:"If bedtime is a battle", len:"~35s",
+   hook:"If bedtime is a battle, here's the food conversation nobody has.",
+   say:[
+     "If bedtime is a battle every single night, here's the food conversation nobody has with you.",
+     "Magnesium. It's the mineral that helps the body wind down — and a lot of us just don't get enough of it.",
+     "You don't need a supplement to start. It's in pumpkin seeds, dark leafy greens, bananas, even a little dark chocolate.",
+     "We started adding a little into the evening — a banana after dinner, seeds on the yoghurt.",
+     "It's not a magic switch. It's one more thing on the side of calm.",
+     "Small, steady, every night — that's how winding down actually works."
+   ],
+   onscreen:["Bedtime battle?","Meet magnesium","seeds · greens · banana","Side of calm, nightly"],
+   broll:["Pumpkin seeds / banana","Dimmed evening light","Yoghurt with seeds on top"],
+   cta:"Save this for tonight. And tell me — what's bedtime like at yours?"
+ },
+ {
+   series:"Foods that regulate · 05", title:"It was just thirst", len:"~30s",
+   hook:"Half the 'behaviours' I used to panic about were just thirst.",
+   say:[
+     "Half the behaviours I used to panic about turned out to be one boring thing: thirst.",
+     "When you're even a little dehydrated, it shows up as irritable, foggy, dysregulated — and a lot of our kids don't notice they're thirsty until it's too late.",
+     "So we stopped waiting for them to ask. We made water easy and interesting: a fun bottle, a silly straw, frozen fruit in it, water-rich foods like cucumber and watermelon.",
+     "Before you reach for a strategy, offer a drink.",
+     "Sometimes the whole meltdown was a glass of water away."
+   ],
+   onscreen:["'Behaviour' or thirst?","Dehydrated = dysregulated","Make water fun","Offer a drink first"],
+   broll:["Pouring water, fun bottle","Frozen fruit in a glass","Cucumber / watermelon"],
+   cta:"Try 'drink first' for a week. Comment 💧 if you're in."
+ },
+ {
+   series:"Foods that regulate · 06", title:"Stop fixing the 'fussy' eater", len:"~40s",
+   hook:"Stop trying to fix a 'fussy' eater. Do this instead.",
+   say:[
+     "Stop trying to fix a 'fussy' eater — and please stop calling it that.",
+     "For a lot of neurodivergent kids, 'safe foods' — the beige, the same brand, the same plate — aren't about being difficult. They're about sensory safety and control in a world that gives them neither.",
+     "Fighting it teaches them the table is a battleground.",
+     "So here's the gentle version: keep the safe foods, always. Then add alongside them, never instead. A new food just sitting on the plate. No pressure to eat it.",
+     "Food chaining — tiny steps from a food they trust to one that's close to it.",
+     "Nutrition matters, and so does their nervous system. You can protect both."
+   ],
+   onscreen:["'Fussy' → safe foods","Sensory safety, not defiance","Add ALONGSIDE, never instead","No pressure. No battle."],
+   broll:["A plate of 'safe' beige foods","A new food added to the side","Calm mealtime"],
+   cta:"If this made you breathe out, save it. Send it to a parent who needs permission to stop fighting."
+ },
+ {
+   series:"Foods that regulate · 07", title:"One lunchbox swap", len:"~30s",
+   hook:"One lunchbox swap bought us a calmer afternoon at school.",
+   say:[
+     "One swap in the lunchbox bought us a whole calmer afternoon.",
+     "The old box — white bread, a juice, something sweet — is fast fuel that's gone by lunchtime, right when they need to hold it together for the rest of the day.",
+     "The swap: wholegrain instead of white, add a protein, water instead of juice.",
+     "Same lunchbox, same effort. But the energy lasts to the school bell instead of crashing at one o'clock.",
+     "You can't control their whole day. You can pack it steadier."
+   ],
+   onscreen:["Lunchbox swap","white→wholegrain","add protein · water not juice","Fuel that lasts to the bell"],
+   broll:["Packing a lunchbox","Wholegrain + protein close-up","School gate / clock"],
+   cta:"Save for the next shop. What's in your kid's lunchbox? I'll help you swap one thing."
+ }
+];
+
+var HOOKS = [
+ "If your kid melts down by 10am, look at breakfast — not their behaviour.",
+ "The 3pm crash isn't tiredness. It's sugar wearing off.",
+ "We cut one thing for two weeks and the difference scared me.",
+ "Half the 'behaviours' I panicked about were just thirst.",
+ "Stop calling it fussy eating. Here's what's really happening.",
+ "Nobody tells you food can be a regulation tool. It can.",
+ "This isn't about being 'healthy'. It's about a calmer nervous system.",
+ "If bedtime is a battle, start with what's on the dinner plate.",
+ "You're not fixing your child. You're removing the spike.",
+ "One lunchbox swap gave us a calmer afternoon.",
+ "The meltdown you're bracing for might be an empty tank.",
+ "I wish someone had told me this when she was three.",
+ "Safe foods aren't defiance. They're survival.",
+ "Before you reach for a strategy — offer a drink.",
+ "Let your own kid be the evidence, not a headline.",
+ "The food wasn't the problem. The crash afterwards was.",
+ "This one swap costs nothing and changed our mornings.",
+ "Your 'picky eater' is telling you something. Here's what.",
+ "We stopped fighting at the table. Here's what we did instead.",
+ "If you only change one meal, make it this one.",
+ "The thing draining your kid isn't the thing you think.",
+ "Steady beats sugary. Every single time.",
+ "I'm not a doctor. I'm a parent who kept notes. Here's what we found.",
+ "You can protect their nutrition AND their nervous system. Both.",
+ "Three mornings. One swap. Watch what happens at ten."
+];
+
+var CAPTIONS = [
+ {
+   title:"Teaching reel (food/regulation)",
+   body:"If your kid melts down by 10am, this one's for you. 💜\n\nWe swapped sugary breakfast for protein first — eggs, yoghurt, nut butter — and the mornings changed. Steady energy instead of a spike-and-crash.\n\nYou're not fixing your child. You're just taking away the rollercoaster.\n\nSave this and try it for 3 mornings. Tell me what you notice around 10. 👇\n\nSharing what helps us — not medical advice. Every body is different; check big changes with your GP or dietitian.",
+   tags:"#neurodivergent #autismparent #autismawareness #sensoryprocessing #adhdkids #gentleparenting #autismmom #regulation #actuallyautistic #neurodiversity"
+ },
+ {
+   title:"Validation / lived experience",
+   body:"Nobody warns you how loud the 'unspoken' parts of this life get. 💜\n\nThe meltdowns no one sees. The safe foods you stopped apologising for. The wins that look like nothing to anyone else.\n\nIf you're in it today — you're not failing. You're parenting a nervous system, not a behaviour.\n\nSend this to someone who needs to hear it. 🤍",
+   tags:"#autismparenting #neurodivergentfamily #autismmom #specialneedsparenting #adhdparenting #sensorykids #youarenotalone #autismcommunity #parentingwin #unspoken"
+ },
+ {
+   title:"Quick tip / single swap",
+   body:"One swap. That's it. 👇\n\nSwap the juice box for water + a protein snack and watch the 3pm crash soften.\n\nSame snack time, steadier afternoon. Little levers, big difference.\n\nSave for the next shop. What swap should I break down next? 💜\n\nNot medical advice — just what works for us.",
+   tags:"#autismtips #adhdtips #neurodivergentkids #sensoryfriendly #parentinghacks #bloodsugar #kidsnutrition #regulation #autismsupport #gentleparenting"
+ },
+ {
+   title:"Myth-bust / gentle correction",
+   body:"'They're just being fussy.' No. 🚫\n\nFor a lot of neurodivergent kids, safe foods are about sensory safety and control — not defiance. Fighting it turns the table into a battleground.\n\nKeep the safe foods. Add alongside, never instead. No pressure.\n\nIf this gave you permission to stop fighting, save it — and send it to a parent who needs it too. 💜",
+   tags:"#arfidawareness #safefoods #autismeating #pickyeater #sensoryeating #neurodivergent #feedingtherapy #autismparent #gentleparenting #actuallyautistic"
+ }
+];
+
+var TAGSETS = [
+ {name:"Core · ND parenting", t:"#neurodivergent #autismparent #autismmom #adhdparenting #neurodivergentfamily #sensoryprocessing #actuallyautistic #autismawareness #autismcommunity #gentleparenting"},
+ {name:"Food & regulation", t:"#kidsnutrition #bloodsugarbalance #foodandmood #sensoryeating #safefoods #arfidawareness #guthealth #regulation #nervoussystem #healthyswaps"},
+ {name:"Reach · broad parenting", t:"#momsofinstagram #parentinghacks #parentingtips #toddlermom #motherhoodunfiltered #parentingwin #raisinghumans #momlife #parentsupport #realparenting"},
+ {name:"Niche · higher intent", t:"#autismdad #autismfamily #pdaautism #sensorydiet #occupationaltherapy #feedingtherapy #neurodiversity #spd #autismsupport #specialneedsparenting"}
+];
+
+var CHECKLIST = [
+ "Phone charged + storage free","Window light in front of me, room tidy-ish behind",
+ "Phone propped at eye height, quiet room","Scripts open in the Film tab",
+ "Filmed clip 1 (hook first!)","Filmed clip 2","Filmed clip 3","Optional: a b-roll shot of the food",
+ "Backed up / saved the clips"
+];
+var FILMCHECK = [
+ "Light is in FRONT of my face","Eyes at the lens, phone at eye height","Room is quiet (no echo, no TV)",
+ "First words = the hook (no 'hey guys')","Teleprompter speed feels natural","One idea only this clip"
+];
+
+/* ---------- RENDER ---------- */
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+/* JSON for use inside single-quoted onclick="" — escape apostrophes so they don't close the attribute */
+function js(x){return JSON.stringify(x).replace(/'/g,"&#39;");}
+
+function renderScripts(){
+  document.getElementById("scripts").innerHTML = SCRIPTS.map(function(s,i){
+    var onscreen = s.onscreen.map(function(o){return '<div class="onscreen">'+esc(o)+'</div>';}).join("");
+    var broll = s.broll.map(function(b){return '<li class="dash">'+esc(b)+'</li>';}).join("");
+    var fullScript = "HOOK: "+s.say[0]+"\n\n"+s.say.slice(1).join("\n\n")+"\n\nCTA: "+s.cta;
+    return ''+
+    '<div class="card">'+
+      '<div class="meta">'+esc(s.series)+' · '+esc(s.len)+'</div>'+
+      '<h3>'+esc(s.title)+'</h3>'+
+      '<div class="label">Hook — say this first</div>'+
+      '<div class="hook">'+esc(s.hook)+'</div>'+
+      '<button class="btn solid" onclick="tpOpen('+i+')">▶ &nbsp;Teleprompter</button>'+
+      '<div class="label">On-screen text</div>'+onscreen+
+      '<div class="label">B-roll to film</div><ul class="clean">'+broll+'</ul>'+
+      '<div class="label">End with (CTA)</div><p>'+esc(s.cta)+'</p>'+
+      '<div class="btnrow">'+
+        '<button class="btn teal" onclick=\'copyText(this,'+js(fullScript)+')\'>Copy full script</button>'+
+        '<button class="btn ghost" onclick=\'copyText(this,'+js(s.cta)+')\'>Copy CTA</button>'+
+      '</div>'+
+      '<div class="note">Reminder: this is your experience, not a prescription. Add the disclaimer line to the caption.</div>'+
+    '</div>';
+  }).join("");
+}
+
+function renderHooks(){
+  document.getElementById("hooks").innerHTML = HOOKS.map(function(h){
+    return '<div class="card" style="padding:12px 14px">'+
+      '<div class="hook" style="margin-top:0">'+esc(h)+'</div>'+
+      '<button class="btn ghost" style="margin-top:8px" onclick=\'copyText(this,'+js(h)+')\'>Copy</button>'+
+    '</div>';
+  }).join("");
+}
+
+function renderCaptions(){
+  document.getElementById("captions").innerHTML = CAPTIONS.map(function(c){
+    return '<div class="card">'+
+      '<div class="meta">'+esc(c.title)+'</div>'+
+      '<div class="cap">'+esc(c.body)+'</div>'+
+      '<button class="btn teal" onclick=\'copyText(this,'+js(c.body)+')\'>Copy caption</button>'+
+      '<div class="tags">'+esc(c.tags)+'</div>'+
+      '<button class="btn ghost" onclick=\'copyText(this,'+js(c.tags)+')\'>Copy hashtags (first comment)</button>'+
+    '</div>';
+  }).join("");
+  document.getElementById("tagsets").innerHTML = TAGSETS.map(function(t){
+    return '<div class="card" style="padding:14px">'+
+      '<div class="meta">'+esc(t.name)+'</div>'+
+      '<div class="tags" style="margin-top:4px">'+esc(t.t)+'</div>'+
+      '<button class="btn ghost" onclick=\'copyText(this,'+js(t.t)+')\'>Copy set</button>'+
+    '</div>';
+  }).join("");
+}
+
+function renderChecks(){
+  function build(id,arr,key){
+    var el=document.getElementById(id);
+    var saved=load(key)||{};
+    var html=arr.map(function(c,i){
+      var done=saved[i]?" done":"";
+      return '<div class="check'+done+'" onclick="toggleCheck(this,\''+key+'\','+i+')">'+
+        '<div class="box">✓</div><div class="ct">'+esc(c)+'</div></div>';
+    }).join("");
+    el.insertAdjacentHTML("afterbegin",html);
+  }
+  build("checklist",CHECKLIST,"uw_batch");
+  build("filmcheck",FILMCHECK,"uw_film");
+}
+function toggleCheck(el,key,i){
+  el.classList.toggle("done");
+  var saved=load(key)||{}; saved[i]=el.classList.contains("done"); save(key,saved);
+}
+function load(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+
+/* ---------- COPY + TOAST ---------- */
+function copyText(btn,txt){
+  function done(){
+    var o=btn.textContent; btn.textContent="Copied ✓";
+    showToast(); setTimeout(function(){btn.textContent=o;},1500);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done,function(){fallback(txt);done();});
+  }else{fallback(txt);done();}
+}
+function fallback(txt){
+  var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";
+  document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}document.body.removeChild(ta);
+}
+var toastT;
+function showToast(){var t=document.getElementById("toast");t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove("show");},1400);}
+
+/* ---------- HOOK SHUFFLE ---------- */
+function shuffleHook(){
+  var h=HOOKS[Math.floor(Math.random()*HOOKS.length)];
+  document.getElementById("rhtext").innerText=h;
+  document.getElementById("randomhook").style.display="block";
+}
+
+/* ---------- TABS ---------- */
+var navBtns=document.querySelectorAll("nav button");
+navBtns.forEach(function(b){
+  b.addEventListener("click",function(){
+    var t=b.getAttribute("data-tab");
+    document.querySelectorAll("section.tab").forEach(function(s){s.classList.remove("active");});
+    document.getElementById("tab-"+t).classList.add("active");
+    navBtns.forEach(function(x){x.classList.remove("on");});b.classList.add("on");
+    window.scrollTo({top:0,behavior:"instant"in document.documentElement.style?"instant":"auto"});
+  });
+});
+
+/* ---------- TELEPROMPTER ---------- */
+var tpEl=document.getElementById("tp"),tpText=document.getElementById("tptext"),
+    tpScroll=document.getElementById("tpscroll"),tpPlayBtn=document.getElementById("tpplay"),
+    tpSpeedEl=document.getElementById("tpspeed");
+var tpPos=0,tpRun=false,tpRate=1.0,tpRAF=null,tpLast=0;
+function tpOpen(i){
+  var s=SCRIPTS[i];
+  var html='<span class="tphook">'+esc(s.say[0])+'</span>\n\n'+s.say.slice(1).map(esc).join("\n\n")+'\n\n— — —\n\n'+esc(s.cta);
+  tpText.innerHTML=html.replace(/\n/g,"<br>");
+  tpEl.classList.add("show");
+  tpPos=tpScroll.clientHeight*0.34; // start near the guide line
+  tpText.style.transform="translateY("+tpPos+"px)";
+  tpRun=false;tpPlayBtn.textContent="▶ Play";tpPlayBtn.classList.add("play");
+  if(window.screen&&screen.orientation){} // no-op guard
+}
+function tpClose(){tpEl.classList.remove("show");tpRun=false;if(tpRAF)cancelAnimationFrame(tpRAF);}
+function tpToggle(){
+  tpRun=!tpRun;
+  if(tpRun){tpPlayBtn.textContent="❚❚ Pause";tpLast=performance.now();tpRAF=requestAnimationFrame(tpStep);}
+  else{tpPlayBtn.textContent="▶ Play";if(tpRAF)cancelAnimationFrame(tpRAF);}
+}
+function tpStep(now){
+  if(!tpRun)return;
+  var dt=now-tpLast;tpLast=now;
+  tpPos-=(dt/1000)*34*tpRate; // px per second, scaled by rate
+  tpText.style.transform="translateY("+tpPos+"px)";
+  var end=-(tpText.scrollHeight)+tpScroll.clientHeight*0.5;
+  if(tpPos<end){tpRun=false;tpPlayBtn.textContent="↻ Replay";tpPlayBtn.onclick=function(){tpPos=tpScroll.clientHeight*0.34;tpPlayBtn.onclick=tpToggle;tpToggle();};return;}
+  tpRAF=requestAnimationFrame(tpStep);
+}
+function tpSpeed(d){
+  tpRate=Math.max(0.3,Math.min(3,+(tpRate+d*0.2).toFixed(1)));
+  tpSpeedEl.textContent=tpRate.toFixed(1)+"×";
+}
+
+/* ---------- DISCLAIMER quick-copy ---------- */
+function copyPlain(txt){
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(showToast,function(){fallback(txt);showToast();});}
+  else{fallback(txt);showToast();}
+}
+document.getElementById("healthdisc").addEventListener("click",function(){copyPlain(DISCLAIMER);});
+
+/* ---------- INIT ---------- */
+renderScripts();renderHooks();renderCaptions();renderChecks();
+</script>
+</body>
+</html>
