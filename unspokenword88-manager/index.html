@@ -3,16 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0E0D14">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E0D14'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%23B49DF2' font-family='sans-serif' font-weight='700'%3Eu%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0B0A09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B0A09'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%23CE5A2D' font-family='Georgia,serif' font-weight='700'%3Eu%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
 <title>unspoken word · studio</title>
 <style>
   :root{
-    --bg:#0E0D14; --surface:#17161F; --surface2:#1E1C28; --line:#2C2A38;
-    --text:#EDEBF3; --muted:#9A94A8; --faint:#6D6878;
-    --lilac:#B49DF2; --teal:#6FD6C6; --amber:#F2C56F;
-    --radius:16px;
+    /* @unspokenword88 brand — warm black + burnt orange + cream */
+    --bg:#0B0A09; --surface:#17120F; --surface2:#1F1813; --line:#2E2620;
+    --text:#F2EBE3; --muted:#A79C91; --faint:#6E655B;
+    --lilac:#CE5A2D; --teal:#E6C9A6; --amber:#E07C43; --rose:#DD6A4E;
+    --radius:16px; --serif:"Zilla Slab",Georgia,"Times New Roman",serif;
   }
+  h1,.login h2{font-family:var(--serif);letter-spacing:-.01em}
+  h1 .w{font-style:italic;color:var(--lilac);font-weight:700}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{background:var(--bg);color:var(--text)}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -213,7 +218,7 @@
 <!-- Login gate -->
 <div class="login" id="login">
   <div class="lbrand">Instagram Studio</div>
-  <h2>unspoken word</h2>
+  <h2>unspoken <span class="w">word</span></h2>
   <p>Your private studio for <span class="handle" style="color:var(--teal)">@unspokenword88</span>. Enter your passphrase to open it.</p>
   <input id="passInput" type="password" inputmode="text" autocomplete="current-password" placeholder="Passphrase" enterkeyhint="go">
   <div class="err" id="loginErr"></div>
@@ -228,7 +233,7 @@
   </div>
   <header>
     <div class="brand">Instagram Studio</div>
-    <h1>unspoken word</h1>
+    <h1>unspoken <span class="w">word</span></h1>
     <div class="sub">Your control room for <span class="handle">@unspokenword88</span> — photos, scripts, teleprompter &amp; the plan. Open it on your phone and film.</div>
   </header>
 
@@ -334,7 +339,7 @@
     <p class="lead">Copy a caption, tweak one line so it's true for you, paste into Instagram. Drop the hashtags in the <strong>first comment</strong> (button for that too).</p>
     <div class="card">
       <div class="meta">Reusable · paste at the end of health posts</div>
-      <div class="cap" id="disctext">Sharing what helps us — not medical advice. Every brain and body is different; check any big changes with your GP or a dietitian. 💜</div>
+      <div class="cap" id="disctext">Sharing what helps us — not medical advice. Every brain and body is different; check any big changes with your GP or a dietitian. 🤎</div>
       <button class="btn" onclick="copyText(this,document.getElementById('disctext').innerText)">Copy disclaimer line</button>
     </div>
     <h2 class="secttl">Caption templates</h2>
@@ -410,7 +415,7 @@
       <p><strong>Foods that regulate — Part 1, 2, 3…</strong> Number them. Series make people follow (they want the next one) and bingeable content keeps them on your page.</p>
       <ul class="clean">
         <li>Same opening frame or first word each time — a tiny signature.</li>
-        <li>End with "Part 4 tomorrow 💜" to pull them back.</li>
+        <li>End with "Part 4 tomorrow 🤎" to pull them back.</li>
         <li>Pin your best one to the top of your profile.</li>
       </ul>
     </div>
@@ -500,7 +505,7 @@
 
 <script>
 /* ---------- DATA ---------- */
-var DISCLAIMER = "Sharing what helps us — not medical advice. Every brain and body is different; check any big changes with your GP or a dietitian. 💜";
+var DISCLAIMER = "Sharing what helps us — not medical advice. Every brain and body is different; check any big changes with your GP or a dietitian. 🤎";
 
 var SCRIPTS = [
  {
@@ -638,22 +643,22 @@ var HOOKS = [
 var CAPTIONS = [
  {
    title:"Teaching reel (food/regulation)",
-   body:"If your kid melts down by 10am, this one's for you. 💜\n\nWe swapped sugary breakfast for protein first — eggs, yoghurt, nut butter — and the mornings changed. Steady energy instead of a spike-and-crash.\n\nYou're not fixing your child. You're just taking away the rollercoaster.\n\nSave this and try it for 3 mornings. Tell me what you notice around 10. 👇\n\nSharing what helps us — not medical advice. Every body is different; check big changes with your GP or dietitian.",
+   body:"If your kid melts down by 10am, this one's for you. 🤎\n\nWe swapped sugary breakfast for protein first — eggs, yoghurt, nut butter — and the mornings changed. Steady energy instead of a spike-and-crash.\n\nYou're not fixing your child. You're just taking away the rollercoaster.\n\nSave this and try it for 3 mornings. Tell me what you notice around 10. 👇\n\nSharing what helps us — not medical advice. Every body is different; check big changes with your GP or dietitian.",
    tags:"#neurodivergent #autismparent #autismawareness #sensoryprocessing #adhdkids #gentleparenting #autismmom #regulation #actuallyautistic #neurodiversity"
  },
  {
    title:"Validation / lived experience",
-   body:"Nobody warns you how loud the 'unspoken' parts of this life get. 💜\n\nThe meltdowns no one sees. The safe foods you stopped apologising for. The wins that look like nothing to anyone else.\n\nIf you're in it today — you're not failing. You're parenting a nervous system, not a behaviour.\n\nSend this to someone who needs to hear it. 🤍",
+   body:"Nobody warns you how loud the 'unspoken' parts of this life get. 🤎\n\nThe meltdowns no one sees. The safe foods you stopped apologising for. The wins that look like nothing to anyone else.\n\nIf you're in it today — you're not failing. You're parenting a nervous system, not a behaviour.\n\nSend this to someone who needs to hear it. 🤍",
    tags:"#autismparenting #neurodivergentfamily #autismmom #specialneedsparenting #adhdparenting #sensorykids #youarenotalone #autismcommunity #parentingwin #unspoken"
  },
  {
    title:"Quick tip / single swap",
-   body:"One swap. That's it. 👇\n\nSwap the juice box for water + a protein snack and watch the 3pm crash soften.\n\nSame snack time, steadier afternoon. Little levers, big difference.\n\nSave for the next shop. What swap should I break down next? 💜\n\nNot medical advice — just what works for us.",
+   body:"One swap. That's it. 👇\n\nSwap the juice box for water + a protein snack and watch the 3pm crash soften.\n\nSame snack time, steadier afternoon. Little levers, big difference.\n\nSave for the next shop. What swap should I break down next? 🤎\n\nNot medical advice — just what works for us.",
    tags:"#autismtips #adhdtips #neurodivergentkids #sensoryfriendly #parentinghacks #bloodsugar #kidsnutrition #regulation #autismsupport #gentleparenting"
  },
  {
    title:"Myth-bust / gentle correction",
-   body:"'They're just being fussy.' No. 🚫\n\nFor a lot of neurodivergent kids, safe foods are about sensory safety and control — not defiance. Fighting it turns the table into a battleground.\n\nKeep the safe foods. Add alongside, never instead. No pressure.\n\nIf this gave you permission to stop fighting, save it — and send it to a parent who needs it too. 💜",
+   body:"'They're just being fussy.' No. 🚫\n\nFor a lot of neurodivergent kids, safe foods are about sensory safety and control — not defiance. Fighting it turns the table into a battleground.\n\nKeep the safe foods. Add alongside, never instead. No pressure.\n\nIf this gave you permission to stop fighting, save it — and send it to a parent who needs it too. 🤎",
    tags:"#arfidawareness #safefoods #autismeating #pickyeater #sensoryeating #neurodivergent #feedingtherapy #autismparent #gentleparenting #actuallyautistic"
  }
 ];
