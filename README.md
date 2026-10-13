@@ -43,6 +43,7 @@ The home for all Groundworks Studios projects. Each project lives in its own fol
 | Project | Folder | Live site |
 |---------|--------|-----------|
 | Asiya's Voice — AAC communication app for autistic children | [`asiyas-voice/`](asiyas-voice/) | [asiyas-voice.netlify.app](https://asiyas-voice.netlify.app) |
+| Word — personalised offline AAC app that learns a child's words &amp; patterns over time (for [@unspokenword88](https://www.instagram.com/unspokenword88/)) | [`unspokenword-voice/`](unspokenword-voice/) | [unspokenword-voice.netlify.app](https://unspokenword-voice.netlify.app) |
 | Your Voice | [`your-voice-app/`](your-voice-app/) | [your-voice-app.netlify.app](https://your-voice-app.netlify.app) |
 | Your Voice — coming soon page | [`joinyourvoice/`](joinyourvoice/) | [joinyourvoice.netlify.app](https://joinyourvoice.netlify.app) |
 | Tiny Champions | [`tiny-champions-app/`](tiny-champions-app/) | [tiny-champions-app.netlify.app](https://tiny-champions-app.netlify.app) |
