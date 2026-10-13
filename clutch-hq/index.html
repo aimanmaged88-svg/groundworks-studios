@@ -793,6 +793,8 @@ function vPlayers(){
   if (F.team === "squad") L = L.filter(p => !p.team_id); else if (F.team !== "all") L = L.filter(p => p.team_id === F.team);
   if (F.status === "owing") L = L.filter(p => owing(p) > 0);
   if (F.status === "med") L = L.filter(p => p.medical);
+  if (F.status === "reps") L = L.filter(p => p.plays_reps);
+  if (F.status === "reptry") L = L.filter(p => p.rep_tryout && !p.plays_reps);
   if (F.q) { const s = F.q.toLowerCase(); L = L.filter(p => (pname(p) + " " + guardianOf(p).name + " " + guardianOf(p).phone).toLowerCase().includes(s)); }
   const sorters = {
     name:(a,b) => a.last_name.localeCompare(b.last_name) || a.first_name.localeCompare(b.first_name),
@@ -810,13 +812,13 @@ function vPlayers(){
     <input type="search" placeholder="Search name, parent or phone" value="${esc(F.q)}" data-f="q" aria-label="Search">
     <select data-f="team"><option value="all">All teams</option>${teams.map(t => `<option value="${t.id}"${F.team === t.id ? " selected" : ""}>${tname(t)}</option>`).join("")}<option value="squad"${F.team === "squad" ? " selected" : ""}>Training squad</option></select>
     <select data-f="sort">${[["team","By team"],["name","A to Z"],["jersey","By jersey number"],["age","By age"],["attendance","By attendance"]].map(([v,l]) => `<option value="${v}"${F.sort === v ? " selected" : ""}>${l}</option>`).join("")}</select>
-    <select data-f="status">${[["all","Everyone"],["owing","Owing fees"],["med","Medical note"]].map(([v,l]) => `<option value="${v}"${F.status === v ? " selected" : ""}>${l}</option>`).join("")}</select>
+    <select data-f="status">${[["all","Everyone"],["owing","Owing fees"],["med","Medical note"],["reps","Plays reps"],["reptry","Tried out for reps"]].map(([v,l]) => `<option value="${v}"${F.status === v ? " selected" : ""}>${l}</option>`).join("")}</select>
     <span class="ct">${L.length} shown</span></div>
   <section class="card flush"><div class="tw"><table>
     <thead><tr><th>Player</th><th>Team</th><th class="hidemob">Last 5 games</th><th class="r hidemob">Season pts</th><th class="r hidemob">Attendance</th><th class="r">Fees</th><th class="hidemob">Parent</th><th class="hidemob">Phone</th></tr></thead>
     <tbody>${L.map(p => { const t = team(p.team_id), g = guardianOf(p), st = statsOf(p), at = attOf(p), o = owing(p);
       return `<tr class="click" data-act="player" data-id="${p.id}">
-        <td><div class="who">${avatarHtml(p)}<div><b>${esc(pname(p))}</b><small>${p.no != null ? "#" + p.no + " · " : ""}${ageGroupOf(p.dob)} · ${ageOn(p.dob, todayISO())}</small></div></div></td>
+        <td><div class="who">${avatarHtml(p)}<div><b>${esc(pname(p))}</b><small>${p.no != null ? "#" + p.no + " · " : ""}${ageGroupOf(p.dob)} · ${ageOn(p.dob, todayISO())}${p.plays_reps ? ' · <b style="color:var(--accent)">REP</b>' : p.rep_tryout ? ' · rep tryout' : ""}</small></div></div></td>
         <td>${t ? tname(t) : '<span class="muted">Squad</span>'}</td>
         <td class="hidemob">${t ? wlChips(t.id) : '<span class="muted">–</span>'}</td>
         <td class="r mono num hidemob">${st.games ? `${st.pts} <span class="muted">· ${st.ppg.toFixed(1)}/g</span>` : '<span class="muted">–</span>'}</td>
@@ -1150,6 +1152,7 @@ function dPlayer(id){
       <dt>Last 5 games</dt><dd>${t ? wlChips(t.id) : "–"}</dd>
       <dt>Joined</dt><dd>${fd(p.joined, {y:1})} · ${esc(p.source || "")}</dd>
       <dt>Medical</dt><dd>${p.medical ? `<span class="st warn">${I.alert}${esc(p.medical_note || "Note on file")}</span>` : "Nothing on file"}</dd>
+      <dt>Rep basketball</dt><dd>${p.plays_reps ? `<span class="st good">${I.ok}Plays reps</span>` : p.rep_tryout ? `<span class="st warn">Tried out before</span>` : '<span class="muted">No</span>'}${p.rep_note ? ` <span class="muted">· ${esc(p.rep_note)}</span>` : ""}</dd>
       <dt>Photos</dt><dd>${p.photo_consent ? "Consent given" : `<span class="st warn">${I.alert}No consent</span>`}</dd>
       <dt>Socials</dt><dd><div class="socialrow">${["instagram","tiktok","youtube"].filter(k => soc[k]).map(k => `<span class="chip">${k}: ${esc(soc[k])}</span>`).join("") || '<span class="muted">None linked</span>'}</div></dd></dl></div>
     <div class="sec"><h3>Family${isAdmin() ? `<span class="right"><button class="btn sm" data-act="addParent" data-id="${p.id}">${I.plus}${D.guardians.some(x => x.family_id === p.family_id) ? "Add another parent" : "Add a parent"}</button></span>` : ""}</h3>
@@ -1230,6 +1233,14 @@ const ACT = {
   player:(el, e) => { if (e) e.preventDefault(); openDrawer("player", el.dataset.id); },
   season:el => { VIEW.seasonData = null; openDrawer("season", el.dataset.id); },
   squadDrawer:() => { VIEW.pf.team = "squad"; location.hash = "#/players"; },
+  exportPlayers:() => {
+    const rows = [["First name","Last name","Date of birth","Age group","Team","Jersey","Parent","Parent mobile","Parent email","Plays reps","Tried out for reps","Rep details","Medical note","Owing"]];
+    active().slice().sort((a,b) => a.last_name.localeCompare(b.last_name) || a.first_name.localeCompare(b.first_name)).forEach(p => { const t = team(p.team_id), g = guardianOf(p);
+      rows.push([p.first_name, p.last_name, p.dob, ageGroupOf(p.dob), t ? tname(t) : "Training squad", p.no ?? "", g.name || "", g.phone || "", g.email || "",
+        p.plays_reps ? "Yes" : "No", p.rep_tryout ? "Yes" : "No", p.rep_note || "", p.medical_note || "", owing(p) || 0]); });
+    const csv = "﻿" + rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\r\n");
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8"})); a.download = "clutch-players.csv";
+    document.body.appendChild(a); a.click(); a.remove(); toast("Player list downloaded"); },
   newTeam:() => teamForm(null),
   editTeam:el => teamForm(team(el.dataset.id)),
   archiveTeam:el => run(async () => { const t = team(el.dataset.id); if (!confirm(`Archive ${tname(t)}? Its players move to the training squad.`)) return;
@@ -1277,6 +1288,8 @@ const ACT = {
       <div class="f h"><label>Jersey number</label><input type="number" name="no" min="0" max="99"></div>
       <div class="f h"><label>Photo consent</label><select name="photo"><option value="1">Yes</option><option value="0">No</option></select></div>
       <div class="f h"><label>Medical note</label><input name="med" placeholder="Blank if none"></div>
+      <div class="f h"><label>Plays reps</label><select name="reps"><option value="0">No</option><option value="1">Yes</option></select></div>
+      <div class="f h"><label>Tried out for reps before</label><select name="reptry"><option value="0">No</option><option value="1">Yes</option></select></div>
       <div class="fsec">Parent or guardian</div>
       <div class="f"><label>Who looks after them?</label><select name="fam" data-famsel>
         <option value="new">New parent — details below</option>
@@ -1296,6 +1309,9 @@ const ACT = {
       <div class="f h"><label>TikTok</label><input name="tk" value="${esc((p.socials || {}).tiktok || "")}" placeholder="@handle"></div>
       <div class="f h"><label>Photo consent</label><select name="photo">${opt([["1","Yes"],["0","No"]], p.photo_consent ? "1" : "0")}</select></div>
       <div class="f h"><label>Medical note</label><input name="med" value="${esc(p.medical_note)}"></div>
+      <div class="f h"><label>Plays reps</label><select name="reps">${opt([["0","No"],["1","Yes"]], p.plays_reps ? "1" : "0")}</select></div>
+      <div class="f h"><label>Tried out for reps before</label><select name="reptry">${opt([["0","No"],["1","Yes"]], p.rep_tryout ? "1" : "0")}</select></div>
+      <div class="f"><label>Rep details</label><input name="repnote" value="${esc(p.rep_note || "")}" placeholder="Association, team, year — e.g. Bankstown U14 Div 1, tried out 2025"></div>
     </div>${mact("Save")}</form>`); },
   addParent:el => { const p = player(el.dataset.id);
     openModal(`<form data-form="addParent" data-id="${p.id}"><h2>Parent for ${esc(pname(p))}</h2><div class="fg">
@@ -1488,7 +1504,8 @@ const FORMS = {
       famId = famRow.id;
     }
     await sb.from("players").insert({family_id:famId, first_name:f.first.trim(), last_name:f.last.trim(), dob:f.dob, phone:f.phone || "", team_id:f.team || null,
-      no:f.no === "" ? null : +f.no, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || "", source:"Added by staff"}).throwOnError();
+      no:f.no === "" ? null : +f.no, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || "",
+      plays_reps:f.reps === "1", rep_tryout:f.reptry === "1", source:"Added by staff"}).throwOnError();
     await reload(); toast(f.fam === "later" ? "Player added — attach a parent from their file whenever" : "Player added");
   },
   addParent:async (f, el) => { const p = player(el.dataset.id);
@@ -1498,8 +1515,10 @@ const FORMS = {
   editPlayer:async (f, el) => { const p = player(el.dataset.id);
     const socials = {...(p.socials || {})}; socials.instagram = f.ig || undefined; socials.tiktok = f.tk || undefined;
     Object.keys(socials).forEach(k => socials[k] === undefined && delete socials[k]);
-    await sb.from("players").update({phone:f.phone, no:f.no === "" ? null : +f.no, socials, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || ""}).eq("id", p.id).throwOnError();
-    Object.assign(p, {phone:f.phone, no:f.no === "" ? null : +f.no, socials, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || ""}); },
+    const patch = {phone:f.phone, no:f.no === "" ? null : +f.no, socials, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || "",
+      plays_reps:f.reps === "1", rep_tryout:f.reptry === "1", rep_note:f.repnote || ""};
+    await sb.from("players").update(patch).eq("id", p.id).throwOnError();
+    Object.assign(p, patch); },
   guardian:async (f, el) => { await sb.from("guardians").update({name:f.name, rel:f.rel, phone:f.phone, email:f.email || null}).eq("id", el.dataset.id).throwOnError();
     Object.assign(D.guardians.find(g => g.id === el.dataset.id), {name:f.name, rel:f.rel, phone:f.phone, email:f.email || null}); },
   pay:async (f, el) => { const pid = el.dataset.id || f.pid;
