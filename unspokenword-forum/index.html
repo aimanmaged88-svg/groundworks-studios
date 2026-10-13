@@ -141,30 +141,30 @@
     <div id="regForm">
       <h2 class="ttl">Save your seat</h2>
       <div class="card">
-        <p>This is a warm, low-pressure hour for our community. We'll open with a short talk on <strong id="topicInline">foods that regulate</strong>, then it's yours — <strong>bring your questions</strong>.</p>
+        <p>One hour. We open with a short teach on <strong id="topicInline">foods that regulate</strong>, then the floor is yours — <strong>bring the questions you've stopped saying out loud</strong>.</p>
         <label>First name</label>
         <input id="regName" type="text" autocomplete="given-name" placeholder="What should we call you?">
         <label>Email</label>
         <input id="regEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com">
         <div class="err" id="regErr"></div>
         <button class="btn solid" id="regBtn">Save my seat →</button>
-        <div class="hint">We'll only use this to send you the Zoom link and a reminder. No spam, ever. 🤎</div>
+        <div class="hint">Just the Zoom link and one reminder. No spam, no selling your email on.</div>
       </div>
       <h2 class="ttl">What to expect</h2>
       <div class="card">
         <ul class="clean">
-          <li><strong>~10 min teach</strong> — one practical thing you can use that week.</li>
-          <li><strong>Open Q&amp;A</strong> — ask live in the room, or type it in the Live room tab here and upvote others'.</li>
-          <li><strong>Camera optional</strong> — come as you are, lurk if you like. No pressure to speak.</li>
-          <li><strong>A kind space</strong> — no judgement, no "shoulds". Lived experience, shared.</li>
+          <li><strong>~10 min teach</strong> — one practical thing you can use this week.</li>
+          <li><strong>Open Q&amp;A</strong> — ask out loud, or type it here and upvote the ones you want answered.</li>
+          <li><strong>Camera off is fine</strong> — lurk, mute, pace the kitchen. However you get through it.</li>
+          <li><strong>No judgement, no "shoulds"</strong> — straight talk from people who actually live it.</li>
         </ul>
       </div>
     </div>
 
     <div id="regDone" style="display:none">
-      <h2 class="ttl">You're in 🤎</h2>
+      <h2 class="ttl">You're in</h2>
       <div class="card">
-        <p><strong>Your seat is saved.</strong> Here's your room — save this page or add it to your calendar so you don't lose it.</p>
+        <p><strong>Seat saved.</strong> Here's your room — add it to your calendar now, before the mental load eats it.</p>
         <div class="zoombox" id="zoomBox">
           <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)">Join link</div>
           <a id="zoomLink" class="btn teal solid" style="margin-top:10px" href="#" target="_blank" rel="noopener">Open Zoom room</a>
@@ -181,13 +181,13 @@
 
   <!-- ===== LIVE / COMPANION ===== -->
   <section class="view" id="view-live">
-    <div class="disc" id="liveState">The room isn't open yet — come back at start time. You can still drop a question below and it'll be waiting. 🤎</div>
+    <div class="disc" id="liveState">Room's not open yet. Drop your questions now — they'll be waiting, and you can upvote the ones you want answered.</div>
 
     <div id="joinWrap"></div>
 
     <h2 class="ttl">Ask a question</h2>
     <div class="card qform">
-      <textarea id="qBody" rows="3" maxlength="400" placeholder="What's on your mind? (You can stay anonymous.)"></textarea>
+      <textarea id="qBody" rows="3" maxlength="400" placeholder="Ask it — even the one you've never said out loud. Anonymous is fine."></textarea>
       <label>Name (optional)</label>
       <input id="qAuthor" type="text" maxlength="60" placeholder="Anonymous">
       <div class="err" id="qErr"></div>
@@ -199,7 +199,7 @@
 
     <h2 class="ttl">After the forum</h2>
     <div class="card">
-      <p>One line — what landed for you today? We read every one (it stays private, just for us).</p>
+      <p>One line — what landed? We read every one. Stays private.</p>
       <textarea id="fbBody" rows="2" maxlength="400" placeholder="What you're taking away…"></textarea>
       <button class="btn ghost" id="fbBtn" style="margin-top:10px">Send reflection</button>
       <div class="ok" id="fbOk"></div>
@@ -222,7 +222,10 @@
     <div id="hostConsole" style="display:none">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
         <h2 class="ttl" style="margin:0">Host console</h2>
-        <button class="btn ghost sm" id="hostLogout">Log out</button>
+        <div style="display:flex;gap:8px">
+          <a class="btn ghost sm" href="playbook.html" target="_blank" rel="noopener" style="text-decoration:none">📋 Playbook</a>
+          <button class="btn ghost sm" id="hostLogout">Log out</button>
+        </div>
       </div>
 
       <div class="stat">
@@ -283,7 +286,7 @@
 
   <footer>
     Unspoken — a space for @unspokenword88 · <a class="hostlink" href="#host" id="hostNav">Host login</a><br>
-    Be kind. Everyone here is doing their best.
+    Be kind. We're all carrying something unspoken.
   </footer>
 </div>
 
@@ -379,7 +382,7 @@ async function doRegister(){
   var d=r.data||{};
   lsSet("uw_reg",{email:email,zoom_url:d.zoom_url||"",zoom_passcode:d.zoom_passcode||""});
   showRegDone();
-  toast("Seat saved 🤎");
+  toast("You're in");
 }
 function showRegDone(){
   var reg=lsGet("uw_reg",null);
@@ -423,7 +426,7 @@ function renderLiveState(){
   var start=new Date(EV.starts_at).getTime(), end=start+(EV.duration_min||60)*60000, now=Date.now();
   var reg=lsGet("uw_reg",null), isLive=(EV.status==="live")||(now>=start&&now<=end&&EV.status!=="ended");
   if(EV.status==="ended"||now>end){
-    box.textContent="This forum has wrapped. Thank you for being here 🤎 — your reflections below still reach us.";
+    box.textContent="That's a wrap. Thank you for being in the room — your reflections below still reach us.";
   }else if(isLive){
     box.innerHTML="<strong style='color:var(--text)'>We're live now.</strong> Join the room, and add your questions below — tap ▲ to upvote the ones you want answered.";
   }else{
@@ -482,7 +485,7 @@ async function postQuestion(){
   var r=await sb.from("uw_questions").insert({body:body,author:author});
   btn.textContent="Post question"; btn.disabled=false;
   if(r.error){err.textContent="Couldn't post that — try again.";console.error(r.error);return;}
-  document.getElementById("qBody").value=""; toast("Posted — thank you 🤎");
+  document.getElementById("qBody").value=""; toast("Posted");
   loadQuestions();
 }
 document.getElementById("fbBtn").addEventListener("click",sendReflection);
@@ -492,7 +495,7 @@ async function sendReflection(){
   var r=await sb.from("uw_questions").insert({body:"[reflection] "+body,author:""});
   if(r.error){console.error(r.error);return;}
   document.getElementById("fbBody").value="";
-  document.getElementById("fbOk").textContent="Thank you — that means a lot. 🤎";
+  document.getElementById("fbOk").textContent="Got it. Thank you.";
 }
 
 /* ===== POLL ===== */

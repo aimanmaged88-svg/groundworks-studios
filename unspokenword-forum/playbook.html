@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Open Forum — Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0B0A09;--surface:#17120F;--surface2:#1F1813;--line:#2E2620;--text:#F2EBE3;--muted:#A79C91;--faint:#6E655B;--lilac:#CE5A2D;--teal:#E6C9A6;--amber:#E07C43;--rose:#DD6A4E;--serif:"Zilla Slab",Georgia,"Times New Roman",serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;padding:0 0 50px}
+  .wrap{max-width:680px;margin:0 auto;padding:30px 18px}
+  .brand{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--teal);font-weight:700}
+  h1{font-family:var(--serif);font-size:34px;font-weight:700;letter-spacing:-.01em;margin:8px 0 6px;line-height:1.05}
+  .lead{color:var(--muted);font-size:15px}
+  .rule{height:1px;background:var(--line);margin:26px 0}
+  h2{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);font-weight:700;margin:30px 0 14px;display:flex;align-items:center;gap:9px}
+  h2 .no{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;background:var(--surface2);border:1px solid var(--line);color:var(--amber);font-size:12px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px}
+  p{color:var(--muted);font-size:14.5px;margin:8px 0}
+  strong{color:var(--text)}
+  .note{font-size:12.5px;color:var(--faint);line-height:1.5}
+  .chip{display:inline-block;font-size:11px;font-weight:700;color:var(--lilac);background:var(--surface2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin:2px 4px 2px 0}
+
+  /* run of show */
+  .ros{display:flex;flex-direction:column;gap:2px}
+  .ros .r{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .ros .r:last-child{border-bottom:none}
+  .ros .t{min-width:62px;font-weight:700;color:var(--teal);font-size:13px;font-variant-numeric:tabular-nums;padding-top:1px}
+  .ros .d .h{font-size:14.5px;color:var(--text);font-weight:600}
+  .ros .d .s{font-size:13px;color:var(--muted);margin-top:3px}
+
+  ul{list-style:none;margin:6px 0}
+  ul li{font-size:14px;color:var(--muted);padding:6px 0 6px 20px;position:relative}
+  ul li::before{content:"";position:absolute;left:3px;top:13px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+  ol.seed{counter-reset:s;list-style:none}
+  ol.seed li{counter-increment:s;font-size:14.5px;color:var(--text);padding:9px 0 9px 36px;position:relative;border-bottom:1px solid var(--line)}
+  ol.seed li:last-child{border-bottom:none}
+  ol.seed li::before{content:counter(s);position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:50%;background:var(--surface2);border:1px solid var(--lilac);color:var(--lilac);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+  .script{background:var(--surface2);border-left:3px solid var(--lilac);border-radius:0 12px 12px 0;padding:14px 16px}
+  .script p{color:var(--text);font-size:15px;margin:0 0 12px;line-height:1.6}
+  .script p:last-child{margin-bottom:0}
+
+  .promo .label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:12px 0 6px}
+  .promo .label:first-child{margin-top:0}
+  .promo .val{font-size:14.5px;color:var(--text)}
+  .onscreen{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .onscreen span{font-size:12px;font-weight:600;color:var(--amber);background:rgba(242,197,111,.08);border:1px solid rgba(242,197,111,.3);border-radius:8px;padding:5px 9px}
+
+  .msg{background:var(--surface2);border:1px solid var(--line);border-radius:14px 14px 14px 4px;padding:13px 15px;margin-bottom:12px;position:relative}
+  .msg .when{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:7px}
+  .msg p{color:var(--text);font-size:14px;margin:0;line-height:1.55}
+
+  .check{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+  .check:last-child{border-bottom:none}
+  .check .n{min-width:24px;height:24px;border-radius:7px;background:var(--lilac);color:#0E0D14;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .check .x{font-size:14px;color:var(--text)}
+  .check .x b{color:var(--teal)}
+
+  .ph{color:var(--amber);font-weight:600}
+  footer{text-align:center;color:var(--faint);font-size:12px;margin-top:34px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">@unspokenword88 · Live</div>
+  <h1>Open Forum — Playbook</h1>
+  <p class="lead">Everything to promote, run, and follow up the forum. Format: a short teach (~10 min), then open Q&amp;A, on Zoom.</p>
+  <div class="card" style="margin-top:16px">
+    <p class="note">Swap the highlights in: <span class="ph">[DAY DATE]</span>, <span class="ph">[TIME Sydney]</span> / <span class="ph">[TIME Lombok]</span>, <span class="ph">[REGISTER LINK]</span>, <span class="ph">[ZOOM LINK]</span> (set the Zoom link in your Host console, never in a public post).</p>
+  </div>
+
+  <div class="rule"></div>
+  <h2><span class="no">1</span> Run-of-show · ≈50 min</h2>
+  <div class="card">
+    <div class="ros">
+      <div class="r"><div class="t">−10m</div><div class="d"><div class="h">Open the room early</div><div class="s">Cosy music, a "we start at [TIME]" slide. Let people trickle in. Breathe.</div></div></div>
+      <div class="r"><div class="t">0:00</div><div class="d"><div class="h">Welcome · 2 min</div><div class="s">"You're in the right place. No cameras required, no pressure to talk."</div></div></div>
+      <div class="r"><div class="t">0:02</div><div class="d"><div class="h">Ground rules · 1 min</div><div class="s">Kind space · lived experience, not medical advice · what's shared here stays here.</div></div></div>
+      <div class="r"><div class="t">0:03</div><div class="d"><div class="h">The teach · ~10 min</div><div class="s">One idea, usable this week (script below). End: "That's the spark — now it's yours."</div></div></div>
+      <div class="r"><div class="t">0:13</div><div class="d"><div class="h">Open the floor · 1 min</div><div class="s">"Type a question or upvote one — I'll take the top-voted first." Pull up the Host Q&amp;A.</div></div></div>
+      <div class="r"><div class="t">0:14</div><div class="d"><div class="h">Open Q&amp;A · ~30 min</div><div class="s">Tap <b style="color:var(--teal)">Answering</b> to spotlight, <b style="color:var(--teal)">Answered</b> when done. Read quiet folks' typed questions aloud.</div></div></div>
+      <div class="r"><div class="t">0:44</div><div class="d"><div class="h">Last calls · 3 min</div><div class="s">"Anything we didn't get to — drop it and I'll cover it in a reel."</div></div></div>
+      <div class="r"><div class="t">0:47</div><div class="d"><div class="h">Warm close · 3 min</div><div class="s">One takeaway each in the chat. Point to the reflection box. "DM me one word: what landed?"</div></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="promo"><div class="label">Moderator tips</div></div>
+    <ul>
+      <li>Silence is fine. Count to five — someone always fills it.</li>
+      <li>No questions at first? Seed one: "A common one I get is…" (pre-load 3 before you start).</li>
+      <li>Hard question → "Thank you for trusting us with that. Here's what helped us — and please loop in your GP."</li>
+      <li>Keep water on. <strong>You set the regulated tone.</strong></li>
+    </ul>
+  </div>
+
+  <div class="rule"></div>
+  <h2><span class="no">2</span> Seed questions · pre-load 3</h2>
+  <div class="card">
+    <p class="note" style="margin-top:0">Post these as "Anonymous" before you start so the board isn't empty:</p>
+    <ol class="seed">
+      <li>What's one breakfast that actually holds up for a fussy eater?</li>
+      <li>How do you tell a sensory food thing from a behaviour thing?</li>
+      <li>Where do you even start when every change feels like a battle?</li>
+    </ol>
+  </div>
+
+  <div class="rule"></div>
+  <h2><span class="no">3</span> The ~10-min teach · talk-to-camera</h2>
+  <div class="card">
+    <p class="note" style="margin-top:0;margin-bottom:12px">Use your studio teleprompter. Topic: foods that regulate (swap if you like).</p>
+    <div class="script">
+      <p>You know the 10am meltdown? For the longest time I treated it as behaviour. It wasn't — it was breakfast.</p>
+      <p>A fast, sugary start spikes blood sugar then drops it off a cliff, and the crash doesn't land as a tummy ache. It lands as dysregulation.</p>
+      <p>So we did one thing: protein first. Eggs, yoghurt, nut butter — before anything sweet. Steady fuel instead of a rollercoaster.</p>
+      <p>I'm not here to tell you what to feed your kid. Every body's different, and big changes are a chat for your GP or dietitian. I'm here to say: look at the fuel before you look at the child.</p>
+      <p>Pick ONE meal this week. Make it steadier. Watch what happens an hour later.</p>
+      <p>That's the whole teach. Now — I want your questions. The messy ones. There are none that are silly here.</p>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+  <h2><span class="no">4</span> Promo pack</h2>
+  <div class="card promo">
+    <div class="label">Announcement reel · talk-to-camera · ~25s</div>
+    <div class="label">Hook</div>
+    <div class="val">"I'm hosting something I've never done before — and I'm a little nervous."</div>
+    <div class="label">Body</div>
+    <div class="val">"An open forum. One hour, on Zoom, just us. I'll share a bit about foods that regulate, then it's yours — bring every question you've been too tired or too scared to ask. No cameras needed. No judgement. Just a room full of people who get it."</div>
+    <div class="label">Call to action</div>
+    <div class="val">"Free. Link in bio to save your seat — <span class="ph">[DAY DATE]</span>, <span class="ph">[TIME Sydney]</span>. Come be in the room. 🤎"</div>
+    <div class="label">On-screen text</div>
+    <div class="onscreen"><span>An open forum</span><span>1 hour · Zoom · free</span><span>bring your questions</span><span>save your seat 👆</span></div>
+  </div>
+  <div class="card promo">
+    <div class="label">Story slides · 3</div>
+    <ul>
+      <li>"I'm opening a room. 🤎" — plain text, your face or a calm photo.</li>
+      <li>"[DAY], [TIME]. One hour on Zoom. A short teach on foods that regulate, then open Q&amp;A — the real questions."</li>
+      <li>"Free. Tap to save your seat 👇" + link sticker to <span class="ph">[REGISTER LINK]</span>.</li>
+    </ul>
+  </div>
+  <div class="card promo">
+    <div class="label">Countdown caption · 2–3 days before</div>
+    <div class="val">This [DAY] we're trying something new: an <strong>open forum</strong>. 🤎<br><br>One hour on Zoom. I'll open with ~10 min on foods that regulate — then it's yours. Bring the questions you've been carrying. Camera optional, judgement-free, actually warm.<br><br>It's free. Save your seat (link in bio) and bring a friend who needs this room too.<br><br>[DAY DATE] · [TIME Sydney] / [TIME Lombok]</div>
+  </div>
+  <div class="card promo">
+    <div class="label">Last-call caption · morning of</div>
+    <div class="val">Tonight. 🤎 The open forum is in a few hours — if you've been on the fence, this is your nudge. You don't have to speak, you don't need your camera. You just have to show up. Link in bio.</div>
+    <div class="label">Recap caption · next day</div>
+    <div class="val">Last night a room full of us sat together and asked the hard questions out loud. 🤎 Thank you to everyone who came, typed, upvoted, and trusted us. Didn't make it? Tell me the question you'd have asked — I'll answer the top ones in reels this week.</div>
+  </div>
+
+  <div class="rule"></div>
+  <h2><span class="no">5</span> Reminder messages · email / DM</h2>
+  <div class="card">
+    <p class="note" style="margin-top:0;margin-bottom:14px">Send to the emails in your Host console (export CSV). Swap the placeholders.</p>
+    <div class="msg"><div class="when">On registration · instant</div><p>You're in 🤎 You've got a seat at the Unspoken Open Forum, [DAY DATE] at [TIME Sydney] / [TIME Lombok]. Your Zoom link is on the confirmation page — add it to your calendar so it doesn't get lost.</p></div>
+    <div class="msg"><div class="when">24 hours before</div><p>Tomorrow 🤎 The open forum is [TIME]. One hour, cameras optional, bring your questions (or just listen). Your Zoom link: [ZOOM LINK]. Can't make it live? Reply with your question and I'll make sure it's answered.</p></div>
+    <div class="msg"><div class="when">1 hour before</div><p>We're on in an hour 🤎 Grab a cuppa and join when you're ready: [ZOOM LINK]. Drop questions early in the Live room: [REGISTER LINK] → "Live room".</p></div>
+    <div class="msg"><div class="when">We're live · at start</div><p>We're live now — come in whenever you're ready 🤎 [ZOOM LINK]</p></div>
+  </div>
+
+  <div class="rule"></div>
+  <h2><span class="no">6</span> Your setup · do once in the Host console</h2>
+  <div class="card">
+    <div class="check"><div class="n">1</div><div class="x">Open <b>[REGISTER LINK]#host</b> → log in with your studio passphrase.</div></div>
+    <div class="check"><div class="n">2</div><div class="x"><b>Event details:</b> set title, date &amp; time (your phone's clock), duration, status → <b>Open</b>.</div></div>
+    <div class="check"><div class="n">3</div><div class="x"><b>Zoom link:</b> paste the join URL + passcode. Stays private — only registrants see it.</div></div>
+    <div class="check"><div class="n">4</div><div class="x">Set status to <b>Live</b> when you start, <b>Ended</b> when done.</div></div>
+    <div class="check"><div class="n">5</div><div class="x">During: watch the Q&amp;A list; tap <b>Answering</b> / <b>Answered</b>.</div></div>
+    <div class="check"><div class="n">6</div><div class="x">After: read the <b>Reflections</b>, export registrations CSV for your list.</div></div>
+  </div>
+
+  <footer>Unspoken — Open Forum · a space for @unspokenword88<br>Be kind. Everyone here is doing their best. 🤎</footer>
+</div>
+</body>
+</html>
