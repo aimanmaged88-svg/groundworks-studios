@@ -17,6 +17,7 @@ The home for all Groundworks Studios projects. Each project lives in its own fol
 | Project | Folder | Live site |
 |---------|--------|-----------|
 | Unspoken Word — Instagram Studio (cloud photo roll, scripts, teleprompter, captions &amp; plan for [@unspokenword88](https://www.instagram.com/unspokenword88/); Supabase-backed, passphrase login) | [`unspokenword88-manager/`](unspokenword88-manager/) | [unspokenword88-manager.netlify.app](https://unspokenword88-manager.netlify.app) |
+| Unspoken — Open Forum (live webinar: registration, private Zoom reveal, live upvoted Q&amp;A, host console; Supabase-backed) | [`unspokenword-forum/`](unspokenword-forum/) | [unspokenword-forum.netlify.app](https://unspokenword-forum.netlify.app) |
 
 ## Lockdown Lab (Basketball IQ Academy)
 

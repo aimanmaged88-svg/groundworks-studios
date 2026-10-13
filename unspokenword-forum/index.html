@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0D14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E0D14'/%3E%3Ctext x='16' y='22' font-size='17' text-anchor='middle' fill='%236FD6C6' font-family='sans-serif' font-weight='700'%3Eu%3C/text%3E%3C/svg%3E">
+<title>Unspoken — Open Forum</title>
+<meta name="description" content="A live open forum for @unspokenword88 — register, join on Zoom, and ask your questions live.">
+<style>
+  :root{
+    --bg:#0E0D14;--surface:#17161F;--surface2:#1E1C28;--line:#2C2A38;
+    --text:#EDEBF3;--muted:#9A94A8;--faint:#6D6878;
+    --lilac:#B49DF2;--teal:#6FD6C6;--amber:#F2C56F;--rose:#F28B82;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{background:var(--bg);color:var(--text)}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       -webkit-font-smoothing:antialiased;line-height:1.55;padding:0 0 40px}
+  .wrap{max-width:620px;margin:0 auto;padding:20px 16px 24px}
+  a{color:var(--lilac)}
+  .brand{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--teal);font-weight:600}
+  h1{font-size:30px;font-weight:700;letter-spacing:-.02em;margin-top:8px;line-height:1.1}
+  .tagline{color:var(--muted);font-size:15px;margin-top:10px}
+  .when{display:flex;flex-direction:column;gap:4px;margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .when .big{font-size:16px;font-weight:700;color:var(--text)}
+  .when .alt{font-size:13.5px;color:var(--muted)}
+  .count{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-size:13px;font-weight:600;color:var(--amber);
+         background:rgba(242,197,111,.08);border:1px solid rgba(242,197,111,.3);border-radius:999px;padding:6px 13px}
+  .count .dot{width:7px;height:7px;border-radius:50%;background:var(--amber)}
+  .count.live{color:var(--rose);background:rgba(242,139,130,.1);border-color:rgba(242,139,130,.4)}
+  .count.live .dot{background:var(--rose);animation:pulse 1.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  .seg{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;margin:18px 0}
+  .seg button{flex:1;padding:10px;border:none;background:none;color:var(--muted);font-size:13.5px;font-weight:600;border-radius:999px;font-family:inherit}
+  .seg button.on{background:var(--lilac);color:#0E0D14}
+
+  h2.ttl{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);margin:24px 2px 12px;font-weight:700}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+  .card p{color:var(--muted);font-size:14.5px;margin-top:8px}
+  .card p:first-child{margin-top:0}
+  .card strong{color:var(--text)}
+  ul.clean{list-style:none;margin-top:6px}
+  ul.clean li{font-size:14.5px;color:var(--muted);padding:6px 0 6px 22px;position:relative;line-height:1.5}
+  ul.clean li::before{content:"";position:absolute;left:4px;top:13px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+  ul.clean li strong{color:var(--text)}
+
+  label{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:14px 0 7px}
+  input,textarea,select{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);
+    border-radius:11px;padding:13px;font-size:16px;font-family:inherit;resize:vertical}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--lilac)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:12px;
+       border:1px solid var(--lilac);background:transparent;color:var(--lilac);font-size:15px;font-weight:700;margin-top:14px;font-family:inherit;cursor:pointer}
+  .btn:active{background:var(--lilac);color:#0E0D14}
+  .btn.solid{background:var(--lilac);color:#0E0D14}
+  .btn.solid:active{opacity:.85}
+  .btn.teal{border-color:var(--teal);color:var(--teal)}
+  .btn.teal.solid{background:var(--teal);color:#0E0D14}
+  .btn.ghost{border-color:var(--line);color:var(--muted)}
+  .btn.ghost:active{background:var(--surface2);color:var(--text)}
+  .btn.danger{border-color:var(--rose);color:var(--rose)}
+  .btn.sm{width:auto;padding:8px 14px;font-size:13px;margin-top:0;border-radius:9px}
+  .err{color:var(--rose);font-size:13px;min-height:16px;margin-top:8px}
+  .ok{color:var(--teal);font-size:13px;margin-top:8px}
+  .row{display:flex;gap:10px}
+  .row>*{flex:1}
+  .hint{font-size:12.5px;color:var(--faint);margin-top:8px;line-height:1.5}
+
+  /* Q&A */
+  .qform{display:flex;flex-direction:column;gap:0}
+  .qlist{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+  .q{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 14px;align-items:flex-start}
+  .q.answering{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal) inset}
+  .q.answered{opacity:.55}
+  .vote{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:46px;background:var(--bg);border:1px solid var(--line);
+        border-radius:10px;padding:7px 4px;cursor:pointer;color:var(--muted);font-weight:700}
+  .vote.voted{border-color:var(--lilac);color:var(--lilac)}
+  .vote .n{font-size:16px}
+  .vote .c{font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+  .q .body{flex:1}
+  .q .body .txt{font-size:14.5px;color:var(--text);line-height:1.45}
+  .q .body .by{font-size:12px;color:var(--faint);margin-top:5px}
+  .q .tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-left:6px}
+  .q .tag.answering{background:rgba(111,214,198,.14);color:var(--teal)}
+  .q .tag.answered{background:var(--surface2);color:var(--faint)}
+  .qempty{text-align:center;color:var(--faint);font-size:14px;padding:26px 16px;border:1px dashed var(--line);border-radius:14px}
+  .modbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+  .modbtns button{font-size:11.5px;font-weight:600;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--muted);font-family:inherit;cursor:pointer}
+  .modbtns button.on{border-color:var(--teal);color:var(--teal)}
+
+  .disc{background:rgba(111,214,198,.07);border:1px solid rgba(111,214,198,.3);border-radius:12px;padding:13px 14px;margin:14px 0;font-size:13px;color:var(--teal);line-height:1.55}
+  .zoombox{background:var(--surface2);border:1px solid var(--teal);border-radius:14px;padding:16px;margin-top:14px;text-align:center}
+  .zoombox .pc{font-family:ui-monospace,monospace;font-size:15px;color:var(--text);margin-top:8px;letter-spacing:.04em}
+
+  .stat{display:flex;gap:10px;margin:4px 0 2px}
+  .stat .box{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .stat .box .n{font-size:22px;font-weight:700}
+  .stat .box .l{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+  th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);color:var(--muted)}
+  th{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+  td.name{color:var(--text)}
+
+  footer{text-align:center;color:var(--faint);font-size:12px;margin-top:30px;line-height:1.7}
+  footer a{color:var(--faint)}
+  .hostlink{color:var(--faint);text-decoration:underline}
+  .view{display:none}.view.on{display:block}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--teal);color:#0A0910;
+         font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;opacity:0;transition:.2s;z-index:120;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .spin{color:var(--faint);font-size:13px;text-align:center;padding:14px}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">@unspokenword88 · Live</div>
+    <h1 id="evTitle">Unspoken — Open Forum</h1>
+    <div class="tagline" id="evSub">An hour, no scripts. Bring your questions.</div>
+    <div class="when">
+      <div class="big" id="whenPrimary">Loading the date…</div>
+      <div class="alt" id="whenSecondary"></div>
+    </div>
+    <div id="countWrap"></div>
+  </header>
+
+  <div class="seg" id="seg">
+    <button data-v="register" class="on">Register</button>
+    <button data-v="live">Live room</button>
+  </div>
+
+  <!-- ===== REGISTER ===== -->
+  <section class="view on" id="view-register">
+    <div id="regForm">
+      <h2 class="ttl">Save your seat</h2>
+      <div class="card">
+        <p>This is a warm, low-pressure hour for our community. We'll open with a short talk on <strong id="topicInline">foods that regulate</strong>, then it's yours — <strong>bring your questions</strong>.</p>
+        <label>First name</label>
+        <input id="regName" type="text" autocomplete="given-name" placeholder="What should we call you?">
+        <label>Email</label>
+        <input id="regEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com">
+        <div class="err" id="regErr"></div>
+        <button class="btn solid" id="regBtn">Save my seat →</button>
+        <div class="hint">We'll only use this to send you the Zoom link and a reminder. No spam, ever. 💜</div>
+      </div>
+      <h2 class="ttl">What to expect</h2>
+      <div class="card">
+        <ul class="clean">
+          <li><strong>~10 min teach</strong> — one practical thing you can use that week.</li>
+          <li><strong>Open Q&amp;A</strong> — ask live in the room, or type it in the Live room tab here and upvote others'.</li>
+          <li><strong>Camera optional</strong> — come as you are, lurk if you like. No pressure to speak.</li>
+          <li><strong>A kind space</strong> — no judgement, no "shoulds". Lived experience, shared.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="regDone" style="display:none">
+      <h2 class="ttl">You're in 💜</h2>
+      <div class="card">
+        <p><strong>Your seat is saved.</strong> Here's your room — save this page or add it to your calendar so you don't lose it.</p>
+        <div class="zoombox" id="zoomBox">
+          <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)">Join link</div>
+          <a id="zoomLink" class="btn teal solid" style="margin-top:10px" href="#" target="_blank" rel="noopener">Open Zoom room</a>
+          <div class="pc" id="zoomPass"></div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn ghost" id="gcalBtn">Google Calendar</button>
+          <button class="btn ghost" id="icsBtn">Apple / .ics</button>
+        </div>
+        <button class="btn solid" id="toLiveBtn" style="margin-top:14px">Open the Live room →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LIVE / COMPANION ===== -->
+  <section class="view" id="view-live">
+    <div class="disc" id="liveState">The room isn't open yet — come back at start time. You can still drop a question below and it'll be waiting. 💜</div>
+
+    <div id="joinWrap"></div>
+
+    <h2 class="ttl">Ask a question</h2>
+    <div class="card qform">
+      <textarea id="qBody" rows="3" maxlength="400" placeholder="What's on your mind? (You can stay anonymous.)"></textarea>
+      <label>Name (optional)</label>
+      <input id="qAuthor" type="text" maxlength="60" placeholder="Anonymous">
+      <div class="err" id="qErr"></div>
+      <button class="btn teal solid" id="qBtn">Post question</button>
+    </div>
+
+    <h2 class="ttl">The room's questions <span id="qCount" style="color:var(--faint)"></span></h2>
+    <div class="qlist" id="qList"><div class="spin">Loading…</div></div>
+
+    <h2 class="ttl">After the forum</h2>
+    <div class="card">
+      <p>One line — what landed for you today? We read every one (it stays private, just for us).</p>
+      <textarea id="fbBody" rows="2" maxlength="400" placeholder="What you're taking away…"></textarea>
+      <button class="btn ghost" id="fbBtn" style="margin-top:10px">Send reflection</button>
+      <div class="ok" id="fbOk"></div>
+    </div>
+  </section>
+
+  <!-- ===== HOST ===== -->
+  <section class="view" id="view-host">
+    <div id="hostLogin">
+      <h2 class="ttl">Host console</h2>
+      <div class="card">
+        <p>Just for you. Enter your studio passphrase to set up and run the forum.</p>
+        <label>Passphrase</label>
+        <input id="hostPass" type="password" autocomplete="current-password" placeholder="Passphrase">
+        <div class="err" id="hostErr"></div>
+        <button class="btn solid" id="hostBtn">Open console</button>
+      </div>
+    </div>
+
+    <div id="hostConsole" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+        <h2 class="ttl" style="margin:0">Host console</h2>
+        <button class="btn ghost sm" id="hostLogout">Log out</button>
+      </div>
+
+      <div class="stat">
+        <div class="box"><div class="n" id="statRegs">0</div><div class="l">Registered</div></div>
+        <div class="box"><div class="n" id="statQs">0</div><div class="l">Questions</div></div>
+        <div class="box"><div class="n" id="statVotes">0</div><div class="l">Upvotes</div></div>
+      </div>
+
+      <h2 class="ttl">Event details</h2>
+      <div class="card">
+        <label>Title</label><input id="eTitle" type="text">
+        <label>Subtitle</label><input id="eSub" type="text">
+        <label>Teach topic (the ~10 min opener)</label><input id="eTopic" type="text">
+        <label>Date &amp; time</label><input id="eStart" type="datetime-local">
+        <div class="hint" id="eStartHint"></div>
+        <div class="row">
+          <div><label>Duration (min)</label><input id="eDur" type="number" min="15" step="5"></div>
+          <div><label>Status</label>
+            <select id="eStatus">
+              <option value="draft">Draft (hidden)</option>
+              <option value="open">Open (registration)</option>
+              <option value="live">Live now</option>
+              <option value="ended">Ended</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div><label>Your timezone</label><input id="eTz1" type="text" placeholder="Asia/Makassar"></div>
+          <div><label>Audience timezone</label><input id="eTz2" type="text" placeholder="Australia/Sydney"></div>
+        </div>
+        <button class="btn solid" id="eSave">Save event</button>
+        <div class="ok" id="eOk"></div>
+      </div>
+
+      <h2 class="ttl">Zoom link (private)</h2>
+      <div class="card">
+        <p>Only revealed to people after they register — keeps the room safe.</p>
+        <label>Zoom join URL</label><input id="zUrl" type="url" placeholder="https://us02web.zoom.us/j/…">
+        <label>Passcode (optional)</label><input id="zPass" type="text" placeholder="e.g. 4821">
+        <button class="btn solid" id="zSave">Save Zoom link</button>
+        <div class="ok" id="zOk"></div>
+      </div>
+
+      <h2 class="ttl">Run the Q&amp;A</h2>
+      <div class="hint" style="margin:0 2px 8px">Tap <strong>Answering</strong> to spotlight a question in the room, <strong>Answered</strong> to tick it off, <strong>Hide</strong> to remove it.</div>
+      <div class="qlist" id="modList"><div class="spin">Loading…</div></div>
+
+      <h2 class="ttl">Reflections (private)</h2>
+      <div class="qlist" id="fbList"><div class="spin">—</div></div>
+
+      <h2 class="ttl">Registrations</h2>
+      <div class="card" style="overflow-x:auto">
+        <button class="btn ghost sm" id="csvBtn" style="margin-bottom:6px">Export CSV</button>
+        <div id="regTable"><div class="spin">Loading…</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Unspoken — a space for @unspokenword88 · <a class="hostlink" href="#host" id="hostNav">Host login</a><br>
+    Be kind. Everyone here is doing their best.
+  </footer>
+</div>
+
+<div class="toast" id="toast">Done ✓</div>
+
+<script>
+/* ===== CONFIG ===== */
+var SB_URL="https://egffberfhnnkhtiscaol.supabase.co";
+var SB_KEY="sb_publishable_dsJ4eroFRHB2zD_s9jojag_oJM5HklH";
+var OWNER_EMAIL="aimanmaged88@gmail.com";
+var sb=(window.supabase&&window.supabase.createClient)
+  ? window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,storageKey:"uw-forum-auth"}})
+  : null;
+
+var EV=null, pollTimer=null, votedSet=lsGet("uw_voted",[]);
+function lsGet(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function esc(s){return (s==null?"":""+s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function toast(m){var t=document.getElementById("toast");t.textContent=m||"Done ✓";t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove("show");},1500);}
+
+/* ===== TIME HELPERS ===== */
+var TZLABEL={"Asia/Makassar":"Lombok","Asia/Jakarta":"Jakarta","Australia/Sydney":"Sydney","Australia/Perth":"Perth","Australia/Brisbane":"Brisbane","Europe/London":"London","America/New_York":"New York"};
+function tzLabel(tz){return TZLABEL[tz]||(tz?tz.split("/").pop().replace(/_/g," "):"");}
+function fmtTZ(iso,tz){
+  try{
+    return new Intl.DateTimeFormat("en-AU",{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit",timeZoneName:"short",timeZone:tz}).format(new Date(iso));
+  }catch(e){return new Date(iso).toLocaleString();}
+}
+function renderWhen(){
+  if(!EV)return;
+  document.getElementById("whenPrimary").textContent=fmtTZ(EV.starts_at,EV.tz_primary)+" · "+tzLabel(EV.tz_primary);
+  document.getElementById("whenSecondary").textContent=fmtTZ(EV.starts_at,EV.tz_secondary)+" · "+tzLabel(EV.tz_secondary);
+  renderCountdown();
+}
+function renderCountdown(){
+  if(!EV)return;
+  var el=document.getElementById("countWrap");
+  var start=new Date(EV.starts_at).getTime(), end=start+(EV.duration_min||60)*60000, now=Date.now();
+  if(EV.status==="ended"||now>end){el.innerHTML='<span class="count">This forum has wrapped — thank you 💜</span>';return;}
+  if(EV.status==="live"||(now>=start&&now<=end)){el.innerHTML='<span class="count live"><span class="dot"></span>LIVE NOW — join the room</span>';return;}
+  var diff=start-now;
+  if(diff<=0){el.innerHTML='<span class="count live"><span class="dot"></span>Starting any moment…</span>';return;}
+  var d=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4);
+  var t=d>0?(d+"d "+h+"h"):(h>0?(h+"h "+m+"m"):(m+"m"));
+  el.innerHTML='<span class="count"><span class="dot"></span>In '+t+'</span>';
+}
+
+/* ===== LOAD EVENT ===== */
+async function loadEvent(){
+  if(!sb)return;
+  var r=await sb.from("uw_event").select("*").eq("id",1).single();
+  if(r.error){console.error(r.error);return;}
+  EV=r.data;
+  document.getElementById("evTitle").textContent=EV.title;
+  document.getElementById("evSub").textContent=EV.subtitle;
+  document.getElementById("topicInline").textContent=EV.teach_topic;
+  renderWhen();
+  renderLiveState();
+}
+setInterval(renderCountdown,30000);
+
+/* ===== VIEWS ===== */
+function showView(v){
+  document.querySelectorAll(".view").forEach(function(s){s.classList.remove("on");});
+  var el=document.getElementById("view-"+v); if(el)el.classList.add("on");
+  document.querySelectorAll("#seg button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-v")===v);});
+  document.getElementById("seg").style.display=(v==="host")?"none":"flex";
+  if(v==="live"){startPoll();loadQuestions();}else{stopPoll();}
+  if(v==="host"){initHostView();}
+  window.scrollTo({top:0});
+}
+document.querySelectorAll("#seg button").forEach(function(b){b.addEventListener("click",function(){location.hash=b.getAttribute("data-v");});});
+document.getElementById("hostNav").addEventListener("click",function(e){e.preventDefault();location.hash="host";});
+function routeFromHash(){
+  var h=(location.hash||"#register").replace("#","");
+  if(["register","live","host"].indexOf(h)<0)h="register";
+  showView(h);
+}
+window.addEventListener("hashchange",routeFromHash);
+
+/* ===== REGISTER ===== */
+document.getElementById("regBtn").addEventListener("click",doRegister);
+async function doRegister(){
+  var err=document.getElementById("regErr"); err.textContent="";
+  var name=document.getElementById("regName").value.trim();
+  var email=document.getElementById("regEmail").value.trim();
+  if(!email||email.indexOf("@")<1){err.textContent="Pop in a valid email so we can send you the link.";return;}
+  if(!sb){err.textContent="Connection issue — reload and try again.";return;}
+  var btn=document.getElementById("regBtn"); btn.textContent="Saving…"; btn.disabled=true;
+  var r=await sb.rpc("uw_register",{p_name:name,p_email:email});
+  btn.textContent="Save my seat →"; btn.disabled=false;
+  if(r.error){err.textContent="Something went wrong — try again in a moment.";console.error(r.error);return;}
+  var d=r.data||{};
+  lsSet("uw_reg",{email:email,zoom_url:d.zoom_url||"",zoom_passcode:d.zoom_passcode||""});
+  showRegDone();
+  toast("Seat saved 💜");
+}
+function showRegDone(){
+  var reg=lsGet("uw_reg",null);
+  document.getElementById("regForm").style.display="none";
+  document.getElementById("regDone").style.display="block";
+  var box=document.getElementById("zoomBox"), link=document.getElementById("zoomLink"), pass=document.getElementById("zoomPass");
+  if(reg&&reg.zoom_url){link.href=reg.zoom_url;box.style.display="block";}
+  else{box.innerHTML='<div class="hint">The Zoom link will appear here as soon as the host adds it — you\'re registered, so check back before start time.</div>';}
+  pass.textContent=(reg&&reg.zoom_passcode)?("Passcode: "+reg.zoom_passcode):"";
+}
+document.getElementById("toLiveBtn").addEventListener("click",function(){location.hash="live";});
+document.getElementById("gcalBtn").addEventListener("click",function(){window.open(gcalLink(),"_blank","noopener");});
+document.getElementById("icsBtn").addEventListener("click",downloadICS);
+function calTimes(){
+  var s=new Date(EV.starts_at), e=new Date(s.getTime()+(EV.duration_min||60)*60000);
+  function z(d){return d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");}
+  return {s:z(s),e:z(e)};
+}
+function gcalLink(){
+  if(!EV)return "#"; var t=calTimes();
+  var reg=lsGet("uw_reg",null), loc=(reg&&reg.zoom_url)?reg.zoom_url:"Zoom (link after registration)";
+  return "https://www.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(EV.title)+
+    "&dates="+t.s+"/"+t.e+"&details="+encodeURIComponent((EV.subtitle||"")+"\\n\\nJoin: "+loc)+"&location="+encodeURIComponent(loc);
+}
+function downloadICS(){
+  if(!EV)return; var t=calTimes();
+  var reg=lsGet("uw_reg",null), loc=(reg&&reg.zoom_url)?reg.zoom_url:"Zoom link (after registration)";
+  var ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//unspokenword//forum//EN","BEGIN:VEVENT",
+    "UID:"+Date.now()+"@unspokenword","DTSTAMP:"+t.s,"DTSTART:"+t.s,"DTEND:"+t.e,
+    "SUMMARY:"+EV.title,"DESCRIPTION:"+(EV.subtitle||"").replace(/,/g,"\\,")+" Join: "+loc,"LOCATION:"+loc.replace(/,/g,"\\,"),"END:VEVENT","END:VCALENDAR"].join("\r\n");
+  var a=document.createElement("a");
+  a.href="data:text/calendar;charset=utf-8,"+encodeURIComponent(ics);
+  a.download="unspoken-open-forum.ics"; document.body.appendChild(a); a.click(); a.remove();
+  toast("Calendar file saved");
+}
+
+/* ===== LIVE ROOM ===== */
+function renderLiveState(){
+  if(!EV)return;
+  var box=document.getElementById("liveState"), join=document.getElementById("joinWrap");
+  var start=new Date(EV.starts_at).getTime(), end=start+(EV.duration_min||60)*60000, now=Date.now();
+  var reg=lsGet("uw_reg",null), isLive=(EV.status==="live")||(now>=start&&now<=end&&EV.status!=="ended");
+  if(EV.status==="ended"||now>end){
+    box.textContent="This forum has wrapped. Thank you for being here 💜 — your reflections below still reach us.";
+  }else if(isLive){
+    box.innerHTML="<strong style='color:var(--text)'>We're live now.</strong> Join the room, and add your questions below — tap ▲ to upvote the ones you want answered.";
+  }else{
+    box.innerHTML="The room opens at start time. Drop your questions below now — they'll be waiting, and you can upvote others'.";
+  }
+  if(reg&&reg.zoom_url&&EV.status!=="ended"){
+    join.innerHTML='<a class="btn teal solid" href="'+esc(reg.zoom_url)+'" target="_blank" rel="noopener">▶ Join on Zoom</a>'+
+      (reg.zoom_passcode?'<div class="hint" style="text-align:center">Passcode: '+esc(reg.zoom_passcode)+'</div>':'');
+  }else if(EV.status!=="ended"){
+    join.innerHTML='<button class="btn solid" onclick="location.hash=&#39;register&#39;">Register to get the Zoom link →</button>';
+  }else{join.innerHTML="";}
+}
+
+async function loadQuestions(){
+  if(!sb)return;
+  var r=await sb.from("uw_questions").select("*").order("votes",{ascending:false}).order("created_at",{ascending:false});
+  if(r.error){console.error(r.error);return;}
+  var all=r.data||[];
+  var qs=all.filter(function(q){return q.status!=="hidden" && q.body.indexOf("[reflection]")!==0;});
+  var list=document.getElementById("qList");
+  document.getElementById("qCount").textContent=qs.length?("· "+qs.length):"";
+  if(!qs.length){list.innerHTML='<div class="qempty">No questions yet — be the first. There are no silly ones here.</div>';return;}
+  list.innerHTML=qs.map(function(q){return qCard(q,false);}).join("");
+  bindVotes(list);
+}
+function qCard(q,isMod){
+  var voted=votedSet.indexOf(q.id)>=0;
+  var tag=q.status==="answering"?'<span class="tag answering">Answering now</span>':(q.status==="answered"?'<span class="tag answered">Answered</span>':"");
+  var cls="q"+(q.status==="answering"?" answering":"")+(q.status==="answered"?" answered":"");
+  var by=q.author?("— "+esc(q.author)):"— Anonymous";
+  var mod=isMod?modButtons(q):"";
+  return '<div class="'+cls+'">'+
+    '<div class="vote'+(voted?" voted":"")+'" data-id="'+q.id+'"><div class="n">▲</div><div class="c">'+q.votes+'</div></div>'+
+    '<div class="body"><div class="txt">'+esc(q.body)+tag+'</div><div class="by">'+by+'</div>'+mod+'</div></div>';
+}
+function bindVotes(scope){
+  scope.querySelectorAll(".vote").forEach(function(v){
+    v.addEventListener("click",function(){voteQ(v.getAttribute("data-id"));});
+  });
+}
+async function voteQ(id){
+  if(votedSet.indexOf(id)>=0){toast("Already upvoted");return;}
+  votedSet.push(id); lsSet("uw_voted",votedSet);
+  var r=await sb.rpc("uw_vote",{p_qid:id});
+  if(r.error){console.error(r.error);}
+  loadQuestions(); if(document.getElementById("view-host").classList.contains("on"))loadMod();
+}
+document.getElementById("qBtn").addEventListener("click",postQuestion);
+async function postQuestion(){
+  var err=document.getElementById("qErr"); err.textContent="";
+  var body=document.getElementById("qBody").value.trim();
+  var author=document.getElementById("qAuthor").value.trim();
+  if(body.length<2){err.textContent="Type your question first 🙂";return;}
+  if(!sb){err.textContent="Connection issue — reload.";return;}
+  var btn=document.getElementById("qBtn"); btn.textContent="Posting…"; btn.disabled=true;
+  var r=await sb.from("uw_questions").insert({body:body,author:author});
+  btn.textContent="Post question"; btn.disabled=false;
+  if(r.error){err.textContent="Couldn't post that — try again.";console.error(r.error);return;}
+  document.getElementById("qBody").value=""; toast("Posted — thank you 💜");
+  loadQuestions();
+}
+document.getElementById("fbBtn").addEventListener("click",sendReflection);
+async function sendReflection(){
+  var body=document.getElementById("fbBody").value.trim();
+  if(body.length<2)return;
+  var r=await sb.from("uw_questions").insert({body:"[reflection] "+body,author:""});
+  if(r.error){console.error(r.error);return;}
+  document.getElementById("fbBody").value="";
+  document.getElementById("fbOk").textContent="Thank you — that means a lot. 💜";
+}
+
+/* ===== POLL ===== */
+function startPoll(){stopPoll();pollTimer=setInterval(function(){
+  if(document.getElementById("view-live").classList.contains("on"))loadQuestions();
+  else if(document.getElementById("view-host").classList.contains("on"))loadMod();
+},5000);}
+function stopPoll(){if(pollTimer){clearInterval(pollTimer);pollTimer=null;}}
+
+/* ===== HOST ===== */
+document.getElementById("hostBtn").addEventListener("click",hostLogin);
+document.getElementById("hostPass").addEventListener("keydown",function(e){if(e.key==="Enter")hostLogin();});
+document.getElementById("hostLogout").addEventListener("click",async function(){try{if(sb)await sb.auth.signOut();}catch(e){}renderHostAuthed(false);});
+async function initHostView(){
+  if(!sb)return;
+  var r=await sb.auth.getSession();
+  renderHostAuthed(!!(r.data&&r.data.session));
+}
+async function hostLogin(){
+  var err=document.getElementById("hostErr"); err.textContent="";
+  var pass=document.getElementById("hostPass").value.trim();
+  if(!pass){err.textContent="Enter your passphrase.";return;}
+  var btn=document.getElementById("hostBtn"); btn.textContent="Opening…"; btn.disabled=true;
+  var r=await sb.auth.signInWithPassword({email:OWNER_EMAIL,password:pass});
+  btn.textContent="Open console"; btn.disabled=false;
+  if(r.error){err.textContent="That passphrase didn't work.";return;}
+  document.getElementById("hostPass").value="";
+  renderHostAuthed(true);
+}
+function renderHostAuthed(on){
+  document.getElementById("hostLogin").style.display=on?"none":"block";
+  document.getElementById("hostConsole").style.display=on?"block":"none";
+  if(on){fillEventForm();loadMod();loadRegs();loadReflections();startPoll();}
+  else{stopPoll();}
+}
+function fillEventForm(){
+  if(!EV)return;
+  document.getElementById("eTitle").value=EV.title||"";
+  document.getElementById("eSub").value=EV.subtitle||"";
+  document.getElementById("eTopic").value=EV.teach_topic||"";
+  document.getElementById("eDur").value=EV.duration_min||60;
+  document.getElementById("eStatus").value=EV.status||"open";
+  document.getElementById("eTz1").value=EV.tz_primary||"";
+  document.getElementById("eTz2").value=EV.tz_secondary||"";
+  // datetime-local uses the host's own browser tz
+  var d=new Date(EV.starts_at);
+  var pad=function(n){return (n<10?"0":"")+n;};
+  document.getElementById("eStart").value=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes());
+  document.getElementById("eStartHint").textContent="Enter the time in YOUR phone's clock ("+Intl.DateTimeFormat().resolvedOptions().timeZone+"). Attendees see it converted to both zones below.";
+  // load secret
+  sb.from("uw_secret").select("*").eq("id",1).single().then(function(r){
+    if(r.data){document.getElementById("zUrl").value=r.data.zoom_url||"";document.getElementById("zPass").value=r.data.zoom_passcode||"";}
+  });
+}
+document.getElementById("eSave").addEventListener("click",async function(){
+  var patch={
+    title:document.getElementById("eTitle").value.trim(),
+    subtitle:document.getElementById("eSub").value.trim(),
+    teach_topic:document.getElementById("eTopic").value.trim(),
+    duration_min:parseInt(document.getElementById("eDur").value,10)||60,
+    status:document.getElementById("eStatus").value,
+    tz_primary:document.getElementById("eTz1").value.trim()||"Asia/Makassar",
+    tz_secondary:document.getElementById("eTz2").value.trim()||"Australia/Sydney",
+    updated_at:new Date().toISOString()
+  };
+  var local=document.getElementById("eStart").value;
+  if(local){patch.starts_at=new Date(local).toISOString();}
+  var btn=this; btn.textContent="Saving…";
+  var r=await sb.from("uw_event").update(patch).eq("id",1);
+  btn.textContent="Save event";
+  if(r.error){document.getElementById("eOk").textContent="";document.getElementById("eOk").style.color="var(--rose)";document.getElementById("eOk").textContent="Save failed: "+r.error.message;return;}
+  document.getElementById("eOk").style.color="var(--teal)";document.getElementById("eOk").textContent="Saved ✓";
+  await loadEvent();
+});
+document.getElementById("zSave").addEventListener("click",async function(){
+  var patch={zoom_url:document.getElementById("zUrl").value.trim(),zoom_passcode:document.getElementById("zPass").value.trim(),updated_at:new Date().toISOString()};
+  var btn=this; btn.textContent="Saving…";
+  var r=await sb.from("uw_secret").update(patch).eq("id",1);
+  btn.textContent="Save Zoom link";
+  document.getElementById("zOk").textContent=r.error?("Failed: "+r.error.message):"Saved ✓";
+});
+async function loadMod(){
+  if(!sb)return;
+  var r=await sb.from("uw_questions").select("*").order("votes",{ascending:false}).order("created_at",{ascending:false});
+  if(r.error)return;
+  var all=r.data||[];
+  var qs=all.filter(function(q){return q.body.indexOf("[reflection]")!==0;});
+  document.getElementById("statQs").textContent=qs.length;
+  document.getElementById("statVotes").textContent=qs.reduce(function(a,q){return a+q.votes;},0);
+  var list=document.getElementById("modList");
+  if(!qs.length){list.innerHTML='<div class="qempty">No questions yet.</div>';}
+  else{list.innerHTML=qs.map(function(q){return qCard(q,true);}).join("");bindVotes(list);bindMod(list);}
+}
+function modButtons(q){
+  return '<div class="modbtns">'+
+    '<button data-a="answering" data-id="'+q.id+'" class="'+(q.status==="answering"?"on":"")+'">Answering</button>'+
+    '<button data-a="answered" data-id="'+q.id+'" class="'+(q.status==="answered"?"on":"")+'">Answered</button>'+
+    '<button data-a="new" data-id="'+q.id+'">Reset</button>'+
+    '<button data-a="hidden" data-id="'+q.id+'">Hide</button>'+
+    '<button data-a="delete" data-id="'+q.id+'">Delete</button></div>';
+}
+function bindMod(scope){
+  scope.querySelectorAll(".modbtns button").forEach(function(b){
+    b.addEventListener("click",function(){modAction(b.getAttribute("data-id"),b.getAttribute("data-a"));});
+  });
+}
+async function modAction(id,a){
+  if(a==="delete"){
+    if(!confirm("Delete this question?"))return;
+    var d=await sb.from("uw_questions").delete().eq("id",id);
+    if(d.error)console.error(d.error);
+  }else{
+    if(a==="answering"){ await sb.from("uw_questions").update({status:"new"}).eq("status","answering"); }
+    var u=await sb.from("uw_questions").update({status:a}).eq("id",id);
+    if(u.error)console.error(u.error);
+  }
+  loadMod();
+}
+async function loadReflections(){
+  var r=await sb.from("uw_questions").select("*").like("body","[reflection]%").order("created_at",{ascending:false});
+  var el=document.getElementById("fbList");
+  if(r.error||!r.data||!r.data.length){el.innerHTML='<div class="qempty">No reflections yet.</div>';return;}
+  el.innerHTML=r.data.map(function(q){
+    return '<div class="q"><div class="body"><div class="txt">'+esc(q.body.replace("[reflection] ",""))+'</div><div class="by">'+new Date(q.created_at).toLocaleString()+'</div><div class="modbtns"><button onclick="delQ(&#39;'+q.id+'&#39;)">Delete</button></div></div></div>';
+  }).join("");
+}
+async function delQ(id){if(!confirm("Delete this reflection?"))return;await sb.from("uw_questions").delete().eq("id",id);loadReflections();}
+async function loadRegs(){
+  var r=await sb.from("uw_registrations").select("*").order("created_at",{ascending:false});
+  var el=document.getElementById("regTable");
+  if(r.error){el.innerHTML='<div class="spin">'+esc(r.error.message)+'</div>';return;}
+  var rows=r.data||[];
+  document.getElementById("statRegs").textContent=rows.length;
+  if(!rows.length){el.innerHTML='<div class="qempty">No sign-ups yet.</div>';return;}
+  el.innerHTML='<table><thead><tr><th>Name</th><th>Email</th><th>When</th></tr></thead><tbody>'+
+    rows.map(function(x){return '<tr><td class="name">'+esc(x.name||"—")+'</td><td>'+esc(x.email)+'</td><td>'+new Date(x.created_at).toLocaleDateString()+'</td></tr>';}).join("")+'</tbody></table>';
+  window._regs=rows;
+}
+document.getElementById("csvBtn").addEventListener("click",function(){
+  var rows=window._regs||[];
+  var csv="name,email,registered_at\n"+rows.map(function(x){return '"'+(x.name||"").replace(/"/g,'""')+'","'+x.email+'","'+x.created_at+'"';}).join("\n");
+  var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download="unspoken-forum-registrations.csv";document.body.appendChild(a);a.click();a.remove();
+});
+
+/* ===== INIT ===== */
+(async function(){
+  if(!sb){document.getElementById("evSub").textContent="Couldn't reach the cloud — please reload.";return;}
+  if(lsGet("uw_reg",null)){ /* returning registrant: keep register tab but could auto-switch */ }
+  await loadEvent();
+  routeFromHash();
+})();
+</script>
+</body>
+</html>
