@@ -52,6 +52,10 @@
   .btn:active{opacity:.8}
   .note{font-size:12.5px;color:var(--faint);line-height:1.5;margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
   .tipcard{background:rgba(134,192,106,.07);border:1px solid rgba(134,192,106,.3);border-radius:12px;padding:13px 15px;margin-top:16px;font-size:13px;color:var(--green);line-height:1.55}
+  .lead-card{border:1px solid var(--rust);background:linear-gradient(135deg,rgba(206,90,45,.13),rgba(224,124,67,.03));border-radius:18px;padding:20px;margin-top:18px}
+  .lead-card .pin{display:inline-block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#120a06;background:var(--rust);border-radius:999px;padding:5px 12px;font-weight:700}
+  .lead-card h2{font-size:26px;margin:12px 0 2px;line-height:1.1}
+  .lead-card .set{font-size:13px;color:var(--muted);margin-bottom:2px}
   .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--cream);color:#120a06;font-weight:700;font-size:13px;padding:11px 20px;border-radius:999px;opacity:0;transition:.2s;z-index:120;pointer-events:none}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   footer{text-align:center;color:var(--faint);font-size:12px;margin-top:34px;line-height:1.7}
@@ -64,6 +68,8 @@
   <h1>7-Day Teaser Campaign</h1>
   <p class="lead">One impactful, educational post a day — building to Tuesday's open forum. Each is a talk-to-camera reel: hook, script, on-screen text, b-roll and a copy-ready caption. Shoot a few in one sitting, post one a day.</p>
   <div class="meta">🎯 Goal: teach value daily → fill Tuesday's room</div>
+
+  <div id="introCard"></div>
 
   <div class="glance" id="glance"></div>
 
@@ -153,6 +159,62 @@ document.getElementById("days").innerHTML=DAYS.map(function(d,i){
 
 document.querySelectorAll("[data-say]").forEach(function(b){b.onclick=function(){var d=DAYS[+b.getAttribute("data-say")];copy("HOOK: "+d.say[0]+"\n\n"+d.say.slice(1).join("\n\n"));};});
 document.querySelectorAll("[data-cap]").forEach(function(b){b.onclick=function(){copy(DAYS[+b.getAttribute("data-cap")].cap);};});
+
+/* ===== pinned intro video ===== */
+var INTRO={
+  title:"I have a story to tell. I hope you're ready for it.",
+  set:"Seated, meeting room · face centred · straight to camera, low and steady · drop B-roll in the four corners (you playing basketball, you with your kids) · ~90s (plus a 45s cut below).",
+  say:[
+   "I'm on a holiday right now. I came here to fix myself. It's not working.",
+   "So I'm doing the only thing I can — I'm fighting through it.",
+   "And the strange part? The only time I actually feel like I'm healing is when I help another parent of an autistic kid. That's the medicine. That's it.",
+   "And if you're one of those parents — you already know what I'm about to say.",
+   "You scream out to the community. Constantly. Constantly. And nothing comes back. Or when it does, it's not the stuff that matters — it's whoever's got the biggest numbers. The influencers. The highlight reels.",
+   "Meanwhile the ones actually drowning — the ones just trying to pull through quietly, without turning their worst day into content — get left in the dark.",
+   "That's the world we built. The loudest get the help. The rest get forgotten.",
+   "I'm done with that. So this is me building the other thing — a room for the ones who got left behind. It's time to join the ranks.",
+   "And if you're only getting through by numbing it — a vape, a drink, something stronger — I'm not judging you. I've been there. I get it.",
+   "For me, there are only two things that actually heal me — my kids, and basketball. My kids are the why. And basketball? That's where I leave it all — every ounce of stress in my body, out on that court, every single night. That's how I've survived.",
+   "And a vice that moves you — that gets it out of your body — beats one that numbs you, every time. But the real goal isn't a better crutch; it's learning to carry this without needing one at all. That's what we're building.",
+   "But no more. And most of all, I don't want you to reach that point.",
+   "Because this isn't a one-off. It's the start of a journey — the tips and tricks nobody tells you, the stuff that actually works. If you know one, bring it. Let's spread it to the world. This only works if we build it together.",
+   "But most of all, I want to know what you want. So put your questions in. Talk to me. Because those questions are the difference between staying exactly where you are — maybe slipping backwards — and actually moving forward. Learning from people all over the world how they get through, how they dodge the burnout before it takes them.",
+   "And I don't say that lightly. I'm in critical burnout right now — the real kind. So I know exactly what's at stake. And I don't want you anywhere near where I'm standing.",
+   "That's what Tuesday is. A live open forum — one hour, just us. We'll talk food, regulation, the practical stuff — but underneath it, it's about getting through, together, without numbing out.",
+   "Come sit in the room. You don't have to have it together. It's free, Tuesday, 7:30 Sydney time, and the link's in my bio.",
+   "Let's get through this one the right way. It's time to join the ranks."
+  ],
+  onscreen:["I have a story to tell","I came to fix myself — it's not working","Helping you is the only thing that heals me","You scream into the void…","…the loudest get the help, the rest forgotten","Not here. Not us.","My kids & basketball — the only two things that heal me","A vice that MOVES you > one that numbs you","Tell me what YOU want","Your questions = the difference","It's time to join the ranks","Tue · free · link in bio"],
+  cut45:[
+   "TITLE CARD: I have a story to tell. I hope you're ready for it.",
+   "I came here to fix myself. It's not working. So I'm fighting through.",
+   "And the only thing that heals me is helping another parent of an autistic kid.",
+   "You scream out to the community and nothing comes back — the loudest, the influencers, get the help. The ones quietly drowning get left in the dark.",
+   "Not here. This is a room for the ones who got left behind.",
+   "If you're numbing it to cope — I've been there, no judgement. For me it's my kids and basketball; I leave every bit of stress on that court. A vice that moves you beats one that numbs you — but the goal is needing neither.",
+   "Tuesday — a live open forum. Bring your questions. Free, 7:30 Sydney, link in bio.",
+   "It's time to join the ranks."
+  ],
+  caption:"I have a story to tell. I hope you're ready for it. 🤎\n\nI came here to fix myself. It's not working — so I'm fighting through. The only two things that put me back together are my kids and a basketball court — that's where I leave the stress. And the only time I feel like I'm truly healing is when I help another parent of an autistic child.\n\nIf you've screamed out to the community and got nothing back — I see you. The loudest get the help; the ones quietly drowning get left in the dark. Not here. Not us.\n\nThis Tuesday I'm opening a live forum — one hour, just us. Food, regulation, the practical stuff — but really, it's about getting through, together, without numbing out.\n\nPut your questions in. They're the difference between staying stuck and moving forward.\n\n📍 Free · Tue 20 Oct · 7:30pm (Syd) · link in bio. It's time to join the ranks.\n💛 Struggling? AU · Lifeline 13 11 14 · you're not alone."
+};
+(function(){
+  var el=document.getElementById("introCard"); if(!el)return;
+  var say=INTRO.say.map(esc).join("\n\n");
+  var os=INTRO.onscreen.map(function(o){return '<span>'+esc(o)+'</span>';}).join("");
+  el.innerHTML='<div class="lead-card">'+
+    '<span class="pin">📌 Pin this · Intro video</span>'+
+    '<h2>“'+esc(INTRO.title)+'”</h2>'+
+    '<div class="set">'+esc(INTRO.set)+'</div>'+
+    '<div class="lab">Full script (~90s)</div><div class="say">'+say+'</div>'+
+    '<div class="lab">On-screen text</div><div class="onscreen">'+os+'</div>'+
+    '<div class="lab">Caption</div><div class="cap">'+esc(INTRO.caption)+'</div>'+
+    '<div class="btns"><button class="btn" id="icScript">Copy full script</button><button class="btn" id="icCut">Copy 45s cut</button><button class="btn cream" id="icCap">Copy caption</button></div>'+
+    '<div class="note">Open on a title card: "'+esc(INTRO.title)+'". End card: AU · Lifeline 13 11 14 · you’re not alone (swap for your region).</div>'+
+  '</div>';
+  document.getElementById("icScript").onclick=function(){copy('TITLE CARD (on screen): '+INTRO.title+'\n\n'+INTRO.say.join("\n\n")+'\n\nEND CARD: AU · Lifeline 13 11 14 · you’re not alone.');};
+  document.getElementById("icCut").onclick=function(){copy(INTRO.cut45.join("\n\n"));};
+  document.getElementById("icCap").onclick=function(){copy(INTRO.caption);};
+})();
 </script>
 </body>
 </html>
