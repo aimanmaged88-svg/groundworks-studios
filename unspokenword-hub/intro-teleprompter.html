@@ -29,7 +29,7 @@
   .mark i{color:var(--rust);font-style:italic}
   .sp{flex:1}
   .jump{display:flex;gap:5px}
-  .jump button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#211913;color:var(--cream);font-weight:700;font-size:15px;font-family:var(--serif)}
+  .jump button{width:31px;height:32px;border-radius:9px;border:1px solid var(--line);background:#211913;color:var(--cream);font-weight:700;font-size:14px;font-family:var(--serif)}
   .jump button.on{border-color:var(--rust);color:var(--rust)}
   .jump button:active{background:var(--line)}
 
@@ -69,19 +69,20 @@
 </head>
 <body>
   <div class="top">
-    <div class="mark">unspoken<i>·</i>word <span style="color:var(--muted);font-weight:600">· intro shoot</span></div>
+    <div class="mark">unspoken<i>·</i>word</div>
     <div class="sp"></div>
     <div class="jump" id="jump">
       <button data-s="0" class="on">1</button>
       <button data-s="1">2</button>
       <button data-s="2">3</button>
       <button data-s="3">4</button>
+      <button data-s="4">5</button>
     </div>
   </div>
 
   <div class="stage">
     <div class="hint" id="hint">Tap to start · tap to pause</div>
-    <div class="readout" id="readout">~95s total</div>
+    <div class="readout" id="readout">~2 min total</div>
     <div class="scroll" id="scroll">
       <div class="inner">
 
@@ -127,9 +128,24 @@
           <div class="broll"><b>B-roll — grab silent</b>Standing at the waterline, back to camera. Looking out. Hands in pockets. The empty beach wide.</div>
         </div>
 
-        <!-- ============ SPOT 4 ============ -->
+        <!-- ============ SPOT 4 (Samsung) ============ -->
         <div class="spot" id="spot3">
-          <span class="tag">Spot 4 · The waterline · the call</span>
+          <span class="tag">Spot 4 · Samsung · the career I lost</span>
+          <div class="look"><b>Look:</b> quiet and still — sit somewhere plain, or stay on the beach. This one's <b>softer than the rest</b>. Gratitude, not grit. Let it breathe. ~27s.</div>
+          <div class="lines">
+            <p>Before all this, I had a career.</p>
+            <p>Sixteen years with Samsung — head office in Sydney. One of ten trainers in the whole country. Learning and development. It's what I was best at.</p>
+            <p>When I started to break, they didn't let go of me. For three years they carried me — looked after me in ways I didn't know a company could.</p>
+            <p class="title-line">Samsung, Sydney — thank you. You kept me alive.</p>
+            <p>I had to walk away. And I'd give anything to find my way back to that work.</p>
+          </div>
+          <div class="broll"><b>On screen (optional)</b>Samsung Australia · Head Office, Sydney · 2016–2022 · Learning &amp; Development</div>
+          <div class="broll"><b>B-roll — grab silent</b>Look down, a breath. Hands still. Look back up to the lens on "thank you."</div>
+        </div>
+
+        <!-- ============ SPOT 5 ============ -->
+        <div class="spot" id="spot4">
+          <span class="tag">Spot 5 · The waterline · the call</span>
           <div class="look"><b>Look:</b> edge of the water, early flat light, facing open sea. Empty horizon. Eyes dead down the lens — this is the one you hold their eye. ~30s.</div>
           <div class="lines">
             <p>Here's what I've learned screaming into the void: the loudest get the help. The big accounts. The big numbers.</p>
@@ -178,7 +194,7 @@
   var hint=document.getElementById("hint");
   var readout=document.getElementById("readout");
   var jump=document.getElementById("jump");
-  var spots=[document.getElementById("spot0"),document.getElementById("spot1"),document.getElementById("spot2"),document.getElementById("spot3")];
+  var spots=[document.getElementById("spot0"),document.getElementById("spot1"),document.getElementById("spot2"),document.getElementById("spot3"),document.getElementById("spot4")];
 
   var playing=false, speed=1.0, raf=null, carry=0, fs=34, wakeLock=null;
 
