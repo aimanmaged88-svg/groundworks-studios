@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0A09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B0A09'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%23CE5A2D' font-family='Georgia,serif' font-weight='700'%3Eu%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
+<title>7-Day Teaser Campaign — Open Forum</title>
+<style>
+  :root{--bg:#0B0A09;--surface:#17120F;--surface2:#211913;--line:#322A22;--text:#F3EBE2;--muted:#A99E92;--faint:#6E655B;--rust:#CE5A2D;--ember:#E07C43;--cream:#E6C9A6;--green:#86C06A;--serif:"Zilla Slab",Georgia,serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;padding:0 0 60px}
+  .wrap{max-width:720px;margin:0 auto;padding:30px 18px}
+  h1,h2,h3{font-family:var(--serif);letter-spacing:-.01em}
+  .brand{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--rust);font-weight:700}
+  h1{font-size:33px;margin:8px 0 6px;line-height:1.05}
+  .lead{color:var(--muted);font-size:15px}
+  .meta{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;font-weight:700;color:var(--ember);background:rgba(224,124,67,.1);border:1px solid rgba(224,124,67,.35);border-radius:999px;padding:7px 14px}
+  .rule{height:1px;background:var(--line);margin:22px 0}
+
+  /* at a glance */
+  .glance{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:16px}
+  @media(max-width:620px){.glance{grid-template-columns:repeat(4,1fr)}}
+  .gchip{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:9px 6px;text-align:center}
+  .gchip .d{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .gchip .dd{font-size:15px;font-weight:700;color:var(--ember);font-family:var(--serif)}
+  .gchip .th{font-size:10.5px;color:var(--muted);margin-top:3px;line-height:1.3}
+  .gchip.last{border-color:var(--rust)}
+  .gchip.last .dd{color:var(--rust)}
+
+  .day{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin-top:18px}
+  .dayhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .badge{width:46px;height:46px;border-radius:12px;background:var(--surface2);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:0 0 auto}
+  .badge .n{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--ember);line-height:1}
+  .badge .l{font-size:8px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
+  .dayhead .when{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+  .dayhead h2{font-size:21px;margin-top:2px}
+  .fmt{font-size:11px;font-weight:700;color:var(--cream);border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:4px 10px;margin-left:auto}
+
+  .lab{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:16px 0 7px}
+  .hook{background:var(--surface2);border-left:3px solid var(--rust);border-radius:0 10px 10px 0;padding:12px 14px;font-size:16px;font-weight:700;color:var(--text);line-height:1.4}
+  .say{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:14.5px;color:var(--text);line-height:1.6;white-space:pre-wrap}
+  .onscreen{display:flex;flex-wrap:wrap;gap:6px}
+  .onscreen span{font-size:12px;font-weight:600;color:var(--ember);background:rgba(224,124,67,.08);border:1px solid rgba(224,124,67,.3);border-radius:8px;padding:5px 9px}
+  .broll{font-size:13.5px;color:var(--muted)}
+  .cap{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:14px;color:var(--text);line-height:1.55;white-space:pre-wrap}
+  .btns{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 15px;border-radius:10px;border:1px solid var(--rust);background:transparent;color:var(--rust);font-size:13.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .btn.cream{border-color:var(--cream);color:var(--cream)}
+  .btn:active{opacity:.8}
+  .note{font-size:12.5px;color:var(--faint);line-height:1.5;margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+  .tipcard{background:rgba(134,192,106,.07);border:1px solid rgba(134,192,106,.3);border-radius:12px;padding:13px 15px;margin-top:16px;font-size:13px;color:var(--green);line-height:1.55}
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--cream);color:#120a06;font-weight:700;font-size:13px;padding:11px 20px;border-radius:999px;opacity:0;transition:.2s;z-index:120;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  footer{text-align:center;color:var(--faint);font-size:12px;margin-top:34px;line-height:1.7}
+  a{color:var(--ember)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">@unspokenword88 · Campaign</div>
+  <h1>7-Day Teaser Campaign</h1>
+  <p class="lead">One impactful, educational post a day — building to Tuesday's open forum. Each is a talk-to-camera reel: hook, script, on-screen text, b-roll and a copy-ready caption. Shoot a few in one sitting, post one a day.</p>
+  <div class="meta">🎯 Goal: teach value daily → fill Tuesday's room</div>
+
+  <div class="glance" id="glance"></div>
+
+  <div class="tipcard"><strong>How to use it:</strong> film 2–3 in a batch using your Studio teleprompter. Every caption ends with the same call-to-action and your register link goes in your bio. The food posts carry "not medical advice" — keep that, it builds trust.</div>
+
+  <div id="days"></div>
+
+  <div class="rule"></div>
+  <h2 style="font-size:18px">Your one link (put it in your bio)</h2>
+  <p class="lead" style="margin-top:6px">unspokenword-forum.netlify.app — the register page. Every post drives here.</p>
+
+  <footer>Unspoken — 7-Day Teaser Campaign · a space for @unspokenword88<br>Teach value. Earn the room. 🤎</footer>
+</div>
+
+<div class="toast" id="toast">Copied ✓</div>
+
+<script>
+function esc(s){return(s==null?"":""+s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+var toastT;function toast(m){var t=document.getElementById("toast");t.textContent=m||"Copied ✓";t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove("show");},1500);}
+function copy(txt){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast("Copied ✓");},fb);}else fb();function fb(){var a=document.createElement("textarea");a.value=txt;a.style.position="fixed";a.style.opacity=0;document.body.appendChild(a);a.select();try{document.execCommand("copy");}catch(e){}a.remove();toast("Copied ✓");}}
+
+var DAYS=[
+ {n:1,day:"Wed",date:"14 Oct",theme:"Open the door",fmt:"Reel · ~30s",
+  hook:"For once, I'm not here to post a tip. I'm here to open a door.",
+  say:["For once, I'm not here to post a tip. I'm here to open a door.","In six days I'm hosting something I've never done — a live open forum. Not me talking at you. A room. Just us.","Because here's what I've learned: you're not short on advice. You're drowning in it. What you're short on is someone answering YOUR situation — your kid, your week, your 3am worry.","So that's Tuesday. I teach one quick thing on food and regulation — then I stop, and we answer your questions. Live. Out loud.","Free. Camera off if you want. Link to save your seat is in my bio. Come be in the room."],
+  onscreen:["I'm opening a door","A live open forum","You bring the questions","Tue · free · link in bio"],
+  broll:"You sitting down to talk, direct to camera; a quiet room.",
+  cap:"I've never done this before, and I'm a little nervous. 🤎\n\nTuesday I'm hosting a live open forum — one hour, just us. I'll teach one quick thing on foods that regulate, then it's yours: bring the questions you've stopped asking out loud and we'll work through them together, live.\n\nNo cameras needed. No judgement. Free.\n\n📍 Tue 20 Oct · 7:30pm (Syd) · link in bio to save your seat.\nWho's in? Drop a 🙋 below."},
+ {n:2,day:"Thu",date:"15 Oct",theme:"Proof of value: the 10am meltdown",fmt:"Reel · ~30s",
+  hook:"If your kid melts down by 10am, it's not behaviour. It's breakfast.",
+  say:["If your kid melts down by 10am, it's not behaviour — it's breakfast.","For the longest time I treated that meltdown as behaviour. It wasn't. It was a sugar crash.","A fast, sugary start spikes blood sugar then drops it off a cliff — and the crash doesn't land as a tummy ache. It lands as dysregulation.","We did one thing: protein first. Eggs, yoghurt, nut butter — before anything sweet. Steady fuel, not a rollercoaster.","This is exactly what we go deeper on Tuesday — and I'll answer YOUR version of it, live. What's your kid's breakfast? Tell me below."],
+  onscreen:["10am meltdown?","Check breakfast, not behaviour","Protein first","Go deeper → Tuesday"],
+  broll:"Cracking eggs / yoghurt; a calm kitchen morning.",
+  cap:"The 10am meltdown isn't behaviour — it's a sugar crash. 🤎\n\nSwap a sugary breakfast for protein first (eggs, yoghurt, nut butter) and watch what happens around ten. Steady fuel instead of spike-and-crash.\n\nThis is the stuff we go deep on at Tuesday's open forum — and I'll answer your exact situation, live.\n\n📍 Tue 20 Oct · 7:30pm (Syd) · link in bio.\nComment your kid's breakfast and I'll suggest a swap 👇\n(Sharing what helps us — not medical advice.)"},
+ {n:3,day:"Fri",date:"16 Oct",theme:"What you'll learn",fmt:"Reel or carousel",
+  hook:"Here's exactly what you'll walk away with on Tuesday.",
+  say:["Let me tell you exactly what Tuesday's open forum is, so you know if it's for you.","First ten minutes: I teach one practical thing — how certain foods settle or spike your kid's regulation, and the simplest swaps that actually hold up.","Then I stop teaching, and we open the floor. You ask anything — meltdowns, safe foods, the burnout no one sees — and we work through YOUR situation. Not generic tips. Yours.","You'll leave with one thing you can try that week, and the feeling that someone actually gets it.","Free. One hour. Your questions run the show. Link in bio."],
+  onscreen:["10 min: the teach","Then: your questions, live","Leave with 1 thing to try","Free · 1 hour"],
+  broll:"You talking; optional simple 'agenda' text card.",
+  cap:"What actually happens at Tuesday's open forum 👇\n\n① ~10-min teach — foods that regulate, and the swaps that hold up.\n② Open Q&A — your meltdowns, your safe-food battles, your burnout. Answered live, not generically.\n③ You leave with one thing to try that week.\n\nOne hour. Free. Camera optional. Your questions run it.\n\n📍 Tue 20 Oct · 7:30pm (Syd) · link in bio to save your seat 🤎"},
+ {n:4,day:"Sat",date:"17 Oct",theme:"Why attend: you're not failing",fmt:"Reel · ~30s",
+  hook:"You're not a bad parent. You're an unsupported one.",
+  say:["If no one's told you lately: you're not failing. You're doing one of the hardest jobs there is with almost no support — and you've normalised a level of exhaustion that would floor most people.","The meltdowns no one sees. The safe foods you've stopped apologising for. The questions you've learned to just… carry.","That's why I'm running Tuesday's forum. Not to fix you — nothing's broken. But because a room full of people who GET it, answering real questions, is the support most of us never get.","Come sit in it. Camera off, lurk if you want. You don't have to say a word. Link's in my bio."],
+  onscreen:["You're not failing","You're unsupported","A room that gets it","Tue · link in bio"],
+  broll:"Quiet, honest, looking to camera.",
+  cap:"You're not a bad parent. You're an unsupported one. 🤎\n\nThe meltdowns no one sees. The safe foods you stopped apologising for. The questions you've learned to carry alone.\n\nTuesday's open forum is the room I wish I'd had — people who get it, answering real questions, together. No fixing. No judgement. Just support that actually fits.\n\nCome sit in it — camera off, lurk if you like.\n📍 Tue 20 Oct · 7:30pm (Syd) · link in bio.\nTag someone who needs this room 👇"},
+ {n:5,day:"Sun",date:"18 Oct",theme:"Proof of value: behaviour is communication",fmt:"Reel · ~30s",
+  hook:"The 3pm crash isn't tiredness. It's information.",
+  say:["Here's a reframe that took the heat out of our afternoons.","The 3pm crash — the whinge, the meltdown, the 'nothing's wrong but everything's wrong' — isn't your kid being difficult. It's information.","Usually it's one of three things: hunger, thirst, or sensory overload from holding it together all day.","So before I reach for a strategy, I run the checklist: a real snack with protein, a big drink of water, ten quiet minutes. Nine times out of ten, that's the whole 'behaviour'.","Behaviour is communication. On Tuesday we decode more of it together — and you bring the one that's got you stuck. Link in bio."],
+  onscreen:["3pm crash = information","Hunger · thirst · overload","Behaviour is communication","Decode more → Tuesday"],
+  broll:"Clock at 3pm; a snack + a glass of water.",
+  cap:"The 3pm crash isn't your kid being difficult — it's information. 🤎\n\nBefore a strategy, run the checklist: a protein snack, a big drink of water, ten quiet minutes. Nine times out of ten that IS the 'behaviour'.\n\nBehaviour is communication. At Tuesday's open forum we decode more of it together — bring the one that's got you stuck and we'll work it out live.\n\n📍 Tue 20 Oct · 7:30pm (Syd) · link in bio.\n(What helps us — not medical advice.)"},
+ {n:6,day:"Mon",date:"19 Oct",theme:"Bring your question (prepare)",fmt:"Reel · ~25s",
+  hook:"Tomorrow. And I need you to do one thing tonight.",
+  say:["Tomorrow night is the open forum — and here's your homework. Takes two minutes.","Write down the ONE question you'd ask if you knew nobody would judge you. The real one. The food thing, the meltdown thing, the 'is it just us' thing.","That's the question we'll answer. Because here's how tomorrow works: you type your questions in, everyone upvotes the ones they need too, and I take them top to bottom, live.","The more honest your question, the more the whole room gets from it.","Camera off, anonymous if you want. You just have to show up. Link's in my bio — save your seat tonight so you don't forget."],
+  onscreen:["Tomorrow night","Write your ONE question","Type it · upvote · answered live","Save your seat tonight"],
+  broll:"Writing a note on your phone.",
+  cap:"Tomorrow 🤎 Here's your two-minute homework tonight:\n\nWrite down the ONE question you'd ask if nobody would judge you. The real one.\n\nThat's how the forum works — you type your questions in, we upvote the ones we all need, and I answer them top to bottom, live. Camera off, anonymous if you want.\n\nYou just have to show up.\n📍 Tue 20 Oct · 7:30pm (Syd) · save your seat tonight — link in bio."},
+ {n:7,day:"Tue",date:"20 Oct",theme:"Tonight — the door's open",fmt:"Reel + Story · day-of",
+  hook:"Tonight. The door's open.",
+  say:["It's today. Tonight at 7:30 we're in the room together.","If you've been on the fence — this is me reaching out a hand. You don't need your camera. You don't need the perfect question. You don't need to have it together. Just show up as you are.","Here's how it goes: you join, you drop your questions in, and for one hour we actually get answers — together, out loud, no judgement.","Save your seat now if you haven't — link's in my bio — and I'll see you tonight. Bring your questions. Bring yourself."],
+  onscreen:["Tonight · 7:30pm","Camera off is fine","Just show up","Link in bio"],
+  broll:"You, warm and direct; a 'doors open 7:30' card for the Story.",
+  cap:"Tonight. 🤎 7:30pm (Syd) — the open forum is on.\n\nNo camera needed. No perfect question needed. Just show up as you are. You join, you drop your questions in, and for one hour we get real answers — together, out loud.\n\nLast chance to save your seat — link in bio. Bring your questions. Bring yourself. See you in there.\n📍 Tue 20 Oct · 7:30pm (Syd) / 4:30pm (Lombok)"}
+];
+
+document.getElementById("glance").innerHTML=DAYS.map(function(d){
+  return '<div class="gchip'+(d.n===7?" last":"")+'"><div class="d">'+d.day+'</div><div class="dd">'+d.date.split(" ")[0]+'</div><div class="th">'+esc(d.theme.split(":")[0])+'</div></div>';
+}).join("");
+
+document.getElementById("days").innerHTML=DAYS.map(function(d,i){
+  var say=d.say.map(esc).join("\n\n");
+  var sayFull="HOOK: "+d.say[0]+"\n\n"+d.say.slice(1).join("\n\n");
+  var os=d.onscreen.map(function(o){return '<span>'+esc(o)+'</span>';}).join("");
+  return '<div class="day">'+
+    '<div class="dayhead"><div class="badge"><div class="n">'+d.n+'</div><div class="l">day</div></div>'+
+      '<div><div class="when">'+d.day+' · '+esc(d.date)+'</div><h2>'+esc(d.theme)+'</h2></div>'+
+      '<span class="fmt">'+esc(d.fmt)+'</span></div>'+
+    '<div class="lab">Hook — say this first</div><div class="hook">'+esc(d.hook)+'</div>'+
+    '<div class="lab">Talk-to-camera script</div><div class="say">'+say+'</div>'+
+    '<div class="lab">On-screen text</div><div class="onscreen">'+os+'</div>'+
+    '<div class="lab">B-roll</div><div class="broll">'+esc(d.broll)+'</div>'+
+    '<div class="lab">Caption (ready to paste)</div><div class="cap">'+esc(d.cap)+'</div>'+
+    '<div class="btns"><button class="btn" data-say="'+i+'">Copy script</button><button class="btn cream" data-cap="'+i+'">Copy caption</button></div>'+
+  '</div>';
+}).join("");
+
+document.querySelectorAll("[data-say]").forEach(function(b){b.onclick=function(){var d=DAYS[+b.getAttribute("data-say")];copy("HOOK: "+d.say[0]+"\n\n"+d.say.slice(1).join("\n\n"));};});
+document.querySelectorAll("[data-cap]").forEach(function(b){b.onclick=function(){copy(DAYS[+b.getAttribute("data-cap")].cap);};});
+</script>
+</body>
+</html>
