@@ -29,7 +29,7 @@
   .mark i{color:var(--rust);font-style:italic}
   .sp{flex:1}
   .jump{display:flex;gap:4px}
-  .jump button{width:29px;height:32px;border-radius:8px;border:1px solid var(--line);background:#211913;color:var(--cream);font-weight:700;font-size:13px;font-family:var(--serif)}
+  .jump button{width:27px;height:32px;border-radius:8px;border:1px solid var(--line);background:#211913;color:var(--cream);font-weight:700;font-size:12.5px;font-family:var(--serif)}
   .jump button.on{border-color:var(--rust);color:var(--rust)}
   .jump button:active{background:var(--line)}
 
@@ -78,35 +78,54 @@
       <button data-s="3">4</button>
       <button data-s="4">5</button>
       <button data-s="5">6</button>
+      <button data-s="6">7</button>
     </div>
   </div>
 
   <div class="stage">
     <div class="hint" id="hint">Tap to start · tap to pause</div>
-    <div class="readout" id="readout">6 beats · trim to ~2 min</div>
+    <div class="readout" id="readout">7 beats · trim to ~2 min</div>
     <div class="scroll" id="scroll">
       <div class="inner">
 
-        <!-- ============ SPOT 1 ============ -->
-        <div class="spot" id="spot0">
-          <span class="tag">Spot 1 · The room · rock bottom</span>
-          <div class="look"><b>Look:</b> bare, dim. On the floor, back to the wall, unmade bed behind you. Not lit nice. Tight on your face, empty space beside you. ~22s.</div>
+        <!-- ============ SPOT 1 (the sunrise) ============ -->
+        <div class="spot" id="spot6">
+          <span class="tag">Spot 1 · The sunrise · why I'm really here</span>
+          <div class="look"><b>Look:</b> in front of the rising sun — but NOT a postcard. Silhouette or side-on, tired; maybe turn to the lens halfway through. Strong and flat, not glowy. This is the thesis of the whole film — the beat that matters most. ~45s (trim freely in the edit).</div>
           <div class="lines">
-            <p class="title-line">I have a story to tell.</p>
-            <p class="title-line">I just hope it's not too late for you — like it is for me.</p>
-            <p>I'm not home. I came away to fix myself. To get my head right.</p>
+            <p class="title-line">You're looking at a sunrise. Beautiful, right?</p>
+            <p>I'm not here for the view.</p>
+            <p>I'm here because this — getting up, getting out, facing it — is the only way I know how to heal. And I have to heal. Every single day.</p>
+            <p>I don't numb it. I don't lock myself in a room and fall apart. No drink, no vape — nothing that buys an hour of quiet.</p>
+            <p>I heal the hard way. The natural way. Ask anyone who knows me: I push, and push, and push to stay healthy — because the second I stop, it wins.</p>
+            <p>It's why I play basketball like my life depends on it. Because it does.</p>
+            <p>This isn't a holiday. Inside, I'm fighting for survival. My body is trying to shut down, and I'm playing catch-up — eating right when I don't want to, saying no to the easy thing, keeping the smile on while I claw my way back.</p>
+            <p class="title-line">I refuse to lose.</p>
+            <p>The people who know me will tell you. And every parent of an autistic kid — you already know this feeling.</p>
+            <p class="title-line">I have a story to tell. And I just hope it's not too late for you — like it is for me.</p>
+          </div>
+          <div class="broll"><b>On-screen title card</b>Burnout. The truth.  — drop it in around "I refuse to lose".</div>
+          <div class="broll"><b>B-roll — grab silent</b>The sun coming up. You from behind, still, facing it. Hands on hips, head down, a breath. A slow turn back to the lens.</div>
+        </div>
+
+        <!-- ============ SPOT 2 (the room) ============ -->
+        <div class="spot" id="spot0">
+          <span class="tag">Spot 2 · The room · behind the smile</span>
+          <div class="look"><b>Look:</b> bare, dim. On the floor, back to the wall, unmade bed behind you. Not lit nice. Tight on your face, empty space beside you. This is what the smile hides. ~20s.</div>
+          <div class="lines">
+            <p>This is what you don't see.</p>
+            <p>I came away to fix myself. To get my head right.</p>
             <p>It's not working.</p>
             <p>I'm in burnout. The real kind — the kind you don't just bounce back from.</p>
             <p>And I can't sit still in this room any more.</p>
             <span class="beat">— stand up. walk out the door. (that's your cut)</span>
           </div>
-          <div class="broll"><b>On-screen title card</b>Burnout. The truth.</div>
           <div class="broll"><b>B-roll — grab silent</b>You standing, walking to the door. Hand on the doorframe. The empty room after you leave.</div>
         </div>
 
         <!-- ============ SPOT 2 ============ -->
         <div class="spot" id="spot1">
-          <span class="tag">Spot 2 · The palms · no numbing</span>
+          <span class="tag">Spot 3 · The palms · no numbing</span>
           <div class="look"><b>Look:</b> deep in the coconut interior. Flat light, trunks crowding the frame, closed-in. You walking, or stood still, lost in it. ~23s.</div>
           <div class="lines">
             <p>So I keep moving. Looking for something that takes the edge off.</p>
@@ -119,7 +138,7 @@
 
         <!-- ============ SPOT 3 ============ -->
         <div class="spot" id="spot2">
-          <span class="tag">Spot 3 · The beach · the ache</span>
+          <span class="tag">Spot 4 · The beach · the ache</span>
           <div class="look"><b>Look:</b> plain, empty stretch. You, sand, water — nothing else in frame. Grey sky is fine, better even. No postcard. ~22s.</div>
           <div class="lines">
             <p>Two things put me back together. My kids. And a ball in my hands.</p>
@@ -132,7 +151,7 @@
 
         <!-- ============ SPOT 4 (Samsung) ============ -->
         <div class="spot" id="spot3">
-          <span class="tag">Spot 4 · Samsung · the career I lost</span>
+          <span class="tag">Spot 5 · Samsung · the career I lost</span>
           <div class="look"><b>Look:</b> quiet and still — sit somewhere plain, or stay on the beach. This one's <b>softer than the rest</b>. Gratitude, not grit. Let it breathe. ~27s.</div>
           <div class="lines">
             <p>Before all this, I had a career.</p>
@@ -147,7 +166,7 @@
 
         <!-- ============ SPOT 5 (the mask) ============ -->
         <div class="spot" id="spot4">
-          <span class="tag">Spot 5 · The hats · the mask</span>
+          <span class="tag">Spot 6 · The hats · the mask</span>
           <div class="look"><b>Look:</b> straight down the lens, plain and close. This one's you catching them out — a bit of edge under the exhaustion. Anywhere works; keep it still. ~28s.</div>
           <div class="lines">
             <p>I wear a lot of hats. I have to.</p>
@@ -162,7 +181,7 @@
 
         <!-- ============ SPOT 6 ============ -->
         <div class="spot" id="spot5">
-          <span class="tag">Spot 6 · The waterline · the call</span>
+          <span class="tag">Spot 7 · The waterline · the call</span>
           <div class="look"><b>Look:</b> edge of the water, early flat light, facing open sea. Empty horizon. Eyes dead down the lens — this is the one you hold their eye. ~30s.</div>
           <div class="lines">
             <p>Here's what I've learned screaming into the void: the loudest get the help. The big accounts. The highlight reels.</p>
@@ -211,7 +230,7 @@
   var hint=document.getElementById("hint");
   var readout=document.getElementById("readout");
   var jump=document.getElementById("jump");
-  var spots=[document.getElementById("spot0"),document.getElementById("spot1"),document.getElementById("spot2"),document.getElementById("spot3"),document.getElementById("spot4"),document.getElementById("spot5")];
+  var spots=[document.getElementById("spot6"),document.getElementById("spot0"),document.getElementById("spot1"),document.getElementById("spot2"),document.getElementById("spot3"),document.getElementById("spot4"),document.getElementById("spot5")];
 
   var playing=false, speed=1.0, raf=null, carry=0, fs=34, wakeLock=null;
 
