@@ -142,13 +142,27 @@
       <h2 class="ttl">Save your seat</h2>
       <div class="card">
         <p>One hour. We open with a short teach on <strong id="topicInline">foods that regulate</strong>, then the floor is yours — <strong>bring the questions you've stopped saying out loud</strong>.</p>
-        <label>First name</label>
-        <input id="regName" type="text" autocomplete="given-name" placeholder="What should we call you?">
+        <label>Your name in the room</label>
+        <input id="regName" type="text" autocomplete="nickname" placeholder="Real name, a nickname, or Anonymous">
+        <div class="hint" style="margin-top:4px">This is the name you'll show up as — real, made-up, or anonymous. Your call.</div>
         <label>Email</label>
         <input id="regEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com">
+        <label>Where's your child at? (optional)</label>
+        <select id="regLevel">
+          <option value="">Prefer not to say</option>
+          <option>Not sure / not diagnosed yet</option>
+          <option>Level 1 — needs some support</option>
+          <option>Level 2 — needs substantial support</option>
+          <option>Level 3 — needs very substantial support</option>
+          <option>Older teen / adult</option>
+          <option>I'm a carer / supporter</option>
+        </select>
+        <label>In 10 words or less — why are you joining?</label>
+        <textarea id="regWhy" rows="2" maxlength="140" placeholder="e.g. My son won't eat and I'm exhausted"></textarea>
+        <div class="hint" id="whyCount" style="margin-top:4px">0 / 10 words · this is how I prep for you</div>
         <div class="err" id="regErr"></div>
         <button class="btn solid" id="regBtn">Save my seat →</button>
-        <div class="hint">Just the Zoom link and one reminder. No spam, no selling your email on.</div>
+        <div class="hint">Just the Zoom link and one reminder. No spam. Camera off is fine — just come ready to take part.</div>
       </div>
       <h2 class="ttl">What to expect</h2>
       <div class="card">
@@ -369,18 +383,27 @@ window.addEventListener("hashchange",routeFromHash);
 
 /* ===== REGISTER ===== */
 document.getElementById("regBtn").addEventListener("click",doRegister);
+function wordCount(s){s=(s||"").trim();return s?s.split(/\s+/).length:0;}
+function prefillAuthor(){var reg=lsGet("uw_reg",null);var qa=document.getElementById("qAuthor");if(reg&&reg.name&&qa&&!qa.value)qa.value=reg.name;}
+document.getElementById("regWhy").addEventListener("input",function(){var n=wordCount(this.value);var el=document.getElementById("whyCount");el.textContent=n+" / 10 words"+(n>10?" — a touch long":" · this is how I prep for you");el.style.color=n>10?"var(--rose)":"var(--faint)";});
 async function doRegister(){
   var err=document.getElementById("regErr"); err.textContent="";
   var name=document.getElementById("regName").value.trim();
   var email=document.getElementById("regEmail").value.trim();
+  var why=document.getElementById("regWhy").value.trim();
+  var level=document.getElementById("regLevel").value;
   if(!email||email.indexOf("@")<1){err.textContent="Pop in a valid email so we can send you the link.";return;}
+  if(!why){err.textContent="Tell me in a few words why you're joining — it's how I prep for you.";return;}
+  if(wordCount(why)>10){err.textContent="Keep the why to 10 words or less 🙂";return;}
+  if(!name)name="Anonymous";
   if(!sb){err.textContent="Connection issue — reload and try again.";return;}
   var btn=document.getElementById("regBtn"); btn.textContent="Saving…"; btn.disabled=true;
-  var r=await sb.rpc("uw_register",{p_name:name,p_email:email});
+  var r=await sb.rpc("uw_register",{p_name:name,p_email:email,p_why:why,p_child_level:level});
   btn.textContent="Save my seat →"; btn.disabled=false;
   if(r.error){err.textContent="Something went wrong — try again in a moment.";console.error(r.error);return;}
   var d=r.data||{};
-  lsSet("uw_reg",{email:email,zoom_url:d.zoom_url||"",zoom_passcode:d.zoom_passcode||""});
+  lsSet("uw_reg",{email:email,name:name,zoom_url:d.zoom_url||"",zoom_passcode:d.zoom_passcode||""});
+  prefillAuthor();
   showRegDone();
   toast("You're in");
 }
@@ -630,20 +653,21 @@ async function loadRegs(){
   var rows=r.data||[];
   document.getElementById("statRegs").textContent=rows.length;
   if(!rows.length){el.innerHTML='<div class="qempty">No sign-ups yet.</div>';return;}
-  el.innerHTML='<table><thead><tr><th>Name</th><th>Email</th><th>When</th></tr></thead><tbody>'+
-    rows.map(function(x){return '<tr><td class="name">'+esc(x.name||"—")+'</td><td>'+esc(x.email)+'</td><td>'+new Date(x.created_at).toLocaleDateString()+'</td></tr>';}).join("")+'</tbody></table>';
+  el.innerHTML='<table><thead><tr><th>Name</th><th>Why (≤10 words)</th><th>Child</th><th>Email</th></tr></thead><tbody>'+
+    rows.map(function(x){return '<tr><td class="name">'+esc(x.name||"—")+'</td><td>'+esc(x.why||"—")+'</td><td style="font-size:11px">'+esc(x.child_level||"—")+'</td><td style="font-size:11px">'+esc(x.email)+'</td></tr>';}).join("")+'</tbody></table>';
   window._regs=rows;
 }
 document.getElementById("csvBtn").addEventListener("click",function(){
   var rows=window._regs||[];
-  var csv="name,email,registered_at\n"+rows.map(function(x){return '"'+(x.name||"").replace(/"/g,'""')+'","'+x.email+'","'+x.created_at+'"';}).join("\n");
+  var q=function(v){return '"'+(v||"").replace(/"/g,'""')+'"';};
+  var csv="name,why,child_level,email,registered_at\n"+rows.map(function(x){return [q(x.name),q(x.why),q(x.child_level),q(x.email),q(x.created_at)].join(",");}).join("\n");
   var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download="unspoken-forum-registrations.csv";document.body.appendChild(a);a.click();a.remove();
 });
 
 /* ===== INIT ===== */
 (async function(){
   if(!sb){document.getElementById("evSub").textContent="Couldn't reach the cloud — please reload.";return;}
-  if(lsGet("uw_reg",null)){ /* returning registrant: keep register tab but could auto-switch */ }
+  prefillAuthor();
   await loadEvent();
   routeFromHash();
 })();
