@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0A09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B0A09'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%23CE5A2D' font-family='Georgia,serif' font-weight='700'%3Eu%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
+<title>unspoken word — Mission Control</title>
+<style>
+  :root{
+    --bg:#0B0A09;--surface:#17120F;--surface2:#211913;--line:#322A22;
+    --text:#F3EBE2;--muted:#A99E92;--faint:#6E655B;
+    --rust:#CE5A2D;--ember:#E07C43;--cream:#E6C9A6;--green:#86C06A;
+    --serif:"Zilla Slab",Georgia,serif;--radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100dvh}
+  a{color:var(--ember)}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px 22px 60px}
+  h1,h2,h3{font-family:var(--serif);letter-spacing:-.01em}
+  .mut{color:var(--muted)}.faint{color:var(--faint)}
+
+  /* top bar */
+  .top{display:flex;align-items:center;gap:14px;padding:6px 2px 16px;flex-wrap:wrap}
+  .brand{font-family:var(--serif);font-size:22px;font-weight:700}
+  .brand i{color:var(--rust);font-style:italic}
+  .brand .mc{color:var(--muted);font-weight:600;font-size:15px;font-family:-apple-system,sans-serif}
+  .top .sp{flex:1}
+  .clock{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;border-radius:11px;border:1px solid var(--rust);background:transparent;color:var(--rust);font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;text-decoration:none}
+  .btn:active{opacity:.85}
+  .btn.solid{background:var(--rust);color:#120a06;border-color:var(--rust)}
+  .btn.cream{background:var(--cream);color:#120a06;border-color:var(--cream)}
+  .btn.ghost{border-color:var(--line);color:var(--muted)}
+  .btn.ghost:hover{color:var(--text);border-color:var(--faint)}
+  .btn.sm{padding:8px 12px;font-size:13px;border-radius:9px}
+  .btn.block{width:100%}
+
+  /* login */
+  .login{max-width:380px;margin:12vh auto 0;text-align:center}
+  .login .k{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--rust);font-weight:700}
+  .login h1{font-size:30px;margin:10px 0 6px}
+  .login p{color:var(--muted);font-size:14px;margin-bottom:20px}
+  input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:11px;padding:12px 14px;font-size:15px;font-family:inherit}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rust)}
+  .err{color:#E8897B;font-size:13px;min-height:16px;margin-top:8px}
+
+  /* grid */
+  .cards{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+  .card h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);font-weight:700;margin-bottom:12px;font-family:-apple-system,sans-serif}
+  .span6{grid-column:span 6}.span5{grid-column:span 5}.span7{grid-column:span 7}.span4{grid-column:span 4}.span8{grid-column:span 8}.span12{grid-column:span 12}.span3{grid-column:span 3}
+  @media(max-width:860px){.cards>*{grid-column:1/-1 !important}}
+
+  /* hero */
+  .hero{background:linear-gradient(135deg,rgba(206,90,45,.14),rgba(224,124,67,.05));border-color:rgba(206,90,45,.35)}
+  .hero .kick{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);font-weight:700}
+  .hero h1{font-size:34px;margin:8px 0 4px;line-height:1.05}
+  .hero .when{font-size:16px;color:var(--text);font-weight:600;margin-top:10px}
+  .hero .when .alt{color:var(--muted);font-weight:500;font-size:14px}
+  .count{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:15px;font-weight:700;color:var(--ember);background:rgba(224,124,67,.1);border:1px solid rgba(224,124,67,.35);border-radius:999px;padding:8px 15px}
+  .count .dot{width:8px;height:8px;border-radius:50%;background:var(--ember)}
+  .pill{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:999px;margin-left:8px;border:1px solid}
+  .pill.open{color:var(--green);border-color:var(--green)}.pill.live{color:var(--ember);border-color:var(--ember)}.pill.draft{color:var(--faint);border-color:var(--line)}.pill.ended{color:var(--faint);border-color:var(--line)}
+
+  /* share card */
+  .qr{background:var(--cream);border-radius:12px;padding:10px;width:fit-content;margin:0 auto}
+  .qr img,.qr canvas{display:block;border-radius:4px}
+  .linkbox{display:flex;gap:8px;margin-top:12px}
+  .linkbox input{font-size:13px;color:var(--muted)}
+
+  /* stats */
+  .stat{text-align:center}
+  .stat .n{font-family:var(--serif);font-size:38px;font-weight:700;line-height:1}
+  .stat .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:6px;font-weight:700}
+
+  /* launch kit */
+  .asset{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+  .asset .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ember);font-weight:700;margin-bottom:8px}
+  .asset .body{font-size:14px;color:var(--text);white-space:pre-wrap;line-height:1.55}
+  .asset .lab{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin:10px 0 3px}
+  .asset .onscreen{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .asset .onscreen span{font-size:11.5px;font-weight:600;color:var(--ember);background:rgba(224,124,67,.08);border:1px solid rgba(224,124,67,.3);border-radius:7px;padding:4px 8px}
+
+  /* checklist */
+  .chk{display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+  .chk:last-child{border-bottom:none}
+  .chk .box{min-width:22px;height:22px;border:2px solid var(--faint);border-radius:7px;margin-top:1px;display:flex;align-items:center;justify-content:center;color:#120a06;font-size:13px;font-weight:700}
+  .chk.done .box{background:var(--green);border-color:var(--green)}
+  .chk .t{font-size:14.5px}
+  .chk.done .t{color:var(--faint);text-decoration:line-through}
+
+  /* tool links */
+  .tool{display:flex;align-items:center;gap:13px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:13px 15px;text-decoration:none;margin-bottom:10px;transition:border-color .15s}
+  .tool:hover{border-color:var(--rust)}
+  .tool .ic{font-size:24px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:10px}
+  .tool .tn{font-weight:700;color:var(--text);font-size:15px}
+  .tool .td{font-size:12.5px;color:var(--muted)}
+  .tool .go{margin-left:auto;color:var(--faint);font-size:18px}
+
+  label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:12px 0 6px}
+  .ok{color:var(--green);font-size:13px;margin-top:8px;min-height:16px}
+  .row{display:flex;gap:10px}.row>*{flex:1}
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--cream);color:#120a06;font-weight:700;font-size:13px;padding:11px 20px;border-radius:999px;opacity:0;transition:.2s;z-index:120;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  #app{display:none}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div class="login" id="login">
+    <div class="k">Mission Control</div>
+    <h1>unspoken <span style="color:var(--rust);font-style:italic">word</span></h1>
+    <p>Your private command center. Enter your passphrase.</p>
+    <input id="pass" type="password" placeholder="Passphrase" autocomplete="current-password">
+    <div class="err" id="loginErr"></div>
+    <button class="btn solid block" id="loginBtn" style="margin-top:12px">Open dashboard</button>
+  </div>
+
+  <!-- APP -->
+  <div id="app">
+    <div class="top">
+      <div class="brand">unspoken<i>·</i>word <span class="mc">Mission Control</span></div>
+      <div class="sp"></div>
+      <div class="clock" id="clock"></div>
+      <button class="btn ghost sm" id="logout">Log out</button>
+    </div>
+
+    <div class="cards">
+      <!-- HERO -->
+      <div class="card hero span7">
+        <div class="kick">Next up · your live session</div>
+        <h1 id="evTitle">Unspoken — Open Forum</h1>
+        <div class="mut" id="evSub">An hour, no scripts. Bring your questions.</div>
+        <div class="when" id="whenMain">—<span class="pill draft" id="statusPill" style="display:none"></span></div>
+        <div class="when alt" id="whenAlt"></div>
+        <div id="countWrap"></div>
+        <div class="row" style="margin-top:16px">
+          <a class="btn solid" id="openHost" target="_blank" rel="noopener">Open host console →</a>
+          <a class="btn ghost" id="openReg" target="_blank" rel="noopener">View register page</a>
+        </div>
+      </div>
+
+      <!-- SHARE -->
+      <div class="card span5">
+        <h2>Share the session</h2>
+        <div class="qr" id="qr"></div>
+        <div class="linkbox">
+          <input id="regLink" readonly value="">
+          <button class="btn cream sm" id="copyLink">Copy</button>
+        </div>
+        <p class="faint" style="font-size:12.5px;margin-top:10px">Drop this link in your bio and Stories. The QR is handy for a slide or a story sticker.</p>
+      </div>
+
+      <!-- STATS -->
+      <div class="card span3 stat"><div class="n" id="stRegs">—</div><div class="l">Registered</div></div>
+      <div class="card span3 stat"><div class="n" id="stQs">—</div><div class="l">Questions in</div></div>
+      <div class="card span3 stat"><div class="n" id="stDays">—</div><div class="l">Days to go</div></div>
+      <div class="card span3 stat"><div class="n" id="stStatus" style="font-size:22px;padding-top:8px">—</div><div class="l">Status</div></div>
+
+      <!-- LAUNCH KIT -->
+      <div class="card span7">
+        <h2>🚀 Launch kit — post these today</h2>
+        <p class="mut" style="font-size:13.5px;margin-top:-6px;margin-bottom:12px">Marketable, call-to-action teasers for Tuesday. Tap copy, paste into Instagram.</p>
+        <div id="kit"></div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="span5" style="display:flex;flex-direction:column;gap:16px">
+        <!-- SESSION SETUP -->
+        <div class="card">
+          <h2>⚙️ Session setup</h2>
+          <label>Zoom join link (private — only registrants see it)</label>
+          <input id="zUrl" type="url" placeholder="https://us02web.zoom.us/j/…">
+          <label>Passcode (optional)</label>
+          <input id="zPass" type="text" placeholder="e.g. 4821">
+          <button class="btn solid block" id="zSave" style="margin-top:12px">Save Zoom link</button>
+          <div class="ok" id="zOk"></div>
+          <label>Status</label>
+          <select id="evStatus">
+            <option value="draft">Draft (hidden)</option>
+            <option value="open">Open — taking registrations</option>
+            <option value="live">Live now</option>
+            <option value="ended">Ended</option>
+          </select>
+          <div class="ok" id="sOk"></div>
+        </div>
+
+        <!-- TODAY -->
+        <div class="card">
+          <h2>✅ Today's plan</h2>
+          <div id="today"></div>
+        </div>
+
+        <!-- TOOLKIT -->
+        <div class="card">
+          <h2>🧰 Your toolkit</h2>
+          <a class="tool" href="https://unspokenword88-manager.netlify.app" target="_blank" rel="noopener"><span class="ic">🎬</span><span><div class="tn">The Studio</div><div class="td">Photos, reel scripts, teleprompter, captions</div></span><span class="go">↗</span></a>
+          <a class="tool" href="https://unspokenword-forum.netlify.app" target="_blank" rel="noopener"><span class="ic">🎤</span><span><div class="tn">The Open Forum</div><div class="td">Register page + live Q&amp;A + host console</div></span><span class="go">↗</span></a>
+          <a class="tool" href="https://unspokenword-forum.netlify.app/playbook.html" target="_blank" rel="noopener"><span class="ic">📋</span><span><div class="tn">The Playbook</div><div class="td">Run-of-show, promo, reminder scripts</div></span><span class="go">↗</span></a>
+          <a class="tool" href="https://unspokenword-voice.netlify.app" target="_blank" rel="noopener"><span class="ic">🗣️</span><span><div class="tn">Word — the talking app</div><div class="td">Personalised AAC that learns their words</div></span><span class="go">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied ✓</div>
+
+<script>
+/* ===== config ===== */
+var SB_URL="https://egffberfhnnkhtiscaol.supabase.co";
+var SB_KEY="sb_publishable_dsJ4eroFRHB2zD_s9jojag_oJM5HklH";
+var OWNER_EMAIL="aimanmaged88@gmail.com";
+var REG_URL="https://unspokenword-forum.netlify.app";
+var sb=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,storageKey:"uw-hub-auth"}}):null;
+var EV=null;
+function esc(s){return(s==null?"":""+s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+var toastT;function toast(m){var t=document.getElementById("toast");t.textContent=m||"Copied ✓";t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove("show");},1500);}
+function copy(txt){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast("Copied ✓");},fb);}else fb();function fb(){var a=document.createElement("textarea");a.value=txt;a.style.position="fixed";a.style.opacity=0;document.body.appendChild(a);a.select();try{document.execCommand("copy");}catch(e){}a.remove();toast("Copied ✓");}}
+
+/* ===== auth ===== */
+var loginEl=document.getElementById("login"),appEl=document.getElementById("app");
+async function init(){
+  if(!sb){document.getElementById("loginErr").textContent="Couldn't reach the cloud. Reload.";return;}
+  var r=await sb.auth.getSession();
+  if(r.data&&r.data.session)showApp();else loginEl.style.display="block";
+}
+async function login(){
+  var err=document.getElementById("loginErr");err.textContent="";
+  var p=document.getElementById("pass").value.trim();if(!p){err.textContent="Enter your passphrase.";return;}
+  var btn=document.getElementById("loginBtn");btn.textContent="Opening…";btn.disabled=true;
+  var r=await sb.auth.signInWithPassword({email:OWNER_EMAIL,password:p});
+  btn.textContent="Open dashboard";btn.disabled=false;
+  if(r.error){err.textContent="That passphrase didn't work.";return;}
+  document.getElementById("pass").value="";showApp();
+}
+document.getElementById("loginBtn").onclick=login;
+document.getElementById("pass").addEventListener("keydown",function(e){if(e.key==="Enter")login();});
+document.getElementById("logout").onclick=async function(){try{await sb.auth.signOut();}catch(e){}location.reload();};
+function showApp(){loginEl.style.display="none";appEl.style.display="block";loadAll();}
+
+/* ===== load ===== */
+async function loadAll(){
+  renderKit();renderToday();makeQR();
+  document.getElementById("regLink").value=REG_URL;
+  document.getElementById("openReg").href=REG_URL;
+  document.getElementById("openHost").href=REG_URL+"/#host";
+  var r=await sb.from("uw_event").select("*").eq("id",1).single();
+  if(!r.error&&r.data){EV=r.data;renderEvent();}
+  // secret
+  var s=await sb.from("uw_secret").select("*").eq("id",1).single();
+  if(!s.error&&s.data){document.getElementById("zUrl").value=s.data.zoom_url||"";document.getElementById("zPass").value=s.data.zoom_passcode||"";}
+  // counts
+  var rc=await sb.from("uw_registrations").select("*",{count:"exact",head:true});
+  document.getElementById("stRegs").textContent=rc.error?"—":(rc.count||0);
+  var qc=await sb.from("uw_questions").select("*",{count:"exact",head:true});
+  document.getElementById("stQs").textContent=qc.error?"—":(qc.count||0);
+}
+function tz(iso,zone){try{return new Intl.DateTimeFormat("en-AU",{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit",timeZoneName:"short",timeZone:zone}).format(new Date(iso));}catch(e){return new Date(iso).toLocaleString();}}
+function tzCity(z){var m={"Asia/Makassar":"Lombok","Australia/Sydney":"Sydney"};return m[z]||(z?z.split("/").pop().replace(/_/g," "):"");}
+function renderEvent(){
+  document.getElementById("evTitle").textContent=EV.title;
+  document.getElementById("evSub").textContent=EV.subtitle;
+  document.getElementById("whenMain").firstChild.textContent=tz(EV.starts_at,EV.tz_secondary)+" · "+tzCity(EV.tz_secondary)+" ";
+  document.getElementById("whenAlt").textContent=tz(EV.starts_at,EV.tz_primary)+" · "+tzCity(EV.tz_primary);
+  var pill=document.getElementById("statusPill");pill.style.display="inline-block";pill.className="pill "+EV.status;pill.textContent=EV.status;
+  document.getElementById("evStatus").value=EV.status;
+  document.getElementById("stStatus").textContent={draft:"Draft",open:"Open",live:"LIVE",ended:"Ended"}[EV.status]||EV.status;
+  // countdown + days
+  var start=new Date(EV.starts_at).getTime(),now=Date.now(),diff=start-now;
+  var days=Math.max(0,Math.ceil(diff/864e5));
+  document.getElementById("stDays").textContent=diff<=0?"0":days;
+  var cw=document.getElementById("countWrap");
+  if(EV.status==="ended"){cw.innerHTML='<span class="count">Wrapped — nice work</span>';}
+  else if(EV.status==="live"||(now>=start&&now<=start+(EV.duration_min||60)*6e4)){cw.innerHTML='<span class="count"><span class="dot"></span>LIVE NOW</span>';}
+  else{var d=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4);cw.innerHTML='<span class="count"><span class="dot"></span>In '+(d>0?d+"d "+h+"h":h+"h "+m+"m")+'</span>';}
+}
+
+/* ===== QR ===== */
+function makeQR(){
+  var el=document.getElementById("qr");el.innerHTML="";
+  try{ new QRCode(el,{text:REG_URL,width:150,height:150,colorDark:"#120a06",colorLight:"#E6C9A6",correctLevel:QRCode.CorrectLevel.M}); }
+  catch(e){ el.innerHTML='<div style="padding:16px;color:#120a06;font-size:12px;font-weight:700">'+REG_URL+'</div>'; }
+}
+document.getElementById("copyLink").onclick=function(){copy(REG_URL);};
+
+/* ===== session setup ===== */
+document.getElementById("zSave").onclick=async function(){
+  var patch={zoom_url:document.getElementById("zUrl").value.trim(),zoom_passcode:document.getElementById("zPass").value.trim(),updated_at:new Date().toISOString()};
+  var btn=this;btn.textContent="Saving…";
+  var r=await sb.from("uw_secret").update(patch).eq("id",1);
+  btn.textContent="Save Zoom link";
+  document.getElementById("zOk").textContent=r.error?("Failed: "+r.error.message):"Saved — registrants will see it ✓";
+};
+document.getElementById("evStatus").onchange=async function(){
+  var r=await sb.from("uw_event").update({status:this.value,updated_at:new Date().toISOString()}).eq("id",1);
+  if(!r.error){EV.status=this.value;renderEvent();document.getElementById("sOk").textContent="Status updated ✓";}
+  else document.getElementById("sOk").textContent="Failed: "+r.error.message;
+};
+
+/* ===== launch kit ===== */
+var KIT=[
+ {tag:"Teaser reel · talk-to-camera · ~20s",
+  body:"HOOK: For once, I'm not posting a tip. I'm opening a door.\n\nThis Tuesday I'm hosting a live open forum — just us, on a call. Not me teaching at you. You bring the questions you've stopped asking out loud — food, meltdowns, the burnout no one sees — and we answer them together, out loud, in real time.\n\nCTA: It's free. Tuesday, 7:30pm. Link in bio — put your name down and bring your questions. I want you in that room.",
+  onscreen:["A live open forum","Tue · 7:30pm · free","bring your questions","save your seat 👆"]},
+ {tag:"Countdown caption · feed post today",
+  body:"This Tuesday we're doing something we've never done: a live open forum. 🤎\n\nOne hour. You bring the questions you've been carrying — food, regulation, meltdowns, the burnout nobody sees — and we work through them together, out loud. No cameras needed. No judgement. Just the room I wish I'd had.\n\nFree. Tuesday 7:30pm (Sydney). Save your seat — link in bio. Write your questions down and bring them. I'll see you in there."},
+ {tag:"\"Write your questions\" CTA · post or Story",
+  body:"Open forum, this Tuesday. Here's your homework: write down the ONE question you'd ask if nobody would judge you. 🤎\n\nThat's the one we'll answer, live. Save your seat — link in bio, then drop your question in the room."},
+ {tag:"3 Story slides",
+  body:"1 — Something different this Tuesday.\n2 — A live open forum. You, me, and your real questions — answered together.\n3 — Free · Tue 7:30pm · tap to save your seat 👇  (add the link sticker)"},
+ {tag:"DM / broadcast teaser",
+  body:"Quick one 🤎 I'm hosting a live open forum this Tuesday, 7:30pm — bring your questions, we answer them live. Free, and the room's small on purpose. Want the link?"}
+];
+function renderKit(){
+  document.getElementById("kit").innerHTML=KIT.map(function(a,i){
+    var os=a.onscreen?'<div class="lab">On-screen text</div><div class="onscreen">'+a.onscreen.map(function(o){return '<span>'+esc(o)+'</span>';}).join("")+'</div>':"";
+    return '<div class="asset"><div class="tag">'+esc(a.tag)+'</div><div class="body">'+esc(a.body)+'</div>'+os+
+      '<button class="btn ghost sm" style="margin-top:12px" data-k="'+i+'">Copy</button></div>';
+  }).join("");
+  document.querySelectorAll("#kit [data-k]").forEach(function(b){b.onclick=function(){copy(KIT[+b.getAttribute("data-k")].body);};});
+}
+
+/* ===== today's plan ===== */
+var TODAY=[
+ "Record the ~10-min teach video (studio teleprompter)",
+ "Cut a 20s teaser reel from it (CapCut)",
+ "Post the teaser reel + countdown caption (link in bio)",
+ "Add the 3 Story slides with the register link sticker",
+ "Set the Zoom link here once the meeting's made",
+ "Reply to every comment & DM in the first hour"
+];
+function renderToday(){
+  var done=get("uwhub_today",{});
+  document.getElementById("today").innerHTML=TODAY.map(function(t,i){
+    return '<div class="chk'+(done[i]?" done":"")+'" data-i="'+i+'"><div class="box">✓</div><div class="t">'+esc(t)+'</div></div>';
+  }).join("");
+  document.querySelectorAll("#today .chk").forEach(function(el){el.onclick=function(){var d=get("uwhub_today",{});var i=el.getAttribute("data-i");d[i]=!d[i];set("uwhub_today",d);el.classList.toggle("done",d[i]);};});
+}
+function get(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+function set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+
+/* ===== clock ===== */
+function tick(){var d=new Date();document.getElementById("clock").textContent=d.toLocaleString("en-AU",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});if(EV)renderEvent();}
+setInterval(tick,30000);tick();
+
+init();
+</script>
+</body>
+</html>
