@@ -208,6 +208,13 @@
           <a class="tool" href="https://unspokenword-voice.netlify.app" target="_blank" rel="noopener"><span class="ic">🗣️</span><span><div class="tn">Word — the talking app</div><div class="td">Personalised AAC that learns their words</div></span><span class="go">↗</span></a>
         </div>
       </div>
+
+      <!-- INSTAGRAM BIO -->
+      <div class="card span12">
+        <h2>📝 Your Instagram bio</h2>
+        <p class="mut" style="font-size:13.5px;margin-top:-6px;margin-bottom:12px">The funnel: <b>bio link → they register → they unlock the free Word app.</b> Set the name field, pick a bio, paste the link. Tap copy, paste into Instagram.</p>
+        <div id="bio"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -249,7 +256,7 @@ function showApp(){loginEl.style.display="none";appEl.style.display="block";load
 
 /* ===== load ===== */
 async function loadAll(){
-  renderKit();renderToday();makeQR();
+  renderKit();renderBio();renderToday();makeQR();
   document.getElementById("regLink").value=REG_URL;
   document.getElementById("openReg").href=REG_URL;
   document.getElementById("openHost").href=REG_URL+"/#host";
@@ -327,6 +334,34 @@ function renderKit(){
       '<button class="btn ghost sm" style="margin-top:12px" data-k="'+i+'">Copy</button></div>';
   }).join("");
   document.querySelectorAll("#kit [data-k]").forEach(function(b){b.onclick=function(){copy(KIT[+b.getAttribute("data-k")].body);};});
+}
+
+/* ===== instagram bio ===== */
+var BIO={
+  name:"Unspoken Word · Autism Carers",
+  options:[
+   {tag:"Option 1 · raw & direct (recommended)",
+    body:"Parent or carer of an autistic child?\nNot here for sympathy — here for what works.\nFree forum + tools, built with you.\nRegister 👇"},
+   {tag:"Option 2 · the community / the room",
+    body:"Autism. Carer burnout. The stuff no one says out loud.\nReal tips, free tools, a live forum — with you.\nYou're not in the dark here 👇"},
+   {tag:"Option 3 · short & punchy",
+    body:"Autistic kids. Burnt-out carers. Real answers.\nFree live forum + a talking app, built together.\nPut your name down 👇"}
+  ],
+  firstPost:"If you've followed me for the tips, read this one 🤎\n\nI'm pinning a link in my bio. It's not a sales page — it's a door. To a live open forum, and to a free app I built for our kids. But I need you to walk through it: register, and tell me in 10 words why you're here. That's how we build this together — I need your information to make it work.\n\nLink in bio. Come with your questions. Join the ranks."
+};
+function renderBio(){
+  var el=document.getElementById("bio");if(!el)return;
+  var html='<div class="asset"><div class="tag">Name field · the bold line · 30 char max</div><div class="body">'+esc(BIO.name)+'</div><div class="lab">'+BIO.name.length+' / 30 characters</div><button class="btn ghost sm" style="margin-top:10px" data-bn="1">Copy</button></div>';
+  html+=BIO.options.map(function(o,i){
+    return '<div class="asset"><div class="tag">'+esc(o.tag)+'</div><div class="body">'+esc(o.body)+'</div><div class="lab">'+o.body.length+' / 150 characters</div><button class="btn ghost sm" style="margin-top:10px" data-bo="'+i+'">Copy</button></div>';
+  }).join("");
+  html+='<div class="asset"><div class="tag">Link for your bio · paste in the website field</div><div class="body">'+esc(REG_URL)+'</div><button class="btn ghost sm" style="margin-top:12px" data-bl="1">Copy</button></div>';
+  html+='<div class="asset"><div class="tag">First "link in bio" post · pin this to the top</div><div class="body">'+esc(BIO.firstPost)+'</div><button class="btn ghost sm" style="margin-top:12px" data-bf="1">Copy</button></div>';
+  el.innerHTML=html;
+  el.querySelector("[data-bn]").onclick=function(){copy(BIO.name);};
+  el.querySelectorAll("[data-bo]").forEach(function(b){b.onclick=function(){copy(BIO.options[+b.getAttribute("data-bo")].body);};});
+  el.querySelector("[data-bl]").onclick=function(){copy(REG_URL);};
+  el.querySelector("[data-bf]").onclick=function(){copy(BIO.firstPost);};
 }
 
 /* ===== today's plan ===== */
