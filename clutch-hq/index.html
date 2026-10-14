@@ -497,7 +497,7 @@ function copy(text, note){
 /* ---------- state ---------- */
 let ME = null;                      // profile row {id, role, full_name, coach_id}
 let D = null;                       // all loaded data
-let VIEW = { r:"week", week:monday(todayISO()), pf:{team:"all", status:"all", q:"", sort:"team"}, comm:"queue", conv:null, season:null };
+let VIEW = { r:"week", week:monday(todayISO()), pf:{team:"all", status:"all", q:"", sort:"team"}, mq:"", gq:"", comm:"queue", conv:null, season:null };
 let DRAWER = null;
 const SIGNED = {};                  // storage path -> signed url
 
@@ -510,7 +510,7 @@ const ageGroupOf = dob => { const a = (D ? D.org.season.ageYear : new Date().get
 /* ---------- load everything RLS lets us see ---------- */
 async function q(table, sel, order){ let x = sb.from(table).select(sel || "*"); if (order) x = x.order(order.c, {ascending: order.a !== false}); const { data, error } = await x.limit(1e4); if (error) throw new Error(table + ": " + error.message); return data || []; }
 async function fetchAll(){
-  const [org, venues, coaches, teams, families, guardians, players, fixtures, avail, roll, payments, instalments, notes, logs, regs, tasks, convs, posts, comments, media, stats, seasons] = await Promise.all([
+  const [org, venues, coaches, teams, families, guardians, players, fixtures, avail, roll, payments, instalments, notes, logs, regs, tasks, convs, posts, comments, media, stats, seasons, apparel, gnotes] = await Promise.all([
     q("org_settings"), q("venues", "*", {c:"name"}), q("coaches", "*", {c:"name"}), q("teams", "*"),
     q("families"), q("guardians"), q("players", "*", {c:"last_name"}), q("fixtures", "*", {c:"date"}),
     q("availability"), q("roll"), q("payments", "*", {c:"paid_on"}), q("instalments", "*", {c:"due"}),
@@ -519,9 +519,10 @@ async function fetchAll(){
     q("conversations", "*", {c:"last_message_at", a:false}), q("posts", "*", {c:"created_at", a:false}),
     q("comments", "*", {c:"created_at"}), q("media", "*", {c:"created_at", a:false}), q("game_stats"),
     q("season_archive", "id,name,start_date,end_date,created_at", {c:"created_at", a:false}),
+    q("apparel", "*", {c:"created_at"}), isAdmin() ? q("guardian_notes", "*", {c:"created_at", a:false}) : Promise.resolve([]),
   ]);
   const likes = await q("post_likes");
-  D = {org: org[0], venues, coaches, teams, families, guardians, players, fixtures, payments, instalments, notes, logs, regs, tasks, convs, posts, comments, media, stats, seasons, likes,
+  D = {org: org[0], venues, coaches, teams, families, guardians, players, fixtures, payments, instalments, notes, logs, regs, tasks, convs, posts, comments, media, stats, seasons, likes, apparel, gnotes,
        reads:{}, msgs:{}, avail:{}, roll:{}};
   avail.forEach(r => { (D.avail[r.session_key] = D.avail[r.session_key] || {})[r.player_id] = r.status; });
   roll.forEach(r => { (D.roll[r.session_key] = D.roll[r.session_key] || {})[r.player_id] = r.present ? 1 : 0; });
@@ -539,7 +540,10 @@ const pname = p => p.first_name + " " + p.last_name;
 const active = () => D.players.filter(p => p.status === "active");
 const roster = tid => active().filter(p => p.team_id === tid).sort((a,b) => a.last_name.localeCompare(b.last_name));
 const guardianOf = p => D.guardians.find(g => g.family_id === p.family_id) || {name:"–", rel:"", phone:"", email:""};
-const payTotal = p => D.payments.filter(x => x.player_id === p.id).reduce((s,x) => s + +x.amount, 0);
+const payTotal = p => D.payments.filter(x => x.player_id === p.id && (x.kind || "fees") === "fees").reduce((s,x) => s + +x.amount, 0);
+const kitOf = p => D.apparel.filter(a => a.player_id === p.id);
+const coachesOf = p => { const t = team(p.team_id); if (!t) return [];
+  return [coach(t.coach_id), coach(t.asst_id)].filter(Boolean); };
 const feeOf = p => { const t = team(p.team_id); return t ? +t.fee : 0; };
 const owing = p => Math.max(0, feeOf(p) - payTotal(p));
 const instOf = p => D.instalments.filter(i => i.player_id === p.id).sort((a,b) => a.due.localeCompare(b.due));
@@ -656,7 +660,7 @@ const I = {
 
 /* ---------- shell & routing ---------- */
 const ROUTES = () => {
-  const base = [["week","This week",I.week],["teams","Teams",I.teams],["players","Players",I.players]];
+  const base = [["week","This week",I.week],["teams","Teams",I.teams],["players","Players",I.players],["parents","Parents",I.comm]];
   if (isAdmin()) base.push(["regos","Registrations",I.regos], ["money","Money",I.money]);
   base.push(["coaches","Coaches",I.coach], ["messages","Messages",I.chat], ["community","Community",I.comm]);
   if (isAdmin()) base.push(["seasons","Seasons",I.seasons], ["settings","Settings",I.settings]);
@@ -682,10 +686,10 @@ const moreNav = () => `<div class="seg morenav">${ROUTES().filter(r => !["week",
 function render(){
   if (!D || !ME) return;
   shell();
-  const V = {week:vWeek, teams:vTeams, players:vPlayers, regos:vRegos, money:vMoney, coaches:vCoaches, messages:vMessages, community:vCommunity, seasons:vSeasons, settings:vSettings}[VIEW.r];
+  const V = {week:vWeek, teams:vTeams, players:vPlayers, parents:vParents, regos:vRegos, money:vMoney, coaches:vCoaches, messages:vMessages, community:vCommunity, seasons:vSeasons, settings:vSettings}[VIEW.r];
   $("#main").innerHTML = V();
   if (VIEW.r === "messages") { const box = $("#tmsgs"); if (box) box.scrollTop = box.scrollHeight; }
-  if (DRAWER) { const html = DRAWER.k === "sess" ? dSession(DRAWER.id) : DRAWER.k === "team" ? dTeam(DRAWER.id) : DRAWER.k === "player" ? dPlayer(DRAWER.id) : DRAWER.k === "season" ? dSeason(DRAWER.id) : "";
+  if (DRAWER) { const html = DRAWER.k === "sess" ? dSession(DRAWER.id) : DRAWER.k === "team" ? dTeam(DRAWER.id) : DRAWER.k === "player" ? dPlayer(DRAWER.id) : DRAWER.k === "parent" ? dParent(DRAWER.id) : DRAWER.k === "season" ? dSeason(DRAWER.id) : "";
     if (html) { const sc = ($(".dbd") || {}).scrollTop || 0; $("#drawer").innerHTML = html; if ($(".dbd")) $(".dbd").scrollTop = sc; } else closeAll(); }
 }
 
@@ -828,6 +832,49 @@ function vPlayers(){
       `<tr><td colspan="8" class="muted" style="padding:24px 12px">Nobody matches.</td></tr>`}</tbody></table></div></section>`;
 }
 
+/* ---------- parents ---------- */
+function kidsOf(g){ return active().filter(p => p.family_id === g.family_id); }
+function vParents(){
+  const gq = (VIEW.gq || "").toLowerCase();
+  let L = D.guardians.filter(g => g.name && g.name !== "–" && !g.name.startsWith("(removed") && kidsOf(g).length);
+  if (gq) L = L.filter(g => (g.name + " " + g.phone + " " + (g.email || "") + " " + kidsOf(g).map(pname).join(" ")).toLowerCase().includes(gq));
+  L.sort((a,b) => a.name.localeCompare(b.name));
+  return `
+  <div class="ph"><div><h1>Parents</h1><div class="sub">${L.length} parents and guardians · tap one for notes, arrangements and contact</div></div></div>
+  <div class="fbar"><input type="search" placeholder="Search parent, kid, phone or email" value="${esc(VIEW.gq || "")}" data-f="gq" aria-label="Search parents"><span class="ct">${L.length} shown</span></div>
+  <section class="card flush"><div class="tw"><table>
+    <thead><tr><th>Parent</th><th>Kids</th><th class="hidemob">Phone</th><th class="hidemob">Email</th><th></th></tr></thead>
+    <tbody>${L.map(g => { const kids = kidsOf(g), notes = (D.gnotes || []).filter(n => n.guardian_id === g.id);
+      return `<tr class="click" data-act="parentOpen" data-id="${g.id}">
+        <td><div class="who"><div class="av">${initials(g.name)}</div><div><b>${esc(g.name)}</b><small>${esc(g.rel || "Parent")}${g.arrangements ? ' · <span style="color:var(--warn)">⚑ arrangements</span>' : ""}${notes.length ? ` · ${plural(notes.length, "note")}` : ""}</small></div></div></td>
+        <td>${kids.map(p => esc(p.first_name)).join(", ")}</td>
+        <td class="mono num hidemob" style="font-size:12.5px">${esc(g.phone || "")}</td>
+        <td class="hidemob" style="font-size:12.5px">${g.email ? esc(g.email) : '<span class="muted">none</span>'}</td>
+        <td class="r" style="white-space:nowrap">${g.phone ? `<a class="btn sm" href="https://wa.me/61${g.phone.replace(/\s/g, "").replace(/^0/, "")}" target="_blank" rel="noopener" onclick="event.stopPropagation()">WhatsApp</a>` : ""}</td></tr>`; }).join("") ||
+      `<tr><td colspan="5" class="muted" style="padding:24px 12px">Nobody matches.</td></tr>`}</tbody></table></div></section>`;
+}
+function dParent(id){
+  const g = D.guardians.find(x => x.id === id); if (!g) return "";
+  const kids = kidsOf(g), notes = (D.gnotes || []).filter(n => n.guardian_id === g.id);
+  return dHead(esc(g.name), `${esc(g.rel || "Parent")} · ${esc(fam(g.family_id)?.name || "")}`,
+    `<div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">
+      ${g.phone ? `<a class="btn sm" href="https://wa.me/61${g.phone.replace(/\s/g, "").replace(/^0/, "")}" target="_blank" rel="noopener">WhatsApp</a><a class="btn sm" href="tel:${g.phone.replace(/\s/g, "")}">Call</a>` : ""}
+      ${g.email ? `<a class="btn sm" href="mailto:${esc(g.email)}">Email</a>` : ""}
+      ${isAdmin() ? `<button class="btn sm" data-act="editGuardian" data-id="${g.id}">${I.edit}Edit details</button>` : ""}</div>`) + `<div class="dbd">
+    <div class="sec"><dl class="kv">
+      <dt>Mobile</dt><dd>${g.phone ? esc(g.phone) : '<span class="muted">None on file</span>'}</dd>
+      <dt>Email</dt><dd>${g.email ? esc(g.email) : '<span class="muted">None — needed for the app</span>'}</dd>
+      <dt>Kids</dt><dd>${kids.map(p => `<a href="#" data-act="player" data-id="${p.id}" style="color:var(--accent);text-decoration:none">${esc(pname(p))}</a> (${tname(team(p.team_id))})`).join(", ") || "–"}</dd>
+      <dt>Follow us</dt><dd><div class="socialrow"><a class="chip" href="https://www.instagram.com/clutchbball.au" target="_blank" rel="noopener">Instagram</a><a class="chip" href="https://clutchbasketball.com.au" target="_blank" rel="noopener">Website</a></div></dd></dl></div>
+    ${isAdmin() ? `<div class="sec"><h3>Pickup & special arrangements</h3>
+      <form data-form="arrange" data-id="${g.id}" class="addtask" style="margin-top:0"><input name="t" value="${esc(g.arrangements || "")}" placeholder="e.g. Mum picks up Tuesdays; dad not to be contacted" autocomplete="off"><button class="btn icon" aria-label="Save">${I.ok}</button></form>
+      ${g.arrangements ? `<p class="muted" style="font-size:12px;margin:8px 0 0">Shows as a ⚑ on the parent list. Clear the box and save to remove it.</p>` : ""}</div>` : ""}
+    ${isAdmin() ? `<div class="sec"><h3>Notes (admins only)</h3>
+      <form data-form="gnote" data-id="${g.id}" class="addtask" style="margin-top:0"><input name="t" placeholder="e.g. Works FIFO, away odd weeks — message, don't call" required autocomplete="off"><button class="btn icon" aria-label="Add">${I.plus}</button></form>
+      <div class="tl" style="margin-top:8px">${notes.slice(0, 10).map(n => `<div class="ev"><div class="d">${fd(n.created_at.slice(0,10))}</div><div>${esc(n.body)} <span class="by">${esc(n.by_name)}</span></div></div>`).join("") || `<div class="empty">No notes yet.</div>`}</div></div>` : ""}
+  </div>`;
+}
+
 /* ---------- registrations ---------- */
 const STAGES = [["new","New"],["contacted","Contacted"],["tryout","Tryout booked"],["offered","Offered a spot"],["notnow","Not now"]];
 function vRegos(){
@@ -867,12 +914,14 @@ function vMoney(){
   const L = D.teams.filter(t => !t.archived).sort((a,b) => GI(a.age) - GI(b.age) || a.div.localeCompare(b.div));
   const rows = L.map(t => { const r = roster(t.id); return {t, due:r.length * +t.fee, got:r.reduce((s,p) => s + Math.min(payTotal(p), +t.fee), 0)}; });
   const due = rows.reduce((s,x) => s + x.due, 0), got = rows.reduce((s,x) => s + x.got, 0);
-  const owe = active().filter(p => owing(p) > 0).sort((a,b) => owing(b) - owing(a));
+  const mq = (VIEW.mq || "").toLowerCase();
+  const hit = p => !mq || (pname(p) + " " + guardianOf(p).name + " " + guardianOf(p).phone + " " + tname(team(p.team_id))).toLowerCase().includes(mq);
+  const owe = active().filter(p => owing(p) > 0 && hit(p)).sort((a,b) => owing(b) - owing(a));
   const T = todayISO();
   const coming = D.instalments.filter(i => { const p = player(i.player_id); return p && owing(p) > 0 && i.due >= addD(T, -7); }).sort((a,b) => a.due.localeCompare(b.due)).slice(0, 12);
   return `${moreNav()}
   <div class="ph"><div><h1>Money</h1><div class="sub">Season fees for ${esc(D.org.season.name || "")} · looked after by ${esc(D.org.contact_name)}</div></div>
-    <div class="acts"><button class="btn pri" data-act="payPick">${I.plus}Record payment</button></div></div>
+    <div class="acts"><input type="search" placeholder="Search player, parent or team" value="${esc(VIEW.mq || "")}" data-f="mq" aria-label="Search money" style="min-width:230px"><button class="btn pri" data-act="payPick">${I.plus}Record payment</button></div></div>
   <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">
     <div class="kpi"><div class="l">Expected</div><div class="v">${money(due)}</div></div>
     <div class="kpi"><div class="l">Collected</div><div class="v">${money(got)}</div><div class="s">${due ? Math.round(got / due * 100) : 0}% of expected</div></div>
@@ -887,13 +936,13 @@ function vMoney(){
       ${owe.map(p => { const nx = instOf(p).find(i => i.due >= T); return `<tr><td><a href="#" data-act="player" data-id="${p.id}" style="text-decoration:none;font-weight:500">${esc(pname(p))}</a><div class="muted mono" style="font-size:12px">${esc((guardianOf(p) || {}).phone || "")}</div></td>
         <td class="hidemob" style="white-space:nowrap">${tname(team(p.team_id))}</td><td class="r mono num">${money(owing(p))}</td>
         <td class="hidemob">${nx ? `${money(nx.amount)} on ${fd(nx.due)}` : '<span class="muted">No plan</span>'}</td>
-        <td class="r" style="white-space:nowrap"><button class="btn sm" data-act="feeMsg" data-id="${p.id}">${I.copy}Reminder</button> <button class="btn sm pri" data-act="pay" data-id="${p.id}">Record payment</button></td></tr>`; }).join("") ||
+        <td class="r" style="white-space:nowrap"><button class="btn sm" data-act="feeWa" data-id="${p.id}" title="Opens WhatsApp with the reminder written">WhatsApp</button> ${guardianOf(p).email ? `<button class="btn sm" data-act="feeEmail" data-id="${p.id}" title="Opens an email with the reminder written">Email</button> ` : ""}<button class="btn sm ghost" data-act="feeMsg" data-id="${p.id}" title="Copies the reminder text">${I.copy}</button> <button class="btn sm pri" data-act="pay" data-id="${p.id}">Record payment</button></td></tr>`; }).join("") ||
         `<tr><td colspan="5" class="muted" style="padding:20px 12px">Everyone has paid.</td></tr>`}</tbody></table></div></section>
     <section class="card flush" style="grid-column:1/-1"><div class="ch"><h2>Receipts</h2><span class="sub">Every payment recorded, newest first — open one to copy or resend it</span></div>
       <div class="tw" style="margin-top:10px"><table><thead><tr><th>Receipt</th><th>Player</th><th class="r">Amount</th><th class="hidemob">How</th><th class="hidemob">What for</th><th>Date</th><th></th></tr></thead><tbody>
-      ${D.payments.filter(x => +x.amount > 0).sort((a,b) => (b.receipt_no || 0) - (a.receipt_no || 0)).slice(0, 25).map(x => { const p = player(x.player_id); if (!p) return "";
+      ${D.payments.filter(x => +x.amount > 0 && (!mq || (player(x.player_id) && hit(player(x.player_id))))).sort((a,b) => (b.receipt_no || 0) - (a.receipt_no || 0)).slice(0, 25).map(x => { const p = player(x.player_id); if (!p) return "";
         return `<tr><td class="mono num">${rno(x)}</td><td><a href="#" data-act="player" data-id="${p.id}" style="text-decoration:none;font-weight:500">${esc(pname(p))}</a></td>
-        <td class="r mono num">${money(x.amount)}</td><td class="hidemob">${esc(x.method)}</td><td class="hidemob">${esc(x.note || "")}</td><td style="white-space:nowrap">${fd(x.paid_on)}</td>
+        <td class="r mono num">${money(x.amount)}</td><td class="hidemob">${esc(x.method)}</td><td class="hidemob">${(x.kind || "fees") === "apparel" ? '<span class="chip">Kit</span> ' : ""}${esc(x.note || "")}</td><td style="white-space:nowrap">${fd(x.paid_on)}</td>
         <td class="r"><button class="btn sm" data-act="receipt" data-id="${x.id}">Receipt</button></td></tr>`; }).join("") ||
         `<tr><td colspan="7" class="muted" style="padding:20px 12px">No payments recorded yet. Hit “Record payment” when the first money comes in.</td></tr>`}</tbody></table></div></section>
   </div>`;
@@ -917,7 +966,7 @@ function vCoaches(){
       <div class="m">${tname(team(x.a.team))} ${x.a.type === "G" ? "game" : "training"} ${trange(x.a.start, x.a.end)} and ${tname(team(x.b.team))} ${x.b.type === "G" ? "game" : "training"} ${trange(x.b.start, x.b.end)}. One of these needs another coach.</div></div><span></span></div>`).join("")}</section>` : ""}
   <section class="card flush"><div class="tw"><table><thead><tr><th>Coach</th><th class="hidemob">Teams</th><th class="r hidemob">This week</th><th>WWCC</th><th class="hidemob">Contact</th><th></th></tr></thead><tbody>
     ${D.coaches.filter(c => c.name !== "(removed test)").map(c => { const T2 = D.teams.filter(t => !t.archived && (t.coach_id === c.id || t.asst_id === c.id)), w = wwcc(c), n = S.filter(s => s.coaches.includes(c.id)).length, cl = C.filter(x => x.coach === c.id);
-      return `<tr><td><div class="who"><div class="av">${initials(c.name)}</div><div><b>${esc(c.name)}</b><small>${esc(c.role)}${c.profile_id ? "" : " · not signed in yet"}</small></div></div></td>
+      return `<tr><td><div class="who"><div class="av">${initials(c.name)}</div><div><b>${esc(c.name)}</b><small>${esc(c.role)}${(c.profile || {}).specialty ? " · " + esc(c.profile.specialty) : ""}${(c.profile || {}).since ? " · coaching since " + c.profile.since : ""}${c.profile_id ? "" : " · not signed in yet"}</small></div></div></td>
         <td class="hidemob">${T2.map(t => `<span class="chip" style="margin:2px 4px 2px 0">${tname(t)}${t.asst_id === c.id ? " (asst)" : ""}</span>`).join("") || '<span class="muted">None</span>'}</td>
         <td class="r mono num hidemob">${n}${cl.length ? ` <span class="chip crit">clash</span>` : ""}</td>
         <td><span class="st ${w.level}">${w.level === "good" ? I.ok : I.alert}${w.text}</span></td>
@@ -1153,6 +1202,7 @@ function dPlayer(id){
       <dt>Joined</dt><dd>${fd(p.joined, {y:1})} · ${esc(p.source || "")}</dd>
       <dt>Medical</dt><dd>${p.medical ? `<span class="st warn">${I.alert}${esc(p.medical_note || "Note on file")}</span>` : "Nothing on file"}</dd>
       <dt>Rep basketball</dt><dd>${p.plays_reps ? `<span class="st good">${I.ok}Plays reps</span>` : p.rep_tryout ? `<span class="st warn">Tried out before</span>` : '<span class="muted">No</span>'}${p.rep_note ? ` <span class="muted">· ${esc(p.rep_note)}</span>` : ""}</dd>
+      <dt>Coach</dt><dd>${coachesOf(p).map((c, i) => `${esc(c.name)}${i === 0 && (c.profile || {}).specialty ? ` <span class="muted">· ${esc(c.profile.specialty)}</span>` : ""}`).join(", ") || '<span class="muted">No team yet</span>'}</dd>
       <dt>Photos</dt><dd>${p.photo_consent ? "Consent given" : `<span class="st warn">${I.alert}No consent</span>`}</dd>
       <dt>Socials</dt><dd><div class="socialrow">${["instagram","tiktok","youtube"].filter(k => soc[k]).map(k => `<span class="chip">${k}: ${esc(soc[k])}</span>`).join("") || '<span class="muted">None linked</span>'}</div></dd></dl></div>
     <div class="sec"><h3>Family${isAdmin() ? `<span class="right"><button class="btn sm" data-act="addParent" data-id="${p.id}">${I.plus}${D.guardians.some(x => x.family_id === p.family_id) ? "Add another parent" : "Add a parent"}</button></span>` : ""}</h3>
@@ -1163,6 +1213,15 @@ function dPlayer(id){
       `<div class="empty" style="padding:14px 0">No parent attached yet — add one whenever you're ready.</div>`}
       <dl class="kv"><dt>Siblings</dt><dd>${active().filter(x => x.family_id === p.family_id && x.id !== p.id).map(x => `<a href="#" data-act="player" data-id="${x.id}" style="color:var(--accent);text-decoration:none">${esc(pname(x))}</a>`).join(", ") || "–"}</dd></dl>
       ${isAdmin() ? `<p class="muted" style="font-size:12.5px;line-height:1.5;margin:10px 0 0"><b>Parent code</b> signs the parent in to the family app (and resets a forgotten password). <b>Kid code</b> is a six-digit sign-in for ${esc(p.first_name)}'s own device — kids only ever see their own family.</p>` : ""}</div>
+    <div class="sec"><h3>Kit & apparel<span class="right"><button class="btn sm" data-act="addKit" data-id="${p.id}">${I.plus}Add item</button></span></h3>
+      <div class="plist">${kitOf(p).map(a => `<div class="pr"><div><b style="font-weight:600">${esc(a.item)}</b>${a.size ? ` <span class="chip">${esc(a.size)}</span>` : ""}${+a.price ? ` <span class="muted mono" style="font-size:12px">${money(a.price)}</span>` : ""}${a.note ? `<div class="muted" style="font-size:12px">${esc(a.note)}</div>` : ""}</div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <button class="btn sm ${a.paid ? "" : "ghost"}" data-act="kitFlag" data-id="${a.id}" data-k="paid" data-v="${a.paid ? 0 : 1}">${a.paid ? I.ok + "Paid" : "Mark paid"}</button>
+          <button class="btn sm ${a.received ? "" : "ghost"}" data-act="kitFlag" data-id="${a.id}" data-k="received" data-v="${a.received ? 0 : 1}">${a.received ? I.ok + "Given out" : "Mark given"}</button>
+          ${isAdmin() ? `<button class="btn sm ghost danger" data-act="delKit" data-id="${a.id}" aria-label="Remove">✕</button>` : ""}</div></div>`).join("") ||
+        `<div class="empty">Nothing ordered. “Add item” when a jersey, shorts or socks order goes in.</div>`}</div>
+      ${kitOf(p).length ? `<p class="muted" style="font-size:12px;margin:8px 0 0">Kit money sits separate from season fees — record it with “Record payment” and pick “Kit / apparel”.</p>` : ""}</div>
+    ${((p.socials || {}).highlights || []).length ? `<div class="sec"><h3>Highlights</h3><div class="socialrow">${(p.socials.highlights || []).map((u, i) => `<a class="chip" href="${esc(u)}" target="_blank" rel="noopener">▶ Highlight ${i + 1}</a>`).join("")}</div></div>` : ""}
     ${isAdmin() ? `<div class="sec"><h3>Payment plan<span class="right"><button class="btn sm" data-act="addInst" data-id="${p.id}">${I.plus}Add instalment</button></span></h3>
       <div class="plist">${inst.map(i => `<div class="pr"><div>${money(i.amount)} due ${fd(i.due, {wd:1, y:1})}${i.note ? ` <span class="muted">· ${esc(i.note)}</span>` : ""}</div><button class="btn sm ghost danger" data-act="delInst" data-id="${i.id}">✕</button></div>`).join("") || `<div class="empty">No plan. Fees are due in one go.</div>`}</div></div>` : ""}
     <div class="sec"><h3>Coach notes (staff only)</h3>
@@ -1194,12 +1253,13 @@ const dowOpts = v => opt([1,2,3,4,5,6,7].map(d => [d, DL[d]]), v);
 const mact = label => `<div class="mact"><button type="button" class="btn ghost" data-act="closeAll">Cancel</button><button class="btn pri">${label}</button></div>`;
 function teamForm(t){
   const n = !t; t = t || {age:"U14", div:"", comp:"Friday juniors", coach_id:"", asst_id:"", cap:10, fee:280, train:[{dow:2, start:"18:00", end:"19:30", venue:(D.venues[0] || {}).id, court:1}], game:{dow:5, venue:(D.venues[0] || {}).id, time:"18:00"}};
-  if (!D.venues.length) { toast("Add a venue in Settings first"); location.hash = "#/settings"; return; }
-  const tr = (t.train || [])[0] || {dow:2, start:"18:00", end:"19:30", venue:D.venues[0].id, court:1};
-  openModal(`<form data-form="team" data-id="${n ? "" : t.id}"><h2>${n ? "New team" : "Edit " + tname(t)}</h2><div class="sub">Everyone signed in sees the change straight away.</div>
+  const tr = (t.train || [])[0] || {dow:2, start:"18:00", end:"19:30", venue:(D.venues[0] || {}).id, court:1};
+  const ages = GORD.includes(t.age) ? GORD : [...GORD, t.age];
+  openModal(`<form data-form="team" data-id="${n ? "" : t.id}"><h2>${n ? "New team" : "Edit " + tname(t)}</h2><div class="sub">The team's name is its age group + division (e.g. “U16 Team 2 Blue”). Everyone signed in sees changes straight away.</div>
     <div class="fg">
-      <div class="f t"><label>Age group</label><select name="age">${opt(GORD.map(x => [x, x]), t.age)}</select></div>
-      <div class="f t"><label>Division</label><input name="div" value="${esc(t.div)}" required></div>
+      <div class="f t"><label>Age group</label><select name="age" data-reveal="agenew">${opt(ages.map(x => [x, x]), t.age)}<option value="__new">+ New age group…</option></select></div>
+      <div class="f t" style="display:none" data-rv="agenew"><label>New age group</label><input name="agenew" placeholder="e.g. U21"></div>
+      <div class="f t"><label>Division</label><input name="div" value="${esc(t.div)}" required placeholder="e.g. Team 1 Black"></div>
       <div class="f t"><label>Competition</label><input name="comp" value="${esc(t.comp)}" required></div>
       <div class="f h"><label>Coach</label><select name="coach">${coachOpts(t.coach_id, "Not set")}</select></div>
       <div class="f h"><label>Assistant</label><select name="asst">${coachOpts(t.asst_id, "None")}</select></div>
@@ -1209,12 +1269,15 @@ function teamForm(t){
       <div class="f t"><label>Day</label><select name="tdow">${dowOpts(tr.dow)}</select></div>
       <div class="f t"><label>Starts</label><input type="time" name="tstart" value="${tr.start}"></div>
       <div class="f t"><label>Ends</label><input type="time" name="tend" value="${tr.end}"></div>
-      <div class="f h"><label>Venue</label><select name="tvenue">${venueOpts(tr.venue)}</select></div>
+      <div class="f h"><label>Venue</label><select name="tvenue" data-vensel>${venueOpts(tr.venue)}<option value="__new">+ New venue…</option></select></div>
       <div class="f h"><label>Court</label><input type="number" name="tcourt" value="${tr.court}" min="1"></div>
       <div class="fsec">Games</div>
       <div class="f t"><label>Day</label><select name="gdow">${dowOpts((t.game || {}).dow || 5)}</select></div>
       <div class="f t"><label>Usual time</label><input type="time" name="gtime" value="${(t.game || {}).time || "18:00"}"></div>
-      <div class="f t"><label>Venue</label><select name="gvenue">${venueOpts((t.game || {}).venue)}</select></div>
+      <div class="f t"><label>Venue</label><select name="gvenue" data-vensel>${venueOpts((t.game || {}).venue)}<option value="__new">+ New venue…</option></select></div>
+      <div style="display:none;grid-column:1/-1" data-rv="newvenue"><div class="fg" style="margin:0">
+        <div class="f t"><label>New venue — short name</label><input name="nvshort" placeholder="e.g. Padstow"></div>
+        <div class="f h"><label>Full name</label><input name="nvname" placeholder="e.g. Padstow Park Sports Centre"></div></div></div>
     </div>${mact(n ? "Create team" : "Save changes")}</form>`);
 }
 
@@ -1231,6 +1294,7 @@ const ACT = {
   sess:el => openDrawer("sess", el.dataset.id),
   team:el => openDrawer("team", el.dataset.id),
   player:(el, e) => { if (e) e.preventDefault(); openDrawer("player", el.dataset.id); },
+  parentOpen:el => openDrawer("parent", el.dataset.id),
   season:el => { VIEW.seasonData = null; openDrawer("season", el.dataset.id); },
   squadDrawer:() => { VIEW.pf.team = "squad"; location.hash = "#/players"; },
   exportPlayers:() => {
@@ -1312,6 +1376,7 @@ const ACT = {
       <div class="f h"><label>Plays reps</label><select name="reps">${opt([["0","No"],["1","Yes"]], p.plays_reps ? "1" : "0")}</select></div>
       <div class="f h"><label>Tried out for reps before</label><select name="reptry">${opt([["0","No"],["1","Yes"]], p.rep_tryout ? "1" : "0")}</select></div>
       <div class="f"><label>Rep details</label><input name="repnote" value="${esc(p.rep_note || "")}" placeholder="Association, team, year — e.g. Bankstown U14 Div 1, tried out 2025"></div>
+      <div class="f"><label>Highlight links (one per line)</label><textarea name="high" rows="3" placeholder="Paste Instagram / YouTube links of his best plays">${esc(((p.socials || {}).highlights || []).join("\n"))}</textarea></div>
     </div>${mact("Save")}</form>`); },
   addParent:el => { const p = player(el.dataset.id);
     openModal(`<form data-form="addParent" data-id="${p.id}"><h2>Parent for ${esc(pname(p))}</h2><div class="fg">
@@ -1370,6 +1435,7 @@ const ACT = {
       <div class="f t"><label>Amount ($)</label><input type="number" name="amt" value="${owing(p) || ""}" min="1" step="0.01" required></div>
       <div class="f t"><label>Date</label><input type="date" name="d" value="${todayISO()}" required></div>
       <div class="f t"><label>How</label><select name="how"><option>Bank transfer</option><option>Cash</option><option>Card</option></select></div>
+      <div class="f t"><label>Counts as</label><select name="kind"><option value="fees">Season fees</option><option value="apparel">Kit / apparel</option></select></div>
       <div class="f"><label>What for (goes on the receipt)</label><input name="note" placeholder="e.g. Season fees, uniform"></div></div>${mact("Save and make the receipt")}</form>`); },
   payPick:() => { const ps = active().slice().sort((a,b) => pname(a).localeCompare(pname(b)));
     if (!ps.length) { toast("Add a player first"); return; }
@@ -1378,6 +1444,7 @@ const ACT = {
       <div class="f t"><label>Amount ($)</label><input type="number" name="amt" min="1" step="0.01" required></div>
       <div class="f t"><label>Date</label><input type="date" name="d" value="${todayISO()}" required></div>
       <div class="f t"><label>How</label><select name="how"><option>Bank transfer</option><option>Cash</option><option>Card</option></select></div>
+      <div class="f t"><label>Counts as</label><select name="kind"><option value="fees">Season fees</option><option value="apparel">Kit / apparel</option></select></div>
       <div class="f"><label>What for (goes on the receipt)</label><input name="note" placeholder="e.g. Season fees, uniform"></div></div>${mact("Save and make the receipt")}</form>`); },
   receipt:el => { const x = D.payments.find(y => y.id === el.dataset.id); if (x) showReceipt(player(x.player_id), x); },
   sendReceipt:el => run(async () => { const x = D.payments.find(y => y.id === el.dataset.id), p = player(x.player_id);
@@ -1385,6 +1452,21 @@ const ACT = {
     if (error) throw error;
     await sb.from("messages").insert({conversation_id:convId, body:receiptText(p, x)}).throwOnError();
     toast("Receipt sent — it's waiting in the family's app messages"); await refreshConvs(); }),
+  addKit:el => { const p = player(el.dataset.id);
+    openModal(`<form data-form="kit" data-id="${p.id}"><h2>Kit for ${esc(pname(p))}</h2><div class="sub">Track what's ordered, what's paid and what's been handed out.</div><div class="fg">
+      <div class="f h"><label>Item</label><select name="item"><option>Jersey</option><option>Shorts</option><option>Socks</option><option>Hoodie</option><option>Tracksuit</option><option>Bag</option><option>Other</option></select></div>
+      <div class="f t"><label>Size</label><input name="size" placeholder="e.g. YL, S, 12"></div>
+      <div class="f t"><label>Price ($)</label><input type="number" name="price" min="0" step="0.01" placeholder="0"></div>
+      <div class="f t"><label>Paid?</label><select name="paid"><option value="0">Not yet</option><option value="1">Yes</option></select></div>
+      <div class="f t"><label>Given out?</label><select name="recv"><option value="0">Not yet</option><option value="1">Yes</option></select></div>
+      <div class="f"><label>Note</label><input name="note" placeholder="e.g. jersey name BATOUTI, order #2"></div>
+    </div>${mact("Add to the order list")}</form>`); },
+  kitFlag:el => run(async () => { const patch = {}; patch[el.dataset.k] = el.dataset.v === "1";
+    await sb.from("apparel").update(patch).eq("id", el.dataset.id).throwOnError();
+    Object.assign(D.apparel.find(a => a.id === el.dataset.id), patch); render(); }),
+  delKit:el => run(async () => { if (!confirm("Remove this kit item?")) return;
+    await sb.from("apparel").delete().eq("id", el.dataset.id).throwOnError();
+    D.apparel = D.apparel.filter(a => a.id !== el.dataset.id); render(); }),
   addInst:el => { const p = player(el.dataset.id);
     openModal(`<form data-form="inst" data-id="${p.id}"><h2>Payment plan</h2><div class="sub">${esc(pname(p))} · ${money(owing(p))} owing</div><div class="fg">
       <div class="f t"><label>Amount ($)</label><input type="number" name="amt" min="1" required></div>
@@ -1394,6 +1476,16 @@ const ACT = {
   feeMsg:el => { const p = player(el.dataset.id), g = D.guardians.find(x => x.family_id === p.family_id), nx = instOf(p).find(i => i.due >= todayISO());
     if (!g) { toast("No parent on file for this player yet"); return; }
     copy(`Assalamu alaykum ${g.name.split(" ")[0]},\n\nA quick reminder that ${p.first_name}'s ${tname(team(p.team_id))} fee has ${money(owing(p))} still to pay${nx ? ` — next instalment ${money(nx.amount)} due ${fd(nx.due)}` : ""}.\n\nBank transfer is easiest, or reply here to sort a payment plan.\n\nJazakAllahu khayran,\n${D.org.contact_name}\nClutch Basketball`, "Reminder copied"); },
+  feeWa:el => { const p = player(el.dataset.id), g = D.guardians.find(x => x.family_id === p.family_id);
+    if (!g || !g.phone) { toast("No parent mobile on file — add one from the player's card"); return; }
+    const nx = instOf(p).find(i => i.due >= todayISO());
+    const msg = `Assalamu alaykum ${g.name.split(" ")[0]},\n\nA quick reminder that ${p.first_name}'s ${tname(team(p.team_id))} fee has ${money(owing(p))} still to pay${nx ? ` — next instalment ${money(nx.amount)} due ${fd(nx.due)}` : ""}.\n\nBank transfer is easiest, or reply here to sort a payment plan.\n\nJazakAllahu khayran,\n${D.org.contact_name}\nClutch Basketball`;
+    open(`https://wa.me/61${g.phone.replace(/\s/g, "").replace(/^0/, "")}?text=${encodeURIComponent(msg)}`, "_blank"); },
+  feeEmail:el => { const p = player(el.dataset.id), g = D.guardians.find(x => x.family_id === p.family_id && x.email);
+    if (!g) { toast("No parent email on file"); return; }
+    const nx = instOf(p).find(i => i.due >= todayISO());
+    const body = `Assalamu alaykum ${g.name.split(" ")[0]},\n\nA quick reminder that ${p.first_name}'s ${tname(team(p.team_id))} fee has ${money(owing(p))} still to pay${nx ? ` — next instalment ${money(nx.amount)} due ${fd(nx.due)}` : ""}.\n\nBank transfer is easiest, or reply to sort a payment plan.\n\nJazakAllahu khayran,\n${D.org.contact_name}\nClutch Basketball`;
+    location.href = `mailto:${encodeURIComponent(g.email)}?subject=${encodeURIComponent("Clutch Basketball — " + p.first_name + "'s fees")}&body=${encodeURIComponent(body)}`; },
   regStage:el => run(async () => { const r = D.regs.find(x => x.id === el.dataset.id);
     await sb.from("registrations").update({stage:el.dataset.to}).eq("id", r.id).throwOnError(); r.stage = el.dataset.to; render(); }),
   regArch:el => run(async () => { const r = D.regs.find(x => x.id === el.dataset.id); const v = el.dataset.v === "1";
@@ -1468,7 +1560,10 @@ document.addEventListener("change", e => { const el = e.target;
     if (ex) ex.points = pts; else D.stats.push({fixture_id:el.dataset.fx, player_id:el.dataset.p, points:pts});
     toast("Points saved"); });
   if (el.dataset.f) { VIEW.pf[el.dataset.f] = el.value; render(); } });
-document.addEventListener("input", e => { const el = e.target; if (el.dataset.f === "q") { VIEW.pf.q = el.value; const pos = el.selectionStart; render(); const n = $('[data-f="q"]'); if (n) { n.focus(); n.setSelectionRange(pos, pos); } } });
+document.addEventListener("input", e => { const el = e.target, k = el.dataset.f;
+  if (k !== "q" && k !== "mq" && k !== "gq") return;
+  if (k === "q") VIEW.pf.q = el.value; else VIEW[k] = el.value;
+  const pos = el.selectionStart; render(); const n = $(`[data-f="${k}"]`); if (n) { n.focus(); n.setSelectionRange(pos, pos); } });
 document.addEventListener("keydown", e => { if (e.key === "Escape") { if ($("#modal").classList.contains("on")) { $("#modal").classList.remove("on"); if (!DRAWER) $("#scrim").classList.remove("on"); } else closeAll(); } });
 
 const FORMS = {
@@ -1476,14 +1571,24 @@ const FORMS = {
   note:async (f, el) => { const { data } = await sb.from("player_notes").insert({player_id:el.dataset.id, body:f.t, by_name:ME.full_name}).select().single(); D.notes.unshift(data); },
   team:async (f, el) => {
     if (tm(f.tend) <= tm(f.tstart)) { toast("Training has to end after it starts"); return false; }
-    const row = {age:f.age, div:f.div.trim(), comp:f.comp.trim(), coach_id:f.coach || null, asst_id:f.asst && f.asst !== f.coach ? f.asst : null, cap:+f.cap || 10, fee:+f.fee || 0,
-      train:[{dow:+f.tdow, start:f.tstart, end:f.tend, venue:f.tvenue, court:+f.tcourt || 1}], game:{dow:+f.gdow, venue:f.gvenue, time:f.gtime}};
+    const age = f.age === "__new" ? (f.agenew || "").trim() : f.age;
+    if (!age) { toast("Type the new age group, e.g. U21"); return false; }
+    let tv = f.tvenue, gv = f.gvenue;
+    if (tv === "__new" || gv === "__new") {
+      if (!(f.nvshort || "").trim()) { toast("Give the new venue a short name"); return false; }
+      const { data: ven } = await sb.from("venues").insert({short:f.nvshort.trim(), name:(f.nvname || f.nvshort).trim()}).select().single().throwOnError();
+      D.venues.push(ven);
+      if (tv === "__new") tv = ven.id; if (gv === "__new") gv = ven.id;
+    }
+    if (!tv || !gv) { toast("Pick a venue (or add a new one)"); return false; }
+    const row = {age, div:f.div.trim(), comp:f.comp.trim(), coach_id:f.coach || null, asst_id:f.asst && f.asst !== f.coach ? f.asst : null, cap:+f.cap || 10, fee:+f.fee || 0,
+      train:[{dow:+f.tdow, start:f.tstart, end:f.tend, venue:tv, court:+f.tcourt || 1}], game:{dow:+f.gdow, venue:gv, time:f.gtime}};
     if (el.dataset.id) { await sb.from("teams").update(row).eq("id", el.dataset.id).throwOnError();
-      await sb.from("fixtures").update({time:f.gtime, venue_id:f.gvenue}).eq("team_id", el.dataset.id).gte("date", todayISO()).throwOnError(); }
+      await sb.from("fixtures").update({time:f.gtime, venue_id:gv}).eq("team_id", el.dataset.id).gte("date", todayISO()).throwOnError(); }
     else { const { data } = await sb.from("teams").insert({...row, created:todayISO()}).select().single();
       // seed weekly fixtures to season end
       const rows = []; let M = monday(todayISO()), round = 0;
-      while (addD(M, +f.gdow - 1) <= D.org.season.end && rows.length < 30) { const date = addD(M, +f.gdow - 1); if (date >= todayISO()) rows.push({team_id:data.id, date, time:f.gtime, venue_id:f.gvenue, court:1, opp:"To be drawn", round:++round}); M = addD(M, 7); }
+      while (addD(M, +f.gdow - 1) <= D.org.season.end && rows.length < 30) { const date = addD(M, +f.gdow - 1); if (date >= todayISO()) rows.push({team_id:data.id, date, time:f.gtime, venue_id:gv, court:1, opp:"To be drawn", round:++round}); M = addD(M, 7); }
       if (rows.length) await sb.from("fixtures").insert(rows).throwOnError(); }
     await reload(); toast("Saved");
   },
@@ -1514,6 +1619,8 @@ const FORMS = {
   },
   editPlayer:async (f, el) => { const p = player(el.dataset.id);
     const socials = {...(p.socials || {})}; socials.instagram = f.ig || undefined; socials.tiktok = f.tk || undefined;
+    const high = (f.high || "").split(/\n+/).map(s => s.trim()).filter(s => /^https?:\/\//.test(s));
+    socials.highlights = high.length ? high : undefined;
     Object.keys(socials).forEach(k => socials[k] === undefined && delete socials[k]);
     const patch = {phone:f.phone, no:f.no === "" ? null : +f.no, socials, photo_consent:f.photo === "1", medical:!!f.med, medical_note:f.med || "",
       plays_reps:f.reps === "1", rep_tryout:f.reptry === "1", rep_note:f.repnote || ""};
@@ -1522,9 +1629,16 @@ const FORMS = {
   guardian:async (f, el) => { await sb.from("guardians").update({name:f.name, rel:f.rel, phone:f.phone, email:f.email || null}).eq("id", el.dataset.id).throwOnError();
     Object.assign(D.guardians.find(g => g.id === el.dataset.id), {name:f.name, rel:f.rel, phone:f.phone, email:f.email || null}); },
   pay:async (f, el) => { const pid = el.dataset.id || f.pid;
-    const { data } = await sb.from("payments").insert({player_id:pid, amount:+f.amt, paid_on:f.d, method:f.how, note:f.note || "", recorded_by:ME.id}).select().single().throwOnError();
+    const { data } = await sb.from("payments").insert({player_id:pid, amount:+f.amt, paid_on:f.d, method:f.how, kind:f.kind || "fees", note:f.note || (f.kind === "apparel" ? "Kit / apparel" : ""), recorded_by:ME.id}).select().single().throwOnError();
     D.payments.push(data); render(); showReceipt(player(pid), data); return false; },
   payPick:async f => FORMS.pay(f, {dataset:{}}),
+  kit:async (f, el) => { const { data } = await sb.from("apparel").insert({player_id:el.dataset.id, item:f.item, size:f.size || "", price:+f.price || 0,
+      paid:f.paid === "1", received:f.recv === "1", note:f.note || ""}).select().single().throwOnError();
+    D.apparel.push(data); toast("Added to the kit list"); },
+  gnote:async (f, el) => { const { data } = await sb.from("guardian_notes").insert({guardian_id:el.dataset.id, body:f.t, by_name:ME.full_name || "Admin"}).select().single().throwOnError();
+    D.gnotes.unshift(data); },
+  arrange:async (f, el) => { await sb.from("guardians").update({arrangements:f.t || ""}).eq("id", el.dataset.id).throwOnError();
+    D.guardians.find(g => g.id === el.dataset.id).arrangements = f.t || ""; toast("Saved"); },
   importGo:async f => {
     if (!IMP) return;
     const col = k => f[k] === "" || f[k] == null ? -1 : +f[k];
@@ -1600,25 +1714,39 @@ const FORMS = {
     if (error) throw error;
     openModal(`<div style="padding:20px 22px"><h2>Admin code</h2><div class="sub">For ${esc(f.email)} at clutch-hq.netlify.app → First time here. One use, 14 days.</div>
       <div class="bigcode">${data}</div><div class="mact" style="justify-content:flex-start"><button class="btn pri" data-act="copyText" data-v="${data}">${I.copy}Copy</button><button class="btn ghost" data-act="closeAll">Done</button></div></div>`); return false; },
-  coach:async (f, el) => { const row = {name:f.name.trim(), role:f.role || "Coach", phone:f.phone, email:f.email || null, wwcc_no:f.no || null, wwcc_exp:f.exp || null};
+  coach:async (f, el) => { const row = {name:f.name.trim(), role:f.role || "Coach", phone:f.phone, email:f.email || null, wwcc_no:f.no || null, wwcc_exp:f.exp || null,
+      profile:{specialty:f.spec || "", since:f.since ? +f.since : "", kids:f.kids || "", loves:f.loves || "", bio:f.bio || ""}};
     if (el.dataset.id) { await sb.from("coaches").update(row).eq("id", el.dataset.id).throwOnError(); Object.assign(coach(el.dataset.id), row); }
     else { const { data } = await sb.from("coaches").insert(row).select().single(); D.coaches.push(data); } },
 };
 function coachForm(c){
   const n = !c; c = c || {name:"", role:"Coach", phone:"", email:"", wwcc_no:"", wwcc_exp:""};
-  openModal(`<form data-form="coach" data-id="${n ? "" : c.id}"><h2>${n ? "Add coach" : esc(c.name)}</h2><div class="sub">The email is what they sign in with. The check number comes from the Office of the Children's Guardian.</div><div class="fg">
-    <div class="f h"><label>Name</label><input name="name" value="${esc(c.name)}" required></div><div class="f h"><label>Role</label><input name="role" value="${esc(c.role)}"></div>
+  const pr = c.profile || {};
+  openModal(`<form data-form="coach" data-id="${n ? "" : c.id}"><h2>${n ? "Add coach" : esc(c.name)}</h2><div class="sub">The email is what they sign in with. The check number comes from the Office of the Children's Guardian. The profile is what families see.</div><div class="fg">
+    <div class="f h"><label>Name</label><input name="name" value="${esc(c.name)}" required></div><div class="f h"><label>Role in the club</label><input name="role" value="${esc(c.role)}" placeholder="e.g. Head coach, U16s coach"></div>
     <div class="f h"><label>Mobile</label><input name="phone" value="${esc(c.phone)}"></div><div class="f h"><label>Email (for sign-in)</label><input type="email" name="email" value="${esc(c.email || "")}"></div>
-    <div class="f h"><label>WWCC number</label><input name="no" value="${esc(c.wwcc_no || "")}"></div><div class="f h"><label>Expires</label><input type="date" name="exp" value="${c.wwcc_exp || ""}"></div></div>${mact("Save")}</form>`);
+    <div class="f h"><label>WWCC number</label><input name="no" value="${esc(c.wwcc_no || "")}"></div><div class="f h"><label>Expires</label><input type="date" name="exp" value="${c.wwcc_exp || ""}"></div>
+    <div class="fsec">Profile — families see this</div>
+    <div class="f h"><label>Specialty</label><input name="spec" value="${esc(pr.specialty || "")}" placeholder="e.g. Defence, shooting form"></div>
+    <div class="f t"><label>Coaching since</label><input type="number" name="since" value="${pr.since || ""}" placeholder="e.g. 2019" min="1980" max="2100"></div>
+    <div class="f t"><label>Kids in the club</label><input name="kids" value="${esc(pr.kids || "")}" placeholder="e.g. Ismaeel (U14)"></div>
+    <div class="f"><label>What they love in a player</label><input name="loves" value="${esc(pr.loves || "")}" placeholder="e.g. Effort on defence, listens, first to training"></div>
+    <div class="f"><label>Short bio</label><textarea name="bio" rows="3" placeholder="A couple of sentences about them">${esc(pr.bio || "")}</textarea></div>
+  </div>${mact("Save")}</form>`);
 }
-document.addEventListener("change", e => { const s = e.target.closest("[data-famsel]"); if (!s) return;
-  const w = s.closest("form").querySelector("[data-famfields]"); if (w) w.style.display = s.value === "new" ? "contents" : "none"; });
+document.addEventListener("change", e => { const s = e.target.closest("[data-famsel]"); if (s) {
+    const w = s.closest("form").querySelector("[data-famfields]"); if (w) w.style.display = s.value === "new" ? "contents" : "none"; }
+  const r = e.target.closest("[data-reveal]"); if (r) {
+    const w = r.closest("form").querySelector(`[data-rv="${r.dataset.reveal}"]`); if (w) w.style.display = r.value === "__new" ? "" : "none"; }
+  const v = e.target.closest("[data-vensel]"); if (v) { const fm = v.closest("form");
+    const any = [...fm.querySelectorAll("[data-vensel]")].some(x => x.value === "__new");
+    const w = fm.querySelector('[data-rv="newvenue"]'); if (w) w.style.display = any ? "" : "none"; } });
 document.addEventListener("submit", e => {
   const el = e.target, k = el.dataset.form; if (!FORMS[k]) return; e.preventDefault();
   const f = Object.fromEntries(new FormData(el).entries());
   run(async () => { const r = await FORMS[k](f, el); if (r === false) return;
     if (el.closest("#modal")) { $("#modal").classList.remove("on"); if (!DRAWER) $("#scrim").classList.remove("on"); }
-    if (el.dataset.form === "msg" || el.dataset.form === "task" || el.dataset.form === "note" || el.dataset.form === "comment" || el.dataset.form === "post") el.reset();
+    if (el.dataset.form === "msg" || el.dataset.form === "task" || el.dataset.form === "note" || el.dataset.form === "gnote" || el.dataset.form === "comment" || el.dataset.form === "post") el.reset();
     render(); });
 });
 
