@@ -28,8 +28,8 @@
   .mark{font-family:var(--serif);font-size:15px;font-weight:700;color:var(--text);white-space:nowrap}
   .mark i{color:var(--rust);font-style:italic}
   .sp{flex:1}
-  .jump{display:flex;gap:5px}
-  .jump button{width:31px;height:32px;border-radius:9px;border:1px solid var(--line);background:#211913;color:var(--cream);font-weight:700;font-size:14px;font-family:var(--serif)}
+  .jump{display:flex;gap:4px}
+  .jump button{width:29px;height:32px;border-radius:8px;border:1px solid var(--line);background:#211913;color:var(--cream);font-weight:700;font-size:13px;font-family:var(--serif)}
   .jump button.on{border-color:var(--rust);color:var(--rust)}
   .jump button:active{background:var(--line)}
 
@@ -77,12 +77,13 @@
       <button data-s="2">3</button>
       <button data-s="3">4</button>
       <button data-s="4">5</button>
+      <button data-s="5">6</button>
     </div>
   </div>
 
   <div class="stage">
     <div class="hint" id="hint">Tap to start · tap to pause</div>
-    <div class="readout" id="readout">~2 min total</div>
+    <div class="readout" id="readout">6 beats · trim to ~2 min</div>
     <div class="scroll" id="scroll">
       <div class="inner">
 
@@ -144,12 +145,27 @@
           <div class="broll"><b>B-roll — grab silent</b>Look down, a breath. Hands still. Look back up to the lens on "thank you."</div>
         </div>
 
-        <!-- ============ SPOT 5 ============ -->
+        <!-- ============ SPOT 5 (the mask) ============ -->
         <div class="spot" id="spot4">
-          <span class="tag">Spot 5 · The waterline · the call</span>
+          <span class="tag">Spot 5 · The hats · the mask</span>
+          <div class="look"><b>Look:</b> straight down the lens, plain and close. This one's you catching them out — a bit of edge under the exhaustion. Anywhere works; keep it still. ~28s.</div>
+          <div class="lines">
+            <p>I wear a lot of hats. I have to.</p>
+            <p>Whatever my kids need — minute to minute — I become that. And I read every person, every room, just so I can understand my own kids a little better.</p>
+            <p>But there's one hat I've come to hate.</p>
+            <p>You ask me, "how's things?" — and I can see it on your face. You want the big one. "She's smashing it. Learned ten new words. Kicking goals."</p>
+            <p>So that's what I hand you. Because that's what you're waiting for.</p>
+            <p class="title-line">It's not the truth. The truth is quieter, and harder. And I'm so tired of performing the other one.</p>
+          </div>
+          <div class="broll"><b>B-roll — grab silent</b>You putting on or adjusting a cap / sunglasses / collar. A half-smile that drops the second you think no one's watching.</div>
+        </div>
+
+        <!-- ============ SPOT 6 ============ -->
+        <div class="spot" id="spot5">
+          <span class="tag">Spot 6 · The waterline · the call</span>
           <div class="look"><b>Look:</b> edge of the water, early flat light, facing open sea. Empty horizon. Eyes dead down the lens — this is the one you hold their eye. ~30s.</div>
           <div class="lines">
-            <p>Here's what I've learned screaming into the void: the loudest get the help. The big accounts. The big numbers.</p>
+            <p>Here's what I've learned screaming into the void: the loudest get the help. The big accounts. The highlight reels.</p>
             <p>The rest of us get left in the dark.</p>
             <p>Not here.</p>
             <p>I kept moving, trying to find peace. It was never in a place — it's in the people who actually get it.</p>
@@ -195,7 +211,7 @@
   var hint=document.getElementById("hint");
   var readout=document.getElementById("readout");
   var jump=document.getElementById("jump");
-  var spots=[document.getElementById("spot0"),document.getElementById("spot1"),document.getElementById("spot2"),document.getElementById("spot3"),document.getElementById("spot4")];
+  var spots=[document.getElementById("spot0"),document.getElementById("spot1"),document.getElementById("spot2"),document.getElementById("spot3"),document.getElementById("spot4"),document.getElementById("spot5")];
 
   var playing=false, speed=1.0, raf=null, carry=0, fs=34, wakeLock=null;
 
