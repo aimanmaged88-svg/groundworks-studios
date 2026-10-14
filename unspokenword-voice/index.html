@@ -13,6 +13,8 @@
 <link rel="icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <title>Word — a voice that learns them</title>
 <meta name="description" content="A personalised, offline communication app that learns a child's words and patterns over time. From unspoken word.">
 <style>
@@ -139,6 +141,11 @@
   .recent .s .tt{font-size:11px;color:var(--faint);margin-top:3px}
   .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--cream);color:#120a06;font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;opacity:0;transition:.2s;z-index:120;pointer-events:none}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  /* Share */
+  .spin{text-align:center;color:var(--muted);font-size:14px;padding:22px 12px}
+  .qrwrap{background:var(--cream);border-radius:14px;padding:12px;width:-moz-fit-content;width:fit-content;margin:8px auto 2px}
+  .qrwrap img,.qrwrap canvas{display:block}
+  .sharelink input{width:100%;margin-top:10px;font-size:13px;color:var(--muted);text-align:center}
 </style>
 </head>
 <body>
@@ -226,6 +233,9 @@
       <div class="grab"></div>
       <h2>Settings</h2>
       <div class="sub" id="setWho"></div>
+      <label>Language</label>
+      <select id="setLang"></select>
+      <div class="hint" style="margin-top:4px">Sets the speaking voice's language — so it suits whoever's using it.</div>
       <label>Voice</label>
       <select id="setVoice"></select>
       <div class="row2">
@@ -246,9 +256,37 @@
         <button class="btn ghost" id="setImport">⬆ Restore</button>
       </div>
       <input id="setImportInput" type="file" accept="application/json,.json" style="display:none">
+      <label>Share &amp; carers</label>
+      <button class="btn solid" id="setShare" style="margin-top:4px">📤 Share this board (link + QR)</button>
+      <div class="hint">Hand this person's board to another carer — they scan the QR or tap the link (WhatsApp it), and carry on where you left off. Anyone with the link can use it, so only share with people you trust.</div>
       <button class="btn danger" id="setResetLearn" style="margin-top:10px">Reset learning for this person</button>
       <button class="btn ghost" id="setClose">Done</button>
       <div class="hint">Everything is saved only on this device — nothing is sent anywhere. Export a backup now and then so you never lose their board.</div>
+    </div>
+  </div>
+
+  <!-- Share -->
+  <div class="modal" id="shareModal">
+    <div class="sheet">
+      <div class="grab"></div>
+      <h2>Share this board</h2>
+      <div class="sub" id="shareWho"></div>
+      <div id="shareBody"><div class="spin">Creating a share link…</div></div>
+      <button class="btn ghost" id="shareClose" style="margin-top:14px">Done</button>
+    </div>
+  </div>
+
+  <!-- Import -->
+  <div class="modal" id="importModal">
+    <div class="sheet">
+      <div class="grab"></div>
+      <h2>A board was shared with you 🤎</h2>
+      <div class="sub" id="importWho">Add it to this device?</div>
+      <p class="hint" style="margin-top:4px">It'll be added as a new person here. You can edit it freely — it won't change the original.</p>
+      <div class="mrow">
+        <button class="btn solid" id="importYes">Add this board</button>
+        <button class="btn ghost" id="importNo">Not now</button>
+      </div>
     </div>
   </div>
 
@@ -276,6 +314,23 @@
 /* Everything lives in localStorage on THIS device. Nothing is uploaded. */
 
 var LS=window.localStorage;
+
+/* Supabase — used ONLY for sharing a board carer-to-carer. Everything else stays on-device. */
+var SB=null;
+try{ if(window.supabase){ SB=window.supabase.createClient("https://egffberfhnnkhtiscaol.supabase.co","sb_publishable_dsJ4eroFRHB2zD_s9jojag_oJM5HklH",{auth:{persistSession:false}}); } }catch(e){}
+
+/* Languages — pick the one that suits whoever's using it. Value = speech language code. */
+var LANGS=[
+  ["en-AU","English (Australia)"],["en-US","English (US)"],["en-GB","English (UK)"],
+  ["ar-SA","العربية — Arabic"],["id-ID","Bahasa Indonesia"],["vi-VN","Tiếng Việt — Vietnamese"],
+  ["zh-CN","中文 — Chinese"],["hi-IN","हिन्दी — Hindi"],["ur-PK","اردو — Urdu"],
+  ["es-ES","Español — Spanish"],["it-IT","Italiano — Italian"],["el-GR","Ελληνικά — Greek"],
+  ["tr-TR","Türkçe — Turkish"],["fr-FR","Français — French"],["de-DE","Deutsch — German"],
+  ["pt-BR","Português — Portuguese"],["fil-PH","Filipino — Tagalog"],["pa-IN","ਪੰਜਾਬੀ — Punjabi"],
+  ["ta-IN","தமிழ் — Tamil"],["fa-IR","فارسی — Persian"],["ru-RU","Русский — Russian"],
+  ["ko-KR","한국어 — Korean"],["ja-JP","日本語 — Japanese"],["th-TH","ไทย — Thai"],["pl-PL","Polski — Polish"]
+];
+
 function get(k,d){try{var v=JSON.parse(LS.getItem(k));return v==null?d:v;}catch(e){return d;}}
 function set(k,v){try{LS.setItem(k,JSON.stringify(v));}catch(e){toast("Storage full — export a backup & remove some photos");}}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
@@ -333,7 +388,7 @@ function loadAll(){
   PID=get("uwv_active",profiles[0].id);
   if(!profiles.some(function(p){return p.id===PID;}))PID=profiles[0].id;
   board=get(keyBoard(PID),null); if(!board){board=starterBoard();set(keyBoard(PID),board);}
-  settings=Object.assign({voice:"",rate:0.95,pitch:1.05,cols:4,speakTap:true,big:false},get(keySet(PID),{}));
+  settings=Object.assign({lang:"en-AU",voice:"",rate:0.95,pitch:1.05,cols:4,speakTap:true,big:false},get(keySet(PID),{}));
   curCat="core";
 }
 
@@ -347,8 +402,9 @@ function speak(text){
     speechSynthesis.cancel();
     var u=new SpeechSynthesisUtterance(text);
     u.rate=settings.rate;u.pitch=settings.pitch;
+    if(settings.lang)u.lang=settings.lang;
     var v=voices.filter(function(x){return x.name===settings.voice;})[0];
-    if(v)u.voice=v;
+    if(v){u.voice=v;if(v.lang)u.lang=v.lang;}
     speechSynthesis.speak(u);
   }catch(e){}
 }
@@ -548,14 +604,23 @@ function switchProfile(id){PID=id;set("uwv_active",id);sentence=[];lastTile=null
 
 /* ---------- settings ---------- */
 document.getElementById("settingsBtn").onclick=openSettings;
+function fillLangSelect(){
+  var sel=document.getElementById("setLang");if(!sel)return;
+  var html=LANGS.map(function(l){return '<option value="'+l[0]+'">'+esc(l[1])+'</option>';}).join("");
+  if(settings.lang&&!LANGS.some(function(l){return l[0]===settings.lang;}))html+='<option value="'+esc(settings.lang)+'">'+esc(settings.lang)+'</option>';
+  sel.innerHTML=html;
+  sel.value=settings.lang||"en-AU";
+}
 function fillVoiceSelect(){
   var sel=document.getElementById("setVoice");if(!sel)return;
-  var en=voices.filter(function(v){return /^en/i.test(v.lang);}); if(!en.length)en=voices;
-  sel.innerHTML='<option value="">Device default</option>'+en.map(function(v){return '<option value="'+esc(v.name)+'">'+esc(v.name)+' ('+v.lang+')</option>';}).join("");
+  var pref=(settings.lang||"en").slice(0,2).toLowerCase();
+  var match=voices.filter(function(v){return v.lang&&v.lang.slice(0,2).toLowerCase()===pref;}); if(!match.length)match=voices;
+  sel.innerHTML='<option value="">Best voice for this language</option>'+match.map(function(v){return '<option value="'+esc(v.name)+'">'+esc(v.name)+' ('+v.lang+')</option>';}).join("");
   sel.value=settings.voice||"";
 }
 function openSettings(){
   document.getElementById("setWho").textContent="For "+profiles.filter(function(p){return p.id===PID;})[0].name;
+  fillLangSelect();
   fillVoiceSelect();
   document.getElementById("setRate").value=settings.rate;
   document.getElementById("setPitch").value=settings.pitch;
@@ -565,6 +630,7 @@ function openSettings(){
   show("setModal");
 }
 function saveSet(){set(keySet(PID),settings);}
+document.getElementById("setLang").onchange=function(){settings.lang=this.value;settings.voice="";saveSet();fillVoiceSelect();};
 document.getElementById("setVoice").onchange=function(){settings.voice=this.value;saveSet();};
 document.getElementById("setRate").oninput=function(){settings.rate=+this.value;saveSet();};
 document.getElementById("setPitch").oninput=function(){settings.pitch=+this.value;saveSet();};
@@ -626,11 +692,64 @@ function show(id){document.getElementById(id).classList.add("show");}
 function hide(id){document.getElementById(id).classList.remove("show");}
 document.querySelectorAll(".modal").forEach(function(m){m.addEventListener("click",function(e){if(e.target===m)m.classList.remove("show");});});
 
+/* ---------- share a board (carer → carer, via link + QR) ---------- */
+function curName(){return profiles.filter(function(p){return p.id===PID;})[0].name;}
+function openShare(){
+  show("shareModal");
+  document.getElementById("shareWho").textContent="For "+curName();
+  var body=document.getElementById("shareBody");
+  if(!SB){body.innerHTML='<div class="empty">Sharing needs an internet connection. Connect and try again — your board is safe on this device.</div>';return;}
+  body.innerHTML='<div class="spin">Creating a share link…</div>';
+  var payload={tiles:board,set:{cols:settings.cols,speakTap:settings.speakTap,big:settings.big}};
+  SB.rpc("uw_share_board",{p_board:payload,p_lang:settings.lang||"en-AU",p_name:curName()}).then(function(res){
+    if(res.error||!res.data){body.innerHTML='<div class="empty">Couldn’t create a link right now. Check your connection and try again.</div>';return;}
+    var url=location.origin+location.pathname+"?b="+res.data;
+    body.innerHTML='<div class="qrwrap"><div id="qrbox"></div></div>'+
+      '<div class="sharelink"><input id="shareUrl" type="text" readonly value="'+esc(url)+'"></div>'+
+      '<div class="mrow"><button class="btn solid" id="shareCopy">Copy link</button><button class="btn ghost" id="shareWa">WhatsApp</button></div>'+
+      '<p class="hint" style="margin-top:12px">They scan the code or open the link, tap “Add this board”, and carry on where you left off. Anyone with the link can use it — only share with people you trust.</p>';
+    try{new QRCode(document.getElementById("qrbox"),{text:url,width:184,height:184,colorDark:"#120a06",colorLight:"#E6C9A6",correctLevel:QRCode.CorrectLevel.M});}catch(e){}
+    document.getElementById("shareCopy").onclick=function(){var i=document.getElementById("shareUrl");try{i.select();}catch(e){}try{navigator.clipboard.writeText(url);}catch(e){try{document.execCommand("copy");}catch(e2){}}toast("Link copied");};
+    document.getElementById("shareWa").onclick=function(){window.open("https://wa.me/?text="+encodeURIComponent(curName()+"’s board on Word — open to add it:\n"+url),"_blank");};
+  },function(){body.innerHTML='<div class="empty">Couldn’t create a link right now. Check your connection and try again.</div>';});
+}
+document.getElementById("setShare").onclick=function(){hide("setModal");openShare();};
+document.getElementById("shareClose").onclick=function(){hide("shareModal");};
+
+/* ---------- receive a shared board ---------- */
+var pendingImport=null;
+function cleanURL(){try{history.replaceState(null,"",location.origin+location.pathname);}catch(e){}}
+function checkImport(){
+  var m=location.search.match(/[?&]b=([a-f0-9]+)/i); if(!m||!SB)return;
+  SB.rpc("uw_get_board",{p_code:m[1]}).then(function(res){
+    if(res.error||!res.data)return;
+    pendingImport=res.data;
+    var nm=(res.data.name||"a child").toString();
+    document.getElementById("importWho").textContent="Someone shared "+nm+"’s board with you. Add it to this device?";
+    show("importModal");
+  },function(){});
+}
+document.getElementById("importYes").onclick=function(){
+  if(!pendingImport){hide("importModal");return;}
+  var d=pendingImport, b=d.board||{};
+  var tiles=b.tiles?b.tiles:(Array.isArray(b)?b:[]);
+  if(!tiles.length){toast("That board was empty");hide("importModal");cleanURL();return;}
+  var id=uid(), nm=((d.name||"Shared board")+"").trim().slice(0,24)||"Shared board";
+  if(profiles.some(function(p){return p.name===nm;}))nm=nm+" (shared)";
+  profiles.push({id:id,name:nm}); set("uwv_profiles",profiles);
+  set(keyBoard(id),tiles);
+  var st=(b.set&&typeof b.set==="object")?b.set:{}; st.lang=d.lang||"en-AU"; set(keySet(id),st);
+  pendingImport=null; hide("importModal"); cleanURL();
+  switchProfile(id);
+  toast("Board added — it’s all yours now");
+};
+document.getElementById("importNo").onclick=function(){pendingImport=null;hide("importModal");cleanURL();};
+
 /* ---------- PWA ---------- */
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}
 
 /* ---------- go ---------- */
-loadAll();render();
+loadAll();render();checkImport();
 </script>
 </body>
 </html>
