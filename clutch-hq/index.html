@@ -921,7 +921,7 @@ function vMoney(){
   const coming = D.instalments.filter(i => { const p = player(i.player_id); return p && owing(p) > 0 && i.due >= addD(T, -7); }).sort((a,b) => a.due.localeCompare(b.due)).slice(0, 12);
   return `${moreNav()}
   <div class="ph"><div><h1>Money</h1><div class="sub">Season fees for ${esc(D.org.season.name || "")} · looked after by ${esc(D.org.contact_name)}</div></div>
-    <div class="acts"><input type="search" placeholder="Search player, parent or team" value="${esc(VIEW.mq || "")}" data-f="mq" aria-label="Search money" style="min-width:230px"><button class="btn pri" data-act="payPick">${I.plus}Record payment</button></div></div>
+    <div class="acts"><input type="search" placeholder="Search player, parent or team" value="${esc(VIEW.mq || "")}" data-f="mq" aria-label="Search money" style="min-width:230px"><button class="btn" data-act="copyOwing" title="Copies every owing parent's mobile for a WhatsApp broadcast list">${I.copy}Owing numbers</button><button class="btn pri" data-act="payPick">${I.plus}Record payment</button></div></div>
   <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">
     <div class="kpi"><div class="l">Expected</div><div class="v">${money(due)}</div></div>
     <div class="kpi"><div class="l">Collected</div><div class="v">${money(got)}</div><div class="s">${due ? Math.round(got / due * 100) : 0}% of expected</div></div>
@@ -1152,7 +1152,7 @@ function dTeam(id){
   const w = fx.filter(f => f.us != null && f.us > f.them).length, l = fx.filter(f => f.us != null && f.us < f.them).length;
   const tr = (t.train || [])[0];
   return dHead(tname(t), `Coach ${esc(t.coach_name || "TBC")}${t.asst_name ? " + " + esc(t.asst_name) : ""} · ${esc(t.comp)}`,
-    `<div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">${isAdmin() ? `<button class="btn sm" data-act="editTeam" data-id="${t.id}">${I.edit}Edit team</button>` : ""}<button class="btn sm" data-act="copyTeamMsg" data-id="${t.id}" data-w="${monday(todayISO())}">${I.copy}Weekly message</button></div>`) + `<div class="dbd">
+    `<div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">${isAdmin() ? `<button class="btn sm" data-act="editTeam" data-id="${t.id}">${I.edit}Edit team</button><button class="btn sm" data-act="impFix" data-id="${t.id}">${I.download}Import fixtures</button>` : ""}<button class="btn sm" data-act="copyTeamMsg" data-id="${t.id}" data-w="${monday(todayISO())}">${I.copy}Weekly message</button></div>`) + `<div class="dbd">
     <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:0">
       <div class="kpi"><div class="l">Roster</div><div class="v">${R.length}<small> / ${t.cap}</small></div></div>
       <div class="kpi"><div class="l">Record</div><div class="v">${w}–${l}</div><div class="s">${wlChips(t.id)}</div></div>
@@ -1306,6 +1306,13 @@ const ACT = {
     const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8"})); a.download = "clutch-players.csv";
     document.body.appendChild(a); a.click(); a.remove(); toast("Player list downloaded"); },
   newTeam:() => teamForm(null),
+  impFix:el => { const t = team(el.dataset.id);
+    openModal(`<form data-form="impfix" data-id="${t.id}"><h2>Import fixtures — ${tname(t)}</h2>
+      <div class="sub">Open the association's fixtures page (GameDay), copy this team's games, paste below — one game per line with a date and a time. Court number and “vs opponent” come along when they're in the line.</div>
+      <div class="fg"><div class="f"><textarea name="txt" rows="8" required placeholder="Fri 17/10 7:40pm Court 2 vs Bankstown Bruins&#10;24/10 6:20 pm ct 1 v Revesby Rockets&#10;31 Oct 8:00 Court 3 vs Chester Hill"></textarea></div></div>${mact("Read the games")}</form>`); },
+  copyOwing:() => { const nums = [...new Set(active().filter(p => owing(p) > 0).map(p => (guardianOf(p).phone || "").trim()).filter(Boolean))];
+    if (!nums.length) { toast("Nobody owing has a number on file"); return; }
+    copy(nums.join(", "), nums.length + " numbers copied — paste into a WhatsApp broadcast list"); },
   editTeam:el => teamForm(team(el.dataset.id)),
   archiveTeam:el => run(async () => { const t = team(el.dataset.id); if (!confirm(`Archive ${tname(t)}? Its players move to the training squad.`)) return;
     await sb.from("teams").update({archived:true}).eq("id", t.id).throwOnError();
@@ -1637,6 +1644,23 @@ const FORMS = {
     D.apparel.push(data); toast("Added to the kit list"); },
   gnote:async (f, el) => { const { data } = await sb.from("guardian_notes").insert({guardian_id:el.dataset.id, body:f.t, by_name:ME.full_name || "Admin"}).select().single().throwOnError();
     D.gnotes.unshift(data); },
+  impfix:async (f, el) => { const t = team(el.dataset.id);
+    const yr = +(((D.org.season || {}).name || "").match(/20\d\d/) || [new Date().getFullYear()])[0];
+    const { rows, skipped } = parseFixtures(f.txt, yr);
+    if (!rows.length) { toast("Couldn't find any games — each line needs a date and a time"); return false; }
+    FIXIMP = {team:t.id, rows};
+    openModal(`<form data-form="impfixgo"><h2>${plural(rows.length, "game")} found</h2>
+      <div class="sub">${tname(t)} — check it reads right, then bring them in.${skipped.length ? ` ${plural(skipped.length, "line")} skipped (no date + time).` : ""}</div>
+      <div class="plist" style="max-height:320px;overflow:auto;margin:4px 0 10px">${rows.map(r => `<div class="pr"><div>${fd(r.date, {wd:1, y:1})} · ${t12(r.time)} · ct ${r.court}</div><div class="muted" style="font-size:13px">vs ${esc(r.opp)}</div></div>`).join("")}</div>
+      ${mact("Add these fixtures")}</form>`);
+    return false; },
+  impfixgo:async () => { if (!FIXIMP) return;
+    const t = team(FIXIMP.team);
+    let round = Math.max(0, ...D.fixtures.filter(x => x.team_id === t.id).map(x => x.round || 0));
+    const gv = (t.game || {}).venue || (D.venues[0] || {}).id;
+    const ins = FIXIMP.rows.map(r => ({team_id:t.id, date:r.date, time:r.time, venue_id:gv, court:r.court, opp:r.opp, round:++round}));
+    await sb.from("fixtures").insert(ins).throwOnError();
+    const nn = ins.length; FIXIMP = null; await reload(); toast(nn + " fixtures added — they're on the Week screen now"); },
   arrange:async (f, el) => { await sb.from("guardians").update({arrangements:f.t || ""}).eq("id", el.dataset.id).throwOnError();
     D.guardians.find(g => g.id === el.dataset.id).arrangements = f.t || ""; toast("Saved"); },
   importGo:async f => {
@@ -1752,7 +1776,32 @@ document.addEventListener("submit", e => {
 
 /* ---------- spreadsheet import ---------- */
 // The reader library only loads when someone actually picks a file.
-let IMP = null;
+let IMP = null, FIXIMP = null;
+// Fixtures paste-parser: one game per line, needs a date + time; court and "vs" come along when present.
+function parseFixtures(text, year){
+  const MON = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+  const rows = [], skipped = [];
+  for (const raw of String(text || "").split(/\n+/)) {
+    const line = raw.trim(); if (!line) continue;
+    let d = null, m = line.match(/(\d{1,2})[\/\.](\d{1,2})(?:[\/\.](\d{2,4}))?/);
+    if (m) { let day = +m[1], mon = +m[2]; if (mon > 12 && day <= 12) { const t2 = day; day = mon; mon = t2; }
+      const y = m[3] ? (+m[3] < 100 ? 2000 + +m[3] : +m[3]) : year;
+      if (mon >= 1 && mon <= 12 && day >= 1 && day <= 31) d = `${y}-${String(mon).padStart(2,"0")}-${String(day).padStart(2,"0")}`; }
+    else { m = line.match(/(\d{1,2})(?:st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s*(\d{4})?/i);
+      if (m) d = `${m[3] || year}-${String(MON[m[2].slice(0,3).toLowerCase()]).padStart(2,"0")}-${String(+m[1]).padStart(2,"0")}`; }
+    const tmm = line.match(/(\d{1,2})[:.](\d{2})\s*(am|pm)?/i);
+    let time = null;
+    if (tmm && +tmm[1] <= 23) { let h = +tmm[1]; const ap = (tmm[3] || "").toLowerCase();
+      if (ap === "pm" && h < 12) h += 12; if (ap === "am" && h === 12) h = 0;
+      if (!ap && h >= 1 && h <= 9) h += 12; // bare "7:30" on a fixtures sheet means evening
+      time = `${String(h).padStart(2,"0")}:${tmm[2]}`; }
+    const cm = line.match(/\b(?:court|crt|ct)\b\s*\.?\s*(\d+)/i);
+    const om = line.match(/(?:vs\.?|v\.|\bv\b)\s+([A-Za-z][\w' .&-]{1,40}?)\s*(?:$|,|;|\d{1,2}[:.]\d{2}|court|crt|\bct\b)/i);
+    if (!d || !time) { skipped.push(line); continue; }
+    rows.push({date:d, time, court:cm ? +cm[1] : 1, opp:(om ? om[1] : "To be drawn").trim().replace(/\s+/g, " ")});
+  }
+  return {rows, skipped};
+}
 async function needXLSX(){ if (window.XLSX) return;
   await new Promise((ok, no) => { const s = document.createElement("script");
     s.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";

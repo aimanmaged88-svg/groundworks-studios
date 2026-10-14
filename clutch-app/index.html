@@ -266,7 +266,7 @@ const I = {
 async function q(table, sel, order){ let x = sb.from(table).select(sel || "*"); if (order) x = x.order(order.c, {ascending:order.a !== false}); const { data, error } = await x.limit(5000); if (error) throw new Error(table + ": " + error.message); return data || []; }
 async function fetchAll(){
   const wantMoney = !isKid();
-  const [org, venues, teams, players, guardians, fixtures, avail, roll, stats, notices, posts, comments, likes, media, convs, payments, instalments, logs] = await Promise.all([
+  const [org, venues, teams, players, guardians, fixtures, avail, roll, stats, notices, posts, comments, likes, media, convs, payments, instalments, logs, coachpub, apparel] = await Promise.all([
     q("org_settings"), q("venues"), q("teams"), q("players", "*", {c:"dob"}), q("guardians"),
     q("fixtures", "*", {c:"date"}), q("availability"), q("roll"), q("game_stats"),
     q("notices", "*", {c:"created_at", a:false}), q("posts", "*", {c:"created_at", a:false}),
@@ -274,8 +274,9 @@ async function fetchAll(){
     q("conversations"),
     wantMoney ? q("payments") : Promise.resolve([]), wantMoney ? q("instalments", "*", {c:"due"}) : Promise.resolve([]),
     q("player_log", "*", {c:"on_date", a:false}),
+    q("coach_public").catch(() => []), wantMoney ? q("apparel").catch(() => []) : Promise.resolve([]),
   ]);
-  D = {org:org[0], venues, teams, players:players.filter(p => p.status === "active"), guardians, fixtures, stats, notices, posts, comments, likes, media, convs, payments, instalments, logs, avail:{}, roll:{}, msgs:{}, reads:{}};
+  D = {org:org[0], venues, teams, players:players.filter(p => p.status === "active"), guardians, fixtures, stats, notices, posts, comments, likes, media, convs, payments, instalments, logs, coachpub, apparel, avail:{}, roll:{}, msgs:{}, reads:{}};
   avail.forEach(r => { (D.avail[r.session_key] = D.avail[r.session_key] || {})[r.player_id] = r.status; });
   roll.forEach(r => { (D.roll[r.session_key] = D.roll[r.session_key] || {})[r.player_id] = r.present; });
   try { (await q("conversation_reads")).forEach(r => { if (r.profile_id === ME.id) D.reads[r.conversation_id] = r.last_read_at; }); } catch (e) {}
@@ -348,7 +349,24 @@ function vHome(){
   const notices = D.notices.slice(0, 3);
   return `<h1 class="pg">Salaam, ${esc(ME.full_name.split(" ")[0])}</h1><div class="pgsub">${esc(D.org.name)} · ${esc(D.org.season.name || "")}</div>
   ${myKids().map(p => parentKidCard(p)).join("") || `<div class="card">No players linked to this account yet. Ask Clutch to check your family.</div>`}
+  ${[...new Set(myKids().map(p => p.team_id).filter(Boolean))].map(tid => coachCard(team(tid))).join("")}
   ${notices.length ? `<div class="card"><h2>From the club</h2><div class="list">${notices.map(n => `<div style="padding:10px 0"><b style="font-size:14px">${esc(n.title)}</b><div class="muted" style="font-size:13px;margin-top:2px">${esc(n.body)}</div><div class="muted" style="font-size:11.5px;margin-top:4px">${esc(n.by_name)} · ${fd(n.created_at.slice(0,10))}</div></div>`).join("")}</div></div>` : ""}`;
+}
+function coachCard(t){
+  if (!t) return "";
+  const c = (D.coachpub || []).find(x => x.id === t.coach_id); if (!c) return "";
+  const pr = c.profile || {}, yrs = pr.since ? Math.max(1, new Date().getFullYear() - +pr.since) : null;
+  if (!pr.specialty && !pr.bio && !pr.loves) return "";
+  return `<div class="card"><h2>Meet the coach — ${esc(tname(t))}</h2>
+    <div class="row" style="margin-top:8px"><div class="av" style="width:46px;height:46px;font-size:16px">${initials(c.name)}</div>
+      <div><b>${esc(c.name)}</b><div class="muted" style="font-size:12.5px">${esc(c.role || "Coach")}${pr.specialty ? " · " + esc(pr.specialty) : ""}${yrs ? ` · coaching ${yrs}+ years` : ""}</div></div></div>
+    ${pr.bio ? `<div class="muted" style="font-size:13.5px;margin-top:10px;line-height:1.5">${esc(pr.bio)}</div>` : ""}
+    ${pr.loves ? `<div style="margin-top:10px;font-size:13px"><b>What gets you in the team:</b> <span class="muted">${esc(pr.loves)}</span></div>` : ""}
+    ${pr.kids ? `<div class="muted" style="font-size:12.5px;margin-top:6px">Clutch parent too — ${esc(pr.kids)}</div>` : ""}</div>`;
+}
+function kitChips(p){
+  const k = (D.apparel || []).filter(a => a.player_id === p.id);
+  return k.map(a => `<span class="chip ${a.received ? "good" : a.paid ? "" : "warn"}">${esc(a.item)}${a.size ? " " + esc(a.size) : ""} · ${a.received ? "got it" : a.paid ? "paid, coming" : "to pay"}</span>`).join("");
 }
 function parentKidCard(p){
   const t = team(p.team_id), o = owing(p), st = statsOf(p);
@@ -363,6 +381,7 @@ function parentKidCard(p){
       ${o ? `<span class="chip crit">${money(o)} owing${inst ? ` · next ${money(inst.amount)} ${fd(inst.due)}` : ""}</span>` : `<span class="chip good">${I.ok}Fees paid</span>`}
       ${st.games ? `<span class="chip">${st.pts} pts this season</span>` : ""}
       ${p.medical ? `<span class="chip warn">Medical note</span>` : ""}
+      ${kitChips(p)}
     </div></div>`;
 }
 function kidHome(){
@@ -390,7 +409,9 @@ function kidHome(){
       <button class="btn sm ghost" data-act="editSocials" data-id="${p.id}">${soc.instagram || soc.tiktok ? "Edit socials" : "Add my socials"}</button>
       <label class="btn sm ghost" style="cursor:pointer">${I.cam}Photo<input type="file" accept="image/*" data-act="avatarUp" data-id="${p.id}" hidden></label>
     </div>
-    ${!p.photo_consent ? `<div class="muted" style="font-size:12px;margin-top:8px">Photo sharing is off for you — talk to your parents if that should change.</div>` : ""}</div>
+    ${!p.photo_consent ? `<div class="muted" style="font-size:12px;margin-top:8px">Photo sharing is off for you — talk to your parents if that should change.</div>` : ""}
+    ${(soc.highlights || []).length ? `<div class="row" style="margin-top:10px;flex-wrap:wrap;gap:8px">${soc.highlights.map((u, i) => `<a class="chip acc" href="${esc(u)}" target="_blank" rel="noopener">▶ My highlight ${i + 1}</a>`).join("")}</div>` : ""}</div>
+  ${t ? coachCard(t) : ""}
   ${t ? recentGames(t) : ""}`;
 }
 function recentGames(t){
@@ -513,10 +534,17 @@ function vMore(){
   if (isKid()) {
     return `<h1 class="pg">More</h1><div class="pgsub">${esc(D.org.name)}</div>
     <div class="card"><h2>House rules</h2><div class="muted" style="font-size:13.5px;white-space:pre-wrap">${esc(D.org.guidelines || "Play hard, be kind, listen to your coach.")}</div></div>
+    <div class="card"><h2>Follow Clutch</h2><div class="row" style="gap:8px;flex-wrap:wrap;margin-top:8px">
+      <a class="btn sm" href="https://www.instagram.com/clutchbball.au" target="_blank" rel="noopener">Instagram</a>
+      <a class="btn sm" href="https://clutchbasketball.com.au" target="_blank" rel="noopener">Website</a></div></div>
     <div class="card"><button class="btn" data-act="signout" style="width:100%">Sign out</button>
       <div class="muted" style="font-size:12px;margin-top:8px;text-align:center">Need back in later? Your parent makes you a new code in their app.</div></div>`;
   }
   return `<h1 class="pg">More</h1><div class="pgsub">Family settings and fees</div>
+  <div class="card"><h2>Follow Clutch</h2><div class="row" style="gap:8px;flex-wrap:wrap;margin-top:8px">
+    <a class="btn sm" href="https://www.instagram.com/clutchbball.au" target="_blank" rel="noopener">Instagram</a>
+    <a class="btn sm" href="https://clutchbasketball.com.au" target="_blank" rel="noopener">Website</a></div>
+    <div class="muted" style="font-size:12px;margin-top:8px">Game photos, highlights and club news land there first.</div></div>
   ${myKids().map(p => { const t = team(p.team_id), o = owing(p), inst = D.instalments.filter(i => i.player_id === p.id);
     const soc = p.socials || {};
     return `<div class="card"><div class="row spread"><div class="row">${avatar(p, 46)}<div><b>${esc(pname(p))}</b><div class="muted" style="font-size:12.5px">${t ? tname(t) : "Training squad"}</div></div></div>
