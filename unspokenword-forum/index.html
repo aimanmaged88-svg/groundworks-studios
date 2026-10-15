@@ -144,26 +144,14 @@
         <p>One hour. We open with a short teach on <strong id="topicInline">foods that regulate</strong>, then the floor is yours — <strong>bring the questions you've stopped saying out loud</strong>.</p>
         <div id="capNote" style="margin:4px 0 2px;font-size:13.5px;font-weight:700"></div>
         <label>Your name in the room</label>
-        <input id="regName" type="text" autocomplete="nickname" placeholder="Real name, a nickname, or Anonymous">
-        <div class="hint" style="margin-top:4px">This is the name you'll show up as — real, made-up, or anonymous. Your call.</div>
-        <label>Email</label>
-        <input id="regEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com">
-        <label>Where's your child at? (optional)</label>
-        <select id="regLevel">
-          <option value="">Prefer not to say</option>
-          <option>Not sure / not diagnosed yet</option>
-          <option>Level 1 — needs some support</option>
-          <option>Level 2 — needs substantial support</option>
-          <option>Level 3 — needs very substantial support</option>
-          <option>Older teen / adult</option>
-          <option>I'm a carer / supporter</option>
-        </select>
-        <label>In 10 words or less — why are you joining?</label>
-        <textarea id="regWhy" rows="2" maxlength="140" placeholder="e.g. My son won't eat and I'm exhausted"></textarea>
-        <div class="hint" id="whyCount" style="margin-top:4px">0 / 10 words · this is how I prep for you</div>
+        <input id="regName" type="text" autocomplete="off" placeholder="A nickname, a first name, or just Anonymous">
+        <div class="hint" style="margin-top:4px"><strong>No email. No real details.</strong> This is only the name you show up as — make one up if you like. Anonymous is completely fine.</div>
+        <label>What brings you? (optional)</label>
+        <textarea id="regWhy" rows="2" maxlength="140" placeholder="e.g. My son won't eat and I'm exhausted — or leave it blank"></textarea>
+        <div class="hint" id="whyCount" style="margin-top:4px">Totally optional · helps me prep · never shared</div>
         <div class="err" id="regErr"></div>
-        <button class="btn solid" id="regBtn">Save my seat →</button>
-        <div class="hint">Just the Zoom link and one reminder. No spam. Camera off is fine — just come ready to take part.</div>
+        <button class="btn solid" id="regBtn">Get my room link →</button>
+        <div class="hint">No sign-up, no spam, no inbox. Your link shows on the next screen — save it. Camera off is fine; just come ready to take part.</div>
       </div>
       <h2 class="ttl">What to expect</h2>
       <div class="card">
@@ -179,11 +167,11 @@
     <div id="regDone" style="display:none">
       <h2 class="ttl" id="regDoneTitle">You're in</h2>
       <div class="card" id="waitlistCard" style="display:none">
-        <p><strong>You're on the waitlist.</strong> This round filled up — but you're in line. If a seat opens before the day, I'll email you. And I'm already planning the next one, so you won't miss out.</p>
+        <p><strong>You're on the waitlist.</strong> This round filled up — the first 30 are in. Keep an eye on <strong>@unspokenword88</strong>; the next drop goes out there, and I'm already planning it.</p>
         <p>Either way, you're part of this now — and the gift below is yours to keep. Bring your ideas; that's how we build it.</p>
       </div>
       <div class="card" id="confirmedCard">
-        <p><strong>Seat saved.</strong> Here's your room — add it to your calendar now, before the mental load eats it.</p>
+        <p><strong>You're in.</strong> Here's your room — <strong>save this link now</strong> (add it to your calendar below, or screenshot it). No email is coming — this screen is it.</p>
         <div class="zoombox" id="zoomBox">
           <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)">Join link</div>
           <a id="zoomLink" class="btn teal solid" style="margin-top:10px" href="#" target="_blank" rel="noopener">Open Zoom room</a>
@@ -202,7 +190,8 @@
         <p>It's in <strong>pilot testing</strong> right now, and I want to build it <em>with you</em> — as a community. Whatever your child needs on it, tell me and I'll build it.</p>
         <p>But here's the deal, and it's the whole mantra: <strong>I need your information to make this work for you.</strong> Come with what you know — what's missing, what would help, what you wish existed. Come with information, or it won't go anywhere. We build this together, or not at all.</p>
         <a class="btn teal solid" href="https://unspokenword-voice.netlify.app" target="_blank" rel="noopener">Open Word — the talker (pilot) →</a>
-        <div class="hint">Free. Works offline, stays private on your device. Bring your ideas to Tuesday's forum — that's where we shape it.</div>
+        <div class="hint">Free. Works offline, stays private on your device. Bring your ideas to the forum — that's where we shape it.</div>
+        <p class="hint" style="margin-top:10px">Come to the forum. If it's your kind of room, that's your way into the community — no pressure, no strings.</p>
       </div>
     </div>
   </section>
@@ -390,8 +379,8 @@ async function refreshCap(){
     }else if(c.cap){
       note.textContent="🎟️ "+c.remaining+" of "+c.cap+" seats left";
       note.style.color="var(--teal)";
-      if(btn)btn.textContent="Save my seat →";
-    }else{ note.textContent=""; note.style.color=""; if(btn)btn.textContent="Save my seat →"; }
+      if(btn)btn.textContent="Get my room link →";
+    }else{ note.textContent=""; note.style.color=""; if(btn)btn.textContent="Get my room link →"; }
   }catch(e){}
 }
 setInterval(renderCountdown,30000);
@@ -419,24 +408,19 @@ window.addEventListener("hashchange",routeFromHash);
 document.getElementById("regBtn").addEventListener("click",doRegister);
 function wordCount(s){s=(s||"").trim();return s?s.split(/\s+/).length:0;}
 function prefillAuthor(){var reg=lsGet("uw_reg",null);var qa=document.getElementById("qAuthor");if(reg&&reg.name&&qa&&!qa.value)qa.value=reg.name;}
-document.getElementById("regWhy").addEventListener("input",function(){var n=wordCount(this.value);var el=document.getElementById("whyCount");el.textContent=n+" / 10 words"+(n>10?" — a touch long":" · this is how I prep for you");el.style.color=n>10?"var(--rose)":"var(--faint)";});
+function anonId(){var v=lsGet("uw_anon",null);if(!v){v="a"+Date.now().toString(36)+Math.random().toString(36).slice(2,12)+Math.random().toString(36).slice(2,8);lsSet("uw_anon",v);}return v;}
+/* 'what brings you' is optional now — no word limit */
 async function doRegister(){
   var err=document.getElementById("regErr"); err.textContent="";
-  var name=document.getElementById("regName").value.trim();
-  var email=document.getElementById("regEmail").value.trim();
+  var name=document.getElementById("regName").value.trim()||"Anonymous";
   var why=document.getElementById("regWhy").value.trim();
-  var level=document.getElementById("regLevel").value;
-  if(!email||email.indexOf("@")<1){err.textContent="Pop in a valid email so we can send you the link.";return;}
-  if(!why){err.textContent="Tell me in a few words why you're joining — it's how I prep for you.";return;}
-  if(wordCount(why)>10){err.textContent="Keep the why to 10 words or less 🙂";return;}
-  if(!name)name="Anonymous";
   if(!sb){err.textContent="Connection issue — reload and try again.";return;}
-  var btn=document.getElementById("regBtn"); btn.textContent="Saving…"; btn.disabled=true;
-  var r=await sb.rpc("uw_register",{p_name:name,p_email:email,p_why:why,p_child_level:level});
-  btn.textContent="Save my seat →"; btn.disabled=false;
+  var btn=document.getElementById("regBtn"); var label=btn.textContent; btn.textContent="One sec…"; btn.disabled=true;
+  var r=await sb.rpc("uw_join",{p_name:name,p_why:why,p_anon_id:anonId()});
+  btn.textContent=label; btn.disabled=false;
   if(r.error){err.textContent="Something went wrong — try again in a moment.";console.error(r.error);return;}
   var d=r.data||{};
-  lsSet("uw_reg",{email:email,name:name,status:d.status||"confirmed",zoom_url:d.zoom_url||"",zoom_passcode:d.zoom_passcode||""});
+  lsSet("uw_reg",{name:name,status:d.status||"confirmed",zoom_url:d.zoom_url||"",zoom_passcode:d.zoom_passcode||""});
   prefillAuthor();
   showRegDone();
   toast(d.status==="waitlist"?"You're on the waitlist":"You're in");
@@ -453,7 +437,7 @@ function showRegDone(){
   if(waitlisted)return;
   var box=document.getElementById("zoomBox"), link=document.getElementById("zoomLink"), pass=document.getElementById("zoomPass");
   if(reg&&reg.zoom_url){link.href=reg.zoom_url;box.style.display="block";}
-  else{box.innerHTML='<div class="hint">The Zoom link will appear here as soon as the host adds it — you\'re registered, so check back before start time.</div>';}
+  else{box.innerHTML='<div class="hint">The link will appear here the moment the host adds it — keep this page open, or come back to it before start time.</div>';}
   pass.textContent=(reg&&reg.zoom_passcode)?("Passcode: "+reg.zoom_passcode):"";
 }
 document.getElementById("toLiveBtn").addEventListener("click",function(){location.hash="live";});
@@ -698,14 +682,14 @@ async function loadRegs(){
   document.getElementById("statRegs").textContent=conf;
   if(!rows.length){el.innerHTML='<div class="qempty">No sign-ups yet.</div>';return;}
   var summary='<div class="hint" style="margin-bottom:8px">'+conf+' confirmed'+(wait?(' · '+wait+' waitlist'):'')+((EV&&EV.cap)?(' · cap '+EV.cap):' · no cap')+'</div>';
-  el.innerHTML=summary+'<table><thead><tr><th>Name</th><th>Why (≤10 words)</th><th>Child</th><th>Email</th><th>Seat</th></tr></thead><tbody>'+
-    rows.map(function(x){var st=(x.status||"confirmed");return '<tr><td class="name">'+esc(x.name||"—")+'</td><td>'+esc(x.why||"—")+'</td><td style="font-size:11px">'+esc(x.child_level||"—")+'</td><td style="font-size:11px">'+esc(x.email)+'</td><td style="font-size:11px">'+(st==="waitlist"?'⏳ wait':'✓')+'</td></tr>';}).join("")+'</tbody></table>';
+  el.innerHTML=summary+'<table><thead><tr><th>Name in the room</th><th>What brings them (optional)</th><th>Seat</th></tr></thead><tbody>'+
+    rows.map(function(x){var st=(x.status||"confirmed");return '<tr><td class="name">'+esc(x.name||"Anonymous")+'</td><td>'+esc(x.why||"—")+'</td><td style="font-size:11px">'+(st==="waitlist"?'⏳ wait':'✓')+'</td></tr>';}).join("")+'</tbody></table>';
   window._regs=rows;
 }
 document.getElementById("csvBtn").addEventListener("click",function(){
   var rows=window._regs||[];
   var q=function(v){return '"'+(v||"").replace(/"/g,'""')+'"';};
-  var csv="name,why,child_level,email,seat,registered_at\n"+rows.map(function(x){return [q(x.name),q(x.why),q(x.child_level),q(x.email),q(x.status||"confirmed"),q(x.created_at)].join(",");}).join("\n");
+  var csv="name,what_brings_them,seat,registered_at\n"+rows.map(function(x){return [q(x.name),q(x.why),q(x.status||"confirmed"),q(x.created_at)].join(",");}).join("\n");
   var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download="unspoken-forum-registrations.csv";document.body.appendChild(a);a.click();a.remove();
 });
 
