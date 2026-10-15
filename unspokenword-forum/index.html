@@ -142,6 +142,7 @@
       <h2 class="ttl">Save your seat</h2>
       <div class="card">
         <p>One hour. We open with a short teach on <strong id="topicInline">foods that regulate</strong>, then the floor is yours — <strong>bring the questions you've stopped saying out loud</strong>.</p>
+        <div id="capNote" style="margin:4px 0 2px;font-size:13.5px;font-weight:700"></div>
         <label>Your name in the room</label>
         <input id="regName" type="text" autocomplete="nickname" placeholder="Real name, a nickname, or Anonymous">
         <div class="hint" style="margin-top:4px">This is the name you'll show up as — real, made-up, or anonymous. Your call.</div>
@@ -176,8 +177,12 @@
     </div>
 
     <div id="regDone" style="display:none">
-      <h2 class="ttl">You're in</h2>
-      <div class="card">
+      <h2 class="ttl" id="regDoneTitle">You're in</h2>
+      <div class="card" id="waitlistCard" style="display:none">
+        <p><strong>You're on the waitlist.</strong> This round filled up — but you're in line. If a seat opens before the day, I'll email you. And I'm already planning the next one, so you won't miss out.</p>
+        <p>Either way, you're part of this now — and the gift below is yours to keep. Bring your ideas; that's how we build it.</p>
+      </div>
+      <div class="card" id="confirmedCard">
         <p><strong>Seat saved.</strong> Here's your room — add it to your calendar now, before the mental load eats it.</p>
         <div class="zoombox" id="zoomBox">
           <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)">Join link</div>
@@ -279,6 +284,9 @@
           <div><label>Your timezone</label><input id="eTz1" type="text" placeholder="Asia/Makassar"></div>
           <div><label>Audience timezone</label><input id="eTz2" type="text" placeholder="Australia/Sydney"></div>
         </div>
+        <label>Attendee cap — close seats at this many (0 = unlimited)</label>
+        <input id="eCap" type="number" min="0" step="1" placeholder="0">
+        <div class="hint" id="eCapHint" style="margin-top:4px">Once this many have confirmed, new sign-ups go to a waitlist (they still register and get the gift, just no Zoom link). Live count shows below.</div>
         <button class="btn solid" id="eSave">Save event</button>
         <div class="ok" id="eOk"></div>
       </div>
@@ -368,6 +376,23 @@ async function loadEvent(){
   document.getElementById("topicInline").textContent=EV.teach_topic;
   renderWhen();
   renderLiveState();
+  refreshCap();
+}
+async function refreshCap(){
+  var note=document.getElementById("capNote"); if(!note||!sb)return;
+  var btn=document.getElementById("regBtn");
+  try{
+    var r=await sb.rpc("uw_capacity"); var c=r.data||{}; window.CAP=c;
+    if(c.full){
+      note.innerHTML="🔒 This session is full — but you can still add your name to the waitlist.";
+      note.style.color="var(--ember)";
+      if(btn)btn.textContent="Join the waitlist →";
+    }else if(c.cap){
+      note.textContent="🎟️ "+c.remaining+" of "+c.cap+" seats left";
+      note.style.color="var(--teal)";
+      if(btn)btn.textContent="Save my seat →";
+    }else{ note.textContent=""; note.style.color=""; if(btn)btn.textContent="Save my seat →"; }
+  }catch(e){}
 }
 setInterval(renderCountdown,30000);
 
@@ -411,15 +436,21 @@ async function doRegister(){
   btn.textContent="Save my seat →"; btn.disabled=false;
   if(r.error){err.textContent="Something went wrong — try again in a moment.";console.error(r.error);return;}
   var d=r.data||{};
-  lsSet("uw_reg",{email:email,name:name,zoom_url:d.zoom_url||"",zoom_passcode:d.zoom_passcode||""});
+  lsSet("uw_reg",{email:email,name:name,status:d.status||"confirmed",zoom_url:d.zoom_url||"",zoom_passcode:d.zoom_passcode||""});
   prefillAuthor();
   showRegDone();
-  toast("You're in");
+  toast(d.status==="waitlist"?"You're on the waitlist":"You're in");
+  refreshCap();
 }
 function showRegDone(){
   var reg=lsGet("uw_reg",null);
   document.getElementById("regForm").style.display="none";
   document.getElementById("regDone").style.display="block";
+  var waitlisted=reg&&reg.status==="waitlist";
+  document.getElementById("regDoneTitle").textContent=waitlisted?"You're on the list":"You're in";
+  document.getElementById("waitlistCard").style.display=waitlisted?"block":"none";
+  document.getElementById("confirmedCard").style.display=waitlisted?"none":"block";
+  if(waitlisted)return;
   var box=document.getElementById("zoomBox"), link=document.getElementById("zoomLink"), pass=document.getElementById("zoomPass");
   if(reg&&reg.zoom_url){link.href=reg.zoom_url;box.style.display="block";}
   else{box.innerHTML='<div class="hint">The Zoom link will appear here as soon as the host adds it — you\'re registered, so check back before start time.</div>';}
@@ -570,6 +601,7 @@ function fillEventForm(){
   document.getElementById("eTopic").value=EV.teach_topic||"";
   document.getElementById("eDur").value=EV.duration_min||60;
   document.getElementById("eStatus").value=EV.status||"open";
+  document.getElementById("eCap").value=(EV.cap!=null?EV.cap:0);
   document.getElementById("eTz1").value=EV.tz_primary||"";
   document.getElementById("eTz2").value=EV.tz_secondary||"";
   // datetime-local uses the host's own browser tz
@@ -589,6 +621,7 @@ document.getElementById("eSave").addEventListener("click",async function(){
     teach_topic:document.getElementById("eTopic").value.trim(),
     duration_min:parseInt(document.getElementById("eDur").value,10)||60,
     status:document.getElementById("eStatus").value,
+    cap:parseInt(document.getElementById("eCap").value,10)||0,
     tz_primary:document.getElementById("eTz1").value.trim()||"Asia/Makassar",
     tz_secondary:document.getElementById("eTz2").value.trim()||"Australia/Sydney",
     updated_at:new Date().toISOString()
@@ -660,16 +693,19 @@ async function loadRegs(){
   var el=document.getElementById("regTable");
   if(r.error){el.innerHTML='<div class="spin">'+esc(r.error.message)+'</div>';return;}
   var rows=r.data||[];
-  document.getElementById("statRegs").textContent=rows.length;
+  var conf=rows.filter(function(x){return (x.status||"confirmed")==="confirmed";}).length;
+  var wait=rows.length-conf;
+  document.getElementById("statRegs").textContent=conf;
   if(!rows.length){el.innerHTML='<div class="qempty">No sign-ups yet.</div>';return;}
-  el.innerHTML='<table><thead><tr><th>Name</th><th>Why (≤10 words)</th><th>Child</th><th>Email</th></tr></thead><tbody>'+
-    rows.map(function(x){return '<tr><td class="name">'+esc(x.name||"—")+'</td><td>'+esc(x.why||"—")+'</td><td style="font-size:11px">'+esc(x.child_level||"—")+'</td><td style="font-size:11px">'+esc(x.email)+'</td></tr>';}).join("")+'</tbody></table>';
+  var summary='<div class="hint" style="margin-bottom:8px">'+conf+' confirmed'+(wait?(' · '+wait+' waitlist'):'')+((EV&&EV.cap)?(' · cap '+EV.cap):' · no cap')+'</div>';
+  el.innerHTML=summary+'<table><thead><tr><th>Name</th><th>Why (≤10 words)</th><th>Child</th><th>Email</th><th>Seat</th></tr></thead><tbody>'+
+    rows.map(function(x){var st=(x.status||"confirmed");return '<tr><td class="name">'+esc(x.name||"—")+'</td><td>'+esc(x.why||"—")+'</td><td style="font-size:11px">'+esc(x.child_level||"—")+'</td><td style="font-size:11px">'+esc(x.email)+'</td><td style="font-size:11px">'+(st==="waitlist"?'⏳ wait':'✓')+'</td></tr>';}).join("")+'</tbody></table>';
   window._regs=rows;
 }
 document.getElementById("csvBtn").addEventListener("click",function(){
   var rows=window._regs||[];
   var q=function(v){return '"'+(v||"").replace(/"/g,'""')+'"';};
-  var csv="name,why,child_level,email,registered_at\n"+rows.map(function(x){return [q(x.name),q(x.why),q(x.child_level),q(x.email),q(x.created_at)].join(",");}).join("\n");
+  var csv="name,why,child_level,email,seat,registered_at\n"+rows.map(function(x){return [q(x.name),q(x.why),q(x.child_level),q(x.email),q(x.status||"confirmed"),q(x.created_at)].join(",");}).join("\n");
   var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download="unspoken-forum-registrations.csv";document.body.appendChild(a);a.click();a.remove();
 });
 
