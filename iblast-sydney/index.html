@@ -387,6 +387,19 @@ nav.links a:hover{color:#fff;background:rgba(255,255,255,.05)}
 .insta-card p{color:var(--muted);font-weight:600;margin-top:4px}
 .insta-card .btn{margin-left:auto}
 
+/* ---------- reviews ---------- */
+.reviews{padding:80px 0;border-top:1px solid var(--line)}
+.reviews .r-head{max-width:720px;margin:0 auto}
+.reviews .gwrap{margin-top:40px}
+.rev-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:48px 28px;border-radius:16px}
+.rev-stars{display:inline-flex;gap:6px;color:#ffc53d;filter:drop-shadow(0 2px 10px rgba(255,197,61,.3))}
+.rev-stars .ico{width:26px;height:26px}
+.rev-empty h3{font-family:var(--display);font-size:clamp(22px,3.4vw,30px);letter-spacing:.03em;color:var(--white);text-transform:none}
+.rev-empty>p{color:var(--muted);font-weight:600;font-size:15px;line-height:1.6;max-width:540px}
+.rev-actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:8px}
+.rev-note{display:inline-flex;align-items:center;gap:8px;margin-top:6px;color:var(--dim);font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+.rev-note .ico{width:15px;height:15px;color:var(--ok)}
+
 /* ---------- area ---------- */
 .area{padding:84px 0;background:linear-gradient(180deg,#0a0e14,#0b1019);border-top:1px solid var(--line)}
 .area .inner{display:grid;grid-template-columns:.85fr 1.15fr;gap:54px;align-items:center}
@@ -611,6 +624,7 @@ footer::before{content:"";position:absolute;top:-1px;left:0;right:0;height:2px;b
       <a href="#washing">Pressure Washing</a>
       <a href="#pest">Pest Control</a>
       <a href="#packages">Packages</a>
+      <a href="#reviews">Reviews</a>
       <a href="#area">Service Area</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -622,6 +636,7 @@ footer::before{content:"";position:absolute;top:-1px;left:0;right:0;height:2px;b
     <a href="#washing">Pressure Washing</a>
     <a href="#pest">Pest Control</a>
     <a href="#packages">Packages</a>
+    <a href="#reviews">Reviews</a>
     <a href="#area">Service Area</a>
     <a href="#faq">FAQ</a>
     <a href="tel:+61416224292">Call 0416 224 292</a>
@@ -989,6 +1004,46 @@ footer::before{content:"";position:absolute;top:-1px;left:0;right:0;height:2px;b
       <div class="item pane rv" style="--i:1"><div class="tile-ic"><svg class="ico" aria-hidden="true"><use href="#i-tag"/></svg></div><h4>Upfront Package Pricing</h4><p>You see the price before you call, not after. Compare tiers, pick one, done.</p></div>
       <div class="item pane rv" style="--i:2"><div class="tile-ic"><svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg></div><h4>Licensed &amp; Insured</h4><p>A safety-first crew using professional-grade equipment and treatments.</p></div>
       <div class="item pane rv" style="--i:3"><div class="tile-ic"><svg class="ico" aria-hidden="true"><use href="#i-refresh"/></svg></div><h4>We Make It Right</h4><p>If something's not up to standard, we come back and fix it. Satisfaction guaranteed.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REVIEWS ================= -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="center rv r-head">
+      <span class="kicker">What Sydney Says</span>
+      <h2 class="sec anton chrome">Reviews, straight from Google</h2>
+      <p class="sec-sub">Verified Google reviews from real iBlast jobs — no cherry-picking.</p>
+    </div>
+
+    <div class="gwrap rv" id="reviews-widget">
+      <!-- ======================================================================
+           LIVE GOOGLE REVIEWS MOUNT POINT
+           Once the iBlast Google Business Profile is verified and has reviews,
+           paste your review-widget embed code (e.g. Trustindex, Elfsight or
+           EmbedSocial — free tier) IN PLACE OF the .rev-empty block below.
+           The widget then auto-syncs every new Google review on its own —
+           nothing here needs maintaining after that.
+      ========================================================================== -->
+      <div class="rev-empty pane">
+        <span class="rev-stars" aria-hidden="true">
+          <svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg>
+        </span>
+        <h3>Be the first to review iBlast</h3>
+        <p>We're building our Google review wall. If we've blasted your grime or cleared your pests, a quick review helps other Sydney locals find us — and it only takes about 30 seconds.</p>
+        <div class="rev-actions">
+          <!-- ⬇⬇ REPLACE this href with your real Google review link after the profile is verified.
+               It looks like  https://g.page/r/XXXXXXXXXXXX/review  (copy it from the Google
+               Business Profile dashboard → "Ask for reviews"), or build it from your Place ID:
+               https://search.google.com/local/writereview?placeid=YOUR_PLACE_ID -->
+          <a class="btn btn-red btn-lg" id="googleReviewBtn" href="https://search.google.com/local/writereview?placeid=YOUR_PLACE_ID" target="_blank" rel="noopener">
+            <span><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg>Review us on Google</span>
+          </a>
+          <a class="btn btn-ghost btn-lg" href="#book"><span>Book a Service <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span></a>
+        </div>
+        <span class="rev-note"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Verified Google reviews will appear here automatically</span>
+      </div>
     </div>
   </div>
 </section>
