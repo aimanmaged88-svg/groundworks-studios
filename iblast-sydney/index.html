@@ -126,6 +126,7 @@ header.scrolled{background:rgba(4,6,10,.96);box-shadow:0 14px 38px rgba(0,0,0,.5
 .nav{display:flex;align-items:center;gap:18px;height:70px}
 .brand{display:flex;align-items:center;gap:10px;font-size:25px;text-decoration:none;color:#fff}
 .brand svg{width:30px;height:30px;flex:none}
+.brand-mark{height:34px;width:auto;flex:none;display:block}
 .brand .dash{color:var(--red-hot)}
 nav.links{display:flex;gap:2px;margin-left:auto}
 nav.links a{padding:8px 12px;border-radius:8px;color:var(--silver);text-decoration:none;font-weight:600;font-size:14px;transition:color .15s,background .15s}
@@ -617,7 +618,7 @@ footer::before{content:"";position:absolute;top:-1px;left:0;right:0;height:2px;b
 <header id="hdr">
   <div class="wrap nav">
     <a class="brand anton" href="#top" aria-label="iBlast home">
-      <svg aria-hidden="true"><use href="#i-reticle"/></svg>
+      <img class="brand-mark" src="logo-mark.png" alt="" width="347" height="180" decoding="async">
       <span>I<span class="dash">-</span>BLAST</span>
     </a>
     <nav class="links" aria-label="Main">
