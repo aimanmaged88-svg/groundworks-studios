@@ -60,6 +60,7 @@ The home for all Groundworks Studios projects. Each project lives in its own fol
 | Crown Fencing (Sydney) | [`crownfencing-demo-2026/`](crownfencing-demo-2026/) | [crownfencing-demo-2026.netlify.app](https://crownfencing-demo-2026.netlify.app) |
 | Eagles Gym — Membership Portal | [`eaglesgym-demo-2026/`](eaglesgym-demo-2026/) | [eaglesgym-demo-2026.netlify.app](https://eaglesgym-demo-2026.netlify.app) |
 | I-BLAST — Pest Control & Pressure Cleaning | [`iblast-demo-2026/`](iblast-demo-2026/) | [iblast-demo-2026.netlify.app](https://iblast-demo-2026.netlify.app) |
+| iBlast — Pressure Washing & Pest Control (Sydney Metro) | [`iblast-sydney/`](iblast-sydney/) | [iblast-sydney.netlify.app](https://iblast-sydney.netlify.app) |
 | Kahil Meats — Bass Hill Plaza | [`kahilmeats-demo-2026/`](kahilmeats-demo-2026/) | [kahilmeats-demo-2026.netlify.app](https://kahilmeats-demo-2026.netlify.app) |
 | Trained by Zee — App Concept | [`trainedbyzee-demo-2026/`](trainedbyzee-demo-2026/) | [trainedbyzee-demo-2026.netlify.app](https://trainedbyzee-demo-2026.netlify.app) |
 
