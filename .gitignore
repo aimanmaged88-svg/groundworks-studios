@@ -1,0 +1,3 @@
+# Netlify local link/state (must never be committed)
+.netlify/
+**/.netlify/
