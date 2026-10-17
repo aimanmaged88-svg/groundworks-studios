@@ -171,13 +171,13 @@
         <p>Either way, you're part of this now — and the gift below is yours to keep. Bring your ideas; that's how we build it.</p>
       </div>
       <div class="card" id="confirmedCard">
-        <p><strong>You're in.</strong> Here's your room — <strong>save this link now</strong> (add it to your calendar below, or screenshot it). No email is coming — this screen is it.</p>
+        <p><strong>You're in.</strong> Here's your room — <strong>save this link now</strong> (screenshot it, bookmark it, or add it to your calendar). No email is coming — this screen is it.</p>
         <div class="zoombox" id="zoomBox">
           <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)">Join link</div>
           <a id="zoomLink" class="btn teal solid" style="margin-top:10px" href="#" target="_blank" rel="noopener">Open Zoom room</a>
           <div class="pc" id="zoomPass"></div>
         </div>
-        <div class="row" style="margin-top:14px">
+        <div class="row" id="calRow" style="margin-top:14px">
           <button class="btn ghost" id="gcalBtn">Google Calendar</button>
           <button class="btn ghost" id="icsBtn">Apple / .ics</button>
         </div>
@@ -337,13 +337,20 @@ function fmtTZ(iso,tz){
 }
 function renderWhen(){
   if(!EV)return;
-  document.getElementById("whenPrimary").textContent=fmtTZ(EV.starts_at,EV.tz_primary)+" · "+tzLabel(EV.tz_primary);
-  document.getElementById("whenSecondary").textContent=fmtTZ(EV.starts_at,EV.tz_secondary)+" · "+tzLabel(EV.tz_secondary);
+  if(EV.date_tba){
+    document.getElementById("whenPrimary").textContent="Date — announced soon";
+    document.getElementById("whenSecondary").textContent="Register now and you'll be first to know.";
+  }else{
+    document.getElementById("whenPrimary").textContent=fmtTZ(EV.starts_at,EV.tz_primary)+" · "+tzLabel(EV.tz_primary);
+    document.getElementById("whenSecondary").textContent=fmtTZ(EV.starts_at,EV.tz_secondary)+" · "+tzLabel(EV.tz_secondary);
+  }
+  var cr=document.getElementById("calRow");if(cr)cr.style.display=EV.date_tba?"none":"flex";
   renderCountdown();
 }
 function renderCountdown(){
   if(!EV)return;
   var el=document.getElementById("countWrap");
+  if(EV.date_tba){el.innerHTML='<span class="count">Date announced soon — register now to hold your seat</span>';return;}
   var start=new Date(EV.starts_at).getTime(), end=start+(EV.duration_min||60)*60000, now=Date.now();
   if(EV.status==="ended"||now>end){el.innerHTML='<span class="count">This forum has wrapped — thank you 🤎</span>';return;}
   if(EV.status==="live"||(now>=start&&now<=end)){el.innerHTML='<span class="count live"><span class="dot"></span>LIVE NOW — join the room</span>';return;}

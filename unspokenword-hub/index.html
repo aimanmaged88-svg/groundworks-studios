@@ -311,19 +311,29 @@ function tzCity(z){var m={"Asia/Makassar":"Lombok","Australia/Sydney":"Sydney"};
 function renderEvent(){
   document.getElementById("evTitle").textContent=EV.title;
   document.getElementById("evSub").textContent=EV.subtitle;
-  document.getElementById("whenMain").firstChild.textContent=tz(EV.starts_at,EV.tz_secondary)+" · "+tzCity(EV.tz_secondary)+" ";
-  document.getElementById("whenAlt").textContent=tz(EV.starts_at,EV.tz_primary)+" · "+tzCity(EV.tz_primary);
+  if(EV.date_tba){
+    document.getElementById("whenMain").firstChild.textContent="Date — announced soon ";
+    document.getElementById("whenAlt").textContent="Register now — registrants hear the date first.";
+  }else{
+    document.getElementById("whenMain").firstChild.textContent=tz(EV.starts_at,EV.tz_secondary)+" · "+tzCity(EV.tz_secondary)+" ";
+    document.getElementById("whenAlt").textContent=tz(EV.starts_at,EV.tz_primary)+" · "+tzCity(EV.tz_primary);
+  }
   var pill=document.getElementById("statusPill");pill.style.display="inline-block";pill.className="pill "+EV.status;pill.textContent=EV.status;
   document.getElementById("evStatus").value=EV.status;
   document.getElementById("stStatus").textContent={draft:"Draft",open:"Open",live:"LIVE",ended:"Ended"}[EV.status]||EV.status;
   // countdown + days
-  var start=new Date(EV.starts_at).getTime(),now=Date.now(),diff=start-now;
-  var days=Math.max(0,Math.ceil(diff/864e5));
-  document.getElementById("stDays").textContent=diff<=0?"0":days;
   var cw=document.getElementById("countWrap");
-  if(EV.status==="ended"){cw.innerHTML='<span class="count">Wrapped — nice work</span>';}
-  else if(EV.status==="live"||(now>=start&&now<=start+(EV.duration_min||60)*6e4)){cw.innerHTML='<span class="count"><span class="dot"></span>LIVE NOW</span>';}
-  else{var d=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4);cw.innerHTML='<span class="count"><span class="dot"></span>In '+(d>0?d+"d "+h+"h":h+"h "+m+"m")+'</span>';}
+  if(EV.date_tba){
+    document.getElementById("stDays").textContent="TBA";
+    cw.innerHTML=EV.status==="ended"?'<span class="count">Wrapped — nice work</span>':'<span class="count">Date announced soon</span>';
+  }else{
+    var start=new Date(EV.starts_at).getTime(),now=Date.now(),diff=start-now;
+    var days=Math.max(0,Math.ceil(diff/864e5));
+    document.getElementById("stDays").textContent=diff<=0?"0":days;
+    if(EV.status==="ended"){cw.innerHTML='<span class="count">Wrapped — nice work</span>';}
+    else if(EV.status==="live"||(now>=start&&now<=start+(EV.duration_min||60)*6e4)){cw.innerHTML='<span class="count"><span class="dot"></span>LIVE NOW</span>';}
+    else{var d=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4);cw.innerHTML='<span class="count"><span class="dot"></span>In '+(d>0?d+"d "+h+"h":h+"h "+m+"m")+'</span>';}
+  }
 }
 
 /* ===== QR ===== */
