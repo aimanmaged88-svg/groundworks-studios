@@ -115,6 +115,16 @@
          font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;opacity:0;transition:.2s;z-index:120;pointer-events:none}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .spin{color:var(--faint);font-size:13px;text-align:center;padding:14px}
+  .lead{font-size:15.5px;color:var(--text);line-height:1.6;margin-top:0}
+  .feats{display:grid;gap:12px;margin-bottom:14px}
+  .feat{display:flex;gap:14px;align-items:flex-start;background:linear-gradient(180deg,var(--surface),var(--surface2));border:1px solid var(--line);border-radius:14px;padding:16px;transition:border-color .2s,transform .2s,box-shadow .2s}
+  .feat:hover{border-color:var(--lilac);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+  .feat .fi{font-size:26px;line-height:1;flex:0 0 auto}
+  .feat .fh{font-size:15.5px;font-weight:700;color:var(--text)}
+  .feat .ft{font-size:14px;color:var(--muted);margin-top:4px;line-height:1.5}
+  .follow{margin-top:12px;font-size:13.5px;color:var(--muted);text-align:center;line-height:1.6}
+  .follow a{color:var(--amber);font-weight:700;text-decoration:none}
+  .lvl{display:inline-block;margin-top:6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:700}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.js"></script>
 </head>
@@ -129,6 +139,7 @@
       <div class="alt" id="whenSecondary"></div>
     </div>
     <div id="countWrap"></div>
+    <div class="follow" id="followLine" style="display:none">📍 The date drops soon — <a href="https://instagram.com/unspokenword88" target="_blank" rel="noopener">follow @unspokenword88</a> to catch it. Register now to hold your seat.</div>
   </header>
 
   <div class="seg" id="seg">
@@ -150,16 +161,27 @@
         <textarea id="regWhy" rows="2" maxlength="140" placeholder="e.g. My son won't eat and I'm exhausted — or leave it blank"></textarea>
         <div class="hint" id="whyCount" style="margin-top:4px">Totally optional · helps me prep · never shared</div>
         <div class="err" id="regErr"></div>
-        <button class="btn solid" id="regBtn">Get my room link →</button>
-        <div class="hint">No sign-up, no spam, no inbox. Your link shows on the next screen — save it. Camera off is fine; just come ready to take part.</div>
+        <button class="btn solid" id="regBtn">Put my name down →</button>
+        <div class="hint">No sign-up, no spam, no inbox. Your spot's saved on the next screen — the date and room link drop on <a href="https://instagram.com/unspokenword88" target="_blank" rel="noopener" style="color:var(--amber);font-weight:700;text-decoration:none">@unspokenword88</a>. Come ready to take part.</div>
       </div>
-      <h2 class="ttl">What to expect</h2>
+      <h2 class="ttl">What you're walking into</h2>
+      <div class="card">
+        <p class="lead">This isn't a webinar, and it isn't a sales page. It's the room I wish I'd had — and everything in it is what actually worked for my family.</p>
+        <p>My daughter is <strong>level 3</strong>. Watch the video again — you'd never know. <span class="lvl">that's not luck · it's a system</span></p>
+      </div>
+      <div class="feats">
+        <div class="feat"><div class="fi">🛠️</div><div><div class="fh">Real tools, not theory</div><div class="ft">I've done the hard yards. Everything here is what moved the needle for my daughter — tried, tested, lived.</div></div></div>
+        <div class="feat"><div class="fi">💡</div><div><div class="fh">The smart-home sleep trick</div><div class="ft">How I use smart lights — a whole smart-home setup — to help her understand how to settle and sleep. It's affordable: grab the gear from JB Hi-Fi today, and I'll show you exactly how.</div></div></div>
+        <div class="feat"><div class="fi">📘</div><div><div class="fh">The full playbook</div><div class="ft">The tool book, the rule book, the whole lot — step by step, matched to your child's level.</div></div></div>
+        <div class="feat"><div class="fi">🤝</div><div><div class="fh">Built together</div><div class="ft">A real community. We share what works — and we push for NDIS to back these approaches. Support for them, support for us.</div></div></div>
+      </div>
+      <h2 class="ttl">How the hour runs</h2>
       <div class="card">
         <ul class="clean">
           <li><strong>~10 min teach</strong> — one practical thing you can use this week.</li>
-          <li><strong>Open Q&amp;A</strong> — ask out loud, or type it here and upvote the ones you want answered.</li>
+          <li><strong>Open Q&amp;A</strong> — ask out loud, or type it and upvote the ones you want answered.</li>
           <li><strong>Camera off is fine</strong> — lurk, mute, pace the kitchen. However you get through it.</li>
-          <li><strong>No judgement, no "shoulds"</strong> — straight talk from people who actually live it.</li>
+          <li><strong>No judgement, no "shoulds"</strong> — straight talk from people who live it.</li>
         </ul>
       </div>
     </div>
@@ -171,7 +193,8 @@
         <p>Either way, you're part of this now — and the gift below is yours to keep. Bring your ideas; that's how we build it.</p>
       </div>
       <div class="card" id="confirmedCard">
-        <p><strong>You're in.</strong> Here's your room — <strong>save this link now</strong> (screenshot it, bookmark it, or add it to your calendar). No email is coming — this screen is it.</p>
+        <p><strong>You're in.</strong> Your spot is saved. <strong>Screenshot or bookmark this page now</strong> — no email is coming, this screen is it.</p>
+        <p style="margin-top:6px">📍 The date and your room link drop on <strong><a href="https://instagram.com/unspokenword88" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:none">@unspokenword88</a></strong> — follow to catch it. Your seat's held either way.</p>
         <div class="zoombox" id="zoomBox">
           <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)">Join link</div>
           <a id="zoomLink" class="btn teal solid" style="margin-top:10px" href="#" target="_blank" rel="noopener">Open Zoom room</a>
@@ -345,6 +368,7 @@ function renderWhen(){
     document.getElementById("whenSecondary").textContent=fmtTZ(EV.starts_at,EV.tz_secondary)+" · "+tzLabel(EV.tz_secondary);
   }
   var cr=document.getElementById("calRow");if(cr)cr.style.display=EV.date_tba?"none":"flex";
+  var fl=document.getElementById("followLine");if(fl)fl.style.display=EV.date_tba?"block":"none";
   renderCountdown();
 }
 function renderCountdown(){
@@ -386,8 +410,8 @@ async function refreshCap(){
     }else if(c.cap){
       note.textContent="🎟️ "+c.remaining+" of "+c.cap+" seats left";
       note.style.color="var(--teal)";
-      if(btn)btn.textContent="Get my room link →";
-    }else{ note.textContent=""; note.style.color=""; if(btn)btn.textContent="Get my room link →"; }
+      if(btn)btn.textContent="Put my name down →";
+    }else{ note.textContent=""; note.style.color=""; if(btn)btn.textContent="Put my name down →"; }
   }catch(e){}
 }
 setInterval(renderCountdown,30000);
