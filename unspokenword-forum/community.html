@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FBF4EC">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B0A09'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%23CE5A2D' font-family='Georgia,serif' font-weight='700'%3Eu%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<title>Unspoken — The Community</title>
+<meta name="description" content="The Unspoken community — carers of autistic kids, finding each other. Share a win, an intro, or a hard day. You're not in the dark here.">
+<style>
+  :root{
+    --bg:#FBF4EC;--surface:#FFFFFF;--surface2:#FBEBE0;--line:#EAD9CC;
+    --text:#38291F;--muted:#6E5D52;--faint:#9B8A7B;
+    --lilac:#BC5038;--teal:#A85F76;--amber:#B0611C;--rose:#CC5F49;
+    --radius:16px;--serif:"Zilla Slab",Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{background:var(--bg);color:var(--text)}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       -webkit-font-smoothing:antialiased;line-height:1.55;padding:0 0 46px}
+  .wrap{max-width:620px;margin:0 auto;padding:20px 16px 24px}
+  a{color:var(--lilac);text-decoration:none}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .back{font-size:13px;color:var(--muted);font-weight:600}
+  .brand{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--teal);font-weight:600}
+  h1{font-family:var(--serif);font-size:31px;font-weight:700;letter-spacing:-.02em;margin-top:8px;line-height:1.1}
+  .tagline{color:var(--muted);font-size:15px;margin-top:10px}
+  .count{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:13px;font-weight:600;color:var(--amber);
+         background:rgba(176,97,28,.08);border:1px solid rgba(176,97,28,.28);border-radius:999px;padding:6px 13px}
+  .count .dot{width:7px;height:7px;border-radius:50%;background:var(--amber)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:16px 0 14px}
+  .card p{color:var(--muted);font-size:14.5px}
+  .card.intro p strong{color:var(--text)}
+  .chan{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:12px;
+        border:1px solid var(--teal);background:transparent;color:var(--teal);font-size:14.5px;font-weight:700;margin-top:12px}
+  label{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:14px 0 7px}
+  label:first-child{margin-top:0}
+  input,textarea{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);
+    border-radius:11px;padding:13px;font-size:16px;font-family:inherit;resize:vertical}
+  input:focus,textarea:focus{outline:none;border-color:var(--lilac)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:12px;
+       border:1px solid var(--lilac);background:transparent;color:var(--lilac);font-size:15px;font-weight:700;margin-top:14px;font-family:inherit;cursor:pointer}
+  .btn.solid{background:var(--lilac);color:#fff}
+  .btn.solid:active{opacity:.85}
+  .btn.sm{width:auto;padding:7px 12px;font-size:12.5px;margin-top:0;border-radius:9px;border-color:var(--line);color:var(--muted);background:none}
+  .err{color:var(--rose);font-size:13px;min-height:16px;margin-top:8px}
+  .ok{color:var(--teal);font-size:13px;margin-top:8px}
+  .hint{font-size:12.5px;color:var(--faint);margin-top:8px;line-height:1.5}
+  h2.ttl{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);margin:24px 2px 12px;font-weight:700}
+  .feed{display:flex;flex-direction:column;gap:11px}
+  .post{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 15px}
+  .post .who{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+  .post .av{width:30px;height:30px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+      font-family:var(--serif);font-weight:700;font-size:15px;color:#fff}
+  .post .nm{font-size:14px;font-weight:700;color:var(--text)}
+  .post .tm{font-size:11.5px;color:var(--faint);margin-left:auto}
+  .post .bd{font-size:14.5px;color:var(--text);line-height:1.5;white-space:pre-wrap;word-wrap:break-word}
+  .post .foot{display:flex;align-items:center;gap:10px;margin-top:11px}
+  .heart{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--bg);color:var(--muted);
+      border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:700;cursor:pointer}
+  .heart.on{border-color:var(--rose);color:var(--rose);background:rgba(204,95,73,.08)}
+  .modbtns{display:flex;gap:7px;margin-left:auto}
+  .qempty{color:var(--faint);font-size:14px;text-align:center;padding:26px 10px;background:var(--surface);border:1px dashed var(--line);border-radius:14px}
+  .spin{color:var(--faint);font-size:13px;text-align:center;padding:18px}
+  .foota{margin-top:26px;text-align:center;font-size:13px;color:var(--muted)}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);opacity:0;transition:.25s;
+      background:var(--text);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:13.5px;font-weight:600;z-index:50;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="brand">Unspoken · Community</span>
+    <a class="back" href="/#register">← Register</a>
+  </div>
+  <h1>You're not in the dark here.</h1>
+  <p class="tagline">A room full of people who get it — carers of autistic kids, finding each other. Share a win, an intro, or just a hard day. No judgement, no silly ones.</p>
+  <div class="count"><span class="dot"></span><span id="cnt">—</span></div>
+
+  <a id="chanBtn" class="chan" href="#" target="_blank" rel="noopener" style="display:none">💬 Join the broadcast channel</a>
+
+  <div class="card intro">
+    <p><strong>New here?</strong> Tell us your first name (or stay anonymous) and one line about where you're at. That's it. This is the quiet corner of the internet where you don't have to explain why it's hard.</p>
+  </div>
+
+  <div class="card">
+    <label>Your name <span style="color:var(--faint)">(optional — blank posts as “A carer”)</span></label>
+    <input id="nm" type="text" maxlength="60" placeholder="e.g. Aiman, or a mum in Perth">
+    <label>Say something</label>
+    <textarea id="bd" rows="3" maxlength="500" placeholder="A win, an intro, a hard day, a question, a bit of hope…"></textarea>
+    <button class="btn solid" id="postBtn">Post to the wall</button>
+    <div class="err" id="err"></div>
+    <div class="ok" id="ok"></div>
+  </div>
+
+  <h2 class="ttl">The wall</h2>
+  <div class="feed" id="feed"><div class="spin">Loading the room…</div></div>
+
+  <div class="foota">Here for the live forum? <a href="/#register">Put your name down →</a></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.js"></script>
+<script>
+var SB_URL="https://egffberfhnnkhtiscaol.supabase.co";
+var SB_KEY="sb_publishable_dsJ4eroFRHB2zD_s9jojag_oJM5HklH";
+var IG_HANDLE="unspokenword88";
+var IG_CHANNEL_URL=""; // paste the Instagram broadcast-channel invite link here to light up the button
+var sb=(window.supabase&&window.supabase.createClient)
+  ? window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,storageKey:"uw-forum-auth"}})
+  : null;
+
+var AV=["#CE5A2D","#A85F76","#B0611C","#BC5038","#CC5F49","#9A6A4E"];
+var isOwner=false;
+function esc(s){return (s==null?"":""+s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function lsGet(k){try{return JSON.parse(localStorage.getItem(k)||"[]");}catch(e){return [];}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+var hearted=lsGet("uw_hearted");
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(function(){t.classList.remove("show");},1700);}
+function ago(iso){
+  var s=Math.max(1,(Date.now()-new Date(iso).getTime())/1000);
+  if(s<60)return "just now";
+  var m=s/60; if(m<60)return Math.floor(m)+"m ago";
+  var h=m/60; if(h<24)return Math.floor(h)+"h ago";
+  var d=h/24; if(d<7)return Math.floor(d)+"d ago";
+  return new Date(iso).toLocaleDateString();
+}
+function initial(nm){nm=(nm||"").trim();return nm?nm[0].toUpperCase():"🤎";}
+function avColor(nm){var s=0,x=(nm||"a");for(var i=0;i<x.length;i++)s+=x.charCodeAt(i);return AV[s%AV.length];}
+
+async function load(){
+  if(!sb){document.getElementById("feed").innerHTML='<div class="qempty">Connection issue — please reload.</div>';return;}
+  var r=await sb.from("uw_wall").select("*").order("created_at",{ascending:false});
+  var feed=document.getElementById("feed");
+  if(r.error){feed.innerHTML='<div class="qempty">Couldn\'t load the wall — reload.</div>';return;}
+  var rows=(r.data||[]).filter(function(p){return isOwner||p.status!=="hidden";});
+  document.getElementById("cnt").textContent=rows.length?(rows.length+(rows.length===1?" voice":" voices")+" in the room"):"Be the first voice";
+  if(!rows.length){feed.innerHTML='<div class="qempty">No one\'s spoken yet — you could be the first. 🤎</div>';return;}
+  feed.innerHTML=rows.map(function(p){
+    var nm=p.name&&p.name.trim()?p.name.trim():"A carer";
+    var on=hearted.indexOf(p.id)>=0;
+    var hidden=p.status==="hidden"?' style="opacity:.5"':'';
+    var mod=isOwner?('<div class="modbtns"><button class="btn sm" data-hide="'+p.id+'">'+(p.status==="hidden"?"Unhide":"Hide")+'</button><button class="btn sm" data-del="'+p.id+'">Delete</button></div>'):'';
+    return '<div class="post"'+hidden+'><div class="who"><div class="av" style="background:'+avColor(nm)+'">'+esc(initial(nm))+'</div>'+
+      '<span class="nm">'+esc(nm)+'</span><span class="tm">'+ago(p.created_at)+'</span></div>'+
+      '<div class="bd">'+esc(p.body)+'</div>'+
+      '<div class="foot"><button class="heart'+(on?" on":"")+'" data-heart="'+p.id+'">🤎 <span>'+p.hearts+'</span></button>'+mod+'</div></div>';
+  }).join("");
+  bind(feed);
+}
+function bind(scope){
+  scope.querySelectorAll("[data-heart]").forEach(function(b){b.onclick=function(){heart(b.getAttribute("data-heart"));};});
+  scope.querySelectorAll("[data-hide]").forEach(function(b){b.onclick=function(){modHide(b.getAttribute("data-hide"));};});
+  scope.querySelectorAll("[data-del]").forEach(function(b){b.onclick=function(){modDel(b.getAttribute("data-del"));};});
+}
+async function heart(id){
+  if(hearted.indexOf(id)>=0){toast("Already sent 🤎");return;}
+  hearted.push(id);lsSet("uw_hearted",hearted);
+  var r=await sb.rpc("uw_wall_heart",{p_id:id});
+  if(r.error)console.error(r.error);
+  load();
+}
+document.getElementById("postBtn").addEventListener("click",post);
+async function post(){
+  var err=document.getElementById("err"),ok=document.getElementById("ok");err.textContent="";ok.textContent="";
+  var name=document.getElementById("nm").value.trim();
+  var body=document.getElementById("bd").value.trim();
+  if(body.length<2){err.textContent="Write a little something first 🙂";return;}
+  if(!sb){err.textContent="Connection issue — reload.";return;}
+  var btn=document.getElementById("postBtn");btn.disabled=true;btn.textContent="Posting…";
+  var r=await sb.from("uw_wall").insert({name:name,body:body});
+  btn.disabled=false;btn.textContent="Post to the wall";
+  if(r.error){err.textContent="Couldn't post that — try again.";console.error(r.error);return;}
+  document.getElementById("bd").value="";ok.textContent="You're on the wall. Thank you for being here. 🤎";
+  load();
+}
+async function modHide(id){
+  var cur=document.querySelector('[data-hide="'+id+'"]');
+  var toHidden=cur&&cur.textContent==="Hide";
+  var u=await sb.from("uw_wall").update({status:toHidden?"hidden":"new"}).eq("id",id);
+  if(u.error){toast("Couldn't update");console.error(u.error);return;}
+  load();
+}
+async function modDel(id){
+  if(!confirm("Delete this post for good?"))return;
+  var d=await sb.from("uw_wall").delete().eq("id",id);
+  if(d.error){toast("Couldn't delete");console.error(d.error);return;}
+  load();
+}
+(async function(){
+  // broadcast channel button
+  var cb=document.getElementById("chanBtn");
+  if(IG_CHANNEL_URL){cb.href=IG_CHANNEL_URL;cb.style.display="flex";}
+  else{cb.href="https://instagram.com/"+IG_HANDLE;cb.textContent="💬 Follow @"+IG_HANDLE+" — broadcast channel opens soon";cb.style.display="flex";}
+  // owner session (shared with the host console on this origin)
+  try{if(sb){var s=await sb.auth.getSession();isOwner=!!(s&&s.data&&s.data.session);}}catch(e){}
+  load();
+  setInterval(load,15000);
+})();
+</script>
+</body>
+</html>
