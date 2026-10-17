@@ -210,6 +210,13 @@
         </div>
       </div>
 
+      <!-- LAUNCH KIT -->
+      <div class="card span12">
+        <h2>🚀 Launch kit — post these now (date still TBA)</h2>
+        <p class="mut" style="font-size:13.5px;margin-top:-6px;margin-bottom:12px">Post the film first and pin it, then roll these out over the first few days. All written for the <b>date-TBA</b> phase — the reminders below take over once the date's locked. Tap copy.</p>
+        <div id="launchKit" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px"></div>
+      </div>
+
       <!-- REMINDERS -->
       <div class="card span12">
         <h2>📣 Reminders — copy &amp; send when the date's set</h2>
@@ -298,7 +305,7 @@ function showApp(){loginEl.style.display="none";appEl.style.display="block";load
 
 /* ===== load ===== */
 async function loadAll(){
-  renderKit();renderRemind();renderBio();renderToday();makeQR();
+  renderKit();renderLaunch();renderRemind();renderBio();renderToday();makeQR();
   document.getElementById("regLink").value=REG_URL;
   document.getElementById("openReg").href=REG_URL;
   document.getElementById("openHost").href=REG_URL+"/#host";
@@ -389,6 +396,28 @@ function renderKit(){
 }
 
 /* ===== reminders (send when the date is set) ===== */
+var LAUNCH=[
+ {tag:"① Pinned post · the film (post first, then ⋯ → Pin to your profile)",
+  body:"Something's coming. 🤎\n\nI've spent 10 years living carer's burnout — not reading about it, living it. One hour, no scripts. Just the truths no one tells you, and every question you've been carrying.\n\n30 seats. Free. On Zoom. Date drops soon — seats are first-come.\n\nThis isn't a professional service. It's 10 years of lived experience, and the tools that actually helped — the smart-home sleep setup, the playbook, all of it.\n\n🔗 Put your name down now — link in bio. Follow for the 'we're live' call. 👇\n\n#carerburnout #autismparent #ndis #unspokenword #caregiversupport #autismaustralia"},
+ {tag:"② Launch day · 4 story slides (add the link sticker to each)",
+  body:"1 — It's open. 🤎  (share the film or a still)\n2 — A free live forum. 10 years of lived experience, no scripts.\n3 — 30 seats. Free. Date announced soon — put your name down 👉  (link sticker)\n4 — Follow + turn notifications on so you catch the date. 🤎"},
+ {tag:"③ Feed · day 1–2 · the value post (teach, build trust)",
+  body:"The $30 fix that gave us our nights back. 🌙\n\nMy daughter's level 3 autistic. Sleep was our hardest war — until I stopped fighting it and changed the room instead.\n\nWarm, dimmable smart-home lights (the affordable ones from JB Hi-Fi — not the fancy brands) set to fade down at the same time every single night. No screens, no overhead glare. Her body learned the cue. Ours did too.\n\nThis is the kind of thing we go deep on in the forum — real, cheap, lived-in. Not theory.\n\nRegister at the link in bio. Date's announced soon. 🤎\n\n#autismsleep #carerburnout #ndis #autismparent"},
+ {tag:"④ Feed · day 3 · the raw one (wrong direction / right person)",
+  body:"For years I worked myself into the ground in the wrong direction — for the right person. 🤎\n\nI loved her with everything. But love pointed the wrong way still burns you both out. I had to learn that harder isn't the same as right.\n\nThat's what this forum is. Not a lecture. A room where we work out which direction is actually the right one — together.\n\nFree. 30 seats. Date soon. Link in bio.\n\n#carerburnout #autismparent #caregiversupport #unspokenword"},
+ {tag:"⑤ Feed · day 4–5 · the nudge (gentle scarcity)",
+  body:"Seats are filling. 🎟️\n\nThe forum's capped at 30 on purpose — small enough that everyone gets heard. The date's announced soon, but the names go down now, first-come.\n\nIf you've been meaning to — this is your nudge. Link in bio, 20 seconds, done.\n\nAlready in? Follow + notifications on so you don't miss the 'we're live.' 🤎\n\n#autismaustralia #carersupport #ndis #unspokenword"},
+ {tag:"⑥ Anytime · story link-drop (re-use whenever)",
+  body:"The quietest invite I'll send. 🤎\n\nA free live forum for burnt-out carers — put your name down 👉  (add the link sticker)\n\nDate announced soon. Small room, on purpose."}
+];
+function renderLaunch(){
+  var el=document.getElementById("launchKit"); if(!el)return;
+  el.innerHTML=LAUNCH.map(function(a,i){
+    return '<div class="asset"><div class="tag">'+esc(a.tag)+'</div><div class="body">'+esc(a.body)+'</div>'+
+      '<button class="btn ghost sm" style="margin-top:12px" data-l="'+i+'">Copy</button></div>';
+  }).join("");
+  document.querySelectorAll("#launchKit [data-l]").forEach(function(b){b.onclick=function(){copy(LAUNCH[+b.getAttribute("data-l")].body);};});
+}
 var REMIND=[
  {tag:"① Broadcast channel · welcome (pin this first)",
   body:"You're in. 🤎\n\nThis is the Unspoken channel — the quiet one. No noise, no spam. I'll only ping you when it matters: the forum date, the room link, and the tools I promised — the smart-home sleep setup, the playbook, all of it.\n\nYou registered because something's heavy right now. Same. Let's get through it together.\n\nThe date drops here first. Bring your questions."},
