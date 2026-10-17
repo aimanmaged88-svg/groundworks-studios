@@ -356,7 +356,15 @@
       </div>
 
       <h2 class="ttl">Run the Q&amp;A</h2>
-      <div class="hint" style="margin:0 2px 8px">Tap <strong>Answering</strong> to spotlight a question in the room, <strong>Answered</strong> to tick it off, <strong>Hide</strong> to remove it.</div>
+      <div class="hint" style="margin:0 2px 8px">Tap <strong>Answering</strong> to spotlight a question in the room, <strong>Answered</strong> to tick it off, <strong>Edit</strong> to reword it, <strong>Hide</strong> to remove it. Everything here is live in the room.</div>
+      <div class="card" style="margin:0 0 14px">
+        <label>Add a question yourself — seeds the public list so the room looks alive</label>
+        <textarea id="seedBody" rows="2" placeholder="e.g. How do I stop running on empty when there's no respite?"></textarea>
+        <label>Name to show <span style="color:var(--faint)">(optional — blank shows “Anonymous”)</span></label>
+        <input id="seedAuthor" type="text" placeholder="e.g. A mum in Perth">
+        <button class="btn teal solid" id="seedBtn">Add to the room</button>
+        <div class="ok" id="seedOk"></div>
+      </div>
       <div class="qlist" id="modList"><div class="spin">Loading…</div></div>
 
       <h2 class="ttl">Reflections (private)</h2>
@@ -801,6 +809,7 @@ async function loadMod(){
   if(r.error)return;
   var all=r.data||[];
   var qs=all.filter(function(q){return q.body.indexOf("[reflection]")!==0;});
+  window._modMap={}; qs.forEach(function(q){window._modMap[q.id]=q;});
   document.getElementById("statQs").textContent=qs.length;
   document.getElementById("statVotes").textContent=qs.reduce(function(a,q){return a+q.votes;},0);
   var list=document.getElementById("modList");
@@ -812,13 +821,59 @@ function modButtons(q){
     '<button data-a="answering" data-id="'+q.id+'" class="'+(q.status==="answering"?"on":"")+'">Answering</button>'+
     '<button data-a="answered" data-id="'+q.id+'" class="'+(q.status==="answered"?"on":"")+'">Answered</button>'+
     '<button data-a="new" data-id="'+q.id+'">Reset</button>'+
+    '<button data-a="edit" data-id="'+q.id+'">Edit</button>'+
     '<button data-a="hidden" data-id="'+q.id+'">Hide</button>'+
     '<button data-a="delete" data-id="'+q.id+'">Delete</button></div>';
 }
 function bindMod(scope){
   scope.querySelectorAll(".modbtns button").forEach(function(b){
-    b.addEventListener("click",function(){modAction(b.getAttribute("data-id"),b.getAttribute("data-a"));});
+    b.addEventListener("click",function(){
+      var a=b.getAttribute("data-a"), id=b.getAttribute("data-id");
+      if(a==="edit"){startEdit(id,b);return;}
+      modAction(id,a);
+    });
   });
+}
+function startEdit(id,btn){
+  var q=(window._modMap||{})[id]; if(!q)return;
+  var card=btn.closest(".q"); if(!card)return;
+  var body=card.querySelector(".body"); if(!body)return;
+  var taStyle="width:100%;min-height:96px;box-sizing:border-box;margin:0 0 8px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;resize:vertical";
+  var inStyle="width:100%;box-sizing:border-box;margin:0 0 8px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit";
+  body.innerHTML="";
+  var ta=document.createElement("textarea"); ta.value=q.body; ta.setAttribute("style",taStyle); ta.setAttribute("maxlength","400");
+  var au=document.createElement("input"); au.type="text"; au.value=q.author||""; au.placeholder="Name shown publicly (optional)"; au.setAttribute("style",inStyle); au.setAttribute("maxlength","60");
+  var bar=document.createElement("div"); bar.className="modbtns";
+  var sv=document.createElement("button"); sv.textContent="Save"; sv.className="on";
+  var cx=document.createElement("button"); cx.textContent="Cancel";
+  bar.appendChild(sv); bar.appendChild(cx);
+  body.appendChild(ta); body.appendChild(au); body.appendChild(bar);
+  sv.addEventListener("click",function(){saveEdit(id,ta.value,au.value);});
+  cx.addEventListener("click",function(){loadMod();});
+  ta.focus();
+}
+async function saveEdit(id,nb,na){
+  nb=(nb||"").trim(); na=(na||"").trim();
+  if(nb.length<1){toast("Question can't be empty");return;}
+  if(nb.length>400)nb=nb.slice(0,400);
+  var u=await sb.from("uw_questions").update({body:nb,author:na}).eq("id",id);
+  if(u.error){toast("Couldn't save");console.error(u.error);return;}
+  toast("Saved ✓"); loadMod();
+}
+document.getElementById("seedBtn").addEventListener("click",seedQuestion);
+async function seedQuestion(){
+  var ok=document.getElementById("seedOk"); ok.textContent="";
+  var body=document.getElementById("seedBody").value.trim();
+  var author=document.getElementById("seedAuthor").value.trim();
+  if(body.length<2){ok.textContent="Type a question first.";return;}
+  if(body.length>400)body=body.slice(0,400);
+  var btn=document.getElementById("seedBtn"); btn.disabled=true; btn.textContent="Adding…";
+  var r=await sb.from("uw_questions").insert({body:body,author:author});
+  btn.disabled=false; btn.textContent="Add to the room";
+  if(r.error){ok.textContent="Couldn't add — "+r.error.message;console.error(r.error);return;}
+  document.getElementById("seedBody").value=""; document.getElementById("seedAuthor").value="";
+  ok.textContent="Added ✓ — it's live in the room now.";
+  loadMod();
 }
 async function modAction(id,a){
   if(a==="delete"){
