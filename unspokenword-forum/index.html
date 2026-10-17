@@ -125,6 +125,30 @@
   .follow{margin-top:12px;font-size:13.5px;color:var(--muted);text-align:center;line-height:1.6}
   .follow a{color:var(--amber);font-weight:700;text-decoration:none}
   .lvl{display:inline-block;margin-top:6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:700}
+
+  /* premium "save your seat" panel */
+  .seat{position:relative;background:linear-gradient(180deg,var(--surface),var(--surface2));border-radius:18px;overflow:hidden}
+  .seat::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--lilac),var(--amber),var(--teal))}
+  .seathead{margin:2px 0 12px}
+  .seatpin{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);
+           background:rgba(224,124,67,.12);border:1px solid rgba(224,124,67,.32);border-radius:999px;padding:5px 12px}
+
+  /* interactive topic chips */
+  .picker{margin:16px 0 2px}
+  .pickhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 10px}
+  .plab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .pickcount{font-size:12px;font-weight:700;color:var(--amber);opacity:0;transform:translateY(2px);transition:.2s}
+  .pickcount.show{opacity:1;transform:none}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);font-family:inherit;
+        background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:9px 14px;cursor:pointer;
+        transition:transform .12s ease,border-color .18s,background .18s,color .18s;-webkit-user-select:none;user-select:none}
+  .chip .cx{font-size:15px;line-height:1}
+  .chip:hover{border-color:var(--faint)}
+  .chip:active{transform:scale(.93)}
+  .chip.on{background:var(--lilac);border-color:var(--lilac);color:#0E0D14;box-shadow:0 4px 14px rgba(206,90,45,.3)}
+  .chip.pop{animation:chippop .28s ease}
+  @keyframes chippop{0%{transform:scale(1)}40%{transform:scale(1.08)}100%{transform:scale(1)}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.js"></script>
 </head>
@@ -151,15 +175,24 @@
   <section class="view on" id="view-register">
     <div id="regForm">
       <h2 class="ttl">Save your seat</h2>
-      <div class="card">
+      <div class="card seat">
+        <div class="seathead"><span class="seatpin">Hold your spot · 30 seconds</span></div>
         <p>One hour. We open with a short teach on <strong id="topicInline">foods that regulate</strong>, then the floor is yours — <strong>bring the questions you've stopped saying out loud</strong>.</p>
-        <div id="capNote" style="margin:4px 0 2px;font-size:13.5px;font-weight:700"></div>
+        <div id="capNote" style="margin:10px 0 2px;font-size:13.5px;font-weight:700"></div>
         <label>Your name in the room</label>
         <input id="regName" type="text" autocomplete="off" placeholder="A nickname, a first name, or just Anonymous">
-        <div class="hint" style="margin-top:4px"><strong>No email. No real details.</strong> This is only the name you show up as — make one up if you like. Anonymous is completely fine.</div>
-        <label>What brings you? (optional)</label>
-        <textarea id="regWhy" rows="2" maxlength="140" placeholder="e.g. My son won't eat and I'm exhausted — or leave it blank"></textarea>
-        <div class="hint" id="whyCount" style="margin-top:4px">Totally optional · helps me prep · never shared</div>
+        <div class="hint" style="margin-top:4px"><strong>No email. No real details.</strong> Just the name you show up as — make one up if you like. Anonymous is completely fine.</div>
+
+        <div class="picker">
+          <div class="pickhead">
+            <span class="plab">What's weighing on you right now?</span>
+            <span class="pickcount" id="pickCount"></span>
+          </div>
+          <div class="chips" id="regChips"></div>
+        </div>
+        <textarea id="regWhy" rows="2" maxlength="160" placeholder="Anything else you want me to know? (optional)" style="margin-top:10px"></textarea>
+        <div class="hint">Tap whatever fits — it just helps me prep the room for <em>you</em>. Never shared.</div>
+
         <div class="err" id="regErr"></div>
         <button class="btn solid" id="regBtn">Put my name down →</button>
         <div class="hint">No sign-up, no spam, no inbox. Your spot's saved on the next screen — the date and room link drop on <a href="https://instagram.com/unspokenword88" target="_blank" rel="noopener" style="color:var(--amber);font-weight:700;text-decoration:none">@unspokenword88</a>. Come ready to take part.</div>
@@ -227,7 +260,11 @@
 
     <h2 class="ttl">Ask a question</h2>
     <div class="card qform">
-      <textarea id="qBody" rows="3" maxlength="400" placeholder="Ask it — even the one you've never said out loud. Anonymous is fine."></textarea>
+      <div class="picker" style="margin-top:0">
+        <div class="pickhead"><span class="plab">Need a nudge? Tap a topic to start</span></div>
+        <div class="chips" id="qChips"></div>
+      </div>
+      <textarea id="qBody" rows="3" maxlength="400" placeholder="Ask it — even the one you've never said out loud. Anonymous is fine." style="margin-top:10px"></textarea>
       <label>Name (optional)</label>
       <input id="qAuthor" type="text" maxlength="60" placeholder="Anonymous">
       <div class="err" id="qErr"></div>
@@ -435,6 +472,63 @@ function routeFromHash(){
 }
 window.addEventListener("hashchange",routeFromHash);
 
+/* ===== interactive topic chips ===== */
+var TOPICS=[
+  {e:"😴",t:"Sleep"},{e:"🍽️",t:"Eating & food"},{e:"🌪️",t:"Meltdowns"},
+  {e:"🗣️",t:"Speech"},{e:"🏫",t:"School"},{e:"🔁",t:"Change & routine"},
+  {e:"🧦",t:"Sensory"},{e:"😮‍💨",t:"My own burnout"},{e:"🧩",t:"NDIS & funding"},
+  {e:"🤝",t:"The community"}
+];
+function mkChip(o){
+  var b=document.createElement("button");
+  b.type="button"; b.className="chip";
+  b.innerHTML='<span class="cx">'+o.e+'</span>'+o.t;
+  return b;
+}
+/* tag mode: multi-select, returns picked labels */
+function buildTagChips(mountId,onChange){
+  var mount=document.getElementById(mountId); var sel=new Set();
+  if(mount){TOPICS.forEach(function(o){
+    var b=mkChip(o);
+    b.addEventListener("click",function(){
+      if(sel.has(o.t)){sel.delete(o.t);b.classList.remove("on");}
+      else{sel.add(o.t);b.classList.add("on");b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop");}
+      if(onChange)onChange(Array.from(sel));
+    });
+    mount.appendChild(b);
+  });}
+  return {picked:function(){return TOPICS.filter(function(o){return sel.has(o.t);}).map(function(o){return o.t;});}};
+}
+/* insert mode: tap drops a starter into a textarea */
+function buildInsertChips(mountId,targetId){
+  var mount=document.getElementById(mountId); if(!mount)return;
+  TOPICS.forEach(function(o){
+    var b=mkChip(o);
+    b.addEventListener("click",function(){
+      var ta=document.getElementById(targetId); if(!ta)return;
+      var cur=ta.value.trim();
+      ta.value=(cur?cur+" ":"")+o.t+": ";
+      ta.focus(); ta.setSelectionRange(ta.value.length,ta.value.length);
+      b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop");
+    });
+    mount.appendChild(b);
+  });
+}
+var regChips=buildTagChips("regChips",function(picked){
+  var el=document.getElementById("pickCount"); if(!el)return;
+  if(picked.length){el.textContent=picked.length+(picked.length===1?" thing":" things");el.classList.add("show");}
+  else el.classList.remove("show");
+});
+buildInsertChips("qChips","qBody");
+function composeWhy(){
+  var picked=regChips.picked();
+  var free=(document.getElementById("regWhy").value||"").trim();
+  var parts=[];
+  if(picked.length)parts.push(picked.join(", "));
+  if(free)parts.push(free);
+  return parts.join(" — ");
+}
+
 /* ===== REGISTER ===== */
 document.getElementById("regBtn").addEventListener("click",doRegister);
 function wordCount(s){s=(s||"").trim();return s?s.split(/\s+/).length:0;}
@@ -444,7 +538,7 @@ function anonId(){var v=lsGet("uw_anon",null);if(!v){v="a"+Date.now().toString(3
 async function doRegister(){
   var err=document.getElementById("regErr"); err.textContent="";
   var name=document.getElementById("regName").value.trim()||"Anonymous";
-  var why=document.getElementById("regWhy").value.trim();
+  var why=composeWhy();
   if(!sb){err.textContent="Connection issue — reload and try again.";return;}
   var btn=document.getElementById("regBtn"); var label=btn.textContent; btn.textContent="One sec…"; btn.disabled=true;
   var r=await sb.rpc("uw_join",{p_name:name,p_why:why,p_anon_id:anonId()});
