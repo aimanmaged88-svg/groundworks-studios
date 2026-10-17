@@ -167,7 +167,7 @@
       <!-- LAUNCH KIT -->
       <div class="card span7">
         <h2>🚀 Launch kit — post these today</h2>
-        <p class="mut" style="font-size:13.5px;margin-top:-6px;margin-bottom:12px">Marketable, call-to-action teasers for Tuesday. Tap copy, paste into Instagram.</p>
+        <p class="mut" style="font-size:13.5px;margin-top:-6px;margin-bottom:12px">Call-to-action teasers — register now, date announced soon. Tap copy, paste into Instagram.</p>
         <a class="btn cream block" href="intro-teleprompter.html" target="_blank" rel="noopener" style="margin-bottom:10px">🎬 Intro film — teleprompter + 4-spot shot list →</a>
         <a class="btn cream block" href="teasers.html" target="_blank" rel="noopener" style="margin-bottom:14px">📅 Open the full 7-day teaser campaign (Wed → Tue) →</a>
         <div id="kit"></div>
@@ -351,16 +351,16 @@ document.getElementById("evStatus").onchange=async function(){
 /* ===== launch kit ===== */
 var KIT=[
  {tag:"Teaser reel · talk-to-camera · ~20s",
-  body:"HOOK: For once, I'm not posting a tip. I'm opening a door.\n\nThis Tuesday I'm hosting a live open forum — just us, on a call. Not me teaching at you. You bring the questions you've stopped asking out loud — food, meltdowns, the burnout no one sees — and we answer them together, out loud, in real time.\n\nCTA: It's free. Tuesday, 7:30pm. Link in bio — put your name down and bring your questions. I want you in that room.",
-  onscreen:["A live open forum","Tue · 7:30pm · free","bring your questions","save your seat 👆"]},
- {tag:"Countdown caption · feed post today",
-  body:"This Tuesday we're doing something we've never done: a live open forum. 🤎\n\nOne hour. You bring the questions you've been carrying — food, regulation, meltdowns, the burnout nobody sees — and we work through them together, out loud. No cameras needed. No judgement. Just the room I wish I'd had.\n\nFree. Tuesday 7:30pm (Sydney). Save your seat — link in bio. Write your questions down and bring them. I'll see you in there."},
+  body:"HOOK: For once, I'm not posting a tip. I'm opening a door.\n\nI'm hosting a live open forum — just us, on a call. Not me teaching at you. You bring the questions you've stopped asking out loud — food, meltdowns, the burnout no one sees — and we answer them together, out loud, in real time.\n\nI'm not a professional. I've just lived every bit of this, and found what actually works.\n\nCTA: It's free. The date's announced soon — but the room's small on purpose, so register now at the link and you're in. Bring your questions. I want you in that room.",
+  onscreen:["A live open forum","Free · limited seats","date announced soon","register now 👆"]},
+ {tag:"Launch caption · feed post today",
+  body:"We're doing something we've never done: a live open forum. 🤎\n\nOne hour. You bring the questions you've been carrying — food, regulation, meltdowns, the burnout nobody sees — and we work through them together, out loud. No cameras needed. No judgement. Just the room I wish I'd had.\n\nI'm not a professional — I've lived it, and I've found what works. Free. Date announced soon, and seats are limited. Register now — link in bio. Write your questions down and bring them."},
  {tag:"\"Write your questions\" CTA · post or Story",
-  body:"Open forum, this Tuesday. Here's your homework: write down the ONE question you'd ask if nobody would judge you. 🤎\n\nThat's the one we'll answer, live. Save your seat — link in bio, then drop your question in the room."},
+  body:"A live open forum is coming. Here's your homework: write down the ONE question you'd ask if nobody would judge you. 🤎\n\nThat's the one we'll answer, live. Seats are limited and the date's announced soon — register now, link in bio, then bring that question."},
  {tag:"3 Story slides",
-  body:"1 — Something different this Tuesday.\n2 — A live open forum. You, me, and your real questions — answered together.\n3 — Free · Tue 7:30pm · tap to save your seat 👇  (add the link sticker)"},
+  body:"1 — Something different is coming.\n2 — A live open forum. You, me, and your real questions — answered together.\n3 — Free · limited seats · date announced soon · register now 👇  (add the link sticker)"},
  {tag:"DM / broadcast teaser",
-  body:"Quick one 🤎 I'm hosting a live open forum this Tuesday, 7:30pm — bring your questions, we answer them live. Free, and the room's small on purpose. Want the link?"}
+  body:"Quick one 🤎 I'm hosting a live open forum — bring your questions, we answer them live. Free, small room on purpose, date announced soon. Want me to save you a seat? Here's the link."}
 ];
 function renderKit(){
   document.getElementById("kit").innerHTML=KIT.map(function(a,i){
@@ -376,13 +376,13 @@ var BIO={
   name:"Unspoken Word · Autism Carers",
   options:[
    {tag:"Option 1 · raw & direct (recommended)",
-    body:"Parent or carer of an autistic child?\nNot here for sympathy — here for what works.\nFree forum + tools, built with you.\nRegister 👇"},
+    body:"Not a professional. A carer who's lived the burnout — and found what works.\nFree live forum + tools, built with you.\nRegister 👇"},
    {tag:"Option 2 · the community / the room",
     body:"Autism. Carer burnout. The stuff no one says out loud.\nReal tips, free tools, a live forum — with you.\nYou're not in the dark here 👇"},
    {tag:"Option 3 · short & punchy",
     body:"Autistic kids. Burnt-out carers. Real answers.\nFree live forum + a talking app, built together.\nPut your name down 👇"}
   ],
-  firstPost:"If you've followed me for the tips, read this one 🤎\n\nI'm pinning a link in my bio. It's not a sales page — it's a door. To a live open forum, and to a free app I built for our kids. But I need you to walk through it: register, and tell me in 10 words why you're here. That's how we build this together — I need your information to make it work.\n\nLink in bio. Come with your questions. Join the ranks."
+  firstPost:"If you've followed me for the tips, read this one 🤎\n\nI'm pinning a link in my bio. It's not a sales page — it's a door. To a live open forum, and to a free app I built for our kids.\n\nI'm not a professional. I've just lived carer burnout, and found what actually works. Register, tell me in 10 words why you're here, and I'll save you a seat — the date's announced soon, and the room's small on purpose.\n\nLink in bio. Come with your questions. Join the ranks."
 };
 function renderBio(){
   var el=document.getElementById("bio");if(!el)return;
