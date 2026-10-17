@@ -181,7 +181,7 @@
         <div id="capNote" style="margin:10px 0 2px;font-size:13.5px;font-weight:700"></div>
         <label>Your name in the room</label>
         <input id="regName" type="text" autocomplete="off" placeholder="A nickname, a first name, or just Anonymous">
-        <div class="hint" style="margin-top:4px"><strong>No email. No real details.</strong> Just the name you show up as — make one up if you like. Anonymous is completely fine.</div>
+        <div class="hint" style="margin-top:4px"><strong>No account. No real details needed.</strong> Just the name you show up as — make one up if you like. Anonymous is completely fine.</div>
 
         <div class="picker">
           <div class="pickhead">
@@ -193,9 +193,13 @@
         <textarea id="regWhy" rows="2" maxlength="160" placeholder="Anything else you want me to know? (optional)" style="margin-top:10px"></textarea>
         <div class="hint">Tap whatever fits — it just helps me prep the room for <em>you</em>. Never shared.</div>
 
+        <label>Want a reminder? (optional)</label>
+        <input id="regEmail" type="email" autocomplete="email" inputmode="email" placeholder="you@email.com — or leave blank">
+        <div class="hint">Only if you want a nudge before we start — <strong>one reminder, no spam, never shared.</strong> Leave it blank and just follow <a href="https://instagram.com/unspokenword88" target="_blank" rel="noopener" style="color:var(--amber);font-weight:700;text-decoration:none">@unspokenword88</a> for the date.</div>
+
         <div class="err" id="regErr"></div>
         <button class="btn solid" id="regBtn">Put my name down →</button>
-        <div class="hint">No sign-up, no spam, no inbox. Your spot's saved on the next screen — the date and room link drop on <a href="https://instagram.com/unspokenword88" target="_blank" rel="noopener" style="color:var(--amber);font-weight:700;text-decoration:none">@unspokenword88</a>. Come ready to take part.</div>
+        <div class="hint">No account, no spam. Any email you add is used for one reminder, nothing else. Your spot's saved on the next screen — the date and room link also drop on <a href="https://instagram.com/unspokenword88" target="_blank" rel="noopener" style="color:var(--amber);font-weight:700;text-decoration:none">@unspokenword88</a>. Come ready to take part.</div>
       </div>
       <h2 class="ttl">What you're walking into</h2>
       <div class="card">
@@ -226,8 +230,10 @@
         <p>Either way, you're part of this now — and the gift below is yours to keep. Bring your ideas; that's how we build it.</p>
       </div>
       <div class="card" id="confirmedCard">
-        <p><strong>You're in.</strong> Your spot is saved. <strong>Screenshot or bookmark this page now</strong> — no email is coming, this screen is it.</p>
+        <p><strong>You're in.</strong> Your spot is saved. <strong>Screenshot or bookmark this page now</strong> — this screen is your confirmation.</p>
         <p style="margin-top:6px">📍 The date and your room link drop on <strong><a href="https://instagram.com/unspokenword88" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:none">@unspokenword88</a></strong> — follow to catch it. Your seat's held either way.</p>
+        <a class="btn teal" id="channelBtn" href="#" target="_blank" rel="noopener" style="margin-top:12px">💬 Join the broadcast channel — get the reminder</a>
+        <div class="hint" id="channelHint">One tap. I'll send the date and an "we're live" nudge there — plus everything we build next, as a community.</div>
         <div class="zoombox" id="zoomBox">
           <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)">Join link</div>
           <a id="zoomLink" class="btn teal solid" style="margin-top:10px" href="#" target="_blank" rel="noopener">Open Zoom room</a>
@@ -377,6 +383,11 @@
 var SB_URL="https://egffberfhnnkhtiscaol.supabase.co";
 var SB_KEY="sb_publishable_dsJ4eroFRHB2zD_s9jojag_oJM5HklH";
 var OWNER_EMAIL="aimanmaged88@gmail.com";
+var IG_HANDLE="unspokenword88";
+var IG_PROFILE="https://instagram.com/"+IG_HANDLE;
+/* Paste your Instagram Broadcast Channel invite link here once it's live.
+   Until then the button points to your profile. */
+var IG_CHANNEL_URL="";
 var sb=(window.supabase&&window.supabase.createClient)
   ? window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,storageKey:"uw-forum-auth"}})
   : null;
@@ -560,13 +571,16 @@ async function doRegister(){
   var err=document.getElementById("regErr"); err.textContent="";
   var name=document.getElementById("regName").value.trim()||"Anonymous";
   var why=composeWhy();
+  var email=(document.getElementById("regEmail").value||"").trim();
+  if(email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent="That email doesn't look right — fix it, or clear it to skip.";return;}
   if(!sb){err.textContent="Connection issue — reload and try again.";return;}
   var btn=document.getElementById("regBtn"); var label=btn.textContent; btn.textContent="One sec…"; btn.disabled=true;
   var r=await sb.rpc("uw_join",{p_name:name,p_why:why,p_anon_id:anonId()});
+  if(!r.error && email){ try{ await sb.rpc("uw_set_email",{p_anon_id:anonId(),p_email:email}); }catch(e){} }
   btn.textContent=label; btn.disabled=false;
   if(r.error){err.textContent="Something went wrong — try again in a moment.";console.error(r.error);return;}
   var d=r.data||{};
-  lsSet("uw_reg",{name:name,status:d.status||"confirmed",zoom_url:d.zoom_url||"",zoom_passcode:d.zoom_passcode||""});
+  lsSet("uw_reg",{name:name,email:email,status:d.status||"confirmed",zoom_url:d.zoom_url||"",zoom_passcode:d.zoom_passcode||""});
   prefillAuthor();
   showRegDone();
   toast(d.status==="waitlist"?"You're on the waitlist":"You're in");
@@ -581,6 +595,14 @@ function showRegDone(){
   document.getElementById("waitlistCard").style.display=waitlisted?"block":"none";
   document.getElementById("confirmedCard").style.display=waitlisted?"none":"block";
   if(waitlisted)return;
+  var ch=document.getElementById("channelBtn"), chh=document.getElementById("channelHint");
+  if(ch){
+    ch.href=IG_CHANNEL_URL||IG_PROFILE;
+    if(!IG_CHANNEL_URL){
+      ch.textContent="💬 Follow @"+IG_HANDLE+" for the reminder";
+      if(chh)chh.textContent="The broadcast channel opens soon — follow and you'll be let in. The date and the “we’re live” nudge go out there, plus everything we build next.";
+    }
+  }
   var box=document.getElementById("zoomBox"), link=document.getElementById("zoomLink"), pass=document.getElementById("zoomPass");
   if(reg&&reg.zoom_url){link.href=reg.zoom_url;box.style.display="block";}
   else{box.innerHTML='<div class="hint">The link will appear here the moment the host adds it — keep this page open, or come back to it before start time.</div>';}
@@ -827,15 +849,16 @@ async function loadRegs(){
   var wait=rows.length-conf;
   document.getElementById("statRegs").textContent=conf;
   if(!rows.length){el.innerHTML='<div class="qempty">No sign-ups yet.</div>';return;}
-  var summary='<div class="hint" style="margin-bottom:8px">'+conf+' confirmed'+(wait?(' · '+wait+' waitlist'):'')+((EV&&EV.cap)?(' · cap '+EV.cap):' · no cap')+'</div>';
-  el.innerHTML=summary+'<table><thead><tr><th>Name in the room</th><th>What brings them (optional)</th><th>Seat</th></tr></thead><tbody>'+
-    rows.map(function(x){var st=(x.status||"confirmed");return '<tr><td class="name">'+esc(x.name||"Anonymous")+'</td><td>'+esc(x.why||"—")+'</td><td style="font-size:11px">'+(st==="waitlist"?'⏳ wait':'✓')+'</td></tr>';}).join("")+'</tbody></table>';
+  var withEmail=rows.filter(function(x){return x.email&&x.email.trim();}).length;
+  var summary='<div class="hint" style="margin-bottom:8px">'+conf+' confirmed'+(wait?(' · '+wait+' waitlist'):'')+((EV&&EV.cap)?(' · cap '+EV.cap):' · no cap')+' · '+withEmail+' left an email for reminders</div>';
+  el.innerHTML=summary+'<table><thead><tr><th>Name in the room</th><th>What brings them (optional)</th><th>Email</th><th>Seat</th></tr></thead><tbody>'+
+    rows.map(function(x){var st=(x.status||"confirmed");return '<tr><td class="name">'+esc(x.name||"Anonymous")+'</td><td>'+esc(x.why||"—")+'</td><td style="font-size:12px">'+esc(x.email||"—")+'</td><td style="font-size:11px">'+(st==="waitlist"?'⏳ wait':'✓')+'</td></tr>';}).join("")+'</tbody></table>';
   window._regs=rows;
 }
 document.getElementById("csvBtn").addEventListener("click",function(){
   var rows=window._regs||[];
   var q=function(v){return '"'+(v||"").replace(/"/g,'""')+'"';};
-  var csv="name,what_brings_them,seat,registered_at\n"+rows.map(function(x){return [q(x.name),q(x.why),q(x.status||"confirmed"),q(x.created_at)].join(",");}).join("\n");
+  var csv="name,what_brings_them,email,seat,registered_at\n"+rows.map(function(x){return [q(x.name),q(x.why),q(x.email),q(x.status||"confirmed"),q(x.created_at)].join(",");}).join("\n");
   var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download="unspoken-forum-registrations.csv";document.body.appendChild(a);a.click();a.remove();
 });
 
