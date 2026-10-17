@@ -434,6 +434,27 @@ async function loadEvent(){
   renderWhen();
   renderLiveState();
   refreshCap();
+  refreshMyReg();
+}
+/* Re-check this device's registration + Zoom link every time the page loads.
+   Lets people who registered BEFORE the host added the link see the Join
+   button appear automatically when they come back — no email needed. */
+async function refreshMyReg(){
+  if(!sb)return;
+  var reg=lsGet("uw_reg",null);
+  if(!reg)return;                       // this device never registered
+  try{
+    var r=await sb.rpc("uw_my_status",{p_anon_id:anonId()});
+    var d=(r&&r.data)||{};
+    if(d.registered){
+      reg.status=d.status||reg.status;
+      reg.zoom_url=d.zoom_url||"";
+      reg.zoom_passcode=d.zoom_passcode||"";
+      lsSet("uw_reg",reg);
+      if(document.getElementById("view-register").classList.contains("on"))showRegDone();
+      renderLiveState();
+    }
+  }catch(e){}
 }
 async function refreshCap(){
   var note=document.getElementById("capNote"); if(!note||!sb)return;
