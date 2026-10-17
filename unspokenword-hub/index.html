@@ -210,6 +210,13 @@
         </div>
       </div>
 
+      <!-- REMINDERS -->
+      <div class="card span12">
+        <h2>📣 Reminders — copy &amp; send when the date's set</h2>
+        <p class="mut" style="font-size:13.5px;margin-top:-6px;margin-bottom:12px">Drop the date + time in, then send each at the right moment — broadcast channel, feed, story, and the email to anyone who left one. Tap copy.</p>
+        <div id="remindKit" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px"></div>
+      </div>
+
       <!-- INSTAGRAM BIO -->
       <div class="card span12">
         <h2>📝 Your Instagram bio</h2>
@@ -291,7 +298,7 @@ function showApp(){loginEl.style.display="none";appEl.style.display="block";load
 
 /* ===== load ===== */
 async function loadAll(){
-  renderKit();renderBio();renderToday();makeQR();
+  renderKit();renderRemind();renderBio();renderToday();makeQR();
   document.getElementById("regLink").value=REG_URL;
   document.getElementById("openReg").href=REG_URL;
   document.getElementById("openHost").href=REG_URL+"/#host";
@@ -379,6 +386,34 @@ function renderKit(){
       '<button class="btn ghost sm" style="margin-top:12px" data-k="'+i+'">Copy</button></div>';
   }).join("");
   document.querySelectorAll("#kit [data-k]").forEach(function(b){b.onclick=function(){copy(KIT[+b.getAttribute("data-k")].body);};});
+}
+
+/* ===== reminders (send when the date is set) ===== */
+var REMIND=[
+ {tag:"① Broadcast channel · welcome (pin this first)",
+  body:"You're in. 🤎\n\nThis is the Unspoken channel — the quiet one. No noise, no spam. I'll only ping you when it matters: the forum date, the room link, and the tools I promised — the smart-home sleep setup, the playbook, all of it.\n\nYou registered because something's heavy right now. Same. Let's get through it together.\n\nThe date drops here first. Bring your questions."},
+ {tag:"② Date's locked · broadcast channel",
+  body:"📅 It's locked.\n\n[DAY, DATE] · [TIME + your timezone] — our first live forum. One hour, no scripts, your real questions answered out loud.\n\nTo get in:\n1. Open → unspokenword-forum.netlify.app\n2. Your seat's already saved — your Join button is right there on the page.\n3. Add it to your calendar so it doesn't slip.\n\nCan't make it live? Still tell me your question here and I'll make sure it gets answered. See you in the room. 🤎"},
+ {tag:"③ Date's locked · feed post",
+  body:"The date's set. 🤎\n\n[DAY, DATE] · [TIME] — the live forum. You, me, and the questions nobody tells you to ask.\n\nI'm not a professional. I've lived carer burnout and found what actually works — the smart-home sleep trick, the tools, the full playbook. I'm bringing all of it.\n\nFree. Seats are limited. Register at the link in bio and I'll save you one.\n\nAlready registered? Your Join button's waiting on your page — and join the broadcast channel so you catch the room link. 👆"},
+ {tag:"④ Date's locked · 4 story slides",
+  body:"1 — It's locked. 📅\n2 — [DAY, DATE] · [TIME] — our first live forum.\n3 — Seats are limited. Register 👉 (add the link sticker)\n4 — Already in? Join the broadcast channel for the room link."},
+ {tag:"⑤ Night before · broadcast channel",
+  body:"Tomorrow. 🤎\n\n[TIME] — the forum. Your one job tonight: write down the ONE question you'd ask if nobody would judge you. That's the one we'll answer.\n\nOpen your page before we start (unspokenword-forum.netlify.app) — your Join button lives there. No camera needed. Mute, pace the kitchen, lurk — however you get through it. Just be in the room."},
+ {tag:"⑥ Reminder email · to everyone who left one",
+  body:"Subject: Your forum seat — [DAY, DATE] at [TIME]\n\nHey — it's Aiman (@unspokenword88).\n\nYou saved a seat at the live forum, and I didn't want you to miss it:\n\n🗓️ [DAY, DATE] · [TIME + timezone]\n⏱️ One hour, live on Zoom\n🎟️ Your seat's held\n\nTo join: open unspokenword-forum.netlify.app — your seat and your Join button are right there on the page. Tap it when we go live.\n\nBring the one question you've stopped saying out loud. That's what this room is for. I'm not a professional — just a carer who's lived it and found what works. Come as you are; camera off is completely fine.\n\nSee you in the room,\nAiman 🤎\n\n(You left your email for this one reminder — it's the only one you'll get. No spam, ever.)"},
+ {tag:"⑦ We're live · broadcast channel (send at start)",
+  body:"We're live. 🤎\n\nCome in → open unspokenword-forum.netlify.app and tap your Join button. Door's open now. No question ready? Just come and listen — that's allowed too."},
+ {tag:"⑧ We're live · story",
+  body:"🔴 LIVE NOW — the forum. Tap your Join button on the link in bio. Come in. 🤎"}
+];
+function renderRemind(){
+  var el=document.getElementById("remindKit"); if(!el)return;
+  el.innerHTML=REMIND.map(function(a,i){
+    return '<div class="asset"><div class="tag">'+esc(a.tag)+'</div><div class="body">'+esc(a.body)+'</div>'+
+      '<button class="btn ghost sm" style="margin-top:12px" data-r="'+i+'">Copy</button></div>';
+  }).join("");
+  document.querySelectorAll("#remindKit [data-r]").forEach(function(b){b.onclick=function(){copy(REMIND[+b.getAttribute("data-r")].body);};});
 }
 
 /* ===== instagram bio ===== */
